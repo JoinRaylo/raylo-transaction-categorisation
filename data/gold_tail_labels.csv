@@ -1,0 +1,248 @@
+merchant,gold_leaf,gold_source,stratum,plaid_n,notes
+apple,software,consensus_correct,top_volume,68084.0,
+amazon,marketplace_amazon,consensus_correct,top_volume,64672.0,
+mcdonald's,takeaway,consensus_correct,top_volume,35585.0,
+transport for london,public_transport_rail_coach,consensus_correct,top_volume,25145.0,
+current,transfer_own_account,consensus_correct,top_volume,21427.0,
+skybet,gambling_betting,consensus_correct,top_volume,18302.0,
+lc international,gambling_unspecified,sonnet_correct,top_volume,14221.0,The legal entity name and narratives do not reveal a classifiable activity.
+hm revenue and customs,benefits_state,consensus_correct,top_volume,13968.0,
+raylo,retail_finance_repayment,consensus_correct,top_volume,11226.0,
+icelandair,groceries,consensus_correct,top_volume,10390.0,The raw narratives identify Iceland Foods despite the misleading merchant normalisation.
+tesco petrol,fuel,consensus_correct,top_volume,8617.0,
+amazon prime,streaming,consensus_correct,top_volume,8562.0,
+a c,transfer_bank_unspecified,override,top_volume,8327.0,The narratives show account transfers but do not establish the purpose or ownership.
+trainline,public_transport_rail_coach,sonnet_correct,top_volume,7445.0,
+sony playstation,gaming_console_pc,consensus_correct,top_volume,7352.0,
+temu,marketplace_general,consensus_correct,top_volume,7010.0,
+domestic & general,insurance_general,consensus_correct,top_volume,5596.0,
+jd wetherspoon,pub_bar,consensus_correct,top_volume,5390.0,
+flex,unclassified_other,unclassifiable,top_volume,5163.0,“Flex” alone carries no reliable category signal.
+tiktok shop,marketplace_general,consensus_correct,top_volume,4994.0,
+coop,groceries,consensus_correct,top_volume,4991.0,
+three uk,mobile_phone_contract,consensus_correct,top_volume,4854.0,
+costa coffee,restaurant_cafe,consensus_correct,top_volume,4565.0,
+zable,credit_card_repayment,consensus_correct,top_volume,4537.0,
+ee,mobile_phone_contract,consensus_correct,top_volume,4526.0,
+jackpotjoy,gambling_bingo,consensus_correct,top_volume,4026.0,
+microsoft xbox,gaming_console_pc,consensus_correct,top_volume,3710.0,
+utilita energy,energy,consensus_correct,top_volume,3392.0,
+disney+,streaming,consensus_correct,top_volume,3167.0,
+giffgaff,mobile_phone_contract,consensus_correct,top_volume,3165.0,
+chaotic,prize_competitions,override,top_volume,3148.0,The name and Google descriptor do not reveal what was purchased.
+evans,transfer_p2p,consensus_correct,top_volume,3112.0,
+ringgo,car_parking,consensus_correct,top_volume,3091.0,
+www.amazon.,marketplace_amazon,consensus_correct,top_volume,3084.0,
+stagecoach services,public_transport_rail_coach,consensus_correct,top_volume,3022.0,
+paypal pay in 4,bnpl,consensus_correct,top_volume,2789.0,
+asda petrol,fuel,consensus_correct,top_volume,2722.0,
+mandate no,payment_intermediary,override,top_volume,2613.0,The PayPal direct-debit narrative obscures the underlying purchase.
+sky betting and gaming,gambling_betting,consensus_correct,top_volume,2260.0,
+b & q,home_improvement,consensus_correct,top_volume,2183.0,
+cardtronics,cash_withdrawal,consensus_correct,top_volume,2094.0,
+parentpay,school_fees,consensus_correct,top_volume,2050.0,
+e.on uk,energy,consensus_correct,top_volume,2010.0,
+k mitchell,transfer_p2p,consensus_correct,top_volume,1847.0,
+zable cards,credit_card_repayment,consensus_correct,top_volume,1802.0,
+ppoint,convenience_store,override,top_volume,1759.0,
+stageco,public_transport_rail_coach,consensus_correct,top_volume,1703.0,
+taptap send,transfer_international,consensus_correct,top_volume,1697.0,
+sainsbury's petrol station,fuel,consensus_correct,top_volume,1690.0,
+hastings insurance,insurance_general,override,top_volume,1673.0,
+premier,convenience_store,override,top_volume,1597.0,
+domino's,takeaway,consensus_correct,top_volume,1565.0,
+southern co-op,groceries,consensus_correct,top_volume,1524.0,
+vue,cinema,consensus_correct,top_volume,1471.0,
+zable card zable,credit_card_repayment,consensus_correct,top_volume,1395.0,
+google one,software,consensus_correct,top_volume,1377.0,
+veezu,taxi_rideshare,sonnet_correct,top_volume,1339.0,
+lottoland,gambling_lottery,consensus_correct,top_volume,1311.0,
+cabot financial,debt_collection,consensus_correct,volume_weighted,1003.0,
+lemonade finance (lemfi),transfer_international,sonnet_correct,volume_weighted,803.0,
+openai,software,consensus_correct,volume_weighted,638.0,
+now,streaming,consensus_correct,volume_weighted,619.0,
+trainpal,public_transport_rail_coach,consensus_correct,volume_weighted,493.0,
+jet2.com,travel_other,override,volume_weighted,379.0,The narratives are specifically Jet2 onboard purchases rather than flight fares.
+quidmarket,payday_loan,sonnet_correct,volume_weighted,378.0,QuidMarket provides high-cost short-term instalment loans repayable over 3–6 months; payday_loan is the closest taxonomy leaf despite repayment not being tied to a single payday.
+nrg,unclassified_other,unclassifiable,short_token,337.0,“NRG” alone carries no reliable category signal.
+pret,restaurant_cafe,consensus_correct,volume_weighted,335.0,
+jackpotz competition,prize_competitions,consensus_correct,volume_weighted,302.0,
+taxi,taxi_rideshare,consensus_correct,short_token,218.0,
+the market inn,pub_bar,consensus_correct,volume_weighted,125.0,
+converters,pawnbroker,consensus_correct,volume_weighted,122.0,
+roosters wings,prepaid_card,override,volume_weighted,82.0,The narratives explicitly describe Rooster account top-ups.
+tele,transfer_bank_unspecified,override,volume_weighted,76.0,"Sort-code/account-number transfers are visible, but their purpose is not."
+robert errington,transfer_p2p,sonnet_correct,volume_weighted,64.0,
+ssp uk ltd,restaurant_cafe,consensus_correct,volume_weighted,60.0,
+expo,unclassified_other,unclassifiable,volume_weighted,59.0,The truncated supplier name does not reveal a classifiable purchase.
+trainpal london,public_transport_rail_coach,consensus_correct,volume_weighted,58.0,
+newmarket,unclassified_other,unclassifiable,volume_weighted,56.0,“Newmarket” alone is a place/name and does not identify the transaction type.
+scott kristen,transfer_p2p,consensus_correct,volume_weighted,50.0,
+pervin food centre,convenience_store,sonnet_correct,volume_weighted,45.0,
+mychildatschool,school_fees,sonnet_correct,volume_weighted,36.0,
+dvla-v,road_tax,consensus_correct,volume_weighted,33.0,
+hilltopvendingsoluti,retail_other,override,volume_weighted,32.0,The narratives identify a vending operator but not the dispensed product.
+mod lyneham,restaurant_cafe,consensus_correct,uniform_tail,32.0,
+dvla-gj,road_tax,consensus_correct,volume_weighted,29.0,
+lyft,taxi_rideshare,consensus_correct,volume_weighted,28.0,
+afsl,unclassified_other,unclassifiable,short_token,27.0,“AFSL” alone carries no reliable category signal.
+hassan imran,transfer_p2p,consensus_correct,volume_weighted,23.0,
+provend,retail_other,override,volume_weighted,22.0,The descriptor identifies a vending operator but not a more specific product category.
+mullaco supermarket,groceries,consensus_correct,volume_weighted,21.0,
+dvla-au,road_tax,consensus_correct,volume_weighted,20.0,
+esso m ackworth,fuel,consensus_correct,volume_weighted,19.0,
+mr abdulah naser,transfer_p2p,consensus_correct,person_like,19.0,
+new mastercard,unclassified_other,unclassifiable,volume_weighted,18.0,“New Mastercard” and reference numbers do not establish the transaction purpose.
+the cornish oven,restaurant_cafe,consensus_correct,uniform_tail,17.0,
+euro,convenience_store,consensus_correct,short_token,16.0,
+etb,unclassified_other,unclassifiable,volume_weighted,15.0,The merchant name and address fragment do not reveal the business activity.
+aprova carros apoi,unclassified_other,unclassifiable,volume_weighted,15.0,The foreign-language truncated descriptor does not provide a reliable purchase category.
+shoe makers,unclassified_other,unclassifiable,two_word,14.0,“Shoe Makers” could be a business name or venue and the purchase type is not exposed.
+mrl writhlington,convenience_store,consensus_correct,volume_weighted,13.0,
+flynn carden,transfer_p2p,consensus_correct,uniform_tail,13.0,
+p.o. collingwood,unclassified_other,unclassifiable,volume_weighted,12.0,"The truncated “P.O.” descriptor does not establish whether this is retail, postal or another service."
+wacky world,days_out,sonnet_correct,two_word,12.0,
+colombia coffe,restaurant_cafe,consensus_correct,volume_weighted,10.0,
+ashley parker,transfer_p2p,consensus_correct,uniform_tail,10.0,
+hdx,groceries,override,short_token,10.0,"HDX is the statement abbreviation for HiperDino Express; the narratives match its Marina Rubicón, Puerto Alcudia and Santa Rosa supermarket locations."
+z ogiemudiaoe,transfer_p2p,consensus_correct,person_like,10.0,
+practice plan pg,dentist,consensus_correct,uniform_tail,9.0,The recurring Practice Plan narrative indicates a dental plan payment.
+mr good morning food,convenience_store,haiku_correct,person_like,9.0,
+port side banus,restaurant_cafe,consensus_correct,volume_weighted,8.0,
+katherine s local super,convenience_store,override,uniform_tail,7.0,
+grant leisure group lt,entertainment_other,consensus_correct,uniform_tail,7.0,
+s murrell,transfer_p2p,consensus_correct,person_like,7.0,
+usave keir,convenience_store,sonnet_correct,volume_weighted,6.0,
+jacob didcock,transfer_p2p,consensus_correct,volume_weighted,6.0,
+hedon,unclassified_other,unclassifiable,uniform_tail,6.0,“Hedon” and “Hedon Road” identify a name/location but not a purchase category.
+magic lantern,unclassified_other,unclassifiable,two_word,6.0,"“Magic Lantern” is not specific enough to distinguish a venue, shop or service."
+r mwandiambira,transfer_p2p,consensus_correct,person_like,6.0,
+gamesys,gambling_unspecified,override,volume_weighted,5.0,"The operator name signals gambling, but the narratives do not identify a subtype."
+kerry mcghie lamp,transfer_p2p,override,volume_weighted,5.0,
+cda pl,streaming,override,volume_weighted,5.0,
+fcb,unclassified_card_spend,override,volume_weighted,5.0,The kiosk descriptor identifies a card merchant but not what it sells.
+olivia tasker,transfer_p2p,consensus_correct,two_word,5.0,
+stonebridge city,unclassified_card_spend,override,two_word,5.0,The SumUp descriptor is too truncated to identify the underlying merchant activity.
+jus desserts,restaurant_cafe,sonnet_correct,two_word,5.0,
+lash,beauty_treatment,consensus_correct,short_token,5.0,
+mr k a lyon,transfer_p2p,consensus_correct,person_like,5.0,
+kitsch,retail_small_independent,override,uniform_tail,4.0,
+welling convenience store,convenience_store,consensus_correct,uniform_tail,4.0,
+matlock cafe,restaurant_cafe,consensus_correct,uniform_tail,4.0,
+gold star chili,restaurant_cafe,sonnet_correct,uniform_tail,4.0,The food-led merchant name and transaction amount indicate restaurant spend.
+arpad hricko,transfer_p2p,consensus_correct,two_word,4.0,
+olive tree,restaurant_cafe,sonnet_correct,two_word,4.0,
+youtube memlondon,streaming,consensus_correct,two_word,4.0,
+nsi,savings_transfer,haiku_correct,short_token,4.0,The narratives explicitly show transfers to NS&I Premium Bonds.
+bmg,unclassified_card_spend,override,short_token,4.0,The abbreviated merchant and shopping-centre location do not expose the purchase type.
+spud,takeaway,haiku_correct,short_token,4.0,
+mr gavin tong,transfer_p2p,consensus_correct,person_like,4.0,
+c raw,pet_supplies,override,person_like,4.0,"The narrative identifies Raw Dog Co, indicating pet food/supplies."
+m. qasim,transfer_p2p,sonnet_correct,person_like,4.0,
+winchester s w bk,restaurant_cafe,override,volume_weighted,3.0,
+raynes park express,convenience_store,sonnet_correct,volume_weighted,3.0,
+bps re ridehigh,sports_participation,haiku_correct,volume_weighted,3.0,The narrative identifies equestrian activity.
+prya,unclassified_other,unclassifiable,uniform_tail,3.0,“PRYA” alone carries no reliable category signal.
+the olde three cocks,pub_bar,consensus_correct,uniform_tail,3.0,
+moving people,public_transport_rail_coach,override,uniform_tail,3.0,"“Moving People Limited” does not identify a specific transport or service purchase.Moving PEOPLE Ltd is an independent bus and coach operator providing passenger transport, private hire and school services."
+pack luna,pet_supplies,override,uniform_tail,3.0,The ITCH-branded pack descriptor indicates a pet-product purchase.
+bhavin express,convenience_store,sonnet_correct,uniform_tail,3.0,
+nail bar,beauty_treatment,consensus_correct,uniform_tail,3.0,
+parking ktc,car_parking,consensus_correct,uniform_tail,3.0,
+waggel fy,insurance_pet,consensus_correct,two_word,3.0,
+walnut tree,pub_bar,sonnet_correct,two_word,3.0,
+dalston superstor,night_club,override,two_word,3.0,
+hakka village,restaurant_cafe,consensus_correct,two_word,3.0,
+lee welburn,transfer_p2p,consensus_correct,two_word,3.0,
+charlie walker,transfer_p2p,consensus_correct,two_word,3.0,
+neil rubdi,transfer_p2p,consensus_correct,two_word,3.0,
+mr liam m hoey,transfer_p2p,consensus_correct,person_like,3.0,
+mr c olden,transfer_p2p,consensus_correct,person_like,3.0,
+c w,transfer_p2p,sonnet_correct,person_like,3.0,
+kentish drovers,pub_bar,haiku_correct,volume_weighted,2.0,
+united kash limiteloan,payday_loan,consensus_correct,volume_weighted,2.0,The narrative explicitly identifies a loan payment to United Kash.
+jameson graham,unclassified_card_spend,override,volume_weighted,2.0,The Square descriptor does not reveal the merchant activity.
+jane plan,weight_loss,consensus_correct,volume_weighted,2.0,
+imo car wash brighouse,carwash,consensus_correct,uniform_tail,2.0,
+mamemok,unclassified_card_spend,override,uniform_tail,2.0,The PayPal submerchant name does not reveal what was purchased.
+spicy chicken and pi,takeaway,consensus_correct,uniform_tail,2.0,
+asda stores ltd,groceries,consensus_correct,uniform_tail,2.0,
+yaya handmade noodles sus,restaurant_cafe,consensus_correct,uniform_tail,2.0,
+kim h johnson,transfer_p2p,consensus_correct,uniform_tail,2.0,
+beckham salon,beauty_treatment,consensus_correct,uniform_tail,2.0,
+chandra mandapalli,transfer_p2p,consensus_correct,uniform_tail,2.0,
+teejay murphy hi,transfer_p2p,sonnet_correct,uniform_tail,2.0,
+cd moto retail,convenience_store,sonnet_correct,uniform_tail,2.0,The motorway-service retailer narrative indicates small roadside retail spend.
+accessories palace,retail_other,override,two_word,2.0,The generic accessories retailer does not support a more specific taxonomy leaf.
+dragonfly on,unclassified_card_spend,override,two_word,2.0,“Dragonfly” alone does not reveal the card purchase category.
+fewp,returned_payment,override,short_token,2.0,The only narrative is a credited direct-debit reversal.
+gfm,charitable_donation,consensus_correct,short_token,2.0,
+slc,student_loan_repayment,consensus_correct,short_token,2.0,
+tracy jackson cakes,catering,haiku_correct,volume_weighted,1.0,
+hiscox the jewelle,jewellery,override,volume_weighted,1.0,"The narrative is “Hiscox The Jewellers”, not the similarly named insurer."
+alexandru mihai so,transfer_p2p,consensus_correct,volume_weighted,1.0,
+artopoiimata kai,unclassified_card_spend,override,volume_weighted,1.0,The truncated foreign merchant descriptor does not reliably identify the purchase.
+donaldson ka mince pride,transfer_p2p,sonnet_correct,volume_weighted,1.0,
+cd tontine,convenience_store,consensus_correct,volume_weighted,1.0,
+arees barber shop,beauty_treatment,sonnet_correct,volume_weighted,1.0,
+miss k m lawn thank,transfer_p2p,consensus_correct,uniform_tail,1.0,
+agapitou vasileios,transfer_p2p,sonnet_correct,uniform_tail,1.0,
+moffat and williamson lim,public_transport_rail_coach,override,uniform_tail,1.0,
+events rides,days_out,consensus_correct,uniform_tail,1.0,
+tracey hansons fish,takeaway,consensus_correct,uniform_tail,1.0,
+fromwillow,marketplace_general,consensus_correct,uniform_tail,1.0,The Etsy prefix identifies a marketplace purchase.
+tubiecheeks,unclassified_card_spend,override,uniform_tail,1.0,The website name alone does not reveal a taxonomy category.
+ruby douglas holiday,transfer_p2p,sonnet_correct,uniform_tail,1.0,"The “holiday” text is a payment reference, while the transaction is a person-to-person mobile payment."
+ahmed money,transfer_p2p,consensus_correct,uniform_tail,1.0,
+dale food store heck,convenience_store,sonnet_correct,uniform_tail,1.0,
+island larder ltd,groceries_specialist,haiku_correct,uniform_tail,1.0,
+beauty by ellie mpl,beauty_treatment,consensus_correct,uniform_tail,1.0,
+hungarians worldwi,transfer_bank_unspecified,override,uniform_tail,1.0,The entity-style transfer narrative gives no purpose for the bank transfer.
+quayside gifts,gifts_flowers,consensus_correct,uniform_tail,1.0,
+harry llewellyn,transfer_p2p,sonnet_correct,uniform_tail,1.0,The “Coffee” text is a payment reference on a person-to-person bank transfer.
+a phillips,transfer_p2p,consensus_correct,uniform_tail,1.0,
+home b,discount_store,override,uniform_tail,1.0,The truncated narrative indicates Home Bargains.
+golden touch foods,catering,override,uniform_tail,1.0,Golden Touch Foods Ltd is registered for event catering activities; classify as catering rather than grocery or convenience retail.
+relish shields,restaurant_cafe,consensus_correct,uniform_tail,1.0,
+nelson miners welfare,private_members_club,sonnet_correct,uniform_tail,1.0,
+vinod kumar nathani,transfer_p2p,sonnet_correct,uniform_tail,1.0,
+ray aubrey julie,transfer_p2p,consensus_correct,uniform_tail,1.0,
+freddys chicken n pizz cd,takeaway,consensus_correct,uniform_tail,1.0,
+apollonia logistica,delivery_courier,override,uniform_tail,1.0,The merchant name explicitly identifies a logistics business.
+chichester tyre and br,vehicle_maintenance,sonnet_correct,uniform_tail,1.0,The merchant explicitly identifies tyres and brakes.
+game of thrones,days_out,override,uniform_tail,1.0,
+wundapets,pet_supplies,consensus_correct,uniform_tail,1.0,
+spices of malabar limi,restaurant_cafe,sonnet_correct,uniform_tail,1.0,
+ste trave,travel_other,override,two_word,1.0,"The merchant name indicates travel, but no more specific travel product is exposed."
+methven convenie,convenience_store,consensus_correct,two_word,1.0,
+decorating warehouse,home_improvement,consensus_correct,two_word,1.0,
+alfie minta,transfer_p2p,consensus_correct,two_word,1.0,The travel-place text appears in a person-to-person payment reference.
+cj cutty,unclassified_card_spend,override,two_word,1.0,The abbreviated merchant name does not reveal the card purchase category.
+snowgoose cafe,restaurant_cafe,consensus_correct,two_word,1.0,
+mister ridleys,restaurant_cafe,sonnet_correct,two_word,1.0,
+cd casa,restaurant_cafe,consensus_correct,two_word,1.0,The merchant-style name and modest transaction amount indicate restaurant/cafe spend.
+kallum higginbotha,transfer_p2p,sonnet_correct,two_word,1.0,
+glam rituals,beauty_treatment,consensus_correct,two_word,1.0,
+elizabethsands be,unclassified_card_spend,override,two_word,1.0,The Shopify-style merchant name is too truncated to classify reliably.
+maquinas estanco,tobacco,override,two_word,1.0,The “estanco” descriptor indicates a tobacconist purchase.
+genistar limited,unclassified_card_spend,override,two_word,1.0,The company name and amount do not reveal the underlying service.
+hopewell rocks,days_out,override,two_word,1.0,
+andrew ramsay,transfer_p2p,consensus_correct,two_word,1.0,
+seyrans pizza,takeaway,consensus_correct,two_word,1.0,
+stratfords bar,pub_bar,consensus_correct,two_word,1.0,
+wyse byse,unclassified_other,unclassifiable,two_word,1.0,“Wyse Byse” alone carries no reliable category signal.
+pizza aroma,takeaway,consensus_correct,two_word,1.0,
+lino,transfer_p2p,sonnet_correct,short_token,1.0,
+wtm,unclassified_other,unclassifiable,short_token,1.0,“WTM” alone carries no reliable category signal.
+olga,transfer_p2p,consensus_correct,short_token,1.0,
+trss,unclassified_other,unclassifiable,short_token,1.0,“TRSS” alone carries no reliable category signal.
+few,payment_intermediary,haiku_correct,short_token,1.0,The PayPal descriptor does not expose a classifiable underlying merchant.
+wear,unclassified_other,unclassifiable,short_token,1.0,The location-like “Tyne & Wear” payment descriptor does not identify the transaction purpose.
+sjpr,accountancy,consensus_correct,short_token,1.0,The narrative explicitly identifies an accountancy firm.
+mr babar hussain,transfer_p2p,consensus_correct,person_like,1.0,
+miss s j brand,transfer_p2p,consensus_correct,person_like,1.0,
+mrs ummi i,transfer_p2p,consensus_correct,person_like,1.0,
+miss r k boxer clothes,transfer_p2p,haiku_correct,person_like,1.0,The “Clothes” text is a payment reference on a person-to-person transaction.
+mr harry mcewan,transfer_p2p,consensus_correct,person_like,1.0,
+mrs k l marquez,transfer_p2p,consensus_correct,person_like,1.0,"“Cigarettes” is a free-text reference on a payment to a named individual, so the observable transaction is person-to-person."
+miss lindsay mead h&p pride,transfer_p2p,consensus_correct,person_like,1.0,

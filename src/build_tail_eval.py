@@ -14,6 +14,7 @@ Usage:
     python src/build_tail_eval.py fetch            # BigQuery -> sample + evidence
     python src/build_tail_eval.py label [haiku|sonnet]
     python src/build_tail_eval.py sheet            # -> outputs/tail_eval_adjudication.xlsx
+    python src/build_tail_eval.py finalise         # completed workbook -> data/gold_tail_labels.csv + report
 """
 import csv
 import json
@@ -399,9 +400,107 @@ def sheet():
     print(f"Wrote {SHEET_XLSX} ({n} rows; models agree on {agree_n})", file=sys.stderr)
 
 
+COMPLETED_XLSX = OUT_DIR / "tail_eval_adjudication_completed.xlsx"
+GOLD_TAIL_CSV = ROOT / "data" / "gold_tail_labels.csv"
+TAIL_REPORT_MD = ROOT / "data" / "tail_eval_report.md"
+
+
+def finalise():
+    """Turn the completed workbook's verdicts into the tail gold set and score
+    both models against it -- the first accuracy measurement on the actual
+    deployment population (strings Equifax never matched)."""
+    from openpyxl import load_workbook
+
+    _, _, leaves, gen_of, _ = load_crosswalk()
+    ws = load_workbook(COMPLETED_XLSX, data_only=True)["TailEval"]
+    hdr = [c.value for c in ws[1]]
+    col = {n: hdr.index(n) for n in
+           ("merchant", "stratum", "plaid_n", "haiku_leaf", "sonnet_leaf", "verdict", "correct_leaf", "notes")}
+
+    gold, excluded = [], {"context_dependent": [], "unsure": [], "blank": []}
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        m = row[col["merchant"]]
+        if m is None:
+            continue
+        v = (row[col["verdict"]] or "").strip()
+        h, s = row[col["haiku_leaf"]], row[col["sonnet_leaf"]]
+        cl = row[col["correct_leaf"]]
+        if v and v not in VERDICTS:
+            sys.exit(f"Row '{m}': verdict '{v}' not in {VERDICTS}")
+        if cl and cl not in gen_of:
+            sys.exit(f"Row '{m}': correct_leaf '{cl}' is not a taxonomy leaf")
+        rec = {"merchant": m, "stratum": row[col["stratum"]], "plaid_n": row[col["plaid_n"]],
+               "haiku_leaf": h or "", "sonnet_leaf": s or "", "notes": row[col["notes"]] or ""}
+        if v == "consensus_correct":
+            rec["gold_leaf"] = h
+        elif v == "haiku_correct":
+            rec["gold_leaf"] = h
+        elif v == "sonnet_correct":
+            rec["gold_leaf"] = s
+        elif v == "override":
+            rec["gold_leaf"] = cl
+        elif v == "unclassifiable":
+            rec["gold_leaf"] = "unclassified_other"  # abstaining IS the right answer
+        else:
+            excluded[v or "blank"].append(m)
+            continue
+        rec["gold_source"] = v
+        gold.append(rec)
+
+    GOLD_TAIL_CSV.parent.mkdir(exist_ok=True)
+    with open(GOLD_TAIL_CSV, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["merchant", "gold_leaf", "gold_source", "stratum", "plaid_n", "notes"])
+        w.writeheader()
+        for r in sorted(gold, key=lambda r: -int(r["plaid_n"])):
+            w.writerow({k: r[k] for k in ("merchant", "gold_leaf", "gold_source", "stratum", "plaid_n", "notes")})
+
+    lines = []
+    lines.append("# Tail evaluation set -- adjudicated gold labels and first model readout\n")
+    lines.append(f"Sampled strings: {sum(len(v) for v in excluded.values()) + len(gold)} | "
+                 f"gold-labelled: {len(gold)} | excluded: "
+                 + ", ".join(f"{k}={len(v)}" for k, v in excluded.items() if v))
+    lines.append("")
+    lines.append("## Enriched-LLM accuracy against the tail gold set")
+    lines.append("These are the models' own suggestions scored against the human verdicts on those "
+                 "suggestions, so consensus/haiku/sonnet-verdict rows are correct for the named model "
+                 "by construction -- the informative signal is the override/unclassifiable rate and "
+                 "the per-stratum breakdown.")
+    lines.append("")
+    lines.append("| stratum | n | haiku leaf | sonnet leaf | haiku general | sonnet general |")
+    lines.append("|---|---|---|---|---|---|")
+    strata = sorted({r["stratum"] for r in gold})
+    for stratum in strata + ["ALL"]:
+        rows_ = gold if stratum == "ALL" else [r for r in gold if r["stratum"] == stratum]
+        n = len(rows_)
+        stats = {}
+        for mk in ("haiku", "sonnet"):
+            leaf_ok = sum(1 for r in rows_ if r[f"{mk}_leaf"] == r["gold_leaf"])
+            gen_ok = sum(1 for r in rows_ if gen_of.get(r[f"{mk}_leaf"]) == gen_of.get(r["gold_leaf"]))
+            stats[mk] = (leaf_ok / n if n else 0, gen_ok / n if n else 0)
+        lines.append(f"| {stratum} | {n} | {stats['haiku'][0]:.0%} | {stats['sonnet'][0]:.0%} "
+                     f"| {stats['haiku'][1]:.0%} | {stats['sonnet'][1]:.0%} |")
+    lines.append("")
+    from collections import Counter
+    lines.append("## Verdict breakdown")
+    all_verdicts = Counter(r["gold_source"] for r in gold)
+    for k, v in excluded.items():
+        if v:
+            all_verdicts[k] = len(v)
+    lines.append(", ".join(f"{k}={n}" for k, n in sorted(all_verdicts.items())))
+    if excluded["context_dependent"]:
+        lines.append("")
+        lines.append("## Context-dependent strings (transaction-level rule candidates)")
+        for m in excluded["context_dependent"]:
+            lines.append(f"- {m}")
+    report = "\n".join(lines)
+    TAIL_REPORT_MD.write_text(report)
+    print(report)
+    print(f"\nWrote {GOLD_TAIL_CSV} and {TAIL_REPORT_MD}", file=sys.stderr)
+
+
 if __name__ == "__main__":
     args = sys.argv[1:]
-    if not args or args[0] not in {"fetch", "label", "sheet"}:
+    if not args or args[0] not in {"fetch", "label", "sheet", "finalise"}:
         sys.exit(__doc__)
     if args[0] == "fetch":
         fetch()
@@ -412,3 +511,5 @@ if __name__ == "__main__":
         label(model_key)
     elif args[0] == "sheet":
         sheet()
+    elif args[0] == "finalise":
+        finalise()
