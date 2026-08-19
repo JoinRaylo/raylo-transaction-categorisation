@@ -202,6 +202,19 @@ def tiebreak():
     run_labelling(TIEBREAK_CFG, rows, OPUS_PREDICTIONS)
 
 
+RISK_GENERALS = {"gambling", "high_cost_distress_credit", "credit_loan_repayments",
+                 "income_employment", "income_benefits_state_support", "income_other"}
+_TAX = {r["detailed_category"]: r for r in csv.DictReader(open(ROOT / "taxonomy" / "taxonomy.csv"))}
+
+
+def _risky(leaf):
+    t = _TAX.get(leaf)
+    if t is None:
+        return False
+    return (t["general_category"] in RISK_GENERALS or t["is_priority_debt"] == "true"
+            or t["is_age_restricted"] == "true" or t["is_debt_related"] == "true")
+
+
 def gate():
     _, _, _, gen_of, _ = load_crosswalk()
     rows = list(csv.DictReader(open(STRINGS_CSV)))
@@ -237,6 +250,20 @@ def gate():
                     tier, leaf = "abstain_confirmed", "unclassified_other"
                 else:
                     tier, leaf = "accepted_tiebreak", ol
+            elif ol:
+                # three-way leaf disagreement. Resolve by what actually matters:
+                # same general category from all three -> the leaf choice is a
+                # granularity quibble, accept at general level (sonnet's leaf).
+                # Risk-dimension divergence (gambling/debt/income/age) -> human,
+                # never a guess. Everything else -> abstain; the T6 crosswalk
+                # still categorises these at runtime, we just don't override it.
+                gens = {gen_of.get(x, "") for x in (hl, sl, ol)}
+                if len(gens) == 1 and "" not in gens:
+                    tier, leaf = "accepted_general", sl
+                elif len({_risky(x) for x in (hl, sl, ol)}) > 1:
+                    tier, leaf = "needs_review", sl
+                else:
+                    tier, leaf = "abstain_residual", "unclassified_other"
         out.append({"merchant": m, "final_leaf": leaf, "tier": tier,
                     "haiku_leaf": hl, "sonnet_leaf": sl, "sonnet_conf": sc,
                     "opus_leaf": opus.get(m, {}).get("llm_leaf", ""),
@@ -253,15 +280,105 @@ def gate():
     total_n = len(out)
     total_v = sum(vol.values())
     print(f"Gated {total_n} strings ({total_v} txns of volume):")
-    for tier in ("auto_accept", "accepted", "accepted_tiebreak", "abstain_confirmed", "needs_review"):
+    for tier in ("auto_accept", "accepted", "accepted_tiebreak", "accepted_general",
+                 "abstain_confirmed", "abstain_residual", "needs_review"):
         n, v = stats.get(tier, (0, 0))
         print(f"  {tier:18s} {n:6d} strings ({n / total_n:5.1%})   {v:8d} txns ({v / total_v:5.1%} of volume)")
     print(f"Wrote {LABELS_CSV}")
 
 
+REVIEW_XLSX = OUT_DIR / "production_review.xlsx"
+REVIEW_VERDICTS = ["sonnet_correct", "haiku_correct", "opus_correct", "override",
+                   "unclassifiable", "context_dependent", "unsure"]
+
+
+def review_sheet():
+    """Workbook for the risk-divergent three-way disagreements (needs_review)."""
+    from openpyxl import Workbook
+    from openpyxl.styles import Alignment, Font, PatternFill
+    from openpyxl.worksheet.datavalidation import DataValidation
+
+    _, _, leaves, gen_of, notes_of = load_crosswalk()
+    examples_of = load_example_merchants()
+    rows = [r for r in csv.DictReader(open(LABELS_CSV)) if r["tier"] == "needs_review"]
+    ev = load_evidence()
+
+    wb = Workbook()
+    base_font = Font(name="Arial", size=10)
+    header_font = Font(name="Arial", size=10, bold=True, color="FFFFFF")
+    header_fill = PatternFill("solid", fgColor="1F4E79")
+    edit_fill = PatternFill("solid", fgColor="FFF2CC")
+
+    tax = wb.create_sheet("Taxonomy")
+    tax.append(["detailed_category", "general_category", "note", "example_merchants"])
+    for leaf in sorted(leaves):
+        tax.append([leaf, gen_of[leaf], notes_of.get(leaf, ""), ", ".join(examples_of.get(leaf, [])[:6])])
+    for cell in tax[1]:
+        cell.font = header_font
+        cell.fill = header_fill
+    for col, width in zip("ABCD", (36, 32, 60, 60)):
+        tax.column_dimensions[col].width = width
+    tax.freeze_panes = "A2"
+
+    ws = wb.active
+    ws.title = "Review"
+    headers = ["merchant", "plaid_n", "pct_credit", "median_amount",
+               "plaid_native_categories", "top_raw_narratives",
+               "haiku_leaf", "sonnet_leaf", "opus_leaf",
+               "verdict", "correct_leaf", "notes"]
+    ws.append(headers)
+    for r in rows:
+        e = ev.get(r["merchant"], {})
+        ws.append([r["merchant"], int(r["plaid_n"]),
+                   e.get("pct_credit", ""), e.get("median_amount", ""),
+                   e.get("cats", ""), e.get("descs", ""),
+                   r["haiku_leaf"], r["sonnet_leaf"], r["opus_leaf"],
+                   "", "", ""])
+    n = len(rows)
+    for cell in ws[1]:
+        cell.font = header_font
+        cell.fill = header_fill
+    for row in ws.iter_rows(min_row=2, max_row=n + 1):
+        for cell in row:
+            cell.font = base_font
+        for c in (10, 11, 12):
+            row[c - 1].fill = edit_fill
+    widths = {"A": 28, "B": 9, "C": 10, "D": 12, "E": 42, "F": 60,
+              "G": 24, "H": 24, "I": 24, "J": 16, "K": 26, "L": 36}
+    for col, width in widths.items():
+        ws.column_dimensions[col].width = width
+    ws.freeze_panes = "B2"
+    ws.auto_filter.ref = f"A1:L{n + 1}"
+
+    dv_verdict = DataValidation(type="list", formula1=f'"{",".join(REVIEW_VERDICTS)}"', allow_blank=True)
+    dv_leaf = DataValidation(type="list", formula1=f"=Taxonomy!$A$2:$A${len(leaves) + 1}", allow_blank=True)
+    ws.add_data_validation(dv_verdict)
+    ws.add_data_validation(dv_leaf)
+    dv_verdict.add(f"J2:J{n + 1}")
+    dv_leaf.add(f"K2:K{n + 1}")
+
+    ins = wb.create_sheet("Instructions", 0)
+    for label_txt, text in [
+        ("Production labelling -- risk-boundary review", ""),
+        ("What this is", f"{n} strings where all three models disagree AND the candidate labels differ on a risk dimension (gambling / debt / income / age-restriction). These are the only strings from tranche 1 needing human eyes -- a wrong guess here is exactly what the taxonomy exists to prevent. Sorted by volume; top-down partial passes are fine."),
+        ("What to edit", "Yellow columns only. verdict picks which model is right (or override + correct_leaf, unclassifiable, context_dependent). Save in place; Claude ingests it back with the same verdict semantics as before."),
+    ]:
+        ins.append([label_txt, text])
+    for row in ins.iter_rows():
+        row[0].font = Font(name="Arial", size=10, bold=True)
+        row[1].font = base_font
+        row[1].alignment = Alignment(wrap_text=True, vertical="top")
+    ins["A1"].font = Font(name="Arial", size=14, bold=True)
+    ins.column_dimensions["A"].width = 34
+    ins.column_dimensions["B"].width = 110
+
+    wb.save(REVIEW_XLSX)
+    print(f"Wrote {REVIEW_XLSX} ({n} rows)", file=sys.stderr)
+
+
 if __name__ == "__main__":
     args = sys.argv[1:]
-    if not args or args[0] not in {"fetch", "label", "tiebreak", "gate"}:
+    if not args or args[0] not in {"fetch", "label", "tiebreak", "gate", "review-sheet"}:
         sys.exit(__doc__)
     if args[0] == "fetch":
         fetch(int(args[1]) if len(args) > 1 else DEFAULT_N)
@@ -274,3 +391,5 @@ if __name__ == "__main__":
         tiebreak()
     elif args[0] == "gate":
         gate()
+    elif args[0] == "review-sheet":
+        review_sheet()
