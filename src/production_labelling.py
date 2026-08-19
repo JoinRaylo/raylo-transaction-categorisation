@@ -376,9 +376,73 @@ def review_sheet():
     print(f"Wrote {REVIEW_XLSX} ({n} rows)", file=sys.stderr)
 
 
+REVIEW_COMPLETED_XLSX = OUT_DIR / "production_review_completed.xlsx"
+
+
+def apply_review():
+    """Fold the human verdicts from the completed review workbook back into
+    production_labels.csv. Human verdicts are final: they outrank every
+    model tier."""
+    from openpyxl import load_workbook
+    from collections import Counter
+
+    _, _, _, gen_of, _ = load_crosswalk()
+    path = REVIEW_COMPLETED_XLSX if REVIEW_COMPLETED_XLSX.exists() else REVIEW_XLSX
+    ws = load_workbook(path, data_only=True)["Review"]
+    hdr = [c.value for c in ws[1]]
+    col = {n: hdr.index(n) for n in ("merchant", "haiku_leaf", "sonnet_leaf", "opus_leaf",
+                                     "verdict", "correct_leaf", "notes")}
+    resolutions = {}
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        m = row[col["merchant"]]
+        if m is None:
+            continue
+        v = (row[col["verdict"]] or "").strip()
+        if v and v not in REVIEW_VERDICTS:
+            sys.exit(f"Row '{m}': verdict '{v}' not in {REVIEW_VERDICTS}")
+        cl = row[col["correct_leaf"]]
+        if cl and cl not in gen_of:
+            sys.exit(f"Row '{m}': correct_leaf '{cl}' is not a taxonomy leaf")
+        if v in ("haiku_correct", "sonnet_correct", "opus_correct"):
+            resolutions[m] = (row[col[v.replace("_correct", "_leaf")]], "human_reviewed")
+        elif v == "override":
+            resolutions[m] = (cl, "human_reviewed")
+        elif v == "unclassifiable":
+            resolutions[m] = ("unclassified_other", "abstain_human")
+        elif v == "context_dependent":
+            resolutions[m] = ("unclassified_other", "context_dependent")
+        elif v == "unsure":
+            resolutions[m] = ("unclassified_other", "abstain_residual")
+
+    rows = list(csv.DictReader(open(LABELS_CSV)))
+    applied = 0
+    for r in rows:
+        if r["merchant"] in resolutions and r["tier"] == "needs_review":
+            r["final_leaf"], r["tier"] = resolutions[r["merchant"]]
+            r["general_category"] = gen_of.get(r["final_leaf"], "")
+            applied += 1
+    with open(LABELS_CSV, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+        w.writeheader()
+        w.writerows(rows)
+
+    total_v = sum(int(r["plaid_n"]) for r in rows)
+    print(f"Applied {applied} human verdicts. Final tranche distribution:")
+    stats = {}
+    for r in rows:
+        stats.setdefault(r["tier"], [0, 0])
+        stats[r["tier"]][0] += 1
+        stats[r["tier"]][1] += int(r["plaid_n"])
+    for tier, (n, v) in sorted(stats.items(), key=lambda kv: -kv[1][1]):
+        print(f"  {tier:18s} {n:6d} strings   {v / total_v:5.1%} of volume")
+    ctx = [r["merchant"] for r in rows if r["tier"] == "context_dependent"]
+    if ctx:
+        print(f"Context-dependent rule candidates from this tranche: {', '.join(ctx)}")
+
+
 if __name__ == "__main__":
     args = sys.argv[1:]
-    if not args or args[0] not in {"fetch", "label", "tiebreak", "gate", "review-sheet"}:
+    if not args or args[0] not in {"fetch", "label", "tiebreak", "gate", "review-sheet", "apply-review"}:
         sys.exit(__doc__)
     if args[0] == "fetch":
         fetch(int(args[1]) if len(args) > 1 else DEFAULT_N)
@@ -393,3 +457,5 @@ if __name__ == "__main__":
         gate()
     elif args[0] == "review-sheet":
         review_sheet()
+    elif args[0] == "apply-review":
+        apply_review()
