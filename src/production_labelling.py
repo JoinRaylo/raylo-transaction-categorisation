@@ -34,9 +34,16 @@ from build_tail_eval import TAIL_ADDENDUM, POPULATION_QUERY, bq_json  # noqa: E4
 STRINGS_CSV = OUT_DIR / "production_strings.csv"
 EVIDENCE_JSON = OUT_DIR / "production_evidence.json"
 PREDICTIONS = {k: OUT_DIR / f"production_predictions_{k}.csv" for k in MODELS}
+OPUS_PREDICTIONS = OUT_DIR / "production_predictions_opus.csv"
 LABELS_CSV = OUT_DIR / "production_labels.csv"
 BATCH = 20
 DEFAULT_N = 5000
+
+# Tiebreaker for needs_review strings: a third, stronger model breaks 2-of-3
+# majorities. Local config (not in gating MODELS -- the two-model experiments
+# stay two-model). Opus 5: no sampling params; thinking suppressed under
+# forced tool_choice, same as Sonnet 5.
+TIEBREAK_CFG = {"id": "claude-opus-5", "max_tokens": 16000, "extra": {}}
 
 # strings already gold-labelled by human adjudication are excluded here --
 # their labels come from data/, not from this pipeline
@@ -96,16 +103,13 @@ def load_evidence():
     return ev
 
 
-def label(model_key):
+def run_labelling(cfg, rows, out_path):
     import anthropic
 
-    cfg = MODELS[model_key]
     _, _, leaves, gen_of, notes_of = load_crosswalk()
     system_prompt = build_system_prompt(leaves, gen_of, notes_of, load_example_merchants()) + TAIL_ADDENDUM
     tool = build_tool_schema(leaves)
-    rows = list(csv.DictReader(open(STRINGS_CSV)))
     ev = load_evidence()
-    out_path = PREDICTIONS[model_key]
 
     # resumable: skip strings already predicted (rerun-safe after interruption)
     predictions = {}
@@ -184,10 +188,29 @@ def label(model_key):
     print(f"Wrote {out_path} ({len(predictions)} labelled, {missing} missing)", file=sys.stderr)
 
 
+def label(model_key):
+    rows = list(csv.DictReader(open(STRINGS_CSV)))
+    run_labelling(MODELS[model_key], rows, PREDICTIONS[model_key])
+
+
+def tiebreak():
+    """Run the tiebreaker model over the needs_review strings only."""
+    labels = list(csv.DictReader(open(LABELS_CSV)))
+    rows = [{"merchant": r["merchant"], "plaid_n": r["plaid_n"]}
+            for r in labels if r["tier"] == "needs_review"]
+    print(f"Tiebreaking {len(rows)} needs_review strings with {TIEBREAK_CFG['id']}", file=sys.stderr)
+    run_labelling(TIEBREAK_CFG, rows, OPUS_PREDICTIONS)
+
+
 def gate():
     _, _, _, gen_of, _ = load_crosswalk()
     rows = list(csv.DictReader(open(STRINGS_CSV)))
     preds = {k: {r["merchant"]: r for r in csv.DictReader(open(PREDICTIONS[k]))} for k in MODELS}
+
+    opus = {}
+    if OPUS_PREDICTIONS.exists():
+        opus = {r["merchant"]: r for r in csv.DictReader(open(OPUS_PREDICTIONS))}
+        print(f"Applying {TIEBREAK_CFG['id']} tiebreak over {len(opus)} strings", file=sys.stderr)
 
     out, stats = [], {}
     vol = {r["merchant"]: int(r["plaid_n"]) for r in rows}
@@ -205,8 +228,18 @@ def gate():
             tier, leaf = "accepted", sl
         else:
             tier, leaf = "needs_review", sl or hl
+            # 2-of-3 majority with the tiebreaker model resolves the queue;
+            # the tiebreaker must be IN the majority (it never rescues a
+            # low-confidence haiku+sonnet pair it disagrees with)
+            ol = opus.get(m, {}).get("llm_leaf", "")
+            if ol and (ol == sl or ol == hl):
+                if ol == "unclassified_other":
+                    tier, leaf = "abstain_confirmed", "unclassified_other"
+                else:
+                    tier, leaf = "accepted_tiebreak", ol
         out.append({"merchant": m, "final_leaf": leaf, "tier": tier,
                     "haiku_leaf": hl, "sonnet_leaf": sl, "sonnet_conf": sc,
+                    "opus_leaf": opus.get(m, {}).get("llm_leaf", ""),
                     "general_category": gen_of.get(leaf, ""), "plaid_n": vol[m]})
         stats.setdefault(tier, [0, 0])
         stats[tier][0] += 1
@@ -220,7 +253,7 @@ def gate():
     total_n = len(out)
     total_v = sum(vol.values())
     print(f"Gated {total_n} strings ({total_v} txns of volume):")
-    for tier in ("auto_accept", "accepted", "abstain_confirmed", "needs_review"):
+    for tier in ("auto_accept", "accepted", "accepted_tiebreak", "abstain_confirmed", "needs_review"):
         n, v = stats.get(tier, (0, 0))
         print(f"  {tier:18s} {n:6d} strings ({n / total_n:5.1%})   {v:8d} txns ({v / total_v:5.1%} of volume)")
     print(f"Wrote {LABELS_CSV}")
@@ -228,7 +261,7 @@ def gate():
 
 if __name__ == "__main__":
     args = sys.argv[1:]
-    if not args or args[0] not in {"fetch", "label", "gate"}:
+    if not args or args[0] not in {"fetch", "label", "tiebreak", "gate"}:
         sys.exit(__doc__)
     if args[0] == "fetch":
         fetch(int(args[1]) if len(args) > 1 else DEFAULT_N)
@@ -237,5 +270,7 @@ if __name__ == "__main__":
         if model_key not in MODELS:
             sys.exit(f"Unknown model '{model_key}'")
         label(model_key)
+    elif args[0] == "tiebreak":
+        tiebreak()
     elif args[0] == "gate":
         gate()
