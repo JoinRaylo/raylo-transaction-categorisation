@@ -33,7 +33,7 @@ sky,broadband_tv_phone,,consensus_all_agree,7418
 vodafone,mobile_phone_contract,,consensus_all_agree,7396
 lowell financial,debt_collection,,consensus_all_agree,7381
 betfred,gambling_betting,,consensus_all_agree,6890
-netflix,streaming_music,,adjudicated_llm,6622
+netflix,streaming,,adjudicated_llm,6622
 primark,clothing_general,,consensus_all_agree,6436
 kfc,takeaway,,consensus_all_agree,5976
 betfair,gambling_betting,,consensus_all_agree,5730
@@ -41,9 +41,9 @@ nisa,convenience_store,groceries,adjudicated_either,5696
 starbucks,restaurant_cafe,,consensus_all_agree,5473
 motor fuel group,fuel,,consensus_all_agree,5115
 bp,fuel,,consensus_all_agree,5035
-amazon prime video,streaming_music,,adjudicated_llm,4663
+amazon prime video,streaming,,adjudicated_llm,4663
 british gas,energy,,consensus_all_agree,4460
-spotify,streaming_music,,consensus_all_agree,4262
+spotify,streaming,,consensus_all_agree,4262
 creditspring,personal_loan_repayment,,adjudicated_equifax,4011
 boots,pharmacy,,adjudicated_llm,4002
 superdrug,pharmacy,,adjudicated_llm,3660
@@ -179,7 +179,7 @@ paypal credit,bnpl,,adjudicated_equifax,446
 moneybarn,car_finance_repayment,,consensus_all_agree,441
 livescore bet,gambling_betting,,consensus_all_agree,438
 boohoo,clothing_general,,adjudicated_llm,437
-now tv,streaming_music,,adjudicated_llm,436
+now tv,streaming,,adjudicated_llm,436
 travelodge,accommodation,,consensus_all_agree,433
 barclays,financial_institution_unspecified,,consensus_all_agree,425
 aqua,credit_card_repayment,,consensus_all_agree,424
@@ -282,12 +282,12 @@ revolucion de cuba,pub_bar,,adjudicated_llm,176
 thameslink,public_transport_rail_coach,,consensus_all_agree,174
 wix,web_services,,consensus_all_agree,174
 gather & gather,catering,,consensus_all_agree,174
-crunchyroll,streaming_music,,adjudicated_llm,174
+crunchyroll,streaming,,adjudicated_llm,174
 gousto,groceries,groceries_specialist,adjudicated_either,173
 1st central,insurance_motor,,consensus_all_agree,173
 harvester,restaurant_cafe,,consensus_all_agree,169
 texaco,fuel,,consensus_all_agree,168
-youtube premium,streaming_music,,adjudicated_llm,167
+youtube premium,streaming,,adjudicated_llm,167
 santander bank,financial_institution_unspecified,,consensus_all_agree,166
 lottogo,gambling_lottery,,consensus_all_agree,164
 denplan,dentist,,consensus_all_agree,163
@@ -368,7 +368,7 @@ beauty outlet,health_beauty_general,,adjudicated_llm,104
 lookfantastic,health_beauty_general,,adjudicated_llm,103
 samsung finance glow,retail_finance_repayment,,consensus_all_agree,103
 all bar one,pub_bar,,consensus_all_agree,102
-soundcloud,streaming_music,,consensus_all_agree,102
+soundcloud,streaming,,consensus_all_agree,102
 turtle bay,restaurant_cafe,,consensus_all_agree,100
 royal voluntary service,charitable_donation,,consensus_all_agree,100
 holiday inn,accommodation,,consensus_all_agree,100
@@ -492,7 +492,7 @@ quinnbet,gambling_betting,,consensus_all_agree,47
 aig,insurance_general,,consensus_all_agree,47
 pizzaexpress,restaurant_cafe,,consensus_all_agree,47
 german doner kebab,takeaway,,consensus_all_agree,47
-hayu,streaming_music,,adjudicated_llm,46
+hayu,streaming,,adjudicated_llm,46
 yates,pub_bar,,consensus_all_agree,46
 parsons bakery,restaurant_cafe,,consensus_all_agree,46
 casumo,gambling_casino,,consensus_all_agree,46
@@ -614,7 +614,7 @@ the queens head,pub_bar,,consensus_all_agree,28
 split my fare,public_transport_rail_coach,,adjudicated_equifax,28
 greenthumb,garden,,consensus_all_agree,28
 ford credit,car_finance_repayment,,consensus_all_agree,27
-deezer,streaming_music,,adjudicated_llm,27
+deezer,streaming,,adjudicated_llm,27
 barnardos,charitable_donation,,consensus_all_agree,27
 wigan council,council_tax,,consensus_all_agree,27
 scribbler,gifts_flowers,,consensus_all_agree,27
@@ -1229,7 +1229,7 @@ denbighshire county council,council_tax,,consensus_all_agree,3
 revolution fitness,gym_fitness,,consensus_all_agree,3
 school uniform direct,clothing_childrens,,adjudicated_llm,3
 pull and bear,clothing_general,,consensus_all_agree,3
-emigrantas tv,streaming_music,,adjudicated_llm,3
+emigrantas tv,streaming,,adjudicated_llm,3
 health shield,insurance_health,,consensus_all_agree,3
 the table,restaurant_cafe,,consensus_all_agree,3
 suzuki,vehicle_purchase,,consensus_all_agree,3

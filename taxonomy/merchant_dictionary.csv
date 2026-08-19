@@ -233,13 +233,13 @@ booking.com,accommodation,high,llm_proposed,pending,
 trip.com,accommodation,high,llm_proposed,pending,
 haven holidays,holiday_uk,high,llm_proposed,pending,
 loveholidays.com,holiday_package,high,llm_proposed,pending,
-netflix,streaming_music,high,llm_proposed,pending,video streaming subscription
-spotify,streaming_music,high,llm_proposed,pending,
-disney plus,streaming_music,high,llm_proposed,pending,
-amazon prime video,streaming_music,high,llm_proposed,pending,
-now tv,streaming_music,high,llm_proposed,pending,
-audible,streaming_music,high,llm_proposed,pending,
-prime,streaming_music,medium,llm_proposed,pending,Amazon Prime subscription - 161k txns
+netflix,streaming,high,llm_proposed,pending,video streaming subscription
+spotify,streaming,high,llm_proposed,pending,
+disney plus,streaming,high,llm_proposed,pending,
+amazon prime video,streaming,high,llm_proposed,pending,
+now tv,streaming,high,llm_proposed,pending,
+audible,streaming,high,llm_proposed,pending,
+prime,streaming,medium,llm_proposed,pending,Amazon Prime subscription - 161k txns
 apple app store,software,high,llm_proposed,pending,
 google play,software,high,llm_proposed,pending,
 microsoft,software,high,llm_proposed,pending,Plaid mislabels as computing hardware

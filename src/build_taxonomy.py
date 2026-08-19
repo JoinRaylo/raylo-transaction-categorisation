@@ -198,7 +198,7 @@ L=[
 ("adult_products","entertainment_leisure",["Over 18 Toys"],[],{"a":"true"}),
 ("entertainment_other","entertainment_leisure",["General Entertainment","primary:Entertainment"],["ENTERTAINMENT_OTHER_ENTERTAINMENT","ENTERTAINMENT_MUSIC_VIDEO_GAMES_TV_AND_MOVIES"],{"w":"Plaid bundles streaming+games+cinema here - real signal loss"}),
 # ---- DIGITAL SUBS
-("streaming_music","digital_subscriptions_services",["Music and Downloads"],[],{"w":"ALL consumer media streaming, video and music alike (Netflix, Spotify, Prime Video, Now TV)"}),
+("streaming","digital_subscriptions_services",["Music and Downloads"],[],{"w":"ALL consumer media streaming, video and music alike (Netflix, Spotify, Prime Video, Now TV)"}),
 ("software","digital_subscriptions_services",["Software"],[],{}),
 ("web_services","digital_subscriptions_services",["Web Services"],[],{"w":"technical/infrastructure services: hosting, domains, VPN, cloud, developer tools"}),
 ("online_services","digital_subscriptions_services",["Online Services"],[],{"w":"consumer-facing digital platforms: social, creator and content services (TikTok, Facebook, Patreon)"}),

@@ -769,7 +769,7 @@ def build_review_sheet():
         ("verdict = context_dependent", "No single merchant-level leaf is correct: the string is polysemous per transaction (e.g. revolut -- Equifax's own mix is ~71% unspecified transfer / ~29% own-transfer, varying by direction) or names different entities across providers. Excluded from accuracy; reported as a candidate for a transaction-level (T1/T2) rule instead of a dictionary entry."),
         ("verdict = unsure", "Can't tell without more digging. Excluded from the corrected accuracy; reported separately."),
         ("", ""),
-        ("Worked example (format only -- not a live row)", "merchant=netflix, equifax_leaf=broadband_tv_phone, llm_consensus_leaf=streaming_music -> verdict=llm_correct, notes='Equifax lumps Netflix with ISPs; our taxonomy separates streaming'"),
+        ("Worked example (format only -- not a live row)", "merchant=netflix, equifax_leaf=broadband_tv_phone, llm_consensus_leaf=streaming -> verdict=llm_correct, notes='Equifax lumps Netflix with ISPs; our taxonomy separates streaming'"),
         ("", ""),
         ("When done", "Save this file in place (keep .xlsx), then run:  python src/gating_experiment.py adjudicate"),
         ("Partial passes are fine", "adjudicate reports corrected accuracy over annotated rows plus optimistic/pessimistic bounds for the rest, so you can stop when the bounds are tight enough to decide."),

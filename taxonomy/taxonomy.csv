@@ -155,7 +155,7 @@ private_members_club,entertainment_leisure,discretionary,spend,false,false,false
 adult_entertainment,entertainment_leisure,discretionary,spend,false,false,true,none,,Adult Entertainment,,
 adult_products,entertainment_leisure,discretionary,spend,false,false,true,none,,Over 18 Toys,,
 entertainment_other,entertainment_leisure,discretionary,spend,false,false,false,none,,General Entertainment ; primary:Entertainment,ENTERTAINMENT_OTHER_ENTERTAINMENT ; ENTERTAINMENT_MUSIC_VIDEO_GAMES_TV_AND_MOVIES,Plaid bundles streaming+games+cinema here - real signal loss
-streaming_music,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Music and Downloads,,"ALL consumer media streaming, video and music alike (Netflix, Spotify, Prime Video, Now TV)"
+streaming,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Music and Downloads,,"ALL consumer media streaming, video and music alike (Netflix, Spotify, Prime Video, Now TV)"
 software,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Software,,
 web_services,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Web Services,,"technical/infrastructure services: hosting, domains, VPN, cloud, developer tools"
 online_services,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Online Services,,"consumer-facing digital platforms: social, creator and content services (TikTok, Facebook, Patreon)"
