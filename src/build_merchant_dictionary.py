@@ -14,7 +14,7 @@ D = [
 ("the southern co-op","groceries","high",""),("scotmid co-op","groceries","high",""),
 ("east of england co-op","groceries","high",""),("marks and spencer food","groceries","high",""),
 ("costco","groceries","medium","warehouse club - mixed basket; Plaid says superstore, Equifax says dept store"),
-("mcqueens dairies","groceries","high","doorstep milk delivery"),
+("mcqueens dairies","groceries_specialist","high","doorstep milk delivery - adjudicated 2026-08-19"),
 ("bargain booze","alcohol_beer_spirits","high","age-restricted"),
 # ---- DISCOUNT / VARIETY
 ("home bargains","discount_store","high",""),("b&m","discount_store","high",""),
@@ -166,10 +166,10 @@ D = [
 ("onlyfans","adult_entertainment","high","age-restricted"),
 ("ring.com","home_accessories","medium","smart doorbell - device + subscription"),
 # ---- RETAIL
-("amazon","marketplace_amazon","high",""),("ebay","marketplace_amazon","medium","marketplace - consider own leaf"),
-("vinted","marketplace_amazon","medium","secondhand marketplace - Equifax says fashion"),
-("etsy","marketplace_amazon","medium",""),("aliexpress","marketplace_amazon","high",""),
-("marketplace","marketplace_amazon","low","AMBIGUOUS 405k txns - likely Facebook Marketplace. NEEDS REVIEW"),
+("amazon","marketplace_amazon","high",""),("ebay","marketplace_general","high","split from marketplace_amazon 2026-08-19"),
+("vinted","marketplace_general","high","secondhand marketplace - Equifax says fashion"),
+("etsy","marketplace_general","medium",""),("aliexpress","marketplace_general","high",""),
+("marketplace","marketplace_general","low","AMBIGUOUS 405k txns - likely Facebook Marketplace. NEEDS REVIEW"),
 ("argos","catalogue_retail","high",""),("home retail","catalogue_retail","high","Argos parent"),
 ("marks and spencer","department_store","high","Equifax mislabels as credit card (M&S Bank)"),
 ("primark","clothing_general","high",""),("shein","clothing_general","high",""),

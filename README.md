@@ -46,7 +46,7 @@ BigQuery project is `raylo-production`, read-only. Write experiment output to a 
 
 | Item | Status |
 |---|---|
-| Taxonomy (274 leaves / 29 generals) | Built, verified — 0 uncovered provider values |
+| Taxonomy (275 leaves / 29 generals) | Built, verified — 0 uncovered provider values; boundary conventions documented in leaf notes (2026-08-19) |
 | Crosswalk precedence logic | Built, tested on a 2% sample; all tiers fire |
 | Merchant dictionary (321 entries) | Built; 275 high / 30 medium / 16 low confidence — **needs human sign-off** |
 | Deterministic regex rules | Written, **not yet wired into the SQL** |
@@ -57,7 +57,7 @@ BigQuery project is `raylo-production`, read-only. Write experiment output to a 
 ## Key numbers
 
 - Equifax: **65.8%** of transactions well-resolved, 34.2% need merchant/ML layers
-- Plaid: 100% map to a leaf, but **50.6% land on coarse leaves**; 202 of 274 leaves unreachable from Plaid
+- Plaid: 100% map to a leaf, but **50.6% land on coarse leaves**; 203 of 275 leaves unreachable from Plaid
 - Cross-provider conflict: applying both crosswalks gives **different leaves for 45.2% of shared-merchant volume** — this is why the merchant dictionary must override provider categories
 - Dictionary coverage: **88.2%** of Equifax merchant volume vs **47.8%** of Plaid's (measured ceiling with Equifax's full 6,518-vendor list: 41.3%)
 

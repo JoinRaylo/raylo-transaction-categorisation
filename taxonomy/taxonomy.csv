@@ -31,18 +31,18 @@ tax_payment,council_tax_government,essential,spend,false,true,false,none,,primar
 government_services,council_tax_government,essential,spend,false,false,false,none,,Government Services ; primary:Government,GOVERNMENTS_AND_NON_PROFIT_OTHER_GOVERNMENTS_AND_NON_PROFIT,
 id_documents,council_tax_government,essential,spend,false,false,false,none,,ID Cards,,
 emergency_services,council_tax_government,essential,spend,false,false,false,none,,Emergency Services,,
-groceries,groceries_household_essentials,essential,spend,false,false,false,none,,General Groceries,FOOD_RETAIL_GROCERIES ; FOOD_RETAIL_OTHER ; GENERAL_MERCHANDISE_SUPERSTORES,
-discount_store,groceries_household_essentials,essential,spend,false,false,false,none,,Discount Stores,GENERAL_MERCHANDISE_DISCOUNT_STORES,
-convenience_store,groceries_household_essentials,mixed_basket,spend,false,false,false,none,,Newsagents and Convenience Stores,GENERAL_MERCHANDISE_CONVENIENCE_STORES,
-cash_and_carry,groceries_household_essentials,essential,spend,false,false,false,none,,Cash & Carry,,
-groceries_specialist,groceries_household_essentials,essential,spend,false,false,false,none,,Fairtrade and ethical products,,
+groceries,groceries_household_essentials,essential,spend,false,false,false,none,,General Groceries,FOOD_RETAIL_GROCERIES ; FOOD_RETAIL_OTHER ; GENERAL_MERCHANDISE_SUPERSTORES,"general food shops: supermarkets, food discounters (Aldi/Lidl/Farmfoods/Heron) and symbol-group grocers (Spar/Nisa/Costcutter/Londis/Premier)"
+discount_store,groceries_household_essentials,essential,spend,false,false,false,none,,Discount Stores,GENERAL_MERCHANDISE_DISCOUNT_STORES,"general-merchandise discount variety (B&M, Home Bargains, Poundland); food discounters are groceries"
+convenience_store,groceries_household_essentials,mixed_basket,spend,false,false,false,none,,Newsagents and Convenience Stores,GENERAL_MERCHANDISE_CONVENIENCE_STORES,"newsagent/corner-shop style (McColl's, motorway services); chains that are primarily food shops are groceries"
+cash_and_carry,groceries_household_essentials,essential,spend,false,false,false,none,,Cash & Carry,,"membership/trade wholesale (Booker, Costco)"
+groceries_specialist,groceries_household_essentials,essential,spend,false,false,false,none,,Fairtrade and ethical products,,"single-category or specialist food retailers: butchers, world-food grocers, organic, doorstep milk"
 confectionary,groceries_household_essentials,discretionary,spend,false,false,false,none,,Confectionary,,
 alcohol_beer_spirits,groceries_household_essentials,discretionary,spend,false,false,true,none,,Alcoholic Beverages Beers and Spirits,FOOD_RETAIL_LIQUOR_STORES,OVERRIDE - Equifax files as Household Essentials
 alcohol_wine,groceries_household_essentials,discretionary,spend,false,false,true,none,,Alcoholic Beverages Wines,,OVERRIDE - Equifax files as Household Essentials
 tobacco,groceries_household_essentials,discretionary,spend,false,false,true,none,,Tobacco Products,,
 vaping,groceries_household_essentials,discretionary,spend,false,false,true,none,,Electronic Cigarettes,,OVERRIDE - Equifax files under Personal Healthcare
-takeaway,eating_drinking_out,discretionary,spend,false,false,false,none,,Take Away ; Chip Shed Bourton Limited ; Ipswich 5 Star Ltd,,
-restaurant_cafe,eating_drinking_out,discretionary,spend,false,false,false,none,,"Restaurants, Cafes and Bistros",DINING_DINING ; DINING_OTHER_DINING ; DINING_COFFEE,
+takeaway,eating_drinking_out,discretionary,spend,false,false,false,none,,Take Away ; Chip Shed Bourton Limited ; Ipswich 5 Star Ltd,,"fast food, chip shops and delivery apps (McDonald's, KFC, Just Eat, Deliveroo, Uber Eats)"
+restaurant_cafe,eating_drinking_out,discretionary,spend,false,false,false,none,,"Restaurants, Cafes and Bistros",DINING_DINING ; DINING_OTHER_DINING ; DINING_COFFEE,"eat-in/table service plus cafes, coffee shops and fast-casual (Nando's, Pret, Greggs, Leon)"
 pub_bar,eating_drinking_out,discretionary,spend,false,false,true,none,,Pubs and Bars,DINING_WINE_BARS_AND_PUBS,
 night_club,eating_drinking_out,discretionary,spend,false,false,true,none,,Night Clubs,,
 catering,eating_drinking_out,discretionary,spend,false,false,false,none,,Catering,,
@@ -76,7 +76,8 @@ tradesmen,home_garden,essential,spend,false,false,false,none,,Tradesmen,,
 construction_services,home_garden,mixed_basket,spend,false,false,false,none,,Construction,,
 cleaning_services,home_garden,discretionary,spend,false,false,false,none,,Cleaning Services,,
 laundry,home_garden,essential,spend,false,false,false,none,,Laundry Services,,
-marketplace_amazon,general_retail_marketplaces,mixed_basket,spend,false,false,false,none,,Amazon ; primary:Amazon All,GENERAL_MERCHANDISE_ONLINE_MARKETPLACES,IV 0.1629 persistence; decays sharply at month12
+marketplace_amazon,general_retail_marketplaces,mixed_basket,spend,false,false,false,none,,Amazon ; primary:Amazon All,,Amazon ONLY (incl. Amazon Marketplace); all other marketplaces are marketplace_general. IV 0.1629 persistence; decays sharply at month12
+marketplace_general,general_retail_marketplaces,mixed_basket,spend,false,false,false,none,,,GENERAL_MERCHANDISE_ONLINE_MARKETPLACES,"non-Amazon online marketplaces (eBay, Vinted, Depop, Etsy); split from marketplace_amazon 2026-08-19 to keep the Amazon-specific signal clean"
 marketplace_refurbished,general_retail_marketplaces,mixed_basket,spend,false,false,false,none,,Back Market Uk Ltd,,refurbished-device marketplace - Raylo-adjacent
 payment_intermediary,general_retail_marketplaces,mixed_basket,spend,false,false,false,none,,E-Commerce Payment System,,PayPal/Klarna-style - obscures underlying merchant
 retail_tv_online_shopping,general_retail_marketplaces,mixed_basket,spend,false,false,false,none,,TV and Online Shopping,,
@@ -154,15 +155,15 @@ private_members_club,entertainment_leisure,discretionary,spend,false,false,false
 adult_entertainment,entertainment_leisure,discretionary,spend,false,false,true,none,,Adult Entertainment,,
 adult_products,entertainment_leisure,discretionary,spend,false,false,true,none,,Over 18 Toys,,
 entertainment_other,entertainment_leisure,discretionary,spend,false,false,false,none,,General Entertainment ; primary:Entertainment,ENTERTAINMENT_OTHER_ENTERTAINMENT ; ENTERTAINMENT_MUSIC_VIDEO_GAMES_TV_AND_MOVIES,Plaid bundles streaming+games+cinema here - real signal loss
-streaming_music,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Music and Downloads,,
+streaming_music,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Music and Downloads,,"ALL consumer media streaming, video and music alike (Netflix, Spotify, Prime Video, Now TV)"
 software,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Software,,
-web_services,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Web Services,,
-online_services,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Online Services,,
+web_services,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Web Services,,"technical/infrastructure services: hosting, domains, VPN, cloud, developer tools"
+online_services,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Online Services,,"consumer-facing digital platforms: social, creator and content services (TikTok, Facebook, Patreon)"
 email_services,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Email Services,,
 online_dating,digital_subscriptions_services,discretionary,spend,false,false,true,none,,Online Dating,,
 genealogy_services,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Family History,,
 social_reporting,digital_subscriptions_services,discretionary,spend,false,false,false,none,,Social Reporting Services,,
-pharmacy,health_medical,essential,spend,false,false,false,none,,Pharmaceuticals,MEDICAL_PHARMACIES_AND_SUPPLEMENTS,
+pharmacy,health_medical,essential,spend,false,false,false,none,,Pharmaceuticals,MEDICAL_PHARMACIES_AND_SUPPLEMENTS,"pharmacy-led health retail (Boots, Superdrug) even where partly beauty; beauty-led retail without a pharmacy identity is health_beauty_general"
 medicine,health_medical,essential,spend,false,false,false,none,,Medicine,,
 supplements,health_medical,discretionary,spend,false,false,false,none,,Supplements,,
 dentist,health_medical,essential,spend,false,false,false,none,,Dentist,,
@@ -175,8 +176,8 @@ adult_care,health_medical,essential,spend,false,false,false,none,,Adult Care,,
 family_services,health_medical,essential,spend,false,false,false,none,,Family Services,,
 funeral,health_medical,essential,spend,false,false,false,none,,Funeral Directors,,life-event signal
 health_other,health_medical,essential,spend,false,false,false,none,,primary:Personal Healthcare ; Medical,MEDICAL_OTHER_MEDICAL,
-insurance_general,insurance,essential,spend,false,false,false,none,,General Insurance ; primary:Insurance,INSURANCE_AND_TAX_INSURANCE,
-insurance_motor,insurance,essential,spend,false,false,false,none,,Motor Insurance,,
+insurance_general,insurance,essential,spend,false,false,false,none,,General Insurance ; primary:Insurance,INSURANCE_AND_TAX_INSURANCE,"multi-line insurers (Admiral, Legal & General) and unidentifiable insurance"
+insurance_motor,insurance,essential,spend,false,false,false,none,,Motor Insurance,,motor-specific brands only (Swiftcover); multi-line insurers are insurance_general
 insurance_home,insurance,essential,spend,false,false,false,none,,Home Insurance,,
 insurance_life,insurance,essential,spend,false,false,false,none,,Life Insurance,,
 insurance_health,insurance,essential,spend,false,false,false,none,,Health Insurance,,
@@ -213,8 +214,8 @@ money_management_service,high_cost_distress_credit,discretionary,spend,false,fal
 gambling_betting,gambling,discretionary,spend,false,false,true,behavioural_risk,,Betting,,FREQUENCY form not persistence
 gambling_casino,gambling,discretionary,spend,false,false,true,behavioural_risk,,Poker and Casino Games,,
 gambling_bingo,gambling,discretionary,spend,false,false,true,behavioural_risk,,Bingo,,
-gambling_lottery,gambling,discretionary,spend,false,false,true,low_stakes_gambling,,Lottery,,HIGHEST-IV gambling subtype 0.0498 - do not aggregate
-prize_competitions,gambling,discretionary,spend,false,false,true,low_stakes_gambling,,Competitions,,
+gambling_lottery,gambling,discretionary,spend,false,false,true,low_stakes_gambling,,Lottery,,"licensed lotteries only (National Lottery, Postcode Lottery); prize-draw platforms are prize_competitions. HIGHEST-IV gambling subtype 0.0498 - do not aggregate"
+prize_competitions,gambling,discretionary,spend,false,false,true,low_stakes_gambling,,Competitions,,"prize-draw competition platforms (Omaze, BOTB) - gambling-adjacent, not licensed lottery"
 gambling_unspecified,gambling,discretionary,spend,false,false,true,behavioural_risk,,primary:Gambling and Betting,ENTERTAINMENT_CASINOS_AND_GAMBLING,Plaid has no gambling subtypes
 overdraft_arranged,fees_charges,not_applicable,fee_or_penalty,true,false,false,none,,Arranged Overdraft,BANK_PENALTIES_CASH_ADVANCE_AND_OVERDRAFT_FEES,"NOT distress - arranged overdraft is a normal product, IV 0.0033"
 returned_payment,fees_charges,not_applicable,fee_or_penalty,false,false,false,distress_fee,,Returned Payments ; Rejected Payments,BANK_PENALTIES_INSUFFICIENT_AND_LATE_FEES,count BOTH directions - mostly appears as credits

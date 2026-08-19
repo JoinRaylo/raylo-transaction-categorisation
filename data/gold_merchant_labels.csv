@@ -14,10 +14,10 @@ just eat,takeaway,,consensus_all_agree,21479
 google play,software,,adjudicated_llm,19351
 lidl,groceries,,consensus_all_agree,18219
 greggs,restaurant_cafe,,consensus_all_agree,18091
-vinted,marketplace_amazon,,adjudicated_llm,13350
+vinted,marketplace_general,,adjudicated_llm+taxonomy_split_20260819,13350
 bet365,gambling_betting,,consensus_all_agree,12987
 home bargains,discount_store,,adjudicated_llm,11392
-ebay,marketplace_amazon,,adjudicated_llm,11260
+ebay,marketplace_general,,adjudicated_llm+taxonomy_split_20260819,11260
 shell,fuel,,consensus_all_agree,10801
 capital one,credit_card_repayment,,consensus_all_agree,10479
 paddy power,gambling_betting,,consensus_all_agree,10173
@@ -213,7 +213,7 @@ max spielmann,photography_services,printing_services,adjudicated_either,308
 ageas,insurance_general,,consensus_all_agree,305
 wickes,home_improvement,,consensus_all_agree,304
 boylesports,gambling_betting,,consensus_all_agree,303
-depop,marketplace_amazon,,adjudicated_llm,299
+depop,marketplace_general,,adjudicated_llm+taxonomy_split_20260819,299
 shoe zone,footwear,,consensus_all_agree,296
 littlewoods,catalogue_retail,,consensus_all_agree,295
 greater anglia,public_transport_rail_coach,,consensus_all_agree,295
@@ -235,7 +235,7 @@ chopstix,takeaway,,consensus_all_agree,262
 axa,insurance_general,,consensus_all_agree,247
 supervalu,groceries,,consensus_all_agree,247
 parkdean resorts,holiday_uk,,adjudicated_llm,247
-etsy,marketplace_amazon,,adjudicated_llm,238
+etsy,marketplace_general,,adjudicated_llm+taxonomy_split_20260819,238
 jd gyms,gym_fitness,,consensus_all_agree,236
 first west yorkshire,public_transport_rail_coach,,consensus_all_agree,234
 linkedin,online_services,web_services,adjudicated_either,233
@@ -608,7 +608,7 @@ franco manca,restaurant_cafe,,consensus_all_agree,28
 crowne plaza,accommodation,,consensus_all_agree,28
 tottenham hotspur,sports_tickets,,consensus_all_agree,28
 p&o ferries,ferry_rail_travel,,consensus_all_agree,28
-gumtree,marketplace_amazon,,adjudicated_llm,28
+gumtree,marketplace_general,,adjudicated_llm+taxonomy_split_20260819,28
 royal george,pub_bar,,consensus_all_agree,28
 the queens head,pub_bar,,consensus_all_agree,28
 split my fare,public_transport_rail_coach,,adjudicated_equifax,28
@@ -802,7 +802,7 @@ home group,rent,,adjudicated_correction,12
 fuel juice bars,restaurant_cafe,,consensus_all_agree,12
 deichmann,footwear,,adjudicated_llm,12
 molly malones,pub_bar,,consensus_all_agree,12
-fruugo,marketplace_amazon,,adjudicated_correction,12
+fruugo,marketplace_general,,adjudicated_correction+taxonomy_split_20260819,12
 the bat and ball,pub_bar,,adjudicated_llm,12
 resolvecall,debt_collection,,consensus_all_agree,12
 isle of wight council,council_tax,,consensus_all_agree,12
