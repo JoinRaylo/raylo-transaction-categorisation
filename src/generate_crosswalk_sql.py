@@ -1,5 +1,7 @@
 import csv
-rows=list(csv.DictReader(open('../taxonomy/taxonomy.csv')))
+import pathlib
+_ROOT = pathlib.Path(__file__).resolve().parents[1]
+rows=list(csv.DictReader(open(_ROOT / "taxonomy" / "taxonomy.csv")))
 
 sub_map={}; pri_map={}; plaid_map={}; meta={}
 for r in rows:
@@ -129,6 +131,6 @@ FROM combined c
 LEFT JOIN leaf_meta m ON c.leaf = m.leaf
 GROUP BY 1,2 ORDER BY 1, n DESC
 """
-open('apply.sql','w').write(sql)
+(_ROOT / "sql" / "apply_crosswalk.sql").write_text(sql)
 print("SQL generated:", len(sql), "chars")
 print("mapping rows: sub",len(sub_map),"| primary",len(pri_map),"| plaid",len(plaid_map),"| meta",len(meta))
