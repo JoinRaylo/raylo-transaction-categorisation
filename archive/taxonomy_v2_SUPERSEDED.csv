@@ -1,0 +1,74 @@
+raylo_category,purpose,signal_form,best_iv,iv_month12,necessity,cash_flow_type,is_debt_related,is_priority_debt,risk_flag,equifax_source,plaid_source,notes,signal_stability
+recurring_unclassified,predictive_and_ml_target,persistence,0.1813,0.1496,mixed_basket,spend,false,false,none,Misc Regular Payments | (null),,TOP PREDICTOR and uncategorised - highest-value target for merchant/ML layer,decays
+online_marketplace_amazon,predictive,persistence,0.1629,0.0891,mixed_basket,spend,false,false,none,Amazon All | Amazon,GENERAL_MERCHANDISE_ONLINE_MARKETPLACES,kept separate from other e-commerce - materially higher IV,decays
+tv_licence,predictive_and_regulatory,persistence,0.1340,0.0994,essential,spend,false,true,none,Utilities | TV Licences,,no Plaid equivalent - reachable only via merchant layer,decays
+internet_broadband,predictive,persistence,0.1254,0.0713,essential,spend,false,false,none,"Utilities | Internet, TV and Phone",RENT_AND_UTILITIES_INTERNET_AND_CABLE,,decays
+mobile_phone,predictive,persistence,0.1193,0.0981,essential,spend,false,false,none,Utilities | Mobile Phone Contracts,RENT_AND_UTILITIES_TELECOMMUNICATIONS,STRONGEST RAYLO ANALOGUE - sustained device/airtime commitment; 20x IV gain from persistence form,decays
+credit_card,predictive,persistence,0.1123,0.1084,essential,debt_repayment,true,false,none,Financial Services | Credit Cards,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,,stable
+water_utility,predictive_and_regulatory,persistence,0.1121,0.1091,essential,spend,false,true,none,Utilities | Water Companies,RENT_AND_UTILITIES_WATER,,stable
+online_payment_system,predictive,persistence,0.1105,0.0937,mixed_basket,spend,false,false,none,Shopping (Discretionary) | E-Commerce Payment System,,PayPal/Klarna-style intermediaries - no clean Plaid equivalent,stable
+council_tax,predictive_and_regulatory,persistence,0.1005,0.0901,essential,spend,false,true,none,Utilities | Council,GOVERNMENTS_AND_NON_PROFIT_GOVERNMENTS_AND_NON_PROFIT,Plaid bundles with other govt payments - merchant layer must disambiguate,stable
+insurance_general,predictive,persistence,0.0938,0.0846,essential,spend,false,false,none,Insurance | General Insurance,INSURANCE_AND_TAX_INSURANCE,,stable
+unclassified_card_spend,ml_target,persistence,0.0933,0.0413,mixed_basket,spend,false,false,none,Misc Card Spend | (null),,95% prevalence - second-largest ML target,decays
+road_tax,predictive,persistence,0.0931,0.0764,essential,spend,false,false,none,Automotive | Road Tax,,no Plaid equivalent,stable
+groceries,predictive_and_affordability,persistence,0.0899,0.0316,essential,spend,false,false,none,Shopping (Household Essentials) | General Groceries,FOOD_RETAIL_GROCERIES,absorbs Discount Stores and Cash & Carry - both near-zero IV standalone,decays
+personal_loan,predictive,persistence,0.0879,0.0579,essential,debt_repayment,true,false,none,Financial Services | Personal Loans,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,,decays
+bnpl,predictive_and_regulatory,persistence,0.0870,0.0424,essential,debt_repayment,true,false,high_cost_credit,Financial Services | BNPL,LOAN_PAYMENTS_BNPL_AND_EWA,Plaid bundles BNPL with Earned Wage Access,decays
+salary,affordability,persistence,0.0844,,not_applicable,income,false,false,none,Identified Salary | (null),INCOME_SALARY,"TESTED - persistence best form (share 0.0765, variability 0.0664, count 0.0592). Strongest income signal but well below top debit features",
+energy_utility,predictive_and_regulatory,persistence,0.0814,0.0669,essential,spend,false,true,none,Utilities | Energy Providers,RENT_AND_UTILITIES_GAS_AND_ELECTRICITY,,stable
+home_goods,predictive,persistence,0.0809,0.0417,mixed_basket,spend,false,false,none,Shopping (Home) | Home Accessories,GENERAL_MERCHANDISE_FURNITURE_AND_HARDWARE,absorbs Home Improvements/Tools/Garden,decays
+car_parking,predictive,persistence,0.0758,0.0658,essential,spend,false,false,none,Commuting and travel | Car Parking,,no Plaid equivalent,stable
+streaming_music,predictive,persistence,0.0694,0.0477,discretionary,spend,false,false,none,Shopping (Discretionary) | Music and Downloads,,Plaid bundles streaming with games and cinema - real signal loss,decays
+software_subscription,predictive,persistence,0.0671,0.0363,discretionary,spend,false,false,none,Shopping (Discretionary) | Software,,absorbs Services | Web Services,decays
+clothing,predictive,persistence,0.0658,0.0392,mixed_basket,spend,false,false,none,Shopping (Fashion) | General Fashion,GENERAL_MERCHANDISE_APPAREL_AND_ACCESSORIES,absorbs Womens/Mens/Footwear - all near-zero standalone,decays
+mortgage,predictive_and_regulatory,persistence,0.0653,0.0865,essential,debt_repayment,true,true,none,Rent and Mortgage | Mortgages,LOAN_PAYMENTS_MORTGAGE_AND_AUTO,,strengthens
+insurance_motor,predictive,persistence,0.0644,0.0483,essential,spend,false,false,none,Insurance | Motor Insurance,,,stable
+restaurant_cafe,predictive,persistence,0.0618,0.0295,discretionary,spend,false,false,none,"Restaurants and takeaway | Restaurants, Cafes and Bistros",DINING_DINING,,decays
+car_finance,predictive,persistence,0.0609,0.0480,essential,debt_repayment,true,false,none,Financial Services | Car Finance,,no clean Plaid equivalent,stable
+fuel,predictive,persistence,0.0565,0.0339,essential,spend,false,false,none,Commuting and travel | Fuel,,Plaid bundles fuel with automotive maintenance,decays
+unclassified_inflow,ml_target,count,0.0536,,not_applicable,transfer_own_accounts,false,false,none,Transfers / Other | (null) [credit],TRANSFER_IN_OTHER,"NEW - uncategorised INFLOW, 91.3% prevalence. Credit-side ML target",
+charitable_giving,predictive,persistence,0.0523,0.0359,discretionary,spend,false,false,none,Charitable Giving | (null),GOVERNMENTS_AND_NON_PROFIT_DONATIONS,,stable
+pub_bar,predictive,persistence,0.0510,,discretionary,spend,false,false,none,Restaurants and takeaway | Pubs and Bars,DINING_WINE_BARS_AND_PUBS,,
+books_media,predictive,persistence,0.0510,0.0338,discretionary,spend,false,false,none,"Books, Newspapers and Magazines | General Books",,,stable
+gambling_lottery,predictive_and_regulatory,persistence,0.0498,0.0337,discretionary,spend,false,false,low_stakes_gambling,Gambling and Betting | Lottery,,HIGHEST-IV gambling subtype - do NOT aggregate with other gambling,stable
+financial_services_other,predictive,persistence,0.0490,0.0396,mixed_basket,spend,false,false,none,Financial Services | Banks And Building Societies,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,REVIEW - Equifax files mortgage lenders here,stable
+gym_fitness,predictive,persistence,0.0449,0.0292,discretionary,spend,false,false,none,Personal Healthcare | Gyms And Health Clubs,PERSONAL_CARE_GYMS_AND_FITNESS_CENTERS,,stable
+retail_finance,predictive,persistence,0.0446,0.0357,essential,debt_repayment,true,false,none,Financial Services | Retail Finance,,no Plaid equivalent - closest analogue to Raylo's own product,stable
+insurance_life,predictive,count,0.0431,0.0442,essential,spend,false,false,none,Insurance | Life Insurance,,,stable
+personal_care,predictive,persistence,0.0428,,discretionary,spend,false,false,none,Personal Healthcare | General Health and Beauty,PERSONAL_CARE_HAIR_AND_BEAUTY,absorbs Skin/Hair Care and Beauty & Massage,
+online_shopping_tv,predictive,persistence,0.0428,,mixed_basket,spend,false,false,none,Shopping (Discretionary) | TV and Online Shopping,,,
+cash_withdrawal,predictive,frequency,0.0385,,not_applicable,transfer_own_accounts,false,false,visibility_loss,Cash Machine | (null),TRANSFER_OUT_CHECKS_AND_ATM,FREQUENCY not persistence - 4x better as count; downstream spend unobservable,
+optician,predictive,persistence,0.0382,,essential,spend,false,false,none,Personal Healthcare | Glasses and Contact Lenses,MEDICAL_DENTAL_AND_VISION,,
+savings_interest_income,predictive,share,0.0382,,not_applicable,income,false,false,none,Interest | Bank Interest Accrual,INTERESTS_AND_DIVIDENDS_INTERESTS_AND_DIVIDENDS,NEW - found in income analysis. Presence of savings interest implies a buffer; 18.9% prevalence,
+catalogue_credit,predictive,persistence,0.0370,,mixed_basket,spend,false,false,none,Shopping (Discretionary) | General Catalogues,,often implies embedded credit,
+veterinary,predictive,persistence,0.0369,,essential,spend,false,false,none,Pets | Pet Care,PET_CARE_AND_SUPPLIES_VETERINARY_SERVICES,,
+takeaway,predictive,persistence,0.0362,,discretionary,spend,false,false,none,Restaurants and takeaway | Take Away,,9x IV gain from persistence form,
+insurance_pet,predictive,persistence,0.0352,,discretionary,spend,false,false,none,Insurance | Pet Insurance,,,
+dentist,predictive,persistence,0.0333,0.0364,essential,spend,false,false,none,Personal Healthcare | Dentist,MEDICAL_DENTAL_AND_VISION,,stable
+tax_payment,predictive_and_regulatory,persistence,0.0323,,essential,spend,false,true,none,Tax | (null),INSURANCE_AND_TAX_TAX_PAYMENT,,
+entertainment_events,predictive,persistence,0.0323,,discretionary,spend,false,false,none,Entertainment | Days Out,ENTERTAINMENT_EVENTS_AND_TICKETS,absorbs Cinema/Music Tickets/Theatre/Sporting,
+gifts,predictive,persistence,0.0310,,discretionary,spend,false,false,none,Shopping (Household Essentials) | Gifts Flowers and Parties,,OVERRIDE - Equifax classes as household essential,
+unclassified_transfer,ml_target,persistence,0.0310,,not_applicable,transfer_own_accounts,false,false,none,Transfers / Other | (null),TRANSFER_OUT_OTHER,9.6M Equifax txns - largest single bucket,
+delivery_service,predictive,persistence,0.0309,,discretionary,spend,false,false,none,Services | Delivery,,,
+debt_management,predictive_and_regulatory,persistence,0.0306,,essential,debt_repayment,true,false,distress_signal,Financial Services | Debt Management,,DMP enrolment - low prevalence but unambiguous distress,
+department_store,predictive,persistence,0.0271,,mixed_basket,spend,false,false,none,Shopping (Discretionary) | Department Stores,GENERAL_MERCHANDISE_DEPARTMENT_STORES,,
+breakdown_cover,predictive,persistence,0.0270,,essential,spend,false,false,none,Automotive | Breakdown Cover,,,
+gambling_winnings,regulatory,share,0.0270,,not_applicable,income,false,false,behavioural_risk,Gambling and Betting | * (credit),ENTERTAINMENT_CASINOS_AND_GAMBLING,TESTED - real signal; must never be counted as income,
+gambling_betting,predictive_and_regulatory,frequency,0.0268,,discretionary,spend,false,false,behavioural_risk,Gambling and Betting | Betting,ENTERTAINMENT_CASINOS_AND_GAMBLING,FREQUENCY not persistence,
+debt_collection,predictive_and_regulatory,persistence,0.0268,,essential,debt_repayment,true,false,distress_signal,Financial Services | Debt Collection,,,
+returned_payment_fee,predictive_and_regulatory,count_both_directions,0.0263,0.0425,not_applicable,fee_or_penalty,false,false,distress_fee,Bank Charges and Returns | Returned Payments,BANK_PENALTIES_INSUFFICIENT_AND_LATE_FEES,RESOLVED - must count BOTH directions; returns appear mainly as credits (35.1% prevalence vs 5.4% debit-only). 7x IV gain. Residual gap vs Plaid 0.131 still unexplained - likely definitional,strengthens
+medical_other,affordability_and_regulatory,persistence,0.0261,,essential,spend,false,false,none,Personal Healthcare | Hospitals,MEDICAL_PRIMARY_CARE,,
+automotive_maintenance,predictive,persistence,0.0260,,essential,spend,false,false,none,Automotive | Garages and Parts,TRAVEL_AND_TRANSPORTATION_AUTOMOTIVE,,
+gambling_casino,regulatory,frequency,0.0255,,discretionary,spend,false,false,behavioural_risk,Gambling and Betting | Poker and Casino Games,ENTERTAINMENT_CASINOS_AND_GAMBLING,kept for Consumer Duty regardless of IV,
+unclassified,ml_target,persistence,0.0255,,not_applicable,unclassified,false,false,none,(null) | (null),OTHER_OTHER,4.5M Equifax txns with no category,
+benefits_income,affordability,persistence,0.0219,,not_applicable,income,false,false,none,Benefits | (null),INCOME_GOVERNMENT_INCOME,TESTED - weak,
+refund_received,affordability,share,0.0201,,not_applicable,income,false,false,none,Refund | *,,TESTED - weak (measured on Transfers/Other|Amazon credit as proxy),
+pawn_broker,regulatory,persistence,0.0147,,essential,debt_repayment,true,false,high_cost_credit,Financial Services | Pawn Brokers,,kept for high-cost-credit flag,
+pension_income,affordability,share,0.0121,,not_applicable,income,false,false,none,Pension Payout | (null),,TESTED - weak,
+rent,affordability_and_regulatory,persistence,0.0093,,essential,spend,false,true,none,Rent and Mortgage | Property Rental,RENT_AND_UTILITIES_RENT,LOW IV BUT ESSENTIAL - detection gap; largest outgoing for most customers. Investigate before trusting,
+payday_loan,regulatory,persistence,0.0087,,essential,debt_repayment,true,false,high_cost_credit,Financial Services | Payday Loans,LOAN_PAYMENTS_CASH_ADVANCES,kept for high-cost-credit flag regardless of IV,
+gambling_bingo,regulatory,frequency,0.0081,,discretionary,spend,false,false,behavioural_risk,Gambling and Betting | Bingo,ENTERTAINMENT_CASINOS_AND_GAMBLING,kept for Consumer Duty regardless of IV,
+overdraft_charge,regulatory,count_both_directions,0.0033,,not_applicable,fee_or_penalty,true,false,distress_fee,Bank Charges and Returns | Arranged Overdraft,BANK_PENALTIES_CASH_ADVANCE_AND_OVERDRAFT_FEES,"GENUINELY WEAK - arranged overdraft is a normal product, not distress. Unarranged would be the signal but Equifax does not separate it",
+salary_gig,affordability,persistence,,,not_applicable,income,false,false,none,Identified Salary | Taxis|Delivery,,Below 1000-proposal threshold in this cohort - untested. Raylo-derived concept neither vendor exposes,
+transfer_own_accounts,operational,share,,,not_applicable,transfer_own_accounts,false,false,none,Own Transfers | *,TRANSFER_OUT_CHECKING,,
+transfer_p2p,operational,share,,,not_applicable,p2p_transfer,false,false,none,Transfers / Other | Transfer Personal,TRANSFER_OUT_TRANSFER_OUT_FROM_APPS,possible informal borrowing,

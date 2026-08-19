@@ -1,0 +1,92 @@
+plaid_primary_category,plaid_detailed_category,raylo_category,cash_flow_type,necessity,is_debt_related,risk_flag,is_recurring_income,notes
+BANK_FEES,BANK_FEES_FOREIGN_TRANSACTION_FEES,bank_fee_foreign_txn,fee_or_penalty,not_applicable,false,none,,routine fee not a distress signal
+BANK_FEES,BANK_FEES_OTHER_BANK_FEES,bank_fee_other,fee_or_penalty,not_applicable,false,none,,routine fee not a distress signal
+BANK_FEES,BANK_FEES_ATM,bank_fee_atm,fee_or_penalty,not_applicable,false,none,,routine fee not a distress signal
+BANK_PENALTIES,BANK_PENALTIES_CASH_ADVANCE_AND_OVERDRAFT_FEES,overdraft_or_cash_advance_fee,fee_or_penalty,not_applicable,false,distress_fee,,
+BANK_PENALTIES,BANK_PENALTIES_INSUFFICIENT_AND_LATE_FEES,insufficient_funds_or_late_fee,fee_or_penalty,not_applicable,false,distress_fee,,
+CHILDCARE_AND_EDUCATION,CHILDCARE_AND_EDUCATION_CHILDCARE_AND_EDUCATION,childcare_education,spend,essential,false,none,,
+DINING,DINING_DINING,dining,spend,discretionary,false,none,,
+DINING,DINING_OTHER_DINING,dining,spend,discretionary,false,none,,collapsed into dining
+DINING,DINING_COFFEE,coffee,spend,discretionary,false,none,,
+DINING,DINING_WINE_BARS_AND_PUBS,bars_pubs,spend,discretionary,false,none,,
+ENTERTAINMENT,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling,spend,discretionary,false,behavioural_risk,,
+ENTERTAINMENT,ENTERTAINMENT_MUSIC_VIDEO_GAMES_TV_AND_MOVIES,entertainment_media,spend,discretionary,false,none,,FLAG - bundles streaming subs with one-off purchases; needs merchant-name split
+ENTERTAINMENT,ENTERTAINMENT_EVENTS_AND_TICKETS,entertainment_events,spend,discretionary,false,none,,
+ENTERTAINMENT,ENTERTAINMENT_OTHER_ENTERTAINMENT,entertainment_other,spend,discretionary,false,none,,
+FOOD_RETAIL,FOOD_RETAIL_GROCERIES,grocer,spend,essential,false,none,,
+FOOD_RETAIL,FOOD_RETAIL_OTHER,food_retail_other,spend,essential,false,none,,
+FOOD_RETAIL,FOOD_RETAIL_LIQUOR_STORES,liquor_store,spend,discretionary,false,none,,
+GENERAL_MERCHANDISE,GENERAL_MERCHANDISE_ONLINE_MARKETPLACES,online_marketplace,spend,mixed_basket,false,none,,category-level basket can't be split further
+GENERAL_MERCHANDISE,GENERAL_MERCHANDISE_OTHER_GENERAL_MERCHANDISE,general_merchandise_other,spend,mixed_basket,false,none,,
+GENERAL_MERCHANDISE,GENERAL_MERCHANDISE_COMPUTERS_AND_ELECTRONICS,electronics,spend,mixed_basket,false,none,,relevant - device-adjacent spend, worth a dedicated feature regardless of necessity split
+GENERAL_MERCHANDISE,GENERAL_MERCHANDISE_CONVENIENCE_STORES,convenience_store,spend,mixed_basket,false,none,,revised from essential - mixed basket in practice
+GENERAL_MERCHANDISE,GENERAL_MERCHANDISE_APPAREL_AND_ACCESSORIES,apparel,spend,mixed_basket,false,none,,revised from discretionary - workwear vs fashion is mixed
+GENERAL_MERCHANDISE,GENERAL_MERCHANDISE_FURNITURE_AND_HARDWARE,furniture_hardware,spend,mixed_basket,false,none,,revised from discretionary - repair vs upgrade is mixed
+GENERAL_MERCHANDISE,GENERAL_MERCHANDISE_DEPARTMENT_STORES,department_store,spend,mixed_basket,false,none,,
+GENERAL_MERCHANDISE,GENERAL_MERCHANDISE_DISCOUNT_STORES,discount_store,spend,mixed_basket,false,none,,revised from essential for consistency with other general merchandise
+GENERAL_MERCHANDISE,GENERAL_MERCHANDISE_SPORTING_GOODS,sporting_goods,spend,mixed_basket,false,none,,
+GENERAL_MERCHANDISE,GENERAL_MERCHANDISE_SUPERSTORES,superstore,spend,mixed_basket,false,none,,revised from essential for consistency
+GENERAL_SERVICES,GENERAL_SERVICES_OTHER_SERVICES,services_other,spend,mixed_basket,false,none,,
+GENERAL_SERVICES,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,financial_services,spend,mixed_basket,false,none,,revised from essential - as mixed as legal/consulting
+GENERAL_SERVICES,GENERAL_SERVICES_CONSULTING_AND_LEGAL_SERVICES,professional_services,spend,mixed_basket,false,none,,revised from discretionary for consistency with financial_services
+GENERAL_SERVICES,GENERAL_SERVICES_HOME_IMPROVEMENT_SERVICES,home_improvement,spend,mixed_basket,false,none,,revised from discretionary - repair vs renovation is mixed
+GENERAL_SERVICES,GENERAL_SERVICES_RELIGIOUS_SERVICES,religious_services,spend,discretionary,false,none,,voluntary giving, kept distinct from mixed-basket retail
+GOVERNMENTS_AND_NON_PROFIT,GOVERNMENTS_AND_NON_PROFIT_GOVERNMENTS_AND_NON_PROFIT,government_nonprofit,spend,essential,false,none,,mandatory payments to govt bodies
+GOVERNMENTS_AND_NON_PROFIT,GOVERNMENTS_AND_NON_PROFIT_DONATIONS,donations,spend,discretionary,false,none,,voluntary
+GOVERNMENTS_AND_NON_PROFIT,GOVERNMENTS_AND_NON_PROFIT_OTHER_GOVERNMENTS_AND_NON_PROFIT,government_nonprofit_other,spend,essential,false,none,,
+INCOME,INCOME_SALARY,salary,income,not_applicable,false,none,true,
+INCOME,INCOME_OTHER,income_other,income,not_applicable,false,none,false,ambiguous/miscellaneous - treat as non-recurring by default
+INCOME,INCOME_GOVERNMENT_INCOME,government_income,income,not_applicable,false,none,true,benefits typically recurring
+INSURANCE_AND_TAX,INSURANCE_AND_TAX_INSURANCE,insurance,spend,essential,false,none,,
+INSURANCE_AND_TAX,INSURANCE_AND_TAX_TAX_PAYMENT,tax_payment,spend,essential,false,none,,
+INTERESTS_AND_DIVIDENDS,INTERESTS_AND_DIVIDENDS_INTERESTS_AND_DIVIDENDS,interest_dividends_received,income,not_applicable,false,none,false,passive income - not treated as regular income
+INTEREST_PAYMENTS,INTEREST_PAYMENTS_INTEREST_CHARGED,interest_charged,fee_or_penalty,not_applicable,true,none,,signals carrying a revolving balance - cost of debt distinct from principal repayment
+INTEREST_PAYMENTS,INTEREST_PAYMENTS_INTEREST_RECEIVED,interest_received,income,not_applicable,false,none,false,
+LOAN_DISBURSEMENTS,LOAN_DISBURSEMENTS_OTHER,loan_disbursement_other,debt_disbursement,not_applicable,true,none,,new borrowing arriving, not spend
+LOAN_DISBURSEMENTS,LOAN_DISBURSEMENTS_BNPL_AND_EWA,bnpl_or_ewa_disbursement,debt_disbursement,not_applicable,true,high_cost_credit,,FLAG - bundles BNPL with Earned Wage Access; needs merchant-name split
+LOAN_DISBURSEMENTS,LOAN_DISBURSEMENTS_CASH_ADVANCES,cash_advance_disbursement,debt_disbursement,not_applicable,true,high_cost_credit,,
+LOAN_DISBURSEMENTS,LOAN_DISBURSEMENTS_PERSONAL,personal_loan_disbursement,debt_disbursement,not_applicable,true,none,,
+LOAN_DISBURSEMENTS,LOAN_DISBURSEMENTS_STUDENT,student_loan_disbursement,debt_disbursement,not_applicable,true,none,,
+LOAN_DISBURSEMENTS,LOAN_DISBURSEMENTS_MORTGAGE_AND_AUTO,mortgage_auto_disbursement,debt_disbursement,not_applicable,true,none,,
+LOAN_PAYMENTS,LOAN_PAYMENTS_BNPL_AND_EWA,bnpl_or_ewa_payment,debt_repayment,essential,true,high_cost_credit,,FLAG - same BNPL/EWA bundling issue as disbursement
+LOAN_PAYMENTS,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,personal_loan_payment,debt_repayment,essential,true,none,,
+LOAN_PAYMENTS,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,credit_card_payment,debt_repayment,essential,true,none,,
+LOAN_PAYMENTS,LOAN_PAYMENTS_OTHER,loan_payment_other,debt_repayment,essential,true,none,,
+LOAN_PAYMENTS,LOAN_PAYMENTS_MORTGAGE_AND_AUTO,mortgage_auto_payment,debt_repayment,essential,true,none,,same necessity as rent; is_debt_related is what distinguishes them
+LOAN_PAYMENTS,LOAN_PAYMENTS_CASH_ADVANCES,cash_advance_payment,debt_repayment,essential,true,high_cost_credit,,
+LOAN_PAYMENTS,LOAN_PAYMENTS_STUDENT_LOAN_PAYMENT,student_loan_payment,debt_repayment,essential,true,none,,
+MEDICAL,MEDICAL_PHARMACIES_AND_SUPPLEMENTS,pharmacy,spend,essential,false,none,,
+MEDICAL,MEDICAL_OTHER_MEDICAL,medical_other,spend,essential,false,none,,
+MEDICAL,MEDICAL_DENTAL_AND_VISION,dental_vision,spend,essential,false,none,,
+MEDICAL,MEDICAL_PRIMARY_CARE,primary_care,spend,essential,false,none,,
+OTHER,OTHER_OTHER,unclassified,unclassified,not_applicable,false,none,,genuinely unclassifiable, not a mapping gap
+PERSONAL_CARE,PERSONAL_CARE_HAIR_AND_BEAUTY,hair_beauty,spend,discretionary,false,none,,
+PERSONAL_CARE,PERSONAL_CARE_GYMS_AND_FITNESS_CENTERS,gym_fitness,spend,discretionary,false,none,,
+PERSONAL_CARE,PERSONAL_CARE_OTHER_PERSONAL_CARE,personal_care_other,spend,discretionary,false,none,,
+PET_CARE_AND_SUPPLIES,PET_CARE_AND_SUPPLIES_PET_SUPPLIES,pet_supplies,spend,discretionary,false,none,,
+PET_CARE_AND_SUPPLIES,PET_CARE_AND_SUPPLIES_VETERINARY_SERVICES,veterinary,spend,essential,false,none,,treated as non-optional care, consistent with medical
+RENT_AND_UTILITIES,RENT_AND_UTILITIES_TELECOMMUNICATIONS,telco,spend,essential,false,none,,
+RENT_AND_UTILITIES,RENT_AND_UTILITIES_GAS_AND_ELECTRICITY,energy_utility,spend,essential,false,none,,
+RENT_AND_UTILITIES,RENT_AND_UTILITIES_RENT,rent,spend,essential,false,none,,is_debt_related=false distinguishes this from mortgage_auto_payment despite same necessity
+RENT_AND_UTILITIES,RENT_AND_UTILITIES_OTHER_UTILITIES,utility_other,spend,essential,false,none,,
+RENT_AND_UTILITIES,RENT_AND_UTILITIES_WATER,water_utility,spend,essential,false,none,,
+RENT_AND_UTILITIES,RENT_AND_UTILITIES_INTERNET_AND_CABLE,internet_cable,spend,essential,false,none,,
+TAX_REFUND,TAX_REFUND_TAX_REFUND,tax_refund,income,not_applicable,false,none,false,one-off annual event - must not be treated as regular income
+TRANSFER_IN,TRANSFER_IN_OTHER,transfer_in_other,transfer_own_accounts,not_applicable,false,none,,
+TRANSFER_IN,TRANSFER_IN_SAVINGS,savings_transfer_in,transfer_own_accounts,not_applicable,false,none,,
+TRANSFER_IN,TRANSFER_IN_TRANSFER_IN_FROM_APPS,p2p_like_in,p2p_transfer,not_applicable,false,none,,distinct from own-account transfers - could indicate informal borrowing
+TRANSFER_IN,TRANSFER_IN_CHECKS_AND_ATM,cash_deposit_in,transfer_own_accounts,not_applicable,false,none,,source of cash deposited is unobservable
+TRANSFER_IN,TRANSFER_IN_INVESTMENT_AND_RETIREMENT_FUNDS,investment_transfer_in,transfer_own_accounts,not_applicable,false,none,,
+TRANSFER_IN,TRANSFER_IN_CHECKING,checking_transfer_in,transfer_own_accounts,not_applicable,false,none,,
+TRANSFER_OUT,TRANSFER_OUT_OTHER,transfer_out_other,transfer_own_accounts,not_applicable,false,none,,
+TRANSFER_OUT,TRANSFER_OUT_SAVINGS,savings_transfer_out,transfer_own_accounts,not_applicable,false,none,,
+TRANSFER_OUT,TRANSFER_OUT_CHECKS_AND_ATM,cash_withdrawal_out,transfer_own_accounts,not_applicable,false,none,,downstream spend of withdrawn cash is unobservable - rising share of this may itself be a signal
+TRANSFER_OUT,TRANSFER_OUT_TRANSFER_OUT_FROM_APPS,p2p_like_out,p2p_transfer,not_applicable,false,none,,
+TRANSFER_OUT,TRANSFER_OUT_INVESTMENT_AND_RETIREMENT_FUNDS,investment_transfer_out,transfer_own_accounts,not_applicable,false,none,,
+TRANSFER_OUT,TRANSFER_OUT_CHECKING,checking_transfer_out,transfer_own_accounts,not_applicable,false,none,,
+TRAVEL_AND_TRANSPORTATION,TRAVEL_AND_TRANSPORTATION_OTHER_TRAVEL_AND_TRANSPORTATION,travel_transport_other,spend,mixed_basket,false,none,,
+TRAVEL_AND_TRANSPORTATION,TRAVEL_AND_TRANSPORTATION_PUBLIC_TRANSIT,public_transit,spend,essential,false,none,,
+TRAVEL_AND_TRANSPORTATION,TRAVEL_AND_TRANSPORTATION_TAXIS_AND_RIDE_SHARES,rideshare_taxi,spend,mixed_basket,false,none,,revised from discretionary - can be essential commute for those without car/transit access; needs frequency/time-of-day signal to disambiguate
+TRAVEL_AND_TRANSPORTATION,TRAVEL_AND_TRANSPORTATION_AUTOMOTIVE,automotive,spend,mixed_basket,false,none,,revised from essential - fuel/repair vs discretionary customization is mixed
+TRAVEL_AND_TRANSPORTATION,TRAVEL_AND_TRANSPORTATION_LODGING,lodging,spend,discretionary,false,none,,leisure travel - kept distinct from mixed-basket cases as clearly discretionary in consumer context
+TRAVEL_AND_TRANSPORTATION,TRAVEL_AND_TRANSPORTATION_FLIGHTS,flights,spend,discretionary,false,none,,

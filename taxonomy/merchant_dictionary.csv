@@ -1,0 +1,322 @@
+normalised_merchant,detailed_category,confidence,source,review_status,notes
+tesco,groceries,high,llm_proposed,pending,
+asda,groceries,high,llm_proposed,pending,
+sainsbury's,groceries,high,llm_proposed,pending,
+co-op,groceries,high,llm_proposed,pending,
+morrisons,groceries,high,llm_proposed,pending,
+aldi,groceries,high,llm_proposed,pending,
+lidl,groceries,high,llm_proposed,pending,
+iceland,groceries,high,llm_proposed,pending,
+spar,groceries,high,llm_proposed,pending,
+one stop,groceries,high,llm_proposed,pending,
+nisa,groceries,high,llm_proposed,pending,
+londis,groceries,high,llm_proposed,pending,
+costcutter,groceries,high,llm_proposed,pending,
+heron foods,groceries,high,llm_proposed,pending,
+waitrose,groceries,high,llm_proposed,pending,
+farmfoods,groceries,high,llm_proposed,pending,
+budgens,groceries,high,llm_proposed,pending,
+premier stores,groceries,high,llm_proposed,pending,
+best-one,groceries,high,llm_proposed,pending,
+centra,groceries,high,llm_proposed,pending,
+keystore,groceries,high,llm_proposed,pending,
+martin mccoll,convenience_store,high,llm_proposed,pending,
+central england co-op,groceries,high,llm_proposed,pending,
+the southern co-op,groceries,high,llm_proposed,pending,
+scotmid co-op,groceries,high,llm_proposed,pending,
+east of england co-op,groceries,high,llm_proposed,pending,
+marks and spencer food,groceries,high,llm_proposed,pending,
+costco,groceries,medium,llm_proposed,pending,"warehouse club - mixed basket; Plaid says superstore, Equifax says dept store"
+mcqueens dairies,groceries,high,llm_proposed,pending,doorstep milk delivery
+bargain booze,alcohol_beer_spirits,high,llm_proposed,pending,age-restricted
+home bargains,discount_store,high,llm_proposed,pending,
+b&m,discount_store,high,llm_proposed,pending,
+poundland,discount_store,high,llm_proposed,pending,
+poundstretcher,discount_store,high,llm_proposed,pending,
+onebelow,discount_store,high,llm_proposed,pending,
+the range,home_accessories,high,llm_proposed,pending,
+wilko.com,home_accessories,high,llm_proposed,pending,
+the works,books,medium,llm_proposed,pending,books/craft discount retailer
+mcdonalds,takeaway,high,llm_proposed,pending,
+mcdonald's,takeaway,high,llm_proposed,pending,
+kfc,takeaway,high,llm_proposed,pending,
+subway,takeaway,high,llm_proposed,pending,
+burger king,takeaway,high,llm_proposed,pending,
+dominos pizza,takeaway,high,llm_proposed,pending,
+pizza hut,takeaway,high,llm_proposed,pending,
+nandos,restaurant_cafe,high,llm_proposed,pending,
+leon,restaurant_cafe,high,llm_proposed,pending,
+greggs,restaurant_cafe,high,llm_proposed,pending,
+costa,restaurant_cafe,high,llm_proposed,pending,
+starbucks,restaurant_cafe,high,llm_proposed,pending,
+caffe nero,restaurant_cafe,high,llm_proposed,pending,
+pret a manger,restaurant_cafe,high,llm_proposed,pending,
+just eat,takeaway,high,llm_proposed,pending,"delivery aggregator - Plaid says DINING, we say takeaway"
+uber eats,takeaway,high,llm_proposed,pending,delivery aggregator
+deliveroo,takeaway,high,llm_proposed,pending,delivery aggregator
+foodhub,takeaway,high,llm_proposed,pending,
+takeaway.je,takeaway,high,llm_proposed,pending,
+wetherspoon,pub_bar,high,llm_proposed,pending,age-restricted
+greene king,pub_bar,high,llm_proposed,pending,age-restricted
+the red lion,pub_bar,medium,llm_proposed,pending,generic pub name - may aggregate many venues
+selecta,confectionary,medium,llm_proposed,pending,vending machine operator
+lavazza professional,confectionary,medium,llm_proposed,pending,workplace coffee vending
+welcome break,convenience_store,medium,llm_proposed,pending,motorway services - mixed fuel/food/retail
+sky bet,gambling_betting,high,llm_proposed,pending,
+skybet,gambling_betting,high,llm_proposed,pending,
+ladbrokes,gambling_betting,high,llm_proposed,pending,
+bet365,gambling_betting,high,llm_proposed,pending,
+paddy power,gambling_betting,high,llm_proposed,pending,
+william hill,gambling_betting,high,llm_proposed,pending,
+betfred,gambling_betting,high,llm_proposed,pending,
+betfair,gambling_betting,high,llm_proposed,pending,
+betvictor,gambling_betting,high,llm_proposed,pending,
+virgin bet,gambling_betting,high,llm_proposed,pending,
+betway,gambling_betting,high,llm_proposed,pending,
+unibet,gambling_betting,high,llm_proposed,pending,
+livescore bet,gambling_betting,high,llm_proposed,pending,
+boylesports,gambling_betting,high,llm_proposed,pending,
+lc international,gambling_betting,high,llm_proposed,pending,Ladbrokes Coral trading entity
+electraworks limit,gambling_casino,high,llm_proposed,pending,Entain/bwin trading entity
+skill on net ltd,gambling_casino,high,llm_proposed,pending,casino operator
+virgin games,gambling_casino,high,llm_proposed,pending,
+monopoly casino,gambling_casino,high,llm_proposed,pending,
+32 red online casino,gambling_casino,high,llm_proposed,pending,
+rainbow riches casino,gambling_casino,high,llm_proposed,pending,
+grosvenor casinos,gambling_casino,high,llm_proposed,pending,
+888 games,gambling_casino,high,llm_proposed,pending,
+tombola,gambling_bingo,high,llm_proposed,pending,
+mecca bingo,gambling_bingo,high,llm_proposed,pending,
+jackpot joy,gambling_bingo,high,llm_proposed,pending,
+sun bingo,gambling_bingo,high,llm_proposed,pending,
+double bubble bingo,gambling_bingo,high,llm_proposed,pending,
+butlers bingo,gambling_bingo,high,llm_proposed,pending,
+buzz group ltd,gambling_bingo,high,llm_proposed,pending,Buzz Bingo
+mrq,gambling_casino,high,llm_proposed,pending,MrQ casino
+the national lottery,gambling_lottery,high,llm_proposed,pending,
+postcode lottery,gambling_lottery,high,llm_proposed,pending,
+lotto land,gambling_lottery,high,llm_proposed,pending,
+that prize guy,prize_competitions,high,llm_proposed,pending,prize competition - gambling-adjacent
+clearpay,bnpl,high,llm_proposed,pending,
+zilch,bnpl,high,llm_proposed,pending,
+klarna,bnpl,high,llm_proposed,pending,
+laybuy,bnpl,high,llm_proposed,pending,
+monzo flex,bnpl,high,llm_proposed,pending,
+paypal credit,bnpl,high,llm_proposed,pending,
+capital one,credit_card_repayment,high,llm_proposed,pending,
+barclaycard,credit_card_repayment,high,llm_proposed,pending,
+vanquis bank,credit_card_repayment,high,llm_proposed,pending,subprime card - Plaid mislabels as personal loan
+aqua,credit_card_repayment,high,llm_proposed,pending,NewDay subprime card
+newday limited,credit_card_repayment,high,llm_proposed,pending,issuer of Aqua/Marbles
+zable credit card,credit_card_repayment,high,llm_proposed,pending,
+american express,credit_card_repayment,high,llm_proposed,pending,
+creation online,retail_finance_repayment,high,llm_proposed,pending,Creation Finance - retail credit
+v12 retail finance,retail_finance_repayment,high,llm_proposed,pending,
+barclays partner finance,retail_finance_repayment,high,llm_proposed,pending,
+very,catalogue_retail,high,llm_proposed,pending,catalogue with embedded credit
+jd williams,catalogue_retail,high,llm_proposed,pending,catalogue with embedded credit
+next directory,catalogue_retail,high,llm_proposed,pending,catalogue with embedded credit
+zopa,personal_loan_repayment,high,llm_proposed,pending,
+lendable,personal_loan_repayment,high,llm_proposed,pending,
+creditspring,payday_loan,high,llm_proposed,pending,subscription lending - high cost
+118 money,payday_loan,high,llm_proposed,pending,high-cost lender
+lending stream,payday_loan,high,llm_proposed,pending,high-cost short-term lender
+lowell financial,debt_collection,high,llm_proposed,pending,
+moorcroft debt recovery,debt_collection,high,llm_proposed,pending,
+cabot,debt_collection,high,llm_proposed,pending,Cabot Credit Management
+raylo,retail_finance_repayment,high,llm_proposed,pending,"RAYLO'S OWN PRODUCT - 11,226 txns. Consider a dedicated leaf"
+revolut,transfer_own_account,medium,llm_proposed,pending,neobank - could be transfer or spend
+monzo,transfer_own_account,medium,llm_proposed,pending,neobank
+starling bank,transfer_own_account,medium,llm_proposed,pending,neobank
+halifax,financial_institution_unspecified,low,llm_proposed,pending,bank name only - purpose unknown
+lloyds,financial_institution_unspecified,low,llm_proposed,pending,
+natwest,financial_institution_unspecified,low,llm_proposed,pending,
+santander bank,financial_institution_unspecified,low,llm_proposed,pending,
+barclays,financial_institution_unspecified,low,llm_proposed,pending,
+nationwide,financial_institution_unspecified,low,llm_proposed,pending,
+tsb,financial_institution_unspecified,low,llm_proposed,pending,
+hsbc,financial_institution_unspecified,low,llm_proposed,pending,
+tesco bank,financial_institution_unspecified,low,llm_proposed,pending,
+paypal,payment_intermediary,high,llm_proposed,pending,obscures underlying merchant
+gocardless,payment_intermediary,high,llm_proposed,pending,
+stripe,payment_intermediary,high,llm_proposed,pending,
+mangopay,payment_intermediary,high,llm_proposed,pending,
+trustly group,payment_intermediary,high,llm_proposed,pending,
+gohenry,prepaid_card,high,llm_proposed,pending,children's prepaid card
+remitly,transfer_international,high,llm_proposed,pending,remittance
+taptap send uk limited,transfer_international,high,llm_proposed,pending,remittance
+coinbase,crypto,high,llm_proposed,pending,
+save the change,savings_transfer,high,llm_proposed,pending,Lloyds round-up
+save the pennies,savings_transfer,high,llm_proposed,pending,round-up
+plum,savings_transfer,high,llm_proposed,pending,
+moneybox,savings_transfer,high,llm_proposed,pending,
+loqbox,savings_transfer,medium,llm_proposed,pending,savings-based credit builder - arguably credit_reporting_service
+universal credit,benefits_state,high,llm_proposed,pending,
+child benefits,benefits_state,high,llm_proposed,pending,
+carers allowance,benefits_state,high,llm_proposed,pending,
+personal independence payment,benefits_state,high,llm_proposed,pending,
+employment and support allowance,benefits_state,high,llm_proposed,pending,
+disability living allowance,benefits_state,high,llm_proposed,pending,
+child tax credit,benefits_state,high,llm_proposed,pending,
+housing benefits,benefits_state,high,llm_proposed,pending,
+pension credit,benefits_state,high,llm_proposed,pending,
+state pension,pension_received,high,llm_proposed,pending,
+child maintenance,income_other_unspecified,medium,llm_proposed,pending,direction-dependent: received or paid
+overpayments,income_other_unspecified,low,llm_proposed,pending,likely benefit overpayment recovery - ambiguous
+hmrc,tax_payment,medium,llm_proposed,pending,direction-dependent: tax paid vs refund received
+hm revenue and customs,tax_payment,medium,llm_proposed,pending,direction-dependent
+british gas,energy,high,llm_proposed,pending,
+utilita,energy,high,llm_proposed,pending,
+ovo energy,energy,high,llm_proposed,pending,
+scottish power,energy,high,llm_proposed,pending,
+octopus energy,energy,high,llm_proposed,pending,
+e.on,energy,high,llm_proposed,pending,
+edf,energy,high,llm_proposed,pending,
+united utilities,water,high,llm_proposed,pending,
+severn trent,water,high,llm_proposed,pending,
+thames water,water,high,llm_proposed,pending,
+anglian water,water,high,llm_proposed,pending,
+tv licensing,tv_licence,high,llm_proposed,pending,
+o2,mobile_phone_contract,high,llm_proposed,pending,
+vodafone,mobile_phone_contract,high,llm_proposed,pending,
+ee mobile,mobile_phone_contract,high,llm_proposed,pending,
+three,mobile_phone_contract,high,llm_proposed,pending,
+sky mobile,mobile_phone_contract,high,llm_proposed,pending,
+tesco mobile,mobile_phone_contract,high,llm_proposed,pending,
+id mobile,mobile_phone_contract,high,llm_proposed,pending,
+giffgaff.com,mobile_phone_contract,high,llm_proposed,pending,
+voxi,mobile_phone_contract,high,llm_proposed,pending,
+smarty,mobile_phone_contract,high,llm_proposed,pending,
+lebara,mobile_phone_contract,high,llm_proposed,pending,
+sky,broadband_tv_phone,high,llm_proposed,pending,Plaid mislabels as telecoms/mobile
+virgin media,broadband_tv_phone,high,llm_proposed,pending,
+bt,broadband_tv_phone,high,llm_proposed,pending,
+talktalk,broadband_tv_phone,high,llm_proposed,pending,
+domestic and general,insurance_general,high,llm_proposed,pending,appliance warranty/insurance
+tfl,public_transport_rail_coach,high,llm_proposed,pending,
+transport for london,public_transport_rail_coach,high,llm_proposed,pending,
+thetrainline,public_transport_rail_coach,high,llm_proposed,pending,
+arriva,public_transport_rail_coach,high,llm_proposed,pending,
+stagecoach,public_transport_rail_coach,high,llm_proposed,pending,
+first bus,public_transport_rail_coach,high,llm_proposed,pending,
+national express,public_transport_rail_coach,high,llm_proposed,pending,
+go north east,public_transport_rail_coach,high,llm_proposed,pending,
+lothian buses,public_transport_rail_coach,high,llm_proposed,pending,
+go south coast,public_transport_rail_coach,high,llm_proposed,pending,
+citylink,public_transport_rail_coach,medium,llm_proposed,pending,Scottish Citylink coaches; may collide with defunct courier
+uber,taxi_rideshare,high,llm_proposed,pending,rides - distinct from uber eats
+bolt,taxi_rideshare,high,llm_proposed,pending,
+shell,fuel,high,llm_proposed,pending,
+bp,fuel,high,llm_proposed,pending,
+esso,fuel,high,llm_proposed,pending,
+texaco,fuel,high,llm_proposed,pending,
+motor fuel group,fuel,high,llm_proposed,pending,
+applegreen,fuel,high,llm_proposed,pending,
+tesco fuel,fuel,high,llm_proposed,pending,
+asda (petrol),fuel,high,llm_proposed,pending,
+morrisons (petrol),fuel,high,llm_proposed,pending,
+sainsbury's petrol,fuel,high,llm_proposed,pending,
+dvla,road_tax,high,llm_proposed,pending,
+ringgo parking,car_parking,high,llm_proposed,pending,
+apcoa parking,car_parking,high,llm_proposed,pending,
+ncp,car_parking,high,llm_proposed,pending,
+mipermit,car_parking,high,llm_proposed,pending,
+pay by phone,car_parking,high,llm_proposed,pending,
+halfords,vehicle_maintenance,high,llm_proposed,pending,
+aa,breakdown_cover,high,llm_proposed,pending,
+rac,breakdown_cover,high,llm_proposed,pending,
+hastings direct,insurance_motor,high,llm_proposed,pending,
+admiral insurance,insurance_motor,high,llm_proposed,pending,
+ryanair,flights,high,llm_proposed,pending,
+easyjet,flights,high,llm_proposed,pending,
+booking.com,accommodation,high,llm_proposed,pending,
+trip.com,accommodation,high,llm_proposed,pending,
+haven holidays,holiday_uk,high,llm_proposed,pending,
+loveholidays.com,holiday_package,high,llm_proposed,pending,
+netflix,streaming_music,high,llm_proposed,pending,video streaming subscription
+spotify,streaming_music,high,llm_proposed,pending,
+disney plus,streaming_music,high,llm_proposed,pending,
+amazon prime video,streaming_music,high,llm_proposed,pending,
+now tv,streaming_music,high,llm_proposed,pending,
+audible,streaming_music,high,llm_proposed,pending,
+prime,streaming_music,medium,llm_proposed,pending,Amazon Prime subscription - 161k txns
+apple app store,software,high,llm_proposed,pending,
+google play,software,high,llm_proposed,pending,
+microsoft,software,high,llm_proposed,pending,Plaid mislabels as computing hardware
+mircosoft,software,high,llm_proposed,pending,misspelling in source data
+adobe,software,high,llm_proposed,pending,
+google,software,medium,llm_proposed,pending,ambiguous - could be Play/Workspace/Ads
+apple,software,medium,llm_proposed,pending,ambiguous - App Store vs hardware
+playstation,gaming_console_pc,high,llm_proposed,pending,
+xbox,gaming_console_pc,high,llm_proposed,pending,
+steamgames,gaming_console_pc,high,llm_proposed,pending,
+nintendo,gaming_console_pc,high,llm_proposed,pending,
+sony,gaming_console_pc,medium,llm_proposed,pending,could be PlayStation or consumer electronics
+play.com,gaming_console_pc,low,llm_proposed,pending,AMBIGUOUS 300k txns - defunct retailer vs Google/PlayStation. NEEDS REVIEW
+tiktok,online_services,medium,llm_proposed,pending,in-app purchases/gifting
+facebook,online_services,medium,llm_proposed,pending,
+onlyfans,adult_entertainment,high,llm_proposed,pending,age-restricted
+ring.com,home_accessories,medium,llm_proposed,pending,smart doorbell - device + subscription
+amazon,marketplace_amazon,high,llm_proposed,pending,
+ebay,marketplace_amazon,medium,llm_proposed,pending,marketplace - consider own leaf
+vinted,marketplace_amazon,medium,llm_proposed,pending,secondhand marketplace - Equifax says fashion
+etsy,marketplace_amazon,medium,llm_proposed,pending,
+aliexpress,marketplace_amazon,high,llm_proposed,pending,
+marketplace,marketplace_amazon,low,llm_proposed,pending,AMBIGUOUS 405k txns - likely Facebook Marketplace. NEEDS REVIEW
+argos,catalogue_retail,high,llm_proposed,pending,
+home retail,catalogue_retail,high,llm_proposed,pending,Argos parent
+marks and spencer,department_store,high,llm_proposed,pending,Equifax mislabels as credit card (M&S Bank)
+primark,clothing_general,high,llm_proposed,pending,
+shein,clothing_general,high,llm_proposed,pending,
+h&m,clothing_general,high,llm_proposed,pending,
+zara,clothing_general,high,llm_proposed,pending,
+asos,clothing_general,high,llm_proposed,pending,
+boohoo,clothing_general,high,llm_proposed,pending,
+new look,clothing_general,high,llm_proposed,pending,
+river island,clothing_general,high,llm_proposed,pending,
+matalan,clothing_general,high,llm_proposed,pending,
+burton,clothing_general,high,llm_proposed,pending,
+next,clothing_general,high,llm_proposed,pending,
+tk maxx,clothing_general,high,llm_proposed,pending,
+pretty little things,clothing_general,high,llm_proposed,pending,
+george at asda,clothing_general,high,llm_proposed,pending,
+jd sports,sportswear,high,llm_proposed,pending,
+sports direct,sportswear,high,llm_proposed,pending,
+nike,sportswear,high,llm_proposed,pending,
+boots,pharmacy,medium,llm_proposed,pending,pharmacy + beauty - genuine mixed basket
+superdrug,pharmacy,medium,llm_proposed,pending,pharmacy + beauty
+savers health,pharmacy,medium,llm_proposed,pending,
+holland & barrett,supplements,high,llm_proposed,pending,
+specsavers,optician,high,llm_proposed,pending,
+currys,computing_devices,high,llm_proposed,pending,
+cex,computing_devices,high,llm_proposed,pending,secondhand electronics
+ikea,home_accessories,high,llm_proposed,pending,
+dunelm,home_accessories,high,llm_proposed,pending,
+b&q (diy.com),home_improvement,high,llm_proposed,pending,
+wickes,home_improvement,high,llm_proposed,pending,
+screwfix,tools,high,llm_proposed,pending,
+toolstation,tools,high,llm_proposed,pending,
+card factory,gifts_flowers,high,llm_proposed,pending,
+moonpig,gifts_flowers,high,llm_proposed,pending,
+smyths toys,toys,high,llm_proposed,pending,
+w.h.smith,books,high,llm_proposed,pending,
+pets at home,pet_supplies,high,llm_proposed,pending,
+vets gen,veterinary,medium,llm_proposed,pending,veterinary practice
+animal friends insurance,insurance_pet,high,llm_proposed,pending,
+royal mail,delivery_courier,high,llm_proposed,pending,
+post office,government_services,medium,llm_proposed,pending,"mixed: postal, banking, bill payment"
+u.s. post office,delivery_courier,low,llm_proposed,pending,US entity in UK data - likely mislabel
+pure gym,gym_fitness,high,llm_proposed,pending,
+the gym website,gym_fitness,high,llm_proposed,pending,
+vue cinemas,cinema,high,llm_proposed,pending,
+cineworld,cinema,high,llm_proposed,pending,
+odeon,cinema,high,llm_proposed,pending,
+legal & general,insurance_life,high,llm_proposed,pending,
+aviva li,insurance_life,high,llm_proposed,pending,
+aviva,insurance_general,high,llm_proposed,pending,
+sunlife,insurance_life,high,llm_proposed,pending,
+parent pay,school_fees,high,llm_proposed,pending,school payment platform
+e,unclassified_other,low,llm_proposed,pending,JUNK STRING 21k txns - truncated merchant name
+current,unclassified_other,low,llm_proposed,pending,JUNK STRING 21k txns
+debit finance,unclassified_other,low,llm_proposed,pending,DD collection agent - underlying purpose unknown
+apple store gb,computing_devices,medium,llm_proposed,pending,Apple retail - hardware

@@ -1,0 +1,1564 @@
+merchant,gold_leaf,alt_leaf,gold_source,plaid_n
+tesco,groceries,,consensus_all_agree,75399
+clearpay,bnpl,,consensus_all_agree,55959
+uber,taxi_rideshare,,consensus_all_agree,43610
+zilch,bnpl,,consensus_all_agree,41558
+asda,groceries,,consensus_all_agree,34272
+sainsbury's,groceries,,consensus_all_agree,30753
+klarna,bnpl,,consensus_all_agree,28332
+co-op,groceries,,consensus_all_agree,25202
+morrisons,groceries,,consensus_all_agree,22890
+uber eats,takeaway,,consensus_all_agree,22103
+aldi,groceries,,consensus_all_agree,21570
+just eat,takeaway,,consensus_all_agree,21479
+google play,software,,adjudicated_llm,19351
+lidl,groceries,,consensus_all_agree,18219
+greggs,restaurant_cafe,,consensus_all_agree,18091
+vinted,marketplace_amazon,,adjudicated_llm,13350
+bet365,gambling_betting,,consensus_all_agree,12987
+home bargains,discount_store,,adjudicated_llm,11392
+ebay,marketplace_amazon,,adjudicated_llm,11260
+shell,fuel,,consensus_all_agree,10801
+capital one,credit_card_repayment,,consensus_all_agree,10479
+paddy power,gambling_betting,,consensus_all_agree,10173
+one stop,convenience_store,,consensus_all_agree,9935
+deliveroo,takeaway,,consensus_all_agree,9919
+the national lottery,gambling_lottery,,consensus_all_agree,9303
+tombola,gambling_bingo,,consensus_all_agree,8991
+o2,mobile_phone_contract,,consensus_all_agree,8782
+b&m,discount_store,,adjudicated_llm,8720
+poundland,discount_store,,consensus_all_agree,8651
+william hill,gambling_betting,,consensus_all_agree,7961
+sky,broadband_tv_phone,,consensus_all_agree,7418
+vodafone,mobile_phone_contract,,consensus_all_agree,7396
+lowell financial,debt_collection,,consensus_all_agree,7381
+betfred,gambling_betting,,consensus_all_agree,6890
+netflix,streaming_music,,adjudicated_llm,6622
+primark,clothing_general,,consensus_all_agree,6436
+kfc,takeaway,,consensus_all_agree,5976
+betfair,gambling_betting,,consensus_all_agree,5730
+nisa,convenience_store,groceries,adjudicated_either,5696
+starbucks,restaurant_cafe,,consensus_all_agree,5473
+motor fuel group,fuel,,consensus_all_agree,5115
+bp,fuel,,consensus_all_agree,5035
+amazon prime video,streaming_music,,adjudicated_llm,4663
+british gas,energy,,consensus_all_agree,4460
+spotify,streaming_music,,consensus_all_agree,4262
+creditspring,personal_loan_repayment,,adjudicated_equifax,4011
+boots,pharmacy,,adjudicated_llm,4002
+superdrug,pharmacy,,adjudicated_llm,3660
+waitrose,groceries,,consensus_all_agree,3647
+virgin games,gambling_casino,,consensus_all_agree,3531
+tv licensing,tv_licence,,consensus_all_agree,3469
+londis,convenience_store,,consensus_all_agree,3286
+virgin bet,gambling_betting,,consensus_all_agree,3205
+arriva,public_transport_rail_coach,,consensus_all_agree,3114
+subway,takeaway,,consensus_all_agree,3020
+microsoft,software,,consensus_all_agree,3017
+ladbrokes,gambling_betting,,consensus_all_agree,2886
+octopus energy,energy,,consensus_all_agree,2857
+costcutter,convenience_store,groceries,adjudicated_either,2751
+zopa,personal_loan_repayment,,consensus_all_agree,2743
+shein,clothing_general,,adjudicated_llm,2661
+barclaycard,credit_card_repayment,,consensus_all_agree,2650
+virgin media,broadband_tv_phone,,consensus_all_agree,2643
+card factory,gifts_flowers,,consensus_all_agree,2563
+ovo energy,energy,,consensus_all_agree,2539
+betvictor,gambling_betting,,consensus_all_agree,2400
+spar,convenience_store,groceries,adjudicated_either,2396
+paypal,payment_intermediary,,consensus_all_agree,2288
+the range,home_accessories,,consensus_all_agree,2261
+screwfix,tools,,consensus_all_agree,2252
+pets at home,pet_supplies,,consensus_all_agree,2189
+gocardless,payment_intermediary,,adjudicated_llm,2161
+tesco mobile,mobile_phone_contract,,consensus_all_agree,2094
+burger king,takeaway,,consensus_all_agree,2059
+vanquis bank,credit_card_repayment,,consensus_all_agree,2040
+heart bingo,gambling_bingo,,consensus_all_agree,2005
+argos,catalogue_retail,,consensus_all_agree,1908
+aviva,insurance_general,,consensus_all_agree,1791
+sports direct,sportswear,,consensus_all_agree,1778
+betway,gambling_betting,,consensus_all_agree,1767
+admiral,insurance_general,,adjudicated_equifax,1747
+gohenry,prepaid_card,,consensus_all_agree,1736
+save the pennies,savings_transfer,,consensus_all_agree,1727
+costco,cash_and_carry,department_store,adjudicated_either,1721
+scottish power,energy,,consensus_all_agree,1618
+id mobile,mobile_phone_contract,,consensus_all_agree,1600
+very,catalogue_retail,,consensus_all_agree,1557
+royal mail,delivery_courier,,consensus_all_agree,1493
+pret a manger,restaurant_cafe,,adjudicated_llm,1481
+halfords,vehicle_maintenance,,consensus_all_agree,1421
+dvla,road_tax,,consensus_all_agree,1361
+lendable,personal_loan_repayment,,consensus_all_agree,1298
+first bus,public_transport_rail_coach,,consensus_all_agree,1292
+postcode lottery,gambling_lottery,,consensus_all_agree,1289
+remitly,transfer_international,,consensus_all_agree,1277
+matalan,clothing_general,,adjudicated_llm,1230
+mcqueens dairies,groceries_specialist,,adjudicated_llm,1149
+three,mobile_phone_contract,,consensus_all_agree,1107
+lebara,mobile_phone_contract,,consensus_all_agree,1090
+moneybox,savings_transfer,,consensus_all_agree,1066
+sky mobile,mobile_phone_contract,,consensus_all_agree,1064
+onlyfans,adult_entertainment,,adjudicated_llm,1049
+virgin money,financial_institution_unspecified,,consensus_all_agree,1044
+poundstretcher,discount_store,,consensus_all_agree,1036
+tk maxx,clothing_general,,consensus_all_agree,1007
+united utilities,water,,consensus_all_agree,996
+booking.com,accommodation,,consensus_all_agree,968
+voxi,mobile_phone_contract,,consensus_all_agree,961
+ikea,home_accessories,,consensus_all_agree,961
+v12 retail finance,retail_finance_repayment,,consensus_all_agree,956
+aliexpress,retail_tv_online_shopping,,consensus_all_agree,940
+caffe nero,restaurant_cafe,,consensus_all_agree,930
+esso,fuel,,consensus_all_agree,930
+national express,public_transport_rail_coach,,consensus_all_agree,925
+odeon,cinema,,consensus_all_agree,923
+currys,electrical_goods,,adjudicated_equifax,918
+ryanair,flights,,consensus_all_agree,891
+bolt,taxi_rideshare,,consensus_all_agree,884
+roblox,gaming_online,,consensus_all_agree,876
+zara,clothing_general,,consensus_all_agree,876
+cineworld,cinema,,consensus_all_agree,872
+jd williams,catalogue_retail,,adjudicated_llm,850
+halifax,financial_institution_unspecified,,consensus_all_agree,840
+easyjet,flights,,consensus_all_agree,828
+centra,convenience_store,,consensus_all_agree,827
+dunelm,home_accessories,,consensus_all_agree,822
+mipermit,car_parking,,consensus_all_agree,819
+lending stream,payday_loan,,consensus_all_agree,801
+go south coast,public_transport_rail_coach,,consensus_all_agree,792
+hmrc,tax_payment,,consensus_all_agree,778
+h&m,clothing_general,,consensus_all_agree,777
+lothian buses,public_transport_rail_coach,,consensus_all_agree,771
+snap finance,retail_finance_repayment,,consensus_all_agree,762
+moonpig,gifts_flowers,,consensus_all_agree,757
+bargain booze,alcohol_beer_spirits,,consensus_all_agree,739
+thames water,water,,consensus_all_agree,737
+nintendo,gaming_console_pc,,consensus_all_agree,730
+mecca bingo,gambling_bingo,,consensus_all_agree,718
+severn trent,water,,consensus_all_agree,716
+adobe,software,,consensus_all_agree,709
+translink,public_transport_rail_coach,,consensus_all_agree,697
+apcoa parking,car_parking,,consensus_all_agree,696
+the works,books,,consensus_all_agree,684
+animal friends insurance,insurance_pet,,consensus_all_agree,682
+monopoly casino,gambling_casino,,consensus_all_agree,672
+next,clothing_general,,consensus_all_agree,659
+greene king,pub_bar,,consensus_all_agree,636
+sunlife,insurance_life,,consensus_all_agree,634
+toolstation,tools,,consensus_all_agree,634
+taco bell,takeaway,,adjudicated_llm,631
+creation,retail_finance_repayment,,consensus_all_agree,628
+bpo collections,debt_collection,,consensus_all_agree,624
+kwiff,gambling_betting,,consensus_all_agree,619
+plum,savings_transfer,,consensus_all_agree,612
+new look,clothing_general,,adjudicated_llm,607
+facebook,online_services,,adjudicated_llm,603
+betmgm,gambling_betting,,consensus_all_agree,603
+experian,credit_reporting_service,,consensus_all_agree,603
+specsavers,optician,,consensus_all_agree,592
+anglian water,water,,consensus_all_agree,581
+go north east,public_transport_rail_coach,,consensus_all_agree,580
+coinbase,crypto,,consensus_all_agree,545
+selecta,confectionary,,consensus_all_agree,536
+patreon,online_services,memberships,adjudicated_either,535
+utilita,energy,,consensus_all_agree,535
+burton,clothing_mens,,consensus_all_agree,531
+nationwide,financial_institution_unspecified,,consensus_all_agree,520
+yorkshire water,water,,consensus_all_agree,518
+premier inn,accommodation,,consensus_all_agree,515
+pizza hut,takeaway,,consensus_all_agree,505
+clover casino,gambling_casino,,consensus_all_agree,489
+omaze,prize_competitions,,adjudicated_llm,467
+pet health club,veterinary,,adjudicated_equifax,460
+jd sports,sportswear,,consensus_all_agree,454
+holland & barrett,supplements,,adjudicated_llm,447
+ocado,groceries,,consensus_all_agree,446
+paypal credit,bnpl,,adjudicated_equifax,446
+moneybarn,car_finance_repayment,,consensus_all_agree,441
+livescore bet,gambling_betting,,consensus_all_agree,438
+boohoo,clothing_general,,adjudicated_llm,437
+now tv,streaming_music,,adjudicated_llm,436
+travelodge,accommodation,,consensus_all_agree,433
+barclays,financial_institution_unspecified,,consensus_all_agree,425
+aqua,credit_card_repayment,,consensus_all_agree,424
+booker,cash_and_carry,,consensus_all_agree,422
+river island,clothing_general,,consensus_all_agree,407
+lavazza professional,confectionary,,consensus_all_agree,401
+selfridges,department_store,,consensus_all_agree,378
+royal london,insurance_life,,consensus_all_agree,375
+skill on net ltd,gambling_casino,,consensus_all_agree,374
+black horse,car_finance_repayment,,consensus_all_agree,366
+volkswagen financial services,car_finance_repayment,,consensus_all_agree,359
+mr lender,payday_loan,,consensus_all_agree,358
+the entertainer,toys,,adjudicated_llm,357
+smarty,mobile_phone_contract,,consensus_all_agree,355
+scotrail,public_transport_rail_coach,,consensus_all_agree,351
+worldremit,transfer_international,,consensus_all_agree,350
+waterstones,books,,consensus_all_agree,342
+lottomart,gambling_lottery,,consensus_all_agree,342
+lycamobile,mobile_phone_contract,,consensus_all_agree,334
+stop & shop,groceries,convenience_store,adjudicated_either,331
+m6 toll,tolls,,consensus_all_agree,328
+startline motor finance,car_finance_repayment,,consensus_all_agree,325
+canva,software,,adjudicated_llm,325
+haven holidays,holiday_uk,,consensus_all_agree,322
+nike,sportswear,,consensus_all_agree,317
+southern water,water,,consensus_all_agree,316
+toby carvery,restaurant_cafe,,consensus_all_agree,315
+first glasgow,public_transport_rail_coach,,consensus_all_agree,314
+hobbycraft,arts_crafts,,consensus_all_agree,312
+max spielmann,photography_services,printing_services,adjudicated_either,308
+ageas,insurance_general,,consensus_all_agree,305
+wickes,home_improvement,,consensus_all_agree,304
+boylesports,gambling_betting,,consensus_all_agree,303
+depop,marketplace_amazon,,adjudicated_llm,299
+shoe zone,footwear,,consensus_all_agree,296
+littlewoods,catalogue_retail,,consensus_all_agree,295
+greater anglia,public_transport_rail_coach,,consensus_all_agree,295
+euro car parks,car_parking,,consensus_all_agree,292
+airbnb,accommodation,,consensus_all_agree,291
+unison,trade_union,,consensus_all_agree,291
+ncp,car_parking,,consensus_all_agree,291
+mbna,credit_card_repayment,,consensus_all_agree,290
+on the beach,holiday_package,,consensus_all_agree,290
+the royal oak,pub_bar,,consensus_all_agree,289
+gala bingo,gambling_bingo,,consensus_all_agree,280
+qvc,retail_tv_online_shopping,,consensus_all_agree,276
+beryl,bicycle,,adjudicated_llm,273
+xbox,gaming_console_pc,,consensus_all_agree,273
+cancer research uk,charitable_donation,,consensus_all_agree,272
+euro car parts,spares_repairs,,adjudicated_llm,268
+oxford bus company,public_transport_rail_coach,,consensus_all_agree,266
+chopstix,takeaway,,consensus_all_agree,262
+axa,insurance_general,,consensus_all_agree,247
+supervalu,groceries,,consensus_all_agree,247
+parkdean resorts,holiday_uk,,adjudicated_llm,247
+etsy,marketplace_amazon,,adjudicated_llm,238
+jd gyms,gym_fitness,,consensus_all_agree,236
+first west yorkshire,public_transport_rail_coach,,consensus_all_agree,234
+linkedin,online_services,web_services,adjudicated_either,233
+affinity water,water,,consensus_all_agree,232
+central convenience stores,convenience_store,,adjudicated_llm,232
+scottish widows,insurance_life,,consensus_all_agree,232
+10bet,gambling_betting,,consensus_all_agree,231
+blue motor finance,car_finance_repayment,,consensus_all_agree,223
+motonovo finance,car_finance_repayment,,consensus_all_agree,222
+east of england co-op,groceries,,consensus_all_agree,221
+premier stores,convenience_store,,consensus_all_agree,219
+plymouth citybus,public_transport_rail_coach,,consensus_all_agree,217
+hmv,physical_media,,adjudicated_llm,215
+aramark,catering,,consensus_all_agree,214
+the modern milkman,groceries,,consensus_all_agree,211
+reading transport limited,public_transport_rail_coach,,consensus_all_agree,211
+martin mccoll,convenience_store,,consensus_all_agree,207
+wessex water,water,,consensus_all_agree,206
+loungers,restaurant_cafe,pub_bar,adjudicated_either,205
+nottingham city transport,public_transport_rail_coach,,consensus_all_agree,202
+marshmallow insurance,insurance_motor,,consensus_all_agree,200
+costa,restaurant_cafe,,consensus_all_agree,198
+vpz,vaping,,consensus_all_agree,195
+sse,energy,,consensus_all_agree,194
+godaddy,web_services,,consensus_all_agree,194
+barclays partner finance,retail_finance_repayment,,consensus_all_agree,193
+lottosocial,gambling_lottery,,consensus_all_agree,192
+itsu,restaurant_cafe,,consensus_all_agree,190
+power ni,energy,,consensus_all_agree,189
+pra group,debt_collection,,consensus_all_agree,188
+go outdoors,clothing_outdoor,,adjudicated_llm,188
+british heart foundation,charity_shop,,adjudicated_llm,188
+footasylum,footwear,,consensus_all_agree,187
+schuh,footwear,,adjudicated_llm,187
+zego,insurance_motor,,consensus_all_agree,185
+that prize guy,prize_competitions,,adjudicated_llm,184
+decathlon,sports_equipment,,consensus_all_agree,183
+better,gym_fitness,,consensus_all_agree,181
+tim hortons,restaurant_cafe,,consensus_all_agree,181
+the crown & sceptre,pub_bar,,consensus_all_agree,181
+popeyes,takeaway,,adjudicated_llm,178
+adidas,sportswear,,consensus_all_agree,177
+revolucion de cuba,pub_bar,,adjudicated_llm,176
+thameslink,public_transport_rail_coach,,consensus_all_agree,174
+wix,web_services,,consensus_all_agree,174
+gather & gather,catering,,consensus_all_agree,174
+crunchyroll,streaming_music,,adjudicated_llm,174
+gousto,groceries,groceries_specialist,adjudicated_either,173
+1st central,insurance_motor,,consensus_all_agree,173
+harvester,restaurant_cafe,,consensus_all_agree,169
+texaco,fuel,,consensus_all_agree,168
+youtube premium,streaming_music,,adjudicated_llm,167
+santander bank,financial_institution_unspecified,,consensus_all_agree,166
+lottogo,gambling_lottery,,consensus_all_agree,164
+denplan,dentist,,consensus_all_agree,163
+direct line,insurance_general,,consensus_all_agree,163
+wizz air,flights,,consensus_all_agree,162
+ryman,stationery,,adjudicated_llm,162
+travis perkins,home_improvement,,consensus_all_agree,159
+betano,gambling_betting,,consensus_all_agree,159
+the swan,pub_bar,,consensus_all_agree,159
+south west water,water,,consensus_all_agree,158
+plusnet,broadband_tv_phone,,consensus_all_agree,155
+radstock co-operative,groceries,,consensus_all_agree,154
+alton towers,days_out,,consensus_all_agree,153
+victoria's secret,clothing_womens,,consensus_all_agree,153
+g2a,gaming_console_pc,,consensus_all_agree,153
+the red lion,pub_bar,,consensus_all_agree,152
+london north eastern railway,public_transport_rail_coach,,consensus_all_agree,151
+world duty free,airport_spend,,consensus_all_agree,149
+hallmark,gifts_flowers,,consensus_all_agree,148
+loans 2 go,payday_loan,,consensus_all_agree,146
+keystore,convenience_store,groceries,adjudicated_either,146
+warren james,jewellery,,consensus_all_agree,146
+talktalk,broadband_tv_phone,,consensus_all_agree,143
+waggel,insurance_pet,,consensus_all_agree,141
+cdkeys,gaming_console_pc,,consensus_all_agree,141
+the white lion,pub_bar,,consensus_all_agree,141
+smarkets,gambling_betting,,consensus_all_agree,140
+school gateway,school_fees,,adjudicated_llm,139
+clarks,footwear,,adjudicated_llm,138
+pharmacy2u,pharmacy,,adjudicated_llm,137
+uniqlo,clothing_general,,consensus_all_agree,134
+brighton & hove buses,public_transport_rail_coach,,consensus_all_agree,134
+blackpool transport,public_transport_rail_coach,,consensus_all_agree,134
+bershka,clothing_general,,consensus_all_agree,131
+the white horse,pub_bar,,consensus_all_agree,130
+rowlands pharmacy,pharmacy,,consensus_all_agree,129
+house of fraser,department_store,,consensus_all_agree,127
+gofundme,charitable_donation,,consensus_all_agree,126
+tui,holiday_package,,consensus_all_agree,125
+uk fuels,fuel,,consensus_all_agree,124
+mountain warehouse,clothing_outdoor,,adjudicated_llm,122
+fonacab,taxi_rideshare,,consensus_all_agree,122
+stripe,payment_intermediary,,adjudicated_llm,122
+tails.com,pet_supplies,,adjudicated_llm,121
+kings college hospital,hospital,,consensus_all_agree,120
+dropbox,software,,adjudicated_equifax,120
+the white hart,pub_bar,,consensus_all_agree,120
+durham county council,council_tax,,consensus_all_agree,119
+the fragrance shop,fragrances,,consensus_all_agree,119
+fashionworld,clothing_womens,,adjudicated_equifax,118
+cardiff bus,public_transport_rail_coach,,consensus_all_agree,116
+black sheep coffee,restaurant_cafe,,consensus_all_agree,115
+abc taxis,taxi_rideshare,,consensus_all_agree,115
+fife council,council_tax,,consensus_all_agree,114
+ifl pet insurance,insurance_pet,,consensus_all_agree,114
+chicken cottage,takeaway,,consensus_all_agree,112
+center parcs,holiday_uk,,adjudicated_llm,112
+m&s bank,financial_institution_unspecified,,consensus_all_agree,112
+hotel chocolat,confectionary,,adjudicated_llm,111
+flamingo land,days_out,,consensus_all_agree,111
+medivet,veterinary,,consensus_all_agree,111
+transfergo,transfer_international,,consensus_all_agree,111
+joe & the juice,restaurant_cafe,takeaway,adjudicated_either,111
+pure gym,gym_fitness,,consensus_all_agree,110
+botb,prize_competitions,,adjudicated_llm,109
+parimatch,gambling_betting,,consensus_all_agree,109
+northumbrian water,water,,consensus_all_agree,109
+southeastern,public_transport_rail_coach,,consensus_all_agree,108
+slimming world,weight_loss,,consensus_all_agree,108
+swiftcover,insurance_general,,adjudicated_equifax,107
+cornwall council,council_tax,,consensus_all_agree,106
+thorpe park,days_out,,consensus_all_agree,106
+double bubble bingo,gambling_bingo,,consensus_all_agree,105
+skrill,payment_intermediary,,consensus_all_agree,105
+bargain world,discount_store,,consensus_all_agree,105
+checkmyfile,credit_reporting_service,,consensus_all_agree,104
+beauty outlet,health_beauty_general,,adjudicated_llm,104
+lookfantastic,health_beauty_general,,adjudicated_llm,103
+samsung finance glow,retail_finance_repayment,,consensus_all_agree,103
+all bar one,pub_bar,,consensus_all_agree,102
+soundcloud,streaming_music,,consensus_all_agree,102
+turtle bay,restaurant_cafe,,consensus_all_agree,100
+royal voluntary service,charitable_donation,,consensus_all_agree,100
+holiday inn,accommodation,,consensus_all_agree,100
+debenhams,department_store,,consensus_all_agree,99
+home essentials,home_accessories,,consensus_all_agree,99
+rspca,charitable_donation,,consensus_all_agree,99
+help to save,savings_transfer,,consensus_all_agree,98
+vision express,optician,,consensus_all_agree,98
+schoolmoney,school_fees,,adjudicated_llm,98
+protect your bubble,insurance_other,,consensus_all_agree,97
+coral,gambling_betting,,consensus_all_agree,96
+first cymru,public_transport_rail_coach,,consensus_all_agree,96
+pets corner,pet_supplies,,consensus_all_agree,95
+the rising sun,pub_bar,,consensus_all_agree,94
+crypto.com,crypto,,consensus_all_agree,94
+harrods,department_store,,consensus_all_agree,93
+the windmill,pub_bar,,consensus_all_agree,93
+debt support service,debt_management_plan,,consensus_all_agree,93
+parcel2go,delivery_courier,,consensus_all_agree,93
+supercell,gaming_mobile,,adjudicated_llm,93
+topps tiles,home_improvement,,consensus_all_agree,92
+myprotein,supplements,,consensus_all_agree,91
+the phoenix,pub_bar,,consensus_all_agree,89
+first south yorkshire,public_transport_rail_coach,,consensus_all_agree,89
+cashfloat,payday_loan,,consensus_all_agree,86
+transport for wales,public_transport_rail_coach,,consensus_all_agree,84
+so energy,energy,,consensus_all_agree,84
+expedia,flights,,adjudicated_equifax,83
+homesense,home_accessories,,consensus_all_agree,82
+muffin break,restaurant_cafe,,consensus_all_agree,81
+the beehive,pub_bar,,consensus_all_agree,81
+portsmouth water,water,,consensus_all_agree,81
+paysend,transfer_international,,consensus_all_agree,81
+super pound saver,discount_store,,adjudicated_llm,81
+birmingham city council,council_tax,,consensus_all_agree,81
+kokoro,restaurant_cafe,takeaway,adjudicated_either,81
+gail's bakery,restaurant_cafe,,consensus_all_agree,81
+west midlands metro,public_transport_rail_coach,,consensus_all_agree,79
+competition fox,prize_competitions,,adjudicated_llm,79
+epic games,gaming_console_pc,,consensus_all_agree,79
+urban outfitters,clothing_general,,consensus_all_agree,77
+hyperoptic,broadband_tv_phone,,consensus_all_agree,77
+budget energy,energy,,consensus_all_agree,77
+7-eleven,convenience_store,,consensus_all_agree,75
+gails,restaurant_cafe,,consensus_all_agree,75
+the perfume shop,fragrances,,consensus_all_agree,75
+o'neills,pub_bar,,consensus_all_agree,75
+glossybox,health_beauty_general,,adjudicated_llm,74
+marriott,accommodation,,consensus_all_agree,74
+paymentico,payment_intermediary,,consensus_all_agree,74
+equifax,credit_reporting_service,,consensus_all_agree,73
+funky pigeon,gifts_flowers,,consensus_all_agree,73
+jet2holidays,holiday_package,,consensus_all_agree,73
+the bull,pub_bar,,consensus_all_agree,71
+uphold,crypto,,adjudicated_llm,70
+click competitions,prize_competitions,,adjudicated_llm,70
+vistaprint,printing_services,,adjudicated_llm,70
+lexington catering,catering,,consensus_all_agree,70
+sky bet,gambling_betting,,consensus_all_agree,70
+zizzi,restaurant_cafe,,consensus_all_agree,70
+bupa,insurance_health,,consensus_all_agree,69
+cats protection,charitable_donation,,consensus_all_agree,69
+natwest,financial_institution_unspecified,,consensus_all_agree,69
+flannels,clothing_general,,adjudicated_llm,68
+the bike club,bicycle,,adjudicated_llm,67
+best-one,convenience_store,,consensus_all_agree,67
+mcbookie,gambling_betting,,consensus_all_agree,67
+la redoute,catalogue_retail,clothing_general,adjudicated_either,67
+forbidden planet,comics,books,adjudicated_either,66
+thortful,gifts_flowers,,consensus_all_agree,64
+longleat,days_out,,consensus_all_agree,64
+pandora,jewellery,,consensus_all_agree,64
+accord mortgages,mortgage,,consensus_all_agree,63
+just park,car_parking,,consensus_all_agree,63
+skyline taxis,taxi_rideshare,,consensus_all_agree,63
+the kings head,pub_bar,,consensus_all_agree,62
+shake shack,restaurant_cafe,takeaway,adjudicated_either,61
+winemark,alcohol_wine,,consensus_all_agree,61
+dhl,delivery_courier,,consensus_all_agree,60
+fenwick,department_store,,consensus_all_agree,60
+sainsbury's bank,financial_institution_unspecified,,consensus_all_agree,60
+carphone warehouse,mobile_handset,,consensus_all_agree,59
+talksportbet,gambling_betting,,consensus_all_agree,59
+hastings direct,insurance_motor,,consensus_all_agree,57
+squarespace,web_services,,consensus_all_agree,57
+agoda,accommodation,,consensus_all_agree,56
+lenstore,optician,,consensus_all_agree,55
+talk mobile,mobile_phone_contract,,consensus_all_agree,55
+carrefour,groceries,,adjudicated_llm,55
+rcp parking,car_parking,,consensus_all_agree,55
+virgin active,gym_fitness,,consensus_all_agree,55
+cash generator,pawnbroker,,consensus_all_agree,55
+dobbies garden centre,garden,,consensus_all_agree,54
+travelex,foreign_currency,,consensus_all_agree,54
+claire's,jewellery,,consensus_all_agree,54
+capquest,debt_collection,,consensus_all_agree,54
+brewdog,pub_bar,,consensus_all_agree,53
+pricewise supermarket,groceries,,consensus_all_agree,53
+kwik tan,beauty_treatment,,consensus_all_agree,52
+leeds city council,council_tax,,consensus_all_agree,52
+zurich,insurance_general,,consensus_all_agree,51
+moonpay,crypto,,consensus_all_agree,51
+hiscox,insurance_general,,consensus_all_agree,50
+figma,software,,consensus_all_agree,50
+roxy ball room,entertainment_other,pub_bar,adjudicated_either,50
+247 money,car_finance_repayment,,adjudicated_equifax,50
+medexpress,pharmacy,,consensus_all_agree,49
+colchester zoo,days_out,,consensus_all_agree,49
+leicester city council,council_tax,,consensus_all_agree,49
+the botanist,pub_bar,,consensus_all_agree,49
+first york,public_transport_rail_coach,,consensus_all_agree,49
+the tanning shop,beauty_treatment,,consensus_all_agree,49
+treatwell,beauty_treatment,,adjudicated_llm,49
+tesco bank,financial_institution_unspecified,,consensus_all_agree,49
+skechers,footwear,,adjudicated_llm,48
+fibrus,broadband_tv_phone,,consensus_all_agree,48
+marks and spencer,department_store,,adjudicated_llm,48
+walkabout,pub_bar,,adjudicated_llm,48
+las iguanas,restaurant_cafe,,consensus_all_agree,48
+quinnbet,gambling_betting,,consensus_all_agree,47
+aig,insurance_general,,consensus_all_agree,47
+pizzaexpress,restaurant_cafe,,consensus_all_agree,47
+german doner kebab,takeaway,,consensus_all_agree,47
+hayu,streaming_music,,adjudicated_llm,46
+yates,pub_bar,,consensus_all_agree,46
+parsons bakery,restaurant_cafe,,consensus_all_agree,46
+casumo,gambling_casino,,consensus_all_agree,46
+marie curie,charitable_donation,,consensus_all_agree,45
+cabot,debt_collection,,consensus_all_agree,45
+majestic wine,alcohol_wine,,consensus_all_agree,45
+butlins,holiday_uk,,consensus_all_agree,45
+north lanarkshire council,council_tax,,consensus_all_agree,44
+superdry,clothing_general,,consensus_all_agree,44
+petrogas,fuel,,consensus_all_agree,44
+pepper money,mortgage,,adjudicated_equifax,44
+gmb trade union,trade_union,,consensus_all_agree,44
+yo! sushi,restaurant_cafe,,consensus_all_agree,43
+london borough of redbridge,council_tax,,consensus_all_agree,43
+the railway inn,pub_bar,,consensus_all_agree,43
+london zoo,days_out,,consensus_all_agree,43
+beyond retro,clothing_general,,consensus_all_agree,42
+intrum,debt_collection,,consensus_all_agree,42
+bella italia,restaurant_cafe,,consensus_all_agree,42
+new kwiki mart,convenience_store,,consensus_all_agree,42
+bristol city council,council_tax,,consensus_all_agree,42
+wildwood,restaurant_cafe,,consensus_all_agree,42
+chester zoo,days_out,,consensus_all_agree,42
+wynsors,footwear,,adjudicated_llm,42
+thomas the baker,restaurant_cafe,,consensus_all_agree,41
+rspb,charitable_donation,,consensus_all_agree,41
+calvin klein,clothing_general,,consensus_all_agree,41
+london borough of ealing,council_tax,,consensus_all_agree,41
+empire casino,gambling_casino,,consensus_all_agree,41
+the kingfisher,pub_bar,,consensus_all_agree,41
+vanguard,investment_general,,consensus_all_agree,41
+wateraid,charitable_donation,,consensus_all_agree,40
+elior,catering,,consensus_all_agree,40
+green flag,breakdown_cover,,consensus_all_agree,40
+nutmeg,investment_general,,consensus_all_agree,40
+tfgm,public_transport_rail_coach,,consensus_all_agree,40
+fitness first,gym_fitness,,consensus_all_agree,40
+secure trust bank,financial_institution_unspecified,,consensus_all_agree,40
+transferwise,transfer_international,,consensus_all_agree,40
+jewson,home_improvement,,consensus_all_agree,40
+centrica,energy,,consensus_all_agree,40
+london overground,public_transport_rail_coach,,consensus_all_agree,40
+save the children,charitable_donation,,consensus_all_agree,40
+anyvan,delivery_courier,,adjudicated_llm,40
+high peak borough council,council_tax,,consensus_all_agree,39
+liverpool city council,council_tax,,consensus_all_agree,39
+shelter,charitable_donation,,consensus_all_agree,39
+little dessert shop,restaurant_cafe,,consensus_all_agree,39
+freedom leisure,gym_fitness,,consensus_all_agree,39
+cornish bakehouse,restaurant_cafe,takeaway,adjudicated_either,38
+lex autolease,car_lease,,consensus_all_agree,38
+parkonomy,car_parking,,consensus_all_agree,38
+grattan,catalogue_retail,,consensus_all_agree,38
+dogs trust,charitable_donation,,consensus_all_agree,38
+h samuel,jewellery,,consensus_all_agree,38
+the cricketers,pub_bar,,adjudicated_llm,38
+wasabi,restaurant_cafe,,consensus_all_agree,37
+eat,restaurant_cafe,,consensus_all_agree,37
+diamond bus,public_transport_rail_coach,,consensus_all_agree,37
+accessorize,jewellery,,adjudicated_equifax,37
+pizza express,restaurant_cafe,,adjudicated_llm,36
+kwik fit,vehicle_maintenance,,consensus_all_agree,36
+hm land registry,government_services,,consensus_all_agree,36
+scope,charitable_donation,,consensus_all_agree,36
+the wine cellar,alcohol_wine,,consensus_all_agree,36
+vets4pets,veterinary,,consensus_all_agree,36
+united taxis,taxi_rideshare,,consensus_all_agree,36
+thistle insurance,insurance_general,,adjudicated_llm,36
+trustly group,payment_intermediary,,consensus_all_agree,36
+coach and horses,pub_bar,,consensus_all_agree,35
+hollywoodbets,gambling_betting,,consensus_all_agree,35
+payplan,debt_management_plan,,consensus_all_agree,35
+emirates,flights,,consensus_all_agree,35
+eurostar,ferry_rail_travel,,consensus_all_agree,35
+epson,computer_peripherals,office_equipment,adjudicated_either,35
+mojang,gaming_console_pc,,adjudicated_llm,35
+macmillan lottery,gambling_lottery,,consensus_all_agree,35
+circuit laundry,laundry,,consensus_all_agree,35
+best western,accommodation,,consensus_all_agree,34
+bonprix,clothing_general,,consensus_all_agree,34
+the wheatsheaf,pub_bar,,consensus_all_agree,34
+ggpoker,gambling_casino,,consensus_all_agree,33
+wineflair,alcohol_wine,,consensus_all_agree,33
+foxy bingo,gambling_bingo,,consensus_all_agree,33
+fedex,delivery_courier,,consensus_all_agree,33
+portsmouth city council,council_tax,,consensus_all_agree,33
+great western railway,public_transport_rail_coach,,consensus_all_agree,33
+reward gateway,employee_benefits,,consensus_all_agree,33
+boux avenue,clothing_womens,,adjudicated_llm,32
+pizza gogo,takeaway,,consensus_all_agree,32
+lucky seven taxis,taxi_rideshare,,consensus_all_agree,32
+chessington world of adventures,days_out,,consensus_all_agree,32
+mersey travel,public_transport_rail_coach,,consensus_all_agree,32
+perfect pet,insurance_pet,,adjudicated_equifax,32
+saltrock surfwear,clothing_outdoor,,adjudicated_llm,31
+prezzo,restaurant_cafe,,consensus_all_agree,31
+the tanning rooms,beauty_treatment,,adjudicated_llm,31
+pet protect,insurance_pet,,consensus_all_agree,31
+compass group,catering,,consensus_all_agree,31
+crocs,footwear,,adjudicated_llm,30
+reading borough council,council_tax,,consensus_all_agree,30
+the bell inn,pub_bar,,consensus_all_agree,29
+east yorkshire mot,vehicle_mot,,consensus_all_agree,29
+wayfair,home_accessories,,consensus_all_agree,29
+feel good contacts,optician,,adjudicated_llm,29
+ann summers,adult_products,,adjudicated_llm,29
+anytime fitness,gym_fitness,,consensus_all_agree,29
+the nags head,pub_bar,,consensus_all_agree,29
+v kent minimart ltd,convenience_store,,adjudicated_llm,28
+scoffable,takeaway,,consensus_all_agree,28
+health lottery,gambling_lottery,,consensus_all_agree,28
+franco manca,restaurant_cafe,,consensus_all_agree,28
+crowne plaza,accommodation,,consensus_all_agree,28
+tottenham hotspur,sports_tickets,,consensus_all_agree,28
+p&o ferries,ferry_rail_travel,,consensus_all_agree,28
+gumtree,marketplace_amazon,,adjudicated_llm,28
+royal george,pub_bar,,consensus_all_agree,28
+the queens head,pub_bar,,consensus_all_agree,28
+split my fare,public_transport_rail_coach,,adjudicated_equifax,28
+greenthumb,garden,,consensus_all_agree,28
+ford credit,car_finance_repayment,,consensus_all_agree,27
+deezer,streaming_music,,adjudicated_llm,27
+barnardos,charitable_donation,,consensus_all_agree,27
+wigan council,council_tax,,consensus_all_agree,27
+scribbler,gifts_flowers,,consensus_all_agree,27
+novuna personal finance,personal_loan_repayment,,consensus_all_agree,27
+everyday loans,personal_loan_repayment,,consensus_all_agree,27
+central england co-op,groceries,,consensus_all_agree,27
+everton fc,sports_tickets,,consensus_all_agree,27
+east suffolk council,council_tax,,consensus_all_agree,26
+first worcestershire,public_transport_rail_coach,,consensus_all_agree,26
+click energy,energy,,consensus_all_agree,26
+nasuwt,trade_union,,consensus_all_agree,25
+metrolink,public_transport_rail_coach,,consensus_all_agree,25
+photobox,photography_services,printing_services,adjudicated_either,25
+reebok,sportswear,,consensus_all_agree,25
+michael kors,clothing_general,,consensus_all_agree,25
+bamboo loans,personal_loan_repayment,,consensus_all_agree,25
+village stores,convenience_store,,consensus_all_agree,25
+stepchange,debt_management_plan,,consensus_all_agree,25
+jagex,gaming_online,,adjudicated_llm,25
+ca auto finance,car_finance_repayment,,consensus_all_agree,25
+gymshark,sportswear,,consensus_all_agree,25
+rci financial services,car_finance_repayment,,consensus_all_agree,25
+legoland windsor,days_out,,consensus_all_agree,25
+the three horseshoes,pub_bar,,consensus_all_agree,25
+sightsavers,charitable_donation,,consensus_all_agree,25
+virgin wines,alcohol_wine,,consensus_all_agree,25
+mobiles.co.uk,mobile_handset,,consensus_all_agree,24
+english heritage,days_out,,consensus_all_agree,24
+carmoola,car_finance_repayment,,consensus_all_agree,24
+edinburgh trams,public_transport_rail_coach,,consensus_all_agree,24
+sky staff restaurant,restaurant_cafe,,consensus_all_agree,24
+first cornwall,public_transport_rail_coach,,consensus_all_agree,24
+south kesteven,council_tax,,consensus_all_agree,23
+norwich city council,council_tax,,consensus_all_agree,23
+irish ferries,ferry_rail_travel,,consensus_all_agree,23
+matchbook,gambling_betting,,consensus_all_agree,23
+millets,clothing_outdoor,,consensus_all_agree,23
+tamworth co-op,groceries,,consensus_all_agree,23
+the prince of wales,pub_bar,,consensus_all_agree,23
+prudential,insurance_life,,consensus_all_agree,23
+ace-abc taxis,taxi_rideshare,,consensus_all_agree,23
+valleys finance,personal_loan_repayment,,consensus_all_agree,22
+electric ireland,energy,,consensus_all_agree,22
+likely loans,personal_loan_repayment,,consensus_all_agree,22
+gear4music,musical_instruments,audio_equipment,adjudicated_either,22
+go car credit,car_finance_repayment,,consensus_all_agree,22
+eurochange,foreign_currency,,consensus_all_agree,22
+islamic relief,charitable_donation,,consensus_all_agree,22
+oakbrook finance,personal_loan_repayment,,consensus_all_agree,22
+natural history museum,days_out,,consensus_all_agree,22
+london borough of newham,council_tax,,consensus_all_agree,22
+cafe express,restaurant_cafe,,consensus_all_agree,22
+supermercado,groceries,,consensus_all_agree,22
+back market uk ltd,marketplace_refurbished,,adjudicated_llm,22
+student loans company,student_loan_repayment,,adjudicated_llm,22
+bourne leisure,holiday_uk,,consensus_all_agree,22
+bagel factory,restaurant_cafe,,consensus_all_agree,21
+stevenage borough council,council_tax,,consensus_all_agree,21
+cotton on,clothing_general,,consensus_all_agree,21
+curvissa,clothing_womens,,consensus_all_agree,21
+the lord nelson,pub_bar,,consensus_all_agree,21
+fareham borough council,council_tax,,consensus_all_agree,21
+flintshire county council,council_tax,,consensus_all_agree,21
+dpd group,delivery_courier,,consensus_all_agree,21
+the woolpack,pub_bar,,consensus_all_agree,21
+payl8r,bnpl,,consensus_all_agree,21
+healthspan,supplements,,consensus_all_agree,21
+really awesome coffee,restaurant_cafe,,consensus_all_agree,20
+the white company,home_accessories,,adjudicated_llm,20
+eflorist,gifts_flowers,,consensus_all_agree,20
+bandcamp,music_other,,adjudicated_llm,20
+copart,vehicle_purchase,,consensus_all_agree,20
+riot games,gaming_online,,consensus_all_agree,20
+minimarket,convenience_store,,consensus_all_agree,20
+sun bingo,gambling_bingo,,consensus_all_agree,20
+vitabiotics,supplements,,consensus_all_agree,20
+turkish airlines,flights,,consensus_all_agree,19
+the duke of wellington,pub_bar,,consensus_all_agree,19
+first aberdeen,public_transport_rail_coach,,consensus_all_agree,19
+royal bank of scotland,financial_institution_unspecified,,consensus_all_agree,19
+bristol hippodrome,theatre,,consensus_all_agree,19
+fidelity,investment_general,,consensus_all_agree,19
+travellers rest,pub_bar,,consensus_all_agree,19
+the white swan,pub_bar,,consensus_all_agree,19
+adrian flux,insurance_motor,,consensus_all_agree,19
+copybet,gambling_betting,,consensus_all_agree,18
+arval,car_lease,,consensus_all_agree,18
+rowes newsmarket,convenience_store,,adjudicated_equifax,18
+walsall council,council_tax,,consensus_all_agree,18
+countrywide reside,rent,,adjudicated_equifax,18
+glasgow city council,council_tax,,consensus_all_agree,18
+ancoats general store,convenience_store,,adjudicated_llm,18
+cosmetix limited,health_beauty_general,,adjudicated_llm,18
+free now,taxi_rideshare,,consensus_all_agree,17
+newcastle city council,council_tax,,consensus_all_agree,17
+bnp paribas,financial_institution_unspecified,,consensus_all_agree,17
+brittany ferries,ferry_rail_travel,,adjudicated_llm,17
+coventry city council,council_tax,,consensus_all_agree,17
+creams,restaurant_cafe,,consensus_all_agree,17
+covea life,insurance_life,,consensus_all_agree,17
+pryzm,night_club,,consensus_all_agree,17
+secret sales,catalogue_retail,,adjudicated_equifax,17
+quiz clothing,clothing_womens,,adjudicated_llm,17
+wpa health,insurance_health,,consensus_all_agree,17
+the lamb inn,pub_bar,,consensus_all_agree,17
+kurt geiger,footwear,clothing_general,adjudicated_either,17
+pet drugs online,veterinary,,adjudicated_equifax,17
+blackpool pleasure beach,days_out,,consensus_all_agree,17
+giraffe,restaurant_cafe,,consensus_all_agree,17
+ancestry,genealogy_services,,consensus_all_agree,17
+london borough of southwark,council_tax,,consensus_all_agree,17
+vapiano,restaurant_cafe,,consensus_all_agree,17
+mkm building supplies,home_improvement,,consensus_all_agree,17
+flying horse,pub_bar,,consensus_all_agree,17
+codonas,days_out,,consensus_all_agree,16
+the fox and hounds,pub_bar,,consensus_all_agree,16
+london borough of croydon,council_tax,,consensus_all_agree,16
+park christmas savings,savings_transfer,,consensus_all_agree,16
+hyundai capital uk,car_finance_repayment,,consensus_all_agree,16
+maidstone borough council,council_tax,,consensus_all_agree,16
+unicef,charitable_donation,,consensus_all_agree,16
+anduff car wash limited,carwash,,consensus_all_agree,16
+vueling,flights,,consensus_all_agree,16
+stena line,ferry_rail_travel,,consensus_all_agree,16
+betterhelp,mental_health_services,,consensus_all_agree,16
+saracens head,pub_bar,,consensus_all_agree,16
+loot casino,gambling_casino,,consensus_all_agree,16
+british red cross,charitable_donation,,consensus_all_agree,16
+sncf,ferry_rail_travel,public_transport_rail_coach,adjudicated_either,16
+lloyds,financial_institution_unspecified,,consensus_all_agree,16
+central bedfordshire council,council_tax,,consensus_all_agree,16
+picturehouse,cinema,,consensus_all_agree,15
+taurus insurance,insurance_general,,consensus_all_agree,15
+the kings,pub_bar,,consensus_all_agree,15
+tick tock loans,payday_loan,,adjudicated_llm,15
+lovehoney,adult_products,,consensus_all_agree,15
+arun district council,council_tax,,consensus_all_agree,15
+huel,groceries_specialist,,adjudicated_llm,15
+dishoom,restaurant_cafe,,consensus_all_agree,15
+rose & crown,pub_bar,,consensus_all_agree,15
+horse and groom,pub_bar,,consensus_all_agree,15
+canterbury city council,council_tax,,consensus_all_agree,15
+wiltshire farm foods,groceries_specialist,,consensus_all_agree,15
+halifax mortgages,mortgage,,consensus_all_agree,15
+kilted competition,prize_competitions,,adjudicated_llm,15
+boars head,pub_bar,,consensus_all_agree,15
+hertz,car_hire,,consensus_all_agree,15
+humber bridge,tolls,,consensus_all_agree,14
+hachette partworks,magazines,books,adjudicated_either,14
+klm,flights,,consensus_all_agree,14
+marisota,clothing_womens,,adjudicated_llm,14
+ministry of sound,night_club,,consensus_all_agree,14
+the white bear,pub_bar,,consensus_all_agree,14
+abercrombie & fitch,clothing_general,clothing_mens,adjudicated_either,14
+fusion lifestyle,gym_fitness,,consensus_all_agree,14
+big easy,restaurant_cafe,,consensus_all_agree,14
+american golf,sports_equipment,,consensus_all_agree,14
+abel & cole,groceries_specialist,,consensus_all_agree,14
+new balance,sportswear,,adjudicated_llm,14
+redemption roasters,restaurant_cafe,,consensus_all_agree,14
+the star,pub_bar,,consensus_all_agree,14
+coverwise,insurance_travel,,adjudicated_equifax,14
+chelmsford city council,council_tax,,consensus_all_agree,14
+cards galore,gifts_flowers,,consensus_all_agree,13
+robin hood,pub_bar,,consensus_all_agree,13
+totally wicked,vaping,,consensus_all_agree,13
+badoo,online_dating,,consensus_all_agree,13
+fat face,clothing_general,,consensus_all_agree,13
+amorino,restaurant_cafe,takeaway,adjudicated_either,13
+lola's cupcakes,confectionary,,adjudicated_equifax,13
+the duke of york,pub_bar,,consensus_all_agree,13
+castle bingo,gambling_bingo,,adjudicated_llm,13
+pof,online_dating,,consensus_all_agree,13
+places for people leisure,gym_fitness,,consensus_all_agree,13
+the corner house,pub_bar,restaurant_cafe,adjudicated_either,13
+edf,energy,,consensus_all_agree,13
+zen internet,broadband_tv_phone,,consensus_all_agree,13
+star forecourts,fuel,,consensus_all_agree,13
+flight club,entertainment_other,pub_bar,adjudicated_either,13
+legoland,days_out,,consensus_all_agree,13
+bonmarche,clothing_womens,,adjudicated_llm,13
+the sportsman,pub_bar,,consensus_all_agree,13
+wimpy,restaurant_cafe,takeaway,adjudicated_either,12
+home group,rent,,adjudicated_correction,12
+fuel juice bars,restaurant_cafe,,consensus_all_agree,12
+deichmann,footwear,,adjudicated_llm,12
+molly malones,pub_bar,,consensus_all_agree,12
+fruugo,marketplace_amazon,,adjudicated_correction,12
+the bat and ball,pub_bar,,adjudicated_llm,12
+resolvecall,debt_collection,,consensus_all_agree,12
+isle of wight council,council_tax,,consensus_all_agree,12
+mainline menswear,clothing_mens,,adjudicated_llm,12
+tsb insurance,insurance_general,insurance_other,adjudicated_either,12
+europcar,car_hire,,consensus_all_agree,12
+twycross zoo,days_out,,consensus_all_agree,11
+three mariners,pub_bar,,consensus_all_agree,11
+sheffield wednesday,sports_tickets,,consensus_all_agree,11
+delikatesy smaczek,groceries_specialist,,adjudicated_llm,11
+the albion,pub_bar,,consensus_all_agree,11
+london eye,days_out,,consensus_all_agree,11
+the castle inn,pub_bar,,consensus_all_agree,11
+powys county council,council_tax,,consensus_all_agree,11
+green man,pub_bar,,consensus_all_agree,11
+hays travel,holiday_package,,adjudicated_equifax,11
+zalando,clothing_general,,consensus_all_agree,11
+starspins,gambling_casino,,consensus_all_agree,11
+manchester city council,council_tax,,consensus_all_agree,11
+gravesham borough,council_tax,,consensus_all_agree,11
+enterprise credit union,credit_union_repayment,,consensus_all_agree,11
+fantastic services,cleaning_services,,consensus_all_agree,11
+london borough of bexley,council_tax,,consensus_all_agree,11
+warhammer,games_puzzles,,consensus_all_agree,11
+manchester united,sports_tickets,,consensus_all_agree,11
+the barley mow,pub_bar,,consensus_all_agree,11
+allsaints,clothing_general,,consensus_all_agree,11
+the breakfast club,restaurant_cafe,,consensus_all_agree,11
+the new queen victoria,pub_bar,,consensus_all_agree,11
+origin coffee,restaurant_cafe,,consensus_all_agree,11
+hawksmoor,restaurant_cafe,,consensus_all_agree,11
+superbet.ro,gambling_betting,,consensus_all_agree,11
+forest of dean district council,council_tax,,consensus_all_agree,11
+krystal express,convenience_store,,adjudicated_equifax,11
+southern railway,public_transport_rail_coach,,consensus_all_agree,11
+trentbarton,public_transport_rail_coach,,consensus_all_agree,11
+mr green,gambling_casino,,consensus_all_agree,11
+royal british legion,charitable_donation,,consensus_all_agree,11
+binance,crypto,,consensus_all_agree,10
+tian tian market,groceries_specialist,,adjudicated_llm,10
+hartlepool borough council,council_tax,,consensus_all_agree,10
+harry corry,home_accessories,,consensus_all_agree,10
+yard sale pizza,takeaway,,consensus_all_agree,10
+the hop,pub_bar,,consensus_all_agree,10
+bank of ireland,financial_institution_unspecified,,consensus_all_agree,10
+virgin mobile,mobile_phone_contract,,consensus_all_agree,10
+lopay taxi,taxi_rideshare,,consensus_all_agree,10
+afc bournemouth,sports_tickets,,consensus_all_agree,10
+st lukes hospice,charitable_donation,,consensus_all_agree,10
+newcastle united,sports_tickets,,consensus_all_agree,10
+perks at work,employee_benefits,,consensus_all_agree,10
+rushmoor borough council,council_tax,,consensus_all_agree,10
+mcafee,software,,adjudicated_llm,10
+sykes cottages,holiday_rental,,consensus_all_agree,10
+the vine,pub_bar,,consensus_all_agree,10
+tommy hilfiger,clothing_general,,consensus_all_agree,10
+kraken,crypto,,consensus_all_agree,10
+precise mortgages,mortgage,,consensus_all_agree,10
+weight watchers,weight_loss,,consensus_all_agree,10
+roosters piri piri,takeaway,,consensus_all_agree,10
+the grapes,pub_bar,,consensus_all_agree,10
+royal college of nursing,trade_union,,consensus_all_agree,9
+moss bros,clothing_mens,,consensus_all_agree,9
+ask italian,restaurant_cafe,,consensus_all_agree,9
+northumberland county council,council_tax,,consensus_all_agree,9
+coco di mama,restaurant_cafe,,consensus_all_agree,9
+reading buses,public_transport_rail_coach,,consensus_all_agree,9
+specialist motor finance,car_finance_repayment,,consensus_all_agree,9
+sky bar,pub_bar,,consensus_all_agree,9
+pet supermarket,pet_supplies,,consensus_all_agree,9
+novotel,accommodation,,consensus_all_agree,9
+t-mobile,mobile_phone_contract,,consensus_all_agree,9
+cheltenham borough,council_tax,,consensus_all_agree,9
+beaverbrooks,jewellery,,consensus_all_agree,9
+snapfish,photography_services,printing_services,adjudicated_either,9
+pozitive energy,energy,,consensus_all_agree,9
+east devon district council,council_tax,,consensus_all_agree,9
+pensionbee,pension_contribution,,consensus_all_agree,9
+gift company,gifts_flowers,,adjudicated_llm,9
+first choice,holiday_package,,consensus_all_agree,9
+bls collections,debt_collection,,consensus_all_agree,9
+lloyds pharmacy,pharmacy,,consensus_all_agree,9
+glasses direct,optician,,consensus_all_agree,8
+boohooman,clothing_mens,,consensus_all_agree,8
+revolution bars,pub_bar,,consensus_all_agree,8
+community fibre limited,broadband_tv_phone,,consensus_all_agree,8
+debt recovery plus,debt_collection,,consensus_all_agree,8
+gourmet burger kitchen,restaurant_cafe,,consensus_all_agree,8
+tsb,financial_institution_unspecified,,consensus_all_agree,8
+reiss,clothing_general,,consensus_all_agree,8
+betdaq,gambling_betting,,consensus_all_agree,8
+leasys uk ltd,car_lease,,adjudicated_llm,8
+the deep,days_out,,consensus_all_agree,8
+eharmony,online_dating,,consensus_all_agree,8
+the queen,pub_bar,,consensus_all_agree,8
+fishermans rest,pub_bar,restaurant_cafe,adjudicated_either,8
+paultons park,days_out,,consensus_all_agree,8
+santa pod raceway,days_out,,consensus_all_agree,8
+game,gaming_console_pc,,consensus_all_agree,8
+tebex,gaming_online,,consensus_all_agree,8
+wolverhampton city council,council_tax,,consensus_all_agree,8
+action aid,charitable_donation,,consensus_all_agree,8
+chiquito,restaurant_cafe,,consensus_all_agree,8
+moorcroft debt recovery,debt_collection,,consensus_all_agree,8
+portsmouth fc,sports_tickets,,consensus_all_agree,8
+lincolnshire co-op,groceries,,consensus_all_agree,8
+luton town football club,sports_tickets,,consensus_all_agree,8
+howdens joinery,home_improvement,,consensus_all_agree,8
+regatta,clothing_outdoor,,consensus_all_agree,8
+halton bc,council_tax,,consensus_all_agree,8
+express taxis,taxi_rideshare,,consensus_all_agree,8
+tariq halal meats,groceries_specialist,,adjudicated_llm,8
+marquis of granby,pub_bar,,consensus_all_agree,8
+joules,clothing_general,,consensus_all_agree,8
+the holly bush,pub_bar,,consensus_all_agree,8
+blakely clothing,clothing_general,,consensus_all_agree,8
+lightinthebox,retail_tv_online_shopping,,adjudicated_llm,8
+lancaster city council,council_tax,,consensus_all_agree,8
+hargreaves lansdown,investment_general,,consensus_all_agree,7
+pinnacle insurance,insurance_general,,consensus_all_agree,7
+the stag,pub_bar,,consensus_all_agree,7
+bravissimo,clothing_womens,,adjudicated_llm,7
+tossed,restaurant_cafe,,consensus_all_agree,7
+iss food,catering,,adjudicated_llm,7
+middlesbrough council,council_tax,,consensus_all_agree,7
+london borough of harrow,council_tax,,consensus_all_agree,7
+countess of chester hospital,hospital,,consensus_all_agree,7
+ellis brigham,clothing_outdoor,,adjudicated_llm,7
+hoist finance,debt_collection,,consensus_all_agree,7
+the imperial,pub_bar,,consensus_all_agree,7
+gosport borough council,council_tax,,consensus_all_agree,7
+names.co.uk,web_services,,consensus_all_agree,7
+act credit management,debt_collection,,consensus_all_agree,7
+the purple turtle,pub_bar,,consensus_all_agree,7
+station food & wine,convenience_store,,consensus_all_agree,7
+miller and carter,restaurant_cafe,,consensus_all_agree,7
+the three tuns,pub_bar,,consensus_all_agree,7
+trafford council,council_tax,,consensus_all_agree,7
+interflora,gifts_flowers,,consensus_all_agree,7
+aspendos,restaurant_cafe,,consensus_all_agree,7
+grab-a-bite,takeaway,,adjudicated_llm,7
+ayrshire college,education_general,,consensus_all_agree,7
+good energy,energy,,consensus_all_agree,7
+sushimania,restaurant_cafe,,consensus_all_agree,7
+metro cars,taxi_rideshare,,consensus_all_agree,7
+daily stop,convenience_store,,consensus_all_agree,7
+hart district council,council_tax,,consensus_all_agree,7
+grimsby fisheries,takeaway,,adjudicated_equifax,7
+massimo dutti,clothing_general,,consensus_all_agree,7
+the tan studio limited,beauty_treatment,,adjudicated_llm,7
+yankee candle,home_accessories,,consensus_all_agree,7
+the wrestlers,pub_bar,,consensus_all_agree,7
+london borough of lewisham,council_tax,,consensus_all_agree,6
+new forest district council,council_tax,,consensus_all_agree,6
+westminster city council,council_tax,,consensus_all_agree,6
+banquet records,physical_media,,adjudicated_llm,6
+chip shed bourton limited,takeaway,,adjudicated_llm,6
+the times,newspapers,,consensus_all_agree,6
+heaven london,night_club,,consensus_all_agree,6
+manchester city football club,sports_tickets,,consensus_all_agree,6
+dartford borough council,council_tax,,consensus_all_agree,6
+white stuff,clothing_general,,consensus_all_agree,6
+abbey,financial_institution_unspecified,,consensus_all_agree,6
+lne railway,public_transport_rail_coach,,consensus_all_agree,6
+lewes district council,council_tax,,consensus_all_agree,6
+planet organic,groceries_specialist,,adjudicated_llm,6
+the village inn,pub_bar,,consensus_all_agree,6
+rapid formations,business_services,,consensus_all_agree,6
+trinity insurance,insurance_general,insurance_other,adjudicated_either,6
+bunch of grapes,pub_bar,,consensus_all_agree,6
+qd stores,discount_store,,consensus_all_agree,6
+kensington mortgages,mortgage,,consensus_all_agree,6
+calderdale council,council_tax,,consensus_all_agree,6
+honda finance,car_finance_repayment,,consensus_all_agree,6
+landmark mortgages,mortgage,,consensus_all_agree,6
+oxford city council,council_tax,,consensus_all_agree,6
+the black lion,pub_bar,,consensus_all_agree,6
+joom,retail_tv_online_shopping,,consensus_all_agree,6
+the goose,pub_bar,,consensus_all_agree,6
+wawel polski sklep,groceries_specialist,,adjudicated_llm,6
+vida homeloans,mortgage,,consensus_all_agree,6
+fone world,mobile_handset,,consensus_all_agree,6
+moon on the hill,pub_bar,,consensus_all_agree,6
+delice de france,restaurant_cafe,takeaway,adjudicated_either,6
+bread meats bread,restaurant_cafe,,consensus_all_agree,6
+the independent pharmacy,pharmacy,,consensus_all_agree,6
+online carpets,home_accessories,,adjudicated_llm,6
+scotfresh,groceries,,consensus_all_agree,6
+swindon borough council,council_tax,,consensus_all_agree,6
+mouse tail coffee,restaurant_cafe,,consensus_all_agree,6
+globe news,newspapers,,consensus_all_agree,6
+rbs mortgages,mortgage,,consensus_all_agree,6
+mail boxes etc,delivery_courier,,consensus_all_agree,6
+richardsons budgens,groceries,,consensus_all_agree,6
+maldon district council,council_tax,,consensus_all_agree,6
+compassion uk,charitable_donation,,consensus_all_agree,6
+skipton building society,financial_institution_unspecified,,consensus_all_agree,6
+the five swans,pub_bar,,consensus_all_agree,5
+daznbet,gambling_betting,,consensus_all_agree,5
+cotswold outdoor,clothing_outdoor,,consensus_all_agree,5
+essex & suffolk water,water,,consensus_all_agree,5
+wetherspoon,pub_bar,,consensus_all_agree,5
+the cornershop,pub_bar,,adjudicated_equifax,5
+market cross jewellers,jewellery,,consensus_all_agree,5
+topshop,clothing_womens,,adjudicated_llm,5
+renfrewshire council,council_tax,,consensus_all_agree,5
+price busters,discount_store,,consensus_all_agree,5
+twyford news,convenience_store,,adjudicated_equifax,5
+east ayrshire council,council_tax,,consensus_all_agree,5
+gucci,clothing_general,,consensus_all_agree,5
+tasty plaice,takeaway,,adjudicated_llm,5
+london borough of camden,council_tax,,consensus_all_agree,5
+exeter city council,council_tax,,consensus_all_agree,5
+just giving,charitable_donation,,consensus_all_agree,5
+haskins garden centres,garden,,consensus_all_agree,5
+the right fuelcard,fuel,,consensus_all_agree,5
+millwall fc,sports_tickets,,consensus_all_agree,5
+wagon and horses,pub_bar,,consensus_all_agree,5
+ralph lauren,clothing_general,,consensus_all_agree,5
+freetrade,investment_trading,,adjudicated_llm,5
+parkjockey,car_parking,,consensus_all_agree,5
+yumyum ltd,catering,,adjudicated_equifax,5
+animed,pet_supplies,,adjudicated_equifax,5
+la porchetta,restaurant_cafe,,consensus_all_agree,5
+harvey nichols,department_store,,adjudicated_llm,5
+newport city council,council_tax,,consensus_all_agree,5
+muddy paws,pet_supplies,,consensus_all_agree,5
+bristol zoo,days_out,,consensus_all_agree,5
+dorothy perkins,clothing_womens,,consensus_all_agree,5
+ibis,accommodation,,consensus_all_agree,5
+craft gin club,alcohol_beer_spirits,,adjudicated_llm,5
+b bagel bakery bar,restaurant_cafe,,consensus_all_agree,5
+lava lounge,night_club,pub_bar,adjudicated_either,5
+piccolino,restaurant_cafe,,consensus_all_agree,5
+edinburgh city council,council_tax,,consensus_all_agree,5
+w boyes & co,department_store,,consensus_all_agree,5
+ernest jones,jewellery,,consensus_all_agree,5
+the faltering fullback,pub_bar,,consensus_all_agree,5
+tinder,online_dating,,consensus_all_agree,5
+avis,car_hire,,consensus_all_agree,5
+the sheaf,pub_bar,,consensus_all_agree,5
+bassetlaw dc,council_tax,,consensus_all_agree,5
+poundworld,discount_store,,consensus_all_agree,5
+dean taxis,taxi_rideshare,,consensus_all_agree,5
+skillz esports,gambling_unspecified,,adjudicated_correction,5
+machine mart,tools,,consensus_all_agree,5
+wifinity,broadband_tv_phone,,consensus_all_agree,5
+iberia,flights,,consensus_all_agree,5
+london borough of islington,council_tax,,consensus_all_agree,5
+lv insurance,insurance_general,,consensus_all_agree,5
+stop n shop ltd,convenience_store,,adjudicated_llm,5
+perfect pizza,takeaway,,consensus_all_agree,5
+salsa charing cross,restaurant_cafe,,consensus_all_agree,5
+better food,groceries,,consensus_all_agree,5
+rated people,tradesmen,,adjudicated_llm,5
+star pizza,takeaway,,adjudicated_llm,5
+eat tokyo,restaurant_cafe,,consensus_all_agree,5
+millsons vending,confectionary,,adjudicated_equifax,5
+three horseshoes,pub_bar,,consensus_all_agree,5
+amnesty international,charitable_donation,,consensus_all_agree,5
+metro bank,financial_institution_unspecified,,consensus_all_agree,4
+the north face,clothing_outdoor,,adjudicated_llm,4
+grosvenor casinos,gambling_casino,,consensus_all_agree,4
+the chamberlayne,pub_bar,,consensus_all_agree,4
+fonesure,insurance_other,,consensus_all_agree,4
+star fish bar,takeaway,,adjudicated_llm,4
+copeland borough council,council_tax,,consensus_all_agree,4
+findmypast,genealogy_services,,consensus_all_agree,4
+countrywide residential,rent,,adjudicated_equifax,4
+the diamond store,jewellery,,consensus_all_agree,4
+smugglers,pub_bar,,consensus_all_agree,4
+glasgow airport,airport_spend,airport_parking,adjudicated_either,4
+hillarys,home_accessories,,consensus_all_agree,4
+esmale,adult_products,,consensus_all_agree,4
+wiggleys fun farm ltd,days_out,,adjudicated_llm,4
+beales,department_store,,consensus_all_agree,4
+clydesdale bank,financial_institution_unspecified,,consensus_all_agree,4
+taste buds,restaurant_cafe,,consensus_all_agree,4
+flocafe,restaurant_cafe,,consensus_all_agree,4
+mercato metropolitano,restaurant_cafe,,adjudicated_llm,4
+vape island,vaping,,consensus_all_agree,4
+pho,restaurant_cafe,,consensus_all_agree,4
+brent council,council_tax,,consensus_all_agree,4
+home retail,home_accessories,,consensus_all_agree,4
+swan & castle,pub_bar,,consensus_all_agree,4
+voucher express,vouchers,,consensus_all_agree,4
+one lottery,gambling_lottery,,consensus_all_agree,4
+phoenix taxis,taxi_rideshare,,consensus_all_agree,4
+mangopay,payment_intermediary,,consensus_all_agree,4
+murco,fuel,,consensus_all_agree,4
+guide dogs,charitable_donation,,consensus_all_agree,4
+ideal world,retail_tv_online_shopping,,adjudicated_llm,4
+lufthansa,flights,,consensus_all_agree,4
+hampshire county council,council_tax,,consensus_all_agree,4
+videoslots,gambling_casino,,consensus_all_agree,4
+bank of scotland,financial_institution_unspecified,,consensus_all_agree,4
+calor gas,energy,,adjudicated_equifax,4
+village hotels,accommodation,,consensus_all_agree,4
+autotrader,advertising_services,,adjudicated_correction,4
+electric brixton,live_music,night_club,adjudicated_either,4
+virgin experience days,experience_days,,consensus_all_agree,4
+barclays mortgages,mortgage,,consensus_all_agree,4
+newbury building society,financial_institution_unspecified,,consensus_all_agree,4
+oldham council,council_tax,,consensus_all_agree,4
+hungry house,takeaway,,consensus_all_agree,4
+pro direct sport,sportswear,sports_equipment,adjudicated_either,4
+big yellow self storage,storage,,consensus_all_agree,4
+deagostini,magazines,,consensus_all_agree,4
+pumpkin café,restaurant_cafe,,consensus_all_agree,4
+rac,breakdown_cover,,consensus_all_agree,4
+naked wines,alcohol_wine,,consensus_all_agree,4
+national debt relief,debt_management_plan,,consensus_all_agree,4
+benugo,restaurant_cafe,,consensus_all_agree,4
+premier man,clothing_mens,,adjudicated_llm,4
+lobster pot,restaurant_cafe,,consensus_all_agree,4
+west end service station,fuel,,consensus_all_agree,4
+the exchequer,pub_bar,,consensus_all_agree,4
+betable,gambling_betting,,consensus_all_agree,4
+the star of kings,pub_bar,,consensus_all_agree,4
+discount booze,alcohol_beer_spirits,,consensus_all_agree,4
+ravello coffee co ltd,restaurant_cafe,,consensus_all_agree,4
+the orange tree,pub_bar,,adjudicated_llm,4
+blue inc,clothing_general,,consensus_all_agree,4
+ao retail,electrical_goods,,consensus_all_agree,4
+punch bowl,pub_bar,,adjudicated_llm,4
+skyparksecure,airport_parking,,consensus_all_agree,4
+rentalcars.com,car_hire,,consensus_all_agree,4
+patisserie valerie,restaurant_cafe,,consensus_all_agree,4
+the hole in the wall,pub_bar,,consensus_all_agree,4
+the george & dragon,pub_bar,,consensus_all_agree,4
+avg,software,,adjudicated_llm,4
+milton keynes council,council_tax,,consensus_all_agree,4
+beer hawk,alcohol_beer_spirits,,consensus_all_agree,4
+brass monkey,pub_bar,,adjudicated_llm,4
+coeliac uk,charitable_donation,,consensus_all_agree,4
+ocean holidays,holiday_package,,consensus_all_agree,4
+beauty works,skin_hair_care,,adjudicated_equifax,4
+birmingham airport,airport_parking,,adjudicated_equifax,4
+the hurlingham club,private_members_club,,consensus_all_agree,4
+london borough of havering,council_tax,,consensus_all_agree,4
+woolwich,mortgage,,adjudicated_equifax,4
+little chef,restaurant_cafe,,consensus_all_agree,4
+preston city council,council_tax,,consensus_all_agree,4
+aer lingus,flights,,consensus_all_agree,4
+first direct,financial_institution_unspecified,,consensus_all_agree,3
+thai express,takeaway,,adjudicated_llm,3
+war child,charitable_donation,,consensus_all_agree,3
+greensquareaccord,rent,,adjudicated_correction,3
+tamatanga,restaurant_cafe,,consensus_all_agree,3
+euphorium bakery,restaurant_cafe,,adjudicated_llm,3
+the donkey sanctuary,charitable_donation,,consensus_all_agree,3
+karamba,gambling_casino,,consensus_all_agree,3
+suzuki finance,car_finance_repayment,,consensus_all_agree,3
+ashbourne membership management,gym_fitness,,adjudicated_equifax,3
+dementia uk,charitable_donation,,consensus_all_agree,3
+radar taxis,taxi_rideshare,,consensus_all_agree,3
+tapas revolution,restaurant_cafe,,consensus_all_agree,3
+land rover,vehicle_purchase,,consensus_all_agree,3
+lily's kitchen,pet_supplies,,adjudicated_llm,3
+cafe rouge,restaurant_cafe,,consensus_all_agree,3
+park holidays uk,holiday_uk,,consensus_all_agree,3
+gedling borough council,council_tax,,consensus_all_agree,3
+best meat,groceries_specialist,,adjudicated_llm,3
+bonzo lounge,pub_bar,,consensus_all_agree,3
+polani travel,travel_other,,adjudicated_llm,3
+packlink,delivery_courier,,consensus_all_agree,3
+collectables,retail_other,jewellery,adjudicated_either,3
+gaucho,restaurant_cafe,,consensus_all_agree,3
+scottish provident,insurance_life,,consensus_all_agree,3
+sultan restaurant,restaurant_cafe,,consensus_all_agree,3
+conwy county borough council,council_tax,,consensus_all_agree,3
+bet uk,gambling_betting,,consensus_all_agree,3
+jin bo law uk limited,legal_services,,adjudicated_llm,3
+watford borough council,council_tax,,consensus_all_agree,3
+london borough of waltham forest,council_tax,,consensus_all_agree,3
+onecall debt recovery,debt_collection,,consensus_all_agree,3
+anduff carwash,carwash,,consensus_all_agree,3
+sandwell council,council_tax,,consensus_all_agree,3
+bumble,online_dating,,consensus_all_agree,3
+oriental star,restaurant_cafe,,consensus_all_agree,3
+the game collection,gaming_console_pc,,consensus_all_agree,3
+cambrian credit union,credit_union_repayment,,consensus_all_agree,3
+public and commercial services union,trade_union,,consensus_all_agree,3
+ics learn,home_learning,,adjudicated_equifax,3
+midlothian council,council_tax,,consensus_all_agree,3
+horsham district council,council_tax,,consensus_all_agree,3
+scotlands charity,charitable_donation,,consensus_all_agree,3
+the sheaf island,pub_bar,,adjudicated_llm,3
+curzon cinema,cinema,,consensus_all_agree,3
+flair afro cosmetics,skin_hair_care,,adjudicated_llm,3
+cinema paradiso,cinema,,consensus_all_agree,3
+gloucestershire county council,council_tax,,consensus_all_agree,3
+zest car rental,car_hire,,consensus_all_agree,3
+reading food centre,groceries,,consensus_all_agree,3
+tony's chocolonely,confectionary,,consensus_all_agree,3
+financial times,newspapers,,consensus_all_agree,3
+pet plan,insurance_pet,,consensus_all_agree,3
+thorntons,confectionary,,consensus_all_agree,3
+conservative party,political_donation,,consensus_all_agree,3
+corgi homeplan,insurance_home,,adjudicated_llm,3
+gymbox,gym_fitness,,consensus_all_agree,3
+macmillan,charitable_donation,,consensus_all_agree,3
+the royal borough of kingston upon thames,council_tax,,consensus_all_agree,3
+the real china,restaurant_cafe,,adjudicated_llm,3
+capital cars,taxi_rideshare,,consensus_all_agree,3
+car insurance,insurance_motor,,consensus_all_agree,3
+puccinos,restaurant_cafe,,consensus_all_agree,3
+hop vietnamese,restaurant_cafe,,consensus_all_agree,3
+bunches,gifts_flowers,,consensus_all_agree,3
+cashplus,prepaid_card,,adjudicated_equifax,3
+the clacton pier,days_out,,consensus_all_agree,3
+virgin holidays,holiday_package,,consensus_all_agree,3
+hugo boss,clothing_general,,consensus_all_agree,3
+john greed jewellery,jewellery,,consensus_all_agree,3
+klm taxis,taxi_rideshare,,consensus_all_agree,3
+stonewater ltd,rent,,adjudicated_equifax,3
+livecareer,career_services,,adjudicated_llm,3
+super save,convenience_store,,adjudicated_equifax,3
+west lothian council,council_tax,,consensus_all_agree,3
+the prince george,pub_bar,,consensus_all_agree,3
+the hockney,pub_bar,,consensus_all_agree,3
+county mall news,convenience_store,,adjudicated_equifax,3
+denbighshire county council,council_tax,,consensus_all_agree,3
+revolution fitness,gym_fitness,,consensus_all_agree,3
+school uniform direct,clothing_childrens,,adjudicated_llm,3
+pull and bear,clothing_general,,consensus_all_agree,3
+emigrantas tv,streaming_music,,adjudicated_llm,3
+health shield,insurance_health,,consensus_all_agree,3
+the table,restaurant_cafe,,consensus_all_agree,3
+suzuki,vehicle_purchase,,consensus_all_agree,3
+sweaty betty,sportswear,clothing_womens,adjudicated_either,3
+2u food,takeaway,,consensus_all_agree,3
+stockport metropolitan borough council,council_tax,,consensus_all_agree,3
+aa home insurance,insurance_home,,consensus_all_agree,3
+namaste asian kitchen,restaurant_cafe,takeaway,adjudicated_either,3
+pactcoffee,groceries_specialist,,adjudicated_llm,3
+panini shack,takeaway,,consensus_all_agree,3
+pound express,discount_store,,consensus_all_agree,3
+foyles,books,,consensus_all_agree,3
+interactive investor,investment_trading,,adjudicated_llm,3
+tamworth borough council,council_tax,,consensus_all_agree,3
+lancashire county council,council_tax,,consensus_all_agree,3
+mersey tunnel,tolls,,consensus_all_agree,3
+the distillery,pub_bar,,consensus_all_agree,3
+angel advance limited,debt_management_plan,,adjudicated_equifax,3
+scottish borders council,council_tax,,consensus_all_agree,3
+world animal protection,charitable_donation,,consensus_all_agree,3
+st helens metropolitan borough council,council_tax,,consensus_all_agree,3
+yew tree mini market,convenience_store,,adjudicated_llm,3
+a&f bargains ltd,discount_store,,adjudicated_llm,3
+parcel monkey,delivery_courier,,consensus_all_agree,3
+the vapour hut,vaping,,consensus_all_agree,3
+aegon sipp,pension_contribution,,consensus_all_agree,3
+ereceptionist,business_services,,consensus_all_agree,3
+la piazza,restaurant_cafe,,consensus_all_agree,3
+atlassian,software,,adjudicated_llm,3
+pembrokeshire county council,council_tax,,consensus_all_agree,3
+ultrasound direct,health_other,,adjudicated_llm,3
+dfds seaways,ferry_rail_travel,,consensus_all_agree,3
+the folio society,books,,consensus_all_agree,2
+st leger tavern,pub_bar,,consensus_all_agree,2
+dolphin fitness,gym_fitness,,consensus_all_agree,2
+foodland,groceries,,consensus_all_agree,2
+the beer emporium,alcohol_beer_spirits,pub_bar,adjudicated_either,2
+tenovus cancer care,charitable_donation,,consensus_all_agree,2
+madame tussauds,days_out,,consensus_all_agree,2
+the couture club ltd,clothing_general,,consensus_all_agree,2
+the trade centre uk,vehicle_purchase,,consensus_all_agree,2
+shoosmiths llp,legal_services,,consensus_all_agree,2
+skegness aquarium,days_out,,consensus_all_agree,2
+albion tap,pub_bar,,consensus_all_agree,2
+david's kitchen,restaurant_cafe,,consensus_all_agree,2
+lacoste,clothing_general,,adjudicated_llm,2
+the salt quay,pub_bar,,consensus_all_agree,2
+bannatyne health club,gym_fitness,,consensus_all_agree,2
+traid,charity_shop,,adjudicated_llm,2
+wahaca,restaurant_cafe,,consensus_all_agree,2
+allerdale borough,council_tax,,consensus_all_agree,2
+residential management group,property_management,,adjudicated_llm,2
+derbyshire county council,council_tax,,consensus_all_agree,2
+strand palace hotel,accommodation,,consensus_all_agree,2
+bartlett mitchell,catering,,consensus_all_agree,2
+torfaen county borough,council_tax,,consensus_all_agree,2
+bamboo door,restaurant_cafe,,consensus_all_agree,2
+dartford crossing,tolls,,consensus_all_agree,2
+suprplay,gambling_casino,,adjudicated_equifax,2
+lululemon,sportswear,,consensus_all_agree,2
+the old plough,pub_bar,,consensus_all_agree,2
+the virgin queen,pub_bar,,consensus_all_agree,2
+weekend offender,clothing_general,,consensus_all_agree,2
+clic sargent,charitable_donation,,consensus_all_agree,2
+thompson & morgan,garden,,consensus_all_agree,2
+swarovski,jewellery,,consensus_all_agree,2
+volcano coffee works,restaurant_cafe,groceries,adjudicated_either,2
+calendar club,gifts_flowers,,consensus_all_agree,2
+virgin atlantic,flights,,consensus_all_agree,2
+crows nest,pub_bar,,consensus_all_agree,2
+home energy,energy,,consensus_all_agree,2
+jessops,camera_photography,,consensus_all_agree,2
+three guineas,pub_bar,,consensus_all_agree,2
+the mayflower,pub_bar,,consensus_all_agree,2
+pizza warehouse,takeaway,,consensus_all_agree,2
+aesop,skin_hair_care,,consensus_all_agree,2
+elemis,skin_hair_care,,adjudicated_llm,2
+tayyabs,restaurant_cafe,,consensus_all_agree,2
+crisis uk,charitable_donation,,consensus_all_agree,2
+parklands country club,private_members_club,,adjudicated_llm,2
+abebooks,books,,consensus_all_agree,2
+addison lee,taxi_rideshare,,consensus_all_agree,2
+scotwest credit union,credit_union_repayment,,consensus_all_agree,2
+the old queen's head,pub_bar,,consensus_all_agree,2
+triple point brewing,alcohol_beer_spirits,pub_bar,adjudicated_either,2
+fresh and food ltd,groceries,,consensus_all_agree,2
+c cabs,taxi_rideshare,,consensus_all_agree,2
+u drive cover,insurance_motor,,consensus_all_agree,2
+jack wills,clothing_general,,consensus_all_agree,2
+uk usa eliquids ltd,vaping,,adjudicated_llm,2
+absolute music,musical_instruments,,adjudicated_equifax,2
+auberge,restaurant_cafe,,consensus_all_agree,2
+diabetes uk,charitable_donation,,consensus_all_agree,2
+mansfield district council,council_tax,,consensus_all_agree,2
+top wok,takeaway,,adjudicated_llm,2
+wellington hotel,accommodation,,consensus_all_agree,2
+boisdale,restaurant_cafe,,consensus_all_agree,2
+ipswich borough council,council_tax,,consensus_all_agree,2
+baba jaga,groceries,,adjudicated_equifax,2
+findmeagift,gifts_flowers,,adjudicated_llm,2
+mobile shop,mobile_handset,,consensus_all_agree,2
+roman originals,clothing_womens,,consensus_all_agree,2
+the jewel hut,jewellery,,consensus_all_agree,2
+air new zealand,flights,,consensus_all_agree,2
+tower of london,days_out,,consensus_all_agree,2
+uttlesford district council,council_tax,,consensus_all_agree,2
+alchemy cafes,restaurant_cafe,,consensus_all_agree,2
+build a bear,toys,,consensus_all_agree,2
+kathmandu,clothing_outdoor,,consensus_all_agree,2
+big motoring world,vehicle_purchase,,consensus_all_agree,2
+inn keepers fayre,pub_bar,,consensus_all_agree,2
+zip,bnpl,,consensus_all_agree,2
+dr martens,footwear,,adjudicated_llm,2
+hostelworld,accommodation,,consensus_all_agree,2
+the beauty room,beauty_treatment,,adjudicated_llm,2
+supermac's,takeaway,,consensus_all_agree,2
+railway bell,pub_bar,,consensus_all_agree,2
+the ram,pub_bar,,consensus_all_agree,2
+the sports edit,sportswear,,consensus_all_agree,2
+bone daddies,restaurant_cafe,,consensus_all_agree,2
+flying flowers,gifts_flowers,,consensus_all_agree,2
+three greyhounds,pub_bar,,consensus_all_agree,2
+golden kitchen,takeaway,,consensus_all_agree,2
+doncaster council,council_tax,,consensus_all_agree,2
+the fox and goose,pub_bar,,consensus_all_agree,2
+child base ltd,childcare,,consensus_all_agree,2
+kcom,broadband_tv_phone,,adjudicated_llm,2
+revolution skatepark,sports_participation,,adjudicated_llm,2
+bentalls,department_store,,consensus_all_agree,2
+leigh sports village,sports_participation,gym_fitness,adjudicated_either,2
+missguided,clothing_womens,,adjudicated_llm,2
+sanef sa,tolls,,consensus_all_agree,2
+vonage,broadband_tv_phone,,consensus_all_agree,2
+dominos pizza,takeaway,,consensus_all_agree,2
+workwear express,clothing_workwear,,adjudicated_llm,2
+front row music,music_other,,consensus_all_agree,2
+heathrow express,public_transport_rail_coach,,consensus_all_agree,2
+prestige flowers,gifts_flowers,,consensus_all_agree,2
+azzurro,restaurant_cafe,,consensus_all_agree,2
+health express,pharmacy,,adjudicated_llm,2
+tm legal services,legal_services,,consensus_all_agree,2
+triple s caterers,catering,,adjudicated_llm,2
+furniture village,home_accessories,,consensus_all_agree,2
+london transport museum,days_out,,consensus_all_agree,2
+sandwi on the go ltd,takeaway,,adjudicated_llm,2
+the market porter,pub_bar,,consensus_all_agree,2
+daniel footwear,footwear,,adjudicated_llm,2
+office shoes,footwear,,adjudicated_llm,2
+ecotricity,energy,,consensus_all_agree,2
+the bedford,pub_bar,,adjudicated_llm,2
+vertu motors,vehicle_purchase,,consensus_all_agree,2
+chichester district council,council_tax,,consensus_all_agree,2
+the cotswold company,home_accessories,,consensus_all_agree,2
+levy restaurants,restaurant_cafe,,consensus_all_agree,2
+bodybuilding warehouse,supplements,,consensus_all_agree,2
+cafe in the park,restaurant_cafe,,consensus_all_agree,2
+the ivy,restaurant_cafe,,consensus_all_agree,2
+goldsmiths,jewellery,,consensus_all_agree,1
+welcome co-op,groceries,,consensus_all_agree,1
+castle community bank,credit_union_repayment,,adjudicated_equifax,1
+ed's easy diner,restaurant_cafe,,consensus_all_agree,1
+gardening express,garden,,consensus_all_agree,1
+south lanarkshire council,council_tax,,consensus_all_agree,1
+bose,audio_equipment,,consensus_all_agree,1
+horniman at hays,pub_bar,,adjudicated_equifax,1
+speedo,sportswear,,consensus_all_agree,1
+little tokyo,restaurant_cafe,,consensus_all_agree,1
+damart,clothing_general,,consensus_all_agree,1
+mcguirks golf,sports_equipment,,consensus_all_agree,1
+the stand comedy club,theatre,,adjudicated_equifax,1
+wychavon district council,council_tax,,consensus_all_agree,1
+brora,clothing_general,,consensus_all_agree,1
+herbalife,supplements,,adjudicated_llm,1
+sala thong,restaurant_cafe,,consensus_all_agree,1
+infinity foods,groceries_specialist,,adjudicated_llm,1
+molton brown,skin_hair_care,,consensus_all_agree,1
+greenpeace,charitable_donation,,consensus_all_agree,1
+bromley council,council_tax,,consensus_all_agree,1
+huntingdonshire district council,council_tax,,consensus_all_agree,1
+la tasca,restaurant_cafe,,consensus_all_agree,1
+lenovo,computing_devices,,consensus_all_agree,1
+phase eight,clothing_womens,,consensus_all_agree,1
+the yew tree,pub_bar,,consensus_all_agree,1
+venn street records,pub_bar,,adjudicated_equifax,1
+brighton silver,jewellery,,consensus_all_agree,1
+afro shop emma limited,groceries,,adjudicated_equifax,1
+cigna,insurance_health,,consensus_all_agree,1
+vetsure,insurance_pet,,adjudicated_llm,1
+marquess of anglesey,pub_bar,,adjudicated_llm,1
+the water margin,restaurant_cafe,,adjudicated_llm,1
+university of oxford,education_general,,consensus_all_agree,1
+just drinks 4u uk ltd,alcohol_beer_spirits,,adjudicated_llm,1
+express chemist,pharmacy,,adjudicated_llm,1
+world of golf,sports_equipment,,consensus_all_agree,1
+grosvenor & arrow cars,taxi_rideshare,,consensus_all_agree,1
+red letter days,experience_days,,consensus_all_agree,1
+active tameside,gym_fitness,,consensus_all_agree,1
+police,emergency_services,,consensus_all_agree,1
+french connection,clothing_general,,consensus_all_agree,1
+the volunteer tavern,pub_bar,,adjudicated_llm,1
+hungry horse,pub_bar,,consensus_all_agree,1
+south ayrshire council,council_tax,,consensus_all_agree,1
+the cottage loaf,pub_bar,,consensus_all_agree,1
+terrys fabrics,home_accessories,,adjudicated_llm,1
+ripped knees,sports_equipment,,adjudicated_equifax,1
+savers health,pharmacy,,adjudicated_llm,1
+the robin hood,pub_bar,,consensus_all_agree,1
+temptation gifts,gifts_flowers,,adjudicated_llm,1
+austrian airlines,flights,,consensus_all_agree,1
+charlotte tilbury,skin_hair_care,,adjudicated_llm,1
+gap,clothing_general,,consensus_all_agree,1
+m&s car insurance,insurance_motor,,consensus_all_agree,1
+the crown and shuttle,pub_bar,,consensus_all_agree,1
+uk flooring direct,home_improvement,,consensus_all_agree,1
+express corner,convenience_store,,consensus_all_agree,1
+pockit,prepaid_card,,adjudicated_llm,1
+spotted horse,pub_bar,,consensus_all_agree,1
+banbury station,public_transport_rail_coach,,consensus_all_agree,1
+north somerset council,council_tax,,consensus_all_agree,1
+black cat travel ltd,public_transport_rail_coach,,adjudicated_equifax,1
+knickerbox,clothing_womens,,adjudicated_llm,1
+great ormond street hospital,charitable_donation,,adjudicated_equifax,1
+la bottega milanese,restaurant_cafe,,consensus_all_agree,1
+rother district council,council_tax,,consensus_all_agree,1
+betzone,gambling_betting,,consensus_all_agree,1
+goodwin racing,gambling_betting,,consensus_all_agree,1
+air asia,flights,,consensus_all_agree,1
+green energy,energy,,consensus_all_agree,1
+penny appeal,charitable_donation,,consensus_all_agree,1
+the protein works,supplements,,consensus_all_agree,1
+greenwich tavern,pub_bar,,consensus_all_agree,1
+paperchase,stationery,,adjudicated_llm,1
+the cycle hub,bicycle,,consensus_all_agree,1
+discovery cove,days_out,,adjudicated_llm,1
+optimum nutrition,supplements,,consensus_all_agree,1
+primrose hill books,books,,consensus_all_agree,1
+cwac leisure,gym_fitness,,consensus_all_agree,1
+the perkin warbeck,pub_bar,,consensus_all_agree,1
+vaporized,vaping,,consensus_all_agree,1
+arena flowers,gifts_flowers,,consensus_all_agree,1
+global exchange,foreign_currency,,adjudicated_llm,1
+trapstar,clothing_general,,consensus_all_agree,1
+jigsaw,clothing_general,,consensus_all_agree,1
+ugg australia,footwear,,adjudicated_llm,1
+bestway,cash_and_carry,,adjudicated_llm,1
+obento,takeaway,restaurant_cafe,adjudicated_either,1
+argento,jewellery,,consensus_all_agree,1
+hong kong express,takeaway,,consensus_all_agree,1
+school days direct,clothing_childrens,,adjudicated_llm,1
+shadsworth pharmacy,pharmacy,,consensus_all_agree,1
+temple of seitan,restaurant_cafe,,consensus_all_agree,1
+dune,footwear,,adjudicated_llm,1
+laptops direct,computing_devices,,consensus_all_agree,1
+palmers quality butchers,groceries_specialist,,adjudicated_llm,1
+kingkabs,taxi_rideshare,,consensus_all_agree,1
+amt coffee,restaurant_cafe,,consensus_all_agree,1
+berghaus,clothing_outdoor,,adjudicated_llm,1
+cedar tree insurance,insurance_travel,,adjudicated_equifax,1
+europa delikatesy,groceries_specialist,,adjudicated_llm,1
+falafel stop,takeaway,,adjudicated_llm,1
+samuel windsor,clothing_mens,,consensus_all_agree,1
+all that falafel,takeaway,,adjudicated_llm,1
+mortimer clarke solicitors,debt_collection,,adjudicated_equifax,1
+base london,footwear,,adjudicated_llm,1
+e.leclerc,groceries,,adjudicated_llm,1
+intercontinental hotels,accommodation,,consensus_all_agree,1
+the world's end,pub_bar,,adjudicated_llm,1
+the bike works,bicycle,,consensus_all_agree,1
+dawat-e-islami uk,charitable_donation,,adjudicated_llm,1
+city car parking,car_parking,,consensus_all_agree,1
+driftwood spars,pub_bar,,consensus_all_agree,1
+friendly food city ltd,groceries,,consensus_all_agree,1
+the irish times,newspapers,,consensus_all_agree,1
+airport taxis,taxi_rideshare,,consensus_all_agree,1
+a & s outdoor ltd,clothing_outdoor,,adjudicated_llm,1
+a coombs pet centre,pet_supplies,,consensus_all_agree,1
+british museum,days_out,,consensus_all_agree,1
+lw theatres group limited,theatre,,consensus_all_agree,1
+hss hire,tools,,consensus_all_agree,1
+the ten bells,pub_bar,,consensus_all_agree,1
+toys r us,toys,,consensus_all_agree,1
+gulliver's world,days_out,,consensus_all_agree,1
+harrogate borough council,council_tax,,consensus_all_agree,1
+toa taxis,taxi_rideshare,,consensus_all_agree,1
+flower station,gifts_flowers,,consensus_all_agree,1
+easyjet holidays,holiday_package,,adjudicated_llm,1
+escentual,fragrances,,adjudicated_llm,1
+sway bar,pub_bar,,consensus_all_agree,1
+the dressing room,clothing_general,,consensus_all_agree,1
+le pain quotidien,restaurant_cafe,,consensus_all_agree,1
+taxifirst,taxi_rideshare,,consensus_all_agree,1
+rocket dog,footwear,,adjudicated_llm,1
+ogmore valley store ltd,convenience_store,,adjudicated_llm,1
+royal gwent hospital,hospital,,consensus_all_agree,1
+zenfolio,photography_services,,adjudicated_llm,1
+historic scotland,days_out,,consensus_all_agree,1
+ola,taxi_rideshare,,consensus_all_agree,1
+sigma sports,bicycle,,adjudicated_equifax,1
+the golden ball,pub_bar,,consensus_all_agree,1
+express cabs,taxi_rideshare,,consensus_all_agree,1
+beano in the park,restaurant_cafe,,adjudicated_equifax,1
+the economist,magazines,newspapers,adjudicated_either,1
+dublin zoo,days_out,,consensus_all_agree,1
+rochford district council,council_tax,,consensus_all_agree,1
+east riding council,council_tax,,consensus_all_agree,1
+london borough of hackney,council_tax,,consensus_all_agree,1
+the pour house,pub_bar,,consensus_all_agree,1
+cottenham store,convenience_store,,consensus_all_agree,1
+club republic,night_club,,consensus_all_agree,1
+northwick park hospital,hospital,,consensus_all_agree,1
+westbrook cycles,bicycle,,consensus_all_agree,1
+air transat,flights,,consensus_all_agree,1
+rajapack,office_supplies,,adjudicated_llm,1
+staples,office_supplies,,consensus_all_agree,1
+char.gy,fuel,,adjudicated_llm,1
+j d sport,sportswear,,adjudicated_llm,1
+unicorn grocery,groceries,,consensus_all_agree,1
+fun bikes,bicycle,,consensus_all_agree,1
+joe energy,heating_oil,,adjudicated_equifax,1
+the princess victoria,pub_bar,,consensus_all_agree,1
+za za bazaar,restaurant_cafe,,consensus_all_agree,1
+truffle shuffle,clothing_general,,consensus_all_agree,1
+ted baker,clothing_general,,consensus_all_agree,1
+cross foxes,pub_bar,,adjudicated_llm,1
+eflow,tolls,,consensus_all_agree,1
+wallpaperdirect,home_improvement,,consensus_all_agree,1
+chaturbate,adult_entertainment,,consensus_all_agree,1
+cylch meithrin,childcare,,consensus_all_agree,1
+parcelforce worldwide,delivery_courier,,consensus_all_agree,1
+toyota,vehicle_purchase,,consensus_all_agree,1
+dormeo,bedding,,consensus_all_agree,1
+the olive grove,restaurant_cafe,,consensus_all_agree,1
