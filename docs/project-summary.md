@@ -40,6 +40,8 @@ Side-findings worth stakeholder attention independent of this project: every Pla
 
 ## Progress log
 
+- **2026-08-20 (later)** — tranche 1 fully closed: three-way disagreements resolved by policy (general-consensus auto-accepts, benign ambiguity abstains, risk-boundary cases escalate) leaving just 113 strings for human review; all 113 adjudicated (Opus was the correct model in 52 of 72 model-pick verdicts). Final: **~89% of tranche volume carries an accepted label, ~10.6% deliberate abstention, 16 new context-dependent rule candidates**. Labels snapshotted to `data/production_labels_tranche1.csv`.
+
 - **2026-08-20** — production vocabulary labelling, tranche 1: top 5,000 unmatched Plaid strings labelled by Haiku + Sonnet with transaction evidence, then a Claude Opus tiebreaker over the 2,784 strings the pair couldn't settle (2-of-3 majority, tiebreaker must be in the majority). Final gate: **85% of tranche volume carries an accepted label** (auto_accept 13.6% + accepted 32.4% + tiebreak 38.9%), 5.7% confirmed-abstain, only 9.4% (543 three-way disagreements) left for human review. Total LLM spend ~$12.
 
 - **2026-08-19 (night)** — four-field ML baseline trained (1.79M Equifax transactions, char-n-gram + amount + direction linear model) and evaluated on both gold strata: **69% leaf on the head set, 30% leaf on the tail — far behind the enriched LLM (76% on tail)**. The breakdown confirms the predicted bias mechanically: on rows where the human ruled against Equifax's conventions, the Equifax-trained classifier scores 10%. Conclusion: the classifier cannot be distilled from Equifax labels; the LLM-consensus labels must be the distillation source. Vocabulary labelling via LLM is now clearly the primary route.
