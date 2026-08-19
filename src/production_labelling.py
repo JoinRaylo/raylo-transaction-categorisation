@@ -13,7 +13,27 @@ Tiers (thresholds from measured calibration -- CLAUDE.md section 6):
 Usage:
     python src/production_labelling.py fetch [N]     # top-N unmatched strings + evidence
     python src/production_labelling.py label [haiku|sonnet]
+    python src/production_labelling.py tiebreak       # Opus over the needs_review queue
     python src/production_labelling.py gate           # -> outputs/production_labels.csv + stats
+    python src/production_labelling.py review-sheet   # workbook for risk-boundary strings
+    python src/production_labelling.py apply-review [completed.xlsx]
+
+Tranche runbook (run from the repo root, venv active, after `gcloud auth login`
+if BigQuery credentials have expired):
+
+    python src/production_labelling.py fetch 20000    # re-selects top N; already-labelled strings resume for free
+    python src/production_labelling.py label haiku    # only labels new strings (resumable, checkpointed)
+    python src/production_labelling.py label sonnet
+    python src/production_labelling.py gate           # first gate: exposes the new needs_review queue
+    python src/production_labelling.py tiebreak       # Opus labels ONLY current needs_review strings
+    python src/production_labelling.py gate           # re-gate with the tiebreak applied
+    # re-apply every archived human review, then the policy leaves only NEW risk-boundary strings:
+    python src/production_labelling.py apply-review data/production_review_tranche1_completed.xlsx
+    python src/production_labelling.py review-sheet   # workbook with only the new human work
+    # ... human pass, save as outputs/production_review_completed.xlsx ...
+    python src/production_labelling.py apply-review
+    # then snapshot: cp outputs/production_labels.csv data/production_labels_trancheN.csv
+    #                cp outputs/production_review_completed.xlsx data/production_review_trancheN_completed.xlsx
 """
 import csv
 import json
@@ -130,14 +150,22 @@ def run_labelling(cfg, rows, out_path):
                 f"   top_raw_narratives: {e.get('descs', 'n/a')}")
 
     def flush():
+        # write the union of this run's rows and every previously-labelled
+        # merchant -- a later tranche must never erase an earlier tranche's
+        # predictions from the shared file
         with open(out_path, "w", newline="") as f:
             w = csv.DictWriter(f, fieldnames=["merchant", "llm_leaf", "llm_confidence"])
             w.writeheader()
+            seen = set()
             for r in rows:
+                seen.add(r["merchant"])
                 p = predictions.get(r["merchant"])
                 w.writerow({"merchant": r["merchant"],
                             "llm_leaf": p["leaf"] if p else "",
                             "llm_confidence": p["conf"] if p else ""})
+            for m, p in predictions.items():
+                if m not in seen:
+                    w.writerow({"merchant": m, "llm_leaf": p["leaf"], "llm_confidence": p["conf"]})
 
     def classify_batch(batch, tag):
         user_msg = "Classify each of these merchant strings using the evidence provided:\n\n" + \
@@ -379,15 +407,19 @@ def review_sheet():
 REVIEW_COMPLETED_XLSX = OUT_DIR / "production_review_completed.xlsx"
 
 
-def apply_review():
-    """Fold the human verdicts from the completed review workbook back into
+def apply_review(path=None):
+    """Fold the human verdicts from a completed review workbook back into
     production_labels.csv. Human verdicts are final: they outrank every
-    model tier."""
+    model tier. Re-runnable: after a re-gate, re-apply every archived
+    workbook (data/production_review_*_completed.xlsx) plus the current one."""
     from openpyxl import load_workbook
     from collections import Counter
 
     _, _, _, gen_of, _ = load_crosswalk()
-    path = REVIEW_COMPLETED_XLSX if REVIEW_COMPLETED_XLSX.exists() else REVIEW_XLSX
+    if path is None:
+        path = REVIEW_COMPLETED_XLSX if REVIEW_COMPLETED_XLSX.exists() else REVIEW_XLSX
+    path = pathlib.Path(path)
+    print(f"Applying verdicts from {path}", file=sys.stderr)
     ws = load_workbook(path, data_only=True)["Review"]
     hdr = [c.value for c in ws[1]]
     col = {n: hdr.index(n) for n in ("merchant", "haiku_leaf", "sonnet_leaf", "opus_leaf",
@@ -458,4 +490,4 @@ if __name__ == "__main__":
     elif args[0] == "review-sheet":
         review_sheet()
     elif args[0] == "apply-review":
-        apply_review()
+        apply_review(args[1] if len(args) > 1 else None)
