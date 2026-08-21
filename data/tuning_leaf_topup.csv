@@ -1,0 +1,125 @@
+merchant_raw,description_raw,amount,direction,native_category,gold_leaf,target_leaf
+Broadland Housing,BROADLAND HOUSING  A04320454 DDR,582.15,debit,Services | Estate Agents,rent,estate_agent
+Karbon Homes,9318 28JAN25      KARBON HOMES LTD  NEWCASTLE GB,137.36,debit,Rent and Mortgage | Property Rental,rent,housing_other
+Reeds Rains,Direct debit REEDS RAINS ************0675,595.0,debit,Rent and Mortgage | Property Rental,estate_agent,housing_other
+Principality Building Society,PRINCIPALITY BS,1416.86,debit,Rent and Mortgage | Mortgages,mortgage,housing_other
+StuRents,STURENTS.COM,785.0,debit,Rent and Mortgage | Property Rental,rent,housing_other
+Leeds Building Societ,"DIRECT DEBIT PAYMENT TO LEEDS BUILDING SOC REF 6946879980, MANDATE NO 0054",1054.27,debit,Rent and Mortgage | Mortgages,mortgage,housing_other
+Lloyds Bank Mortgage,LLOYDS BANK MTG,628.16,debit,Rent and Mortgage | Mortgages,mortgage,housing_other
+The Bedding Company,THE BEDDING CENTRE THE BEDDING CENTRE LIMITE,145.0,debit,Shopping (Home) | Bedding,bedding,bedding
+AO.com,AO.COM,309.0,debit,Shopping (Home) | Household Appliances,household_appliances,household_appliances
+My Choice,My Family Choice My Family Choice       Wishaw        GBR,2.95,debit,Shopping (Home) | Household Appliances,unclassified_other,household_appliances
+Waterlogic,WATERLOGIC GB LTD,36.0,debit,Shopping (Home) | Household Appliances,household_appliances,household_appliances
+247 Home Rescue,"DIRECT DEBIT PAYMENT TO 247 HOME RESCUE REF MS484384, MANDATE NO 0041",24.99,debit,Services | Household Repair Services,home_repair,home_repair
+Wish,MAKE A WISH UK,5.0,debit,Shopping (Discretionary) | TV and Online Shopping,charitable_donation,retail_tv_online_shopping
+Ace.com,1894 10FEB23      WWW.ACE.CO.UK     . GB,67.0,debit,Shopping (Discretionary) | TV and Online Shopping,retail_tv_online_shopping,retail_tv_online_shopping
+Ideal World,IDEAL WORLD  ON 10 MAY BCC,36.0,debit,Shopping (Discretionary) | Small Retail,retail_tv_online_shopping,retail_small_independent
+Hewlett Packard (HP),HP INC HP.COM STOR HP INC HP.COM STORE UK,599.0,debit,Shopping (Discretionary) | Computer Peripherals and Accessories,computing_devices,computer_peripherals
+Avira,AVR*AVIRA,8.99,debit,Shopping (Discretionary) | Computer Peripherals and Accessories,software,computer_peripherals
+Mobile Mad House,3650 12JUN24 C    MOBILE MAD        BLACKPOOL GB,7.99,debit,Shopping (Discretionary) | Computer Peripherals and Accessories,mobile_handset,computer_peripherals
+Jessops,KLARNA  45AD5WE-JESSOPS DDR,157.37,debit,Shopping (Discretionary) | Cameras and Photography,camera_photography,camera_photography
+Voucher Express,Visa purchase VOUCHER EXPRESS,25.0,debit,Shopping (Discretionary) | Vouchers/Discount Codes,vouchers,vouchers
+MOT VIllage,MOT Village       Thornton Heat,60.0,debit,Automotive | M.O.T.,vehicle_mot,vehicle_mot
+Triple S MOT Centre,TRIPLE S MOT CENTR TRIPLE S MOT CENTRE LTD,40.0,debit,Automotive | M.O.T.,vehicle_mot,vehicle_mot
+First West Yorkshire,FIRST WEST YORKSHI FIRST WEST YORKSHIRE,2.5,debit,Commuting and travel | Trains and Coaches,public_transport_rail_coach,transport_other
+Morrisons (Petrol),Contactless Payment W M MORRISON PETROL,12.62,debit,Commuting and travel | Fuel,fuel,transport_other
+London Overground,London Overground LONDON OVERGROUND SST  SURREY QUAYS  GBR,2.7,debit,Commuting and travel | Trains and Coaches,public_transport_rail_coach,transport_other
+GTR Rail,GTR RAIL TICKET,2.9,debit,Commuting and travel | Trains and Coaches,public_transport_rail_coach,transport_other
+Go South Coast,Go South Coast GO SOUTH COAST         POOLE         GBR,3.0,debit,Commuting and travel | Trains and Coaches,public_transport_rail_coach,transport_other
+Mayesbrook Motors,Mayesbrook Motors,5.08,debit,Automotive | Car Dealerships,vehicle_maintenance,transport_other
+Kwik Fit,KWIK FIT,71.95,debit,Automotive | Garages and Parts,vehicle_maintenance,transport_other
+Northlink M1,Visa purchase NORTHLINK M1 LTD EUR 2.30000 at 1.1855,1.94,debit,Automotive | Tolls and Crossings,tolls,transport_other
+Car Audio Centre,Car Audio Security,321.59,debit,Automotive | Garages and Parts,vehicle_maintenance,transport_other
+Motosave,MOTOSAVE LTD CD 7142,153.0,debit,Automotive | Garages and Parts,vehicle_maintenance,transport_other
+Toad Hall Cottages,TOAD HALL Toad Hall,44.56,debit,Flights and Holidays | Holiday Cottages and Villas,holiday_rental,holiday_rental
+TFL Santander Cycles,CARD PAYMENT TO TFL CYCLE HIRE ON 19-07-2023,1.65,debit,Commuting and travel | Other Travel,bicycle,travel_other
+Otel.com,Puding Otel PUDING OTEL            ANTALYA       TUR,28.41,debit,Flights and Holidays | Hotels and Accommodation,accommodation,travel_other
+Proark Uk Hotels Ltd,0379 19DEC24 C    PROARK UK HOTELS  LTD O             TELFORD GB,7.95,debit,Flights and Holidays | Hotels and Accommodation,accommodation,travel_other
+easyJet Holidays,easyJet easyJet Holidays Ltd   Luton         GBR,454.01,debit,Flights and Holidays | Flights,holiday_package,travel_other
+Brittany Ferries,Brittany Ferries,9.0,debit,Flights and Holidays | Hotels and Accommodation,ferry_rail_travel,travel_other
+Eurochange,EUROCHANGE CORBY,543.58,debit,Flights and Holidays | Foreign Currency,foreign_currency,travel_other
+Virgin Experience Days,CARD PAYMENT TO VIRGIN EXPERIENCE DAYS ON 10-08-2023,23.0,debit,Entertainment | Experience Days,experience_days,experience_days
+Highland Titles,SP HIGHLAND TITLES CD 3147,53.0,debit,Entertainment | Experience Days,experience_days,experience_days
+Red Letter Days,Visa purchase Klarna*red letter da 2515,15.8,debit,Entertainment | Experience Days,experience_days,experience_days
+Camp Hill,CAMP HILL EDUCATIO,15.0,debit,Entertainment | Experience Days,education_general,experience_days
+Spa Breaks,Spa Breaks KLARNA*SPABREAKS.COM   LONDON        GBR,88.0,debit,Entertainment | Experience Days,experience_days,experience_days
+IntotheBlue,INTOTHEBLUE.CO Into The Blue,86.94,debit,Entertainment | Experience Days,experience_days,experience_days
+Bigo Live,BIGO Live,3.3,debit,Shopping (Discretionary) | DVD and Blu-ray,online_services,physical_media
+Twitch.TV,PAYPAL *TWITCHINTE PAYPAL *TWITCHINTER,3.99,debit,Shopping (Discretionary) | DVD and Blu-ray,streaming,physical_media
+LoveHoney,Visa purchase LH Trading,67.96,debit,Shopping (Discretionary) | Over 18 Toys,adult_products,adult_products
+Esmale,ESMALE  ON 11 JUL BCC,21.14,debit,Shopping (Discretionary) | Over 18 Toys,adult_products,adult_products
+Pharmacy First,YOUR PHARMACY FIRS YOUR PHARMACY FIRST,4.79,debit,Personal Healthcare | Medicine,pharmacy,medicine
+Frosts Pharmacy,Frosts Pharmacy Ltd FROSTS PHARMACY LTD    BANBURY       GBR,3.49,debit,Personal Healthcare | Medicine,pharmacy,medicine
+Online Clinic,THE ONLINE CLINIC  ON 28 AUG BCC,35.9,debit,Personal Healthcare | Medicine,health_other,medicine
+Kooma,8542 05MAR25  D   KOOMA.CO.UK       LONDON GB,16.0,debit,Services | Counselling and Mental Health,mental_health_services,mental_health_services
+Weight Watchers,Weight Watchers  WW UK MAIDENHEAD       0845-345-1500 GBR,12.0,debit,Personal Healthcare | Weight Loss,weight_loss,weight_loss
+St Barnabas Hospice,ST BARNABAS HOSPIC  ON 05 NOV CLP,7.0,debit,Services | Adult Care,charitable_donation,adult_care
+Barchester Healthcare,BARCHESTER HEALTHC,359.07,credit,Identified Salary | Adult Care,salary,adult_care
+Mitie Care and Custody,Bank credit MITIE CARE AND CUS ************7088,2228.68,credit,Identified Salary | Adult Care,salary,adult_care
+Sanctuary Care,Sanctuary Care Ltd SANCTUARY CARE LTD,1656.24,credit,Identified Salary | Adult Care,salary,adult_care
+British Nursing Association,0727 18AUG23      SECUREPAY.M       BNA.CO.UK-2       CHESTER GB,506.98,debit,Services | Adult Care,adult_care,adult_care
+Ultrasound Direct,WWW.BABYBOND.COM,30.0,debit,Services | Family Services,health_other,family_services
+Clubwise,CLUBWISE  AGDO23470 DDR Clubwise,75.0,debit,Personal Healthcare | Gyms And Health Clubs,gym_fitness,health_other
+Fusion Lifestyle,FUSION LIFESTYLE,33.0,debit,Personal Healthcare | Gyms And Health Clubs,gym_fitness,health_other
+Fitness 4 Less,CA1134685 Fitness4Less,31.99,debit,Personal Healthcare | Gyms And Health Clubs,gym_fitness,health_other
+A O Optics Limited,"DIRECT DEBIT PAYMENT TO AO-OPTICALSERVICES REF V************1559, MANDATE NO 0041",21.06,debit,Personal Healthcare | Glasses and Contact Lenses,optician,health_other
+Treatwell,Zilch Treatwell ZILCH TREATWELL        GB            GBR,3.0,debit,Personal Healthcare | Skin and Hair Care,beauty_treatment,health_other
+The Tanning Shop,THE TANNING SHOP,69.0,debit,Personal Healthcare | Beauty & Massage,beauty_treatment,health_other
+GymBox,2983 12FEB25 CD   GYMBOX FARRINGDON LONDON GB,2.5,debit,Personal Healthcare | Gyms And Health Clubs,gym_fitness,health_other
+HSBC Personal Loans,HSBC PLC LOANS,133.11,debit,Financial Services | Personal Loans,personal_loan_repayment,financial_services_other
+Fernovo,Fernovo,202.23,debit,Financial Services | Payday Loans,payday_loan,financial_services_other
+Bedford Credit Union,BEDFORD CREDIT UNI,10.0,debit,Financial Services | Credit Unions,credit_union_repayment,financial_services_other
+NatWest Credit Cards,NW WORLD MASTERCAR,22.18,debit,Financial Services | Credit Cards,credit_card_repayment,financial_services_other
+Creation Online,Direct debit CREATION.CO.UK 406384 86015017,35.58,debit,Financial Services | Credit Cards,retail_finance_repayment,financial_services_other
+Family Finance Limited,FAMILY FINANCE LTDFP 04/12/************1504000N,27.79,debit,Financial Services | Personal Loans,personal_loan_repayment,financial_services_other
+Vetsure,Direct debit VETSURE PET INSURA ************3214,40.0,debit,Pets | Pet Care,insurance_pet,pet_other
+Scrumbles,Visa purchase SP SCRUMBLES.CO.UK 5125,78.75,debit,Pets | Pet Care,pet_supplies,pet_other
+KCOM ,KCOM GROUP LTD  ON 15 OCT BCC,54.43,debit,Services | IT Services,broadband_tv_phone,it_services
+Business IT Online,It Business SumUp  *IT Business    Birmingham    GBR,5.0,debit,Shopping (Discretionary) | Office Supplies,it_services,office_supplies
+Epson,Epson Subscription Bv EPSON SUBSCRIPTION BV  +31203145000  NLD,4.99,debit,Shopping (Discretionary) | Office Electricals,printing_supplies,office_equipment
+Western Union,WESTERN UNION     0808 234 9168,896.99,debit,Transfers / Other | International Transfer,transfer_international,unclassified_transfer
+PingIt,PRITCHARD RW + T  PINGIT            FP 18/05/24 0612  RP************3900,70.0,credit,Transfers / Other | Bank Transfer,transfer_p2p,unclassified_transfer
+Marks and Spencer,M&S MARKS&SPENCER PLC\32 PENNY STREET\LANCASTER\LA1 1UA   GBRGBR,56.0,credit,Transfers / Other | General Fashion,refund_received,unclassified_transfer
+Transglobal Express,Transglobal Express,40.71,debit,Services | Delivery,delivery_courier,services_unspecified
+Fast Lane International,FAST LANE MECHANIC FAST LANE MECHANICS,208.72,debit,Services | Delivery,vehicle_maintenance,services_unspecified
+Jigsaw Homes,CARD PAYMENT TO ALLPAY *JIGSAW HOMES M ON 14-07-2025,115.07,debit,Services | Property Management,rent,services_unspecified
+HM Land Registry,HM Land Registry,6.0,debit,Services | Government Services,government_services,services_unspecified
+Yell Ltd,"DIRECT DEBIT PAYMENT TO YELL LTD REF 3CC5C5FA0E92F8EBA, MANDATE NO 0021",34.25,debit,Services | Business Services,advertising_services,services_unspecified
+Home Group,HOME GROUP LIMITED,492.78,debit,Services | Property Management,rent,services_unspecified
+X.com,Twitter Account Niall Fall,10.0,debit,Services | Web Services,online_services,services_unspecified
+"Union of Shop, Distributive and Allied Workers",Zettle_*USDAW Usdaw,1.8,debit,Services | Trade Unions,trade_union,services_unspecified
+Peopleperhour,Peopleperhour.com Prop,127.33,debit,Services | General,business_services,services_unspecified
+Reward Gateway,Reward Gateway your-saving.com        London        GBR,110.4,debit,Services | Employee Rewards,employee_benefits,employee_benefits
+Mama La Mode,TIM ?S LA MAMA pizza & Tim ?s La Mama Pizza &,11.4,debit,Shopping (Fashion) | Maternity Clothing,restaurant_cafe,clothing_maternity
+Havens,HAVENS FOODS,5.0,debit,Shopping (Home) | Kitchens and Kitchen Accessories,groceries,kitchen
+Nespresso,3043 07DEC24      NESPRESSO UK      LIMITED           GATWICK GB,30.0,debit,Shopping (Home) | Kitchens and Kitchen Accessories,kitchen,kitchen
+Bathrooms.com,8070 02DEC24      EASY BATHROOMS    LIVERPO           LIVERPOOL GB,600.0,debit,Shopping (Home) | Bathroom Furniture and Accessories,bathroom,bathroom
+LMnext,LMNext UK  ON 04 JUL BCC,43.97,credit,"Transfers / Other | Travel Guides, Luggage And Accessories",holiday_package,luggage_travel_goods
+Polani Travel,Payment to POLANI TRAVEL LTD ************6547,30.0,debit,"Flights and Holidays | Travel Guides, Luggage And Accessories",travel_other,luggage_travel_goods
+Al Fresco Holidays,SumUp  *Cafe Al Fr SumUp  *Cafe Al Fresco,1.4,debit,Shopping (Discretionary) | Camping Equipment,restaurant_cafe,camping_equipment
+Tiffany Rose,Paid with Starling United Kingdom Account Tiffany Rose,25.0,debit,Services | Event Planning,clothing_maternity,event_planning
+Close Encounters Comics,Contactless Payment Close Encounters Limited 2023-03-19,13.98,debit,"Books, Newspapers and Magazines | Comic Books",comics,comics
+Brighton Electric Studios,Brighton Electric Brighton,6.0,debit,Shopping (Discretionary) | Musical Instruments,musical_instruments,musical_instruments
+Rosetti,ROSETTI LTD ROSETTI FP 11/02/************8000R,236.2,debit,Shopping (Discretionary) | Musical Instruments,musical_instruments,musical_instruments
+Hobgoblin Music,Hobgoblin Music HOBGOBLIN MUSIC        LEEDS         GBR,8.89,debit,Shopping (Discretionary) | Musical Instruments,musical_instruments,musical_instruments
+Warhammer,WARHAMMER  ON 25 AUG CLP Warhammer,67.15,debit,Shopping (Discretionary) | Games and Puzzles,games_puzzles,games_puzzles
+SendGrid,TWILIO SENDGRID Twilio Sendgrid,16.73,debit,Services | Email Services,web_services,email_services
+Your Social Insights,YOURSOCIALINSIGHTS CD 3113,19.95,debit,Services | Social Reporting Services,social_reporting,social_reporting
+Safecharge,SAFECHARGE LIMITED,5.0,debit,Financial Services | Money Management,payment_intermediary,money_management_service
+Family Equity Plan,Direct Debit - First Payment FAMILY EQUITY PLAN 600001 36238007,20.0,debit,Services | Wealth Management,wealth_management,wealth_management
+Xoom,TRUSTLY           1720929360 XOOM.COFP 24/11/24 1933  88385DD9A87349D8AB,50.0,credit,Transfers / Other | Money Transfers,transfer_international,money_transfer_service
+Cash App,4916 29MAR23      CASH APP          LONDON          GBCREDIT,5.0,credit,Transfers / Other | Money Transfers,transfer_p2p,money_transfer_service
+Conservative Party,769ZCWA The Conservative Party,3.5,debit,Charitable Giving | Political Parties,political_donation,political_donation
+Labour Party,THE LABOUR PARTY,3.62,debit,Charitable Giving | Political Parties,political_donation,political_donation
+Barclaycard,"Barclaycard Cashback, 1%%.% CASH REBATE THIS MONTH",2.04,credit,Adjustments | Credit Cards,cashback,adjustment
+Assurant Auk,ASSURANT AUK00000271934,8.99,debit,LOAN_PAYMENTS_STUDENT_LOAN_PAYMENT,insurance_other,student_loan_repayment
+Miniml Refills,SP MINIML REFILLS  ON 07 OCT BCC,22.16,debit,LOAN_PAYMENTS_STUDENT_LOAN_PAYMENT,retail_other,student_loan_repayment
+Edinburgh Council,Direct debit EDINBURGH COUNCIL 830608 00740589,22,debit,LOAN_PAYMENTS_STUDENT_LOAN_PAYMENT,council_tax,student_loan_repayment
+Cdc Revs,Direct debit CDC REVS 600524 26121204,128,debit,LOAN_PAYMENTS_STUDENT_LOAN_PAYMENT,council_tax,student_loan_repayment
+National Education First,NATIONAL EDUCATIONFIRST PAYMENT,65.68,debit,LOAN_PAYMENTS_STUDENT_LOAN_PAYMENT,education_general,student_loan_repayment
+Scdc,Direct debit SCDC 201768 10464341,304,debit,LOAN_PAYMENTS_STUDENT_LOAN_PAYMENT,council_tax,student_loan_repayment
+Capital Resolve,CAPITAL RESOLVE  CAP-MTL603GV7 DDR,10,debit,LOAN_PAYMENTS_OTHER,debt_collection,loan_repayment_other
+Cabot Financial,CABOT FINANCIAL E  CCMDD02894560/4 DDR Cabot Financial,21,debit,LOAN_PAYMENTS_OTHER,debt_collection,loan_repayment_other
+PRA Group,CARD PAYMENT TO PRA GROUP LTD ON 17-10-2025,10,debit,LOAN_PAYMENTS_OTHER,debt_collection,loan_repayment_other
+Link Financial,LINK FINANCIAL                        REFERENCE: 01LC 3588824,5,debit,LOAN_PAYMENTS_OTHER,debt_collection,loan_repayment_other
+Bizlend LTD,BIZLEND LTD GBP AC BIZLEND3421,214.92,debit,LOAN_PAYMENTS_CASH_ADVANCES,business_loan_repayment,cash_advance
