@@ -142,6 +142,37 @@ def load_example_merchants():
     return by_leaf
 
 
+def load_example_notes():
+    """(merchant, leaf, note) for every dictionary entry that carries a reviewer note --
+    375 of them as of 2026-08-21, mostly from the gold_transactions_v2 hand review and
+    the gating adjudication. These are worked disambiguation reasoning, not just a leaf
+    assignment: 'AFSL is Admiral Financial Services Ltd unsecured personal loans' teaches
+    the model HOW to resolve an opaque string, which a bare example-merchant list can't."""
+    out = []
+    for r in csv.DictReader(open(ROOT / "taxonomy" / "merchant_dictionary.csv")):
+        if r["notes"] and r["notes"].strip():
+            out.append((r["normalised_merchant"], r["detailed_category"], r["notes"].strip()))
+    return out
+
+
+def build_notes_addendum(example_notes):
+    """A dedicated worked-examples section, appended to the base system prompt. Kept
+    separate from the per-leaf taxonomy listing (rather than folded into it) so it reads
+    as reasoning examples to generalise from, not as more lookup-table entries."""
+    if not example_notes:
+        return ""
+    lines = ["\n## Worked disambiguation examples",
+             "These are real cases where the correct category was NOT obvious from the "
+             "merchant string alone -- each was resolved using transaction evidence "
+             "(description, amount, direction) or specific knowledge about the underlying "
+             "business. Use the same kind of reasoning for unfamiliar or ambiguous strings "
+             "you're asked to classify -- don't assume a superficially similar string "
+             "resolves the same way without evidence."]
+    for merchant, leaf, note in sorted(example_notes):
+        lines.append(f"- `{merchant}` -> `{leaf}`: {note}")
+    return "\n".join(lines)
+
+
 def eqx_leaf(pri, sub, sub_map, pri_map):
     if sub and sub in sub_map:
         return sub_map[sub]

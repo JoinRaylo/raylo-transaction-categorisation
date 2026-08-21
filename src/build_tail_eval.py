@@ -31,7 +31,7 @@ load_dotenv()
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from gating_experiment import (  # noqa: E402
     MODELS, ROOT, OUT_DIR, build_system_prompt, build_tool_schema,
-    load_crosswalk, load_example_merchants,
+    load_crosswalk, load_example_merchants, load_example_notes, build_notes_addendum,
 )
 
 SAMPLE_CSV = OUT_DIR / "tail_eval_sample.csv"
@@ -205,7 +205,8 @@ def label(model_key):
 
     cfg = MODELS[model_key]
     _, _, leaves, gen_of, notes_of = load_crosswalk()
-    system_prompt = build_system_prompt(leaves, gen_of, notes_of, load_example_merchants()) + TAIL_ADDENDUM
+    system_prompt = (build_system_prompt(leaves, gen_of, notes_of, load_example_merchants())
+                      + TAIL_ADDENDUM + build_notes_addendum(load_example_notes()))
     tool = build_tool_schema(leaves)
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     ev = load_evidence()

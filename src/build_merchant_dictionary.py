@@ -254,6 +254,65 @@ for r in csv.DictReader(open(ROOT / "data" / "gating_dictionary_additions.csv"))
     if m in seen: print("DUPLICATE:",m); continue
     seen.add(m); rows.append(r)
 
+# ---- candidates from the gold_transactions_v2 hand review (2026-08-21) ----
+# Only promotes a merchant to a blanket T4 override when it's SAFE to do so:
+#   - every occurrence in the gold set agrees on the same leaf (a merchant that
+#     shows genuine conflict -- e.g. "revolut" resolving to three different
+#     leaves depending on the transaction -- proves by construction that it
+#     must NOT get a single fixed answer)
+#   - not a generic payment rail/processor string (revolut, paypal, gocardless,
+#     allpay, stripe, ...) even if this small sample happened to only show one
+#     use of it
+#   - not a mechanism-dependent leaf (refund_received, salary, cashback,
+#     transfer_p2p, ...) -- those describe what a SPECIFIC transaction's
+#     direction/mechanism was, not a stable property of the merchant. Adding
+#     "selfridges -> refund_received" would wrongly override every normal
+#     Selfridges purchase, which is a debit, not a refund.
+#   - has a reviewer note -- the note is what distinguishes "the reviewer
+#     worked out something specific and non-obvious" from "an unremarkable
+#     single observation," and a spot-check of the un-noted candidates found
+#     they're full of garbled reference-number strings and generic words that
+#     do not generalise (e.g. "spring", "faster", "2awrs mandate no").
+import re as _re_gv2
+from collections import defaultdict as _defaultdict
+
+_GOLD_V2_FILES = [ROOT / "data" / "gold_transactions_v2.csv", ROOT / "data" / "gold_transactions_v2_batch2.csv"]
+_GENERIC_RAIL_PATTERN = _re_gv2.compile(
+    r"revolut|monzo|starling|paypal|gocardless|\bstripe\b|sumup|izettle|worldpay|allpay|"
+    r"faster payment|direct debit|standing order|card payment|bank transfer|"
+    r"transfer to|transfer from|payment to|payment from|sent from|withdrawal|\bdeposit\b",
+    _re_gv2.I)
+_MECHANISM_LEAVES = {"refund_received", "salary", "salary_gig", "income_agency_work", "benefits_state",
+    "pension_received", "tax_refund", "cashback", "cash_withdrawal", "cash_deposit",
+    "savings_interest_received", "balance_transfer", "adjustment", "transfer_p2p",
+    "transfer_own_account", "transfer_bank_unspecified", "transfer_mobile_app",
+    "overdraft_arranged", "returned_payment", "income_other_unspecified", "tax_payment",
+    "debt_collection"}
+
+_by_merchant = _defaultdict(list)
+for _f in _GOLD_V2_FILES:
+    if _f.exists():
+        for _r in csv.DictReader(open(_f)):
+            _by_merchant[_r["merchant_raw"].strip().lower()].append(_r)
+
+_gv2_added = 0
+for m, recs in sorted(_by_merchant.items()):
+    if m in seen:
+        continue
+    leaves = {r["gold_leaf"] for r in recs}
+    if len(leaves) > 1 or _GENERIC_RAIL_PATTERN.search(m):
+        continue
+    leaf = next(iter(leaves))
+    if leaf in _MECHANISM_LEAVES:
+        continue
+    notes = [r["notes"] for r in recs if r["notes"] and r["notes"].strip()]
+    if not notes:
+        continue
+    seen.add(m); _gv2_added += 1
+    rows.append({"normalised_merchant": m, "detailed_category": leaf, "confidence": "medium",
+        "source": "gold_v2_review", "review_status": "approved", "notes": notes[0]})
+print(f"gold_v2_review additions: {_gv2_added}")
+
 # validate leaves exist in taxonomy
 tax={r['detailed_category'] for r in csv.DictReader(open(ROOT / "taxonomy" / "taxonomy.csv"))}
 bad=[r for r in rows if r['detailed_category'] not in tax]

@@ -455,6 +455,15 @@ def score_v2():
     from collections import Counter
     _, _, _, gen_of = load_crosswalk()
 
+    # Any merchant whose T4 dictionary entry was itself sourced FROM this gold set
+    # (build_merchant_dictionary.py's gold_v2_review additions) must be excluded from
+    # the headline "our pipeline" accuracy -- otherwise we'd be testing whether a
+    # lookup remembers its own source, which is the exact circularity this whole
+    # gold-set rebuild exists to eliminate. Kept in the row-level CSV (flagged) for
+    # transparency, just not counted in the reported percentages.
+    self_sourced = {r["normalised_merchant"] for r in csv.DictReader(open(DICT_CSV))
+                    if r["source"] == "gold_v2_review"}
+
     rows = []
     for path in GOLD_V2_FILES:
         if path.exists():
@@ -485,6 +494,7 @@ def score_v2():
             "merchant_raw": merchant, "provider": provider, "amount": r["amount"], "direction": direction,
             "gold_leaf": gold_leaf, "native_leaf": native_leaf, "our_leaf": our, "our_tier": tier,
             "source": r["source"], "provenance": r["provenance"],
+            "self_sourced_dict_entry": merchant.strip().lower() in self_sourced,
         })
 
     OUT_DIR.mkdir(exist_ok=True)
@@ -492,6 +502,11 @@ def score_v2():
         w = csv.DictWriter(f, fieldnames=list(out_rows[0].keys()))
         w.writeheader(); w.writerows(out_rows)
     print(f"Wrote {V2_COMPARISON_CSV} ({len(out_rows)} rows)", file=sys.stderr)
+
+    n_self_sourced = sum(1 for r in out_rows if r["self_sourced_dict_entry"])
+    scoring_rows = [r for r in out_rows if not r["self_sourced_dict_entry"]]
+    print(f"Excluding {n_self_sourced} rows whose merchant is a gold_v2-sourced dictionary "
+          f"entry (circular) from headline scoring -- {len(scoring_rows)} remain", file=sys.stderr)
 
     def acc(subset, pred_key, level="leaf"):
         scored = [r for r in subset if r[pred_key]]
@@ -516,16 +531,22 @@ def score_v2():
               f"Carlos (403/1500 batch-1 drafts were overridden, including 34 of the 400 rows that "
               f"already had a prior human verdict from earlier work -- this is a fresh, from-scratch "
               f"review, not a rubber stamp). No clean/full split needed: unlike the v1 merchant-level "
-              f"set, nothing here is copied from the prediction being scored.\n"]
+              f"set, nothing here is copied from the prediction being scored.\n",
+              f"**{n_self_sourced} rows are excluded from every accuracy figure below**: their merchant's "
+              f"T4 dictionary entry was itself sourced from this same gold set (`build_merchant_dictionary.py`'s "
+              f"gold_v2_review additions), so scoring 'our pipeline' against them would just test whether a "
+              f"lookup remembers its own source -- the exact circularity this gold-set rebuild exists to "
+              f"eliminate. All figures below are computed on the remaining {len(scoring_rows)} rows; the "
+              f"excluded rows are still in `{V2_COMPARISON_CSV.name}`, flagged `self_sourced_dict_entry`.\n"]
 
-    eqx_rows = [r for r in out_rows if r["provider"] == "equifax"]
-    plaid_rows = [r for r in out_rows if r["provider"] == "plaid"]
+    eqx_rows = [r for r in scoring_rows if r["provider"] == "equifax"]
+    plaid_rows = [r for r in scoring_rows if r["provider"] == "plaid"]
 
     report.append("## Overall (all providers combined)\n")
     report.append("| Source | Leaf accuracy | General-category accuracy | Scored n |")
     report.append("|---|---|---|---|")
-    report.append(row("Native provider category", out_rows, "native_leaf"))
-    report.append(row("Our pipeline", out_rows, "our_leaf"))
+    report.append(row("Native provider category", scoring_rows, "native_leaf"))
+    report.append(row("Our pipeline", scoring_rows, "our_leaf"))
 
     report.append(f"\n## By provider\n")
     report.append("| Provider | Native leaf acc | Native general acc | Our leaf acc | Our general acc | n |")
@@ -544,7 +565,7 @@ def score_v2():
                                             "adjudication in earlier work precisely because they were disputed)"),
                        ("new", "Broad random sample (representative of typical incoming transactions)"),
                        ("new_targeted", "Targeted for taxonomy-breadth coverage (rare leaves, batch 2 only)")]:
-        subset = [r for r in out_rows if r["source"] == src]
+        subset = [r for r in scoring_rows if r["source"] == src]
         if not subset:
             continue
         na, nn = acc(subset, "native_leaf", "leaf")
@@ -554,14 +575,14 @@ def score_v2():
                    "deliberately hard by construction. The 'broad random sample' row is the closest thing to "
                    "*typical* transaction performance in this set.\n")
 
-    tier_counts = Counter(r["our_tier"] for r in out_rows)
+    tier_counts = Counter(r["our_tier"] for r in scoring_rows)
     report.append(f"\n## Our pipeline's resolution tier breakdown\n")
     for tier, n in tier_counts.most_common():
-        report.append(f"- {tier}: {n} ({n/len(out_rows):.1%})")
+        report.append(f"- {tier}: {n} ({n/len(scoring_rows):.1%})")
 
-    disagree_examples = [r for r in out_rows if r["native_leaf"] != r["gold_leaf"] and r["our_leaf"] == r["gold_leaf"]]
+    disagree_examples = [r for r in scoring_rows if r["native_leaf"] != r["gold_leaf"] and r["our_leaf"] == r["gold_leaf"]]
     report.append(f"\n**Our pipeline gets it right where the native category doesn't**: {len(disagree_examples)} "
-                   f"of {len(out_rows)} transactions ({len(disagree_examples)/len(out_rows):.1%}).\n")
+                   f"of {len(scoring_rows)} transactions ({len(disagree_examples)/len(scoring_rows):.1%}).\n")
 
     V2_REPORT_MD.write_text("\n".join(report) + "\n")
     print(f"Wrote {V2_REPORT_MD}", file=sys.stderr)
