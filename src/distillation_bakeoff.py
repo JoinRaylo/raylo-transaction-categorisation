@@ -310,6 +310,94 @@ def evaluate_v2():
     print(f"\nWrote {ROOT / 'data' / 'distillation_v2_holdout_report.md'}", file=sys.stderr)
 
 
+EMBED_MODEL_NAME = "all-MiniLM-L6-v2"  # 22M params, 384-dim -- tiny/fast, single forward pass (not generative)
+
+
+def _embed_texts(texts):
+    from sentence_transformers import SentenceTransformer
+    import torch
+    device = "mps" if torch.backends.mps.is_available() else "cpu"
+    model = SentenceTransformer(EMBED_MODEL_NAME, device=device)
+    print(f"Embedding {len(texts)} texts on {device}...", file=sys.stderr)
+    return model.encode(texts, batch_size=256, show_progress_bar=True, convert_to_numpy=True)
+
+
+def train_embed():
+    """Same training data and same linear-model family (SGD/logistic) as train_v2 --
+    the ONLY variable that changes is the text representation: a small pretrained
+    sentence-transformer embedding (captures real semantic similarity -- 'casino' and
+    'gambling' land close together) instead of TF-IDF's literal character n-gram
+    overlap. Isolates whether the representation, not the classifier, was the
+    bottleneck."""
+    import joblib
+    from sklearn.linear_model import SGDClassifier
+
+    MODELS_DIR.mkdir(exist_ok=True)
+    train_path = OUT_DIR / "tuning_train.jsonl"
+    print(f"Loading {train_path}...", file=sys.stderr)
+    df = _parse_tuning_jsonl(train_path)
+    rng = np.random.default_rng(SEED)
+    df = df.iloc[rng.permutation(len(df))].reset_index(drop=True)
+    text = build_text(df).tolist()
+
+    embeddings = _embed_texts(text)
+    num = np.column_stack([np.log1p(df["amount"].to_numpy(dtype=np.float32)),
+                          df["is_credit"].to_numpy(dtype=np.float32)])
+    X = np.hstack([embeddings, num]).astype(np.float32)
+    y = df["leaf"].to_numpy()
+    print(f"Training on {len(df)} rows, {df['leaf'].nunique()} classes, "
+          f"{X.shape[1]}-dim features (384 embedding + 2 numeric)...", file=sys.stderr)
+
+    clf = SGDClassifier(loss="log_loss", alpha=1e-6, random_state=SEED, tol=None, max_iter=50)
+    clf.fit(X, y)
+    joblib.dump({"clf": clf, "kind": "embed", "model_name": EMBED_MODEL_NAME}, MODELS_DIR / "embed_classifier.joblib")
+    print(f"Wrote {MODELS_DIR / 'embed_classifier.joblib'}", file=sys.stderr)
+
+
+def evaluate_embed():
+    """Same eval methodology as evaluate_v2 -- same holdout set, same per-transaction
+    scoring -- so the two reports are directly comparable."""
+    import joblib
+
+    _, _, _, gen_of, _ = load_crosswalk()
+    bundle = joblib.load(MODELS_DIR / "embed_classifier.joblib")
+
+    holdout = pd.read_csv(ROOT / "data" / "gold_v2_slm_eval_holdout.csv")
+    df = pd.DataFrame({
+        "vendor": holdout["merchant_raw"], "description": holdout["description_raw"],
+        "amount": holdout["amount"].astype(float),
+        "is_credit": (holdout["direction"] == "credit").astype(int),
+    })
+    text = build_text(df).tolist()
+    embeddings = _embed_texts(text)
+    num = np.column_stack([np.log1p(df["amount"].to_numpy(dtype=np.float32)),
+                          df["is_credit"].to_numpy(dtype=np.float32)])
+    X = np.hstack([embeddings, num]).astype(np.float32)
+    preds = bundle["clf"].predict(X)
+
+    leaf_ok = preds == holdout["gold_leaf"].to_numpy()
+    gen_ok = leaf_ok | (pd.Series(preds).map(gen_of).to_numpy() == holdout["gold_leaf"].map(gen_of).to_numpy())
+
+    with open(OUT_DIR / "tuning_train.jsonl") as f:
+        n_train = sum(1 for _ in f)
+    lines = ["# Sentence-embedding classifier -- scored on the clean gold_v2 eval holdout\n",
+             f"Same training data and same linear-model family as the TF-IDF v2 classifier "
+             f"({n_train} rows) -- only the text representation changes: `{EMBED_MODEL_NAME}` "
+             f"(22M params, 384-dim) sentence embeddings instead of TF-IDF character n-grams. "
+             f"Scored per-transaction against `data/gold_v2_slm_eval_holdout.csv` "
+             f"({len(holdout)} real transactions, zero training overlap) -- identical to how "
+             f"the TF-IDF classifier and the SLM fine-tune are both judged.\n",
+             f"**Leaf accuracy: {leaf_ok.mean():.1%}**",
+             f"**General-category accuracy: {gen_ok.mean():.1%}**\n",
+             f"For comparison: TF-IDF classifier v2 scored 32.0% leaf / 37.6% general on the "
+             f"same holdout (`data/distillation_v2_holdout_report.md`).\n"]
+
+    report = "\n".join(lines)
+    (ROOT / "data" / "embed_classifier_holdout_report.md").write_text(report)
+    print(report)
+    print(f"\nWrote {ROOT / 'data' / 'embed_classifier_holdout_report.md'}", file=sys.stderr)
+
+
 def featurise_for(bundle, df):
     from scipy.sparse import csr_matrix, hstack
     text = build_text(df)
@@ -405,7 +493,8 @@ def evaluate():
 
 if __name__ == "__main__":
     cmds = {"fetch-train": fetch_train, "train": train, "evaluate": evaluate,
-             "retrain-lightgbm": retrain_lightgbm, "train-v2": train_v2, "evaluate-v2": evaluate_v2}
+             "retrain-lightgbm": retrain_lightgbm, "train-v2": train_v2, "evaluate-v2": evaluate_v2,
+             "train-embed": train_embed, "evaluate-embed": evaluate_embed}
     args = sys.argv[1:]
     if not args or args[0] not in cmds:
         sys.exit(__doc__)
