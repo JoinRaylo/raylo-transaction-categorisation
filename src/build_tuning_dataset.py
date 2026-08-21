@@ -239,14 +239,22 @@ def build():
             continue
         reps = OVERSAMPLE_FACTOR if m in conflicting else 1
         for r in rows:
-            ex = to_example(r["merchant_raw"], r["description_raw"], r["amount"], r["direction"], r["gold_leaf"])
+            # Plaid's raw amount is signed (negative = credit) -- the system prompt promises
+            # "amount (absolute value, GBP)" and direction carries the sign meaning separately.
+            # 127/1500 Tier A rows had a negative amount before this fix (found 2026-08-21
+            # while adapting the classifier retrain -- caught before it reached the SLM's
+            # eval scoring, but it WAS already in a prior tuning_train.jsonl build).
+            ex = to_example(r["merchant_raw"], r["description_raw"], abs(float(r["amount"])),
+                             r["direction"], r["gold_leaf"])
             tier_a_train_examples.extend([ex] * reps)
 
     with open(SLM_EVAL_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=["merchant_raw", "description_raw", "amount", "direction", "gold_leaf"])
         w.writeheader()
         for r in holdout_rows:
-            w.writerow({k: r[k] for k in w.fieldnames})
+            row = {k: r[k] for k in w.fieldnames}
+            row["amount"] = abs(float(r["amount"]))
+            w.writerow(row)
 
     with open(SPLIT_MANIFEST, "w", newline="") as f:
         w = csv.writer(f)
@@ -260,7 +268,7 @@ def build():
         for r in csv.DictReader(open(TOPUP_FILE)):
             if _norm(r["merchant_raw"]) in holdout_merchants:
                 continue  # defensive -- shouldn't happen, topup targeted different merchants entirely
-            topup_examples.append(to_example(r["merchant_raw"], r["description_raw"], r["amount"],
+            topup_examples.append(to_example(r["merchant_raw"], r["description_raw"], abs(float(r["amount"])),
                                               r["direction"], r["gold_leaf"]))
 
     train = train + tier_a_train_examples + topup_examples

@@ -1,36 +1,36 @@
 merchant_raw,description_raw,amount,direction,gold_leaf
 247 Money,247 MONEY GROUP LI 221317,504.78,debit,car_finance_repayment
-Kia Lunt Faye,KIA LUNT FAYE WINT 100000001600281281,200,debit,car_finance_repayment
-Spring,Returned direct debit CREDITSPRING 070806 13191414,-8.51,credit,returned_payment
+Kia Lunt Faye,KIA LUNT FAYE WINT 100000001600281281,200.0,debit,car_finance_repayment
+Spring,Returned direct debit CREDITSPRING 070806 13191414,8.51,credit,returned_payment
 3s Retail LTD,3S RETAIL LTD,1.99,debit,retail_other
 Accessories Palace,ACCESSORIES PALACE QATAR AMOUNT IN QAR 25.00 ON 04 AUG VISA 4.782241 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.16 ,5.39,debit,retail_other
 Ego.co.uk,Ego.co.uk,13.99,debit,clothing_womens
 Best Of The Best Cd,BEST OF THE BEST CD 4411,1.2,debit,prize_competitions
-Borders Competitioeye,4513 11JUL25  D   BORDERS COMPETITIOEYEMOUTH GB,9,debit,prize_competitions
+Borders Competitioeye,4513 11JUL25  D   BORDERS COMPETITIOEYEMOUTH GB,9.0,debit,prize_competitions
 A & S Outdoor LTD,A & S OUTDOOR LTD,14.99,debit,clothing_outdoor
-Berghaus,Berghaus,68,debit,clothing_outdoor
-Alex.,ALEX. M. ADAMSON                      REFERENCE: T00021417394,300,debit,transfer_p2p
-A C,To A/C 85228966   PENNINGTON P      Via Mobile Xfer,764,debit,transfer_bank_unspecified
-A Reeson Loan,A REESON  LOAN FT,50,debit,loan_repayment_manual
+Berghaus,Berghaus,68.0,debit,clothing_outdoor
+Alex.,ALEX. M. ADAMSON                      REFERENCE: T00021417394,300.0,debit,transfer_p2p
+A C,To A/C 85228966   PENNINGTON P      Via Mobile Xfer,764.0,debit,transfer_bank_unspecified
+A Reeson Loan,A REESON  LOAN FT,50.0,debit,loan_repayment_manual
 The Economist,The Economist,23.9,debit,magazines
-Thomson Initial,DC THOMSON        INITIAL PAYMENT,11,debit,magazines
-Last Chance Store,PPOINT_*LAST CHANC,1,debit,discount_store
-Ancoats General Store,Ancoats General Store,2,debit,convenience_store
-Abercrombie & Fitch,Abercrombie & Fitch,35,debit,clothing_general
+Thomson Initial,DC THOMSON        INITIAL PAYMENT,11.0,debit,magazines
+Last Chance Store,PPOINT_*LAST CHANC,1.0,debit,discount_store
+Ancoats General Store,Ancoats General Store,2.0,debit,convenience_store
+Abercrombie & Fitch,Abercrombie & Fitch,35.0,debit,clothing_general
 Lacoste,LACOSTE,103.64,debit,clothing_general
 M And M,M and M Direct Ltd,60.96,debit,clothing_general
 Matalan,Visa purchase Klarna*Matalan 8998,2.25,debit,clothing_general
 Justerini Brookscave,JUSTERINI   BROOKSCAVE BRISTOL      VIA MOBILE - PYMT FP 31/07/25 10    56105610883768000N,121.54,debit,alcohol_wine
 Ls Lea,"LS LEA & SANDEMAN (VIA APPLE PAY), ON 17-08-2025",16.95,debit,alcohol_wine
-Acc-nwestmstgl,ACC-NWESTMSTGL    543699******8897  VIA MOBILE - PYMT FP 16/10/25 10    32074346309180000N,300,debit,credit_card_repayment
-Byron,Byron Hara Credit Card,130,debit,credit_card_repayment
-Lloyds Tsb Create,LLOYDS TSB CREATE  XXXXXXXXXXXX6224 BBP,50,debit,credit_card_repayment
-Accessorize,CARD PAYMENT TO ACCESSORIZE ON 30-08-2025,37,debit,jewellery
-Hiscox The Jewelle,HISCOX THE JEWELLEBURTON-ON-TRE,40,debit,jewellery
+Acc-nwestmstgl,ACC-NWESTMSTGL    543699******8897  VIA MOBILE - PYMT FP 16/10/25 10    32074346309180000N,300.0,debit,credit_card_repayment
+Byron,Byron Hara Credit Card,130.0,debit,credit_card_repayment
+Lloyds Tsb Create,LLOYDS TSB CREATE  XXXXXXXXXXXX6224 BBP,50.0,debit,credit_card_repayment
+Accessorize,CARD PAYMENT TO ACCESSORIZE ON 30-08-2025,37.0,debit,jewellery
+Hiscox The Jewelle,HISCOX THE JEWELLEBURTON-ON-TRE,40.0,debit,jewellery
 Aci-uk,ACI-2628166-1 Aci-Uk,14.75,debit,debt_collection
-Andrew Whittaker Recovery,ANDREW WHITTAKER  RECOVERY FT,20,debit,debt_collection
-Dwp-crg,Dwp-crg DWP Central Recovery,10,debit,debt_collection
-Aclax LTD,Barclays account - deposit Aclax ltd - SortCodeAccountNumber: 20134523641341,4100,debit,unclassified_transfer
+Andrew Whittaker Recovery,ANDREW WHITTAKER  RECOVERY FT,20.0,debit,debt_collection
+Dwp-crg,Dwp-crg DWP Central Recovery,10.0,debit,debt_collection
+Aclax LTD,Barclays account - deposit Aclax ltd - SortCodeAccountNumber: 20134523641341,4100.0,debit,unclassified_transfer
 Ann Summers,Ann Summers,27.18,debit,adult_products
 Citymainadminre,CITYMAINADMINRE A1INS.245049295,12.99,debit,insurance_general
 Domestic & General,"DIRECT DEBIT PAYMENT TO D&G APPLIANCE CARE REF DBJR0006668, MANDATE NO 0056",7.83,debit,insurance_general
@@ -64,11 +64,11 @@ Anchor Rowhedge,Anchor Rowhedge,7.8,debit,pub_bar
 Bears Paw Frodsh,6895 BEARS PAW (FR  ON 08 AUG CLP 6895 BEARS PAW (FRODSH,10.2,debit,pub_bar
 All That Falafel,ALL THAT FALAFEL  ON 28 JUL CPM,6.95,debit,takeaway
 Chilos,WWW.CHILOS.CO.UK CD 6328,11.48,debit,takeaway
-Allpay LTD,ALLPAY LTD,1116,debit,payment_intermediary
+Allpay LTD,ALLPAY LTD,1116.0,debit,payment_intermediary
 C Kashing,9270 01SEP25 C    KASHING*AMU       SEMENT/GAME       LEICESTER GB,2.99,debit,entertainment_other
 Bip Pi,BIP PI3832943880748982,32.32,debit,credit_card_repayment
 Fgfs,Fgfs,18.32,debit,personal_loan_repayment
-C Heald Green Socialclu,5788 26JUL25 C    HEALD GREEN SOCIALCLU               CHEADLE GB,50,debit,private_members_club
+C Heald Green Socialclu,5788 26JUL25 C    HEALD GREEN SOCIALCLU               CHEADLE GB,50.0,debit,private_members_club
 Cd Milford Club,6845 19SEP25 CD   MILFORD CLUB      GODALMING GB,13.2,debit,private_members_club
 Amazon Prime,Amazon Prime*EV2PL,8.99,debit,streaming
 Crunchyroll,PAYPAL *CRUNCHYROL,5.99,debit,streaming
@@ -76,21 +76,21 @@ Emigrantas Tv,HCM*EMIGRANTAS TV,6.73,debit,streaming
 Hayu,Visa purchase Hayu 7322,4.99,debit,streaming
 Amorino,Amorino,7.3,debit,restaurant_cafe
 Cd Casa,9665 30AUG25 CD   CASA 03 LIMITED   LONDON GB,11.15,debit,restaurant_cafe
-Angel Advance,Angel Advance 68093,310,debit,debt_management_plan
+Angel Advance,Angel Advance 68093,310.0,debit,debt_management_plan
 Animed,1496 26AUG25      ANIMED DIRECT LTD 01379644288 GB,42.89,debit,pet_supplies
-Lily's Kitchen,Emery             Lily's Kitchen    VIA MOBILE - PYMT FP 02/08/25 10    36151923546018000N,34,debit,pet_supplies
+Lily's Kitchen,Emery             Lily's Kitchen    VIA MOBILE - PYMT FP 02/08/25 10    36151923546018000N,34.0,debit,pet_supplies
 Wundapets,SP WUNDAPETS  ON 14 SEP BCC,20.98,debit,pet_supplies
-Annexiojers,PAYPAL *ANNEXIOJER,20,debit,gambling_lottery
-Lottoland,LOTTOLAND,20,debit,gambling_lottery
-Anyvan,WWW.ANYVAN.COM,107,debit,delivery_courier
+Annexiojers,PAYPAL *ANNEXIOJER,20.0,debit,gambling_lottery
+Lottoland,LOTTOLAND,20.0,debit,gambling_lottery
+Anyvan,WWW.ANYVAN.COM,107.0,debit,delivery_courier
 World Options Weedingtech,World Options     weedingtech,669.27,debit,delivery_courier
 Apex Temple Court Ecom,APEX TEMPLE COURT,258.66,debit,accommodation
-C Kirtley,C KIRTLEY  BILL FT,130,debit,rent
-Cosy Homes,COSY HOMES,20,debit,rent
+C Kirtley,C KIRTLEY  BILL FT,130.0,debit,rent
+Cosy Homes,COSY HOMES,20.0,debit,rent
 Appcreatives.co.uk LTD,APPCREATIVES.CO.UK,8.99,debit,software
 Atlassian,Atlassian,78.93,debit,software
 AVG,AVG*AGAP1641395088 Avg *agp294263210,38.99,debit,software
-Canva,CARD PAYMENT TO CANVA* 04548-37370800 ON 27-06-2025,13,debit,software
+Canva,CARD PAYMENT TO CANVA* 04548-37370800 ON 27-06-2025,13.0,debit,software
 Aquaedge Classic Machi,Aquaedge Classic Machi,50.04,debit,household_appliances
 Flight Club,Flight Club - Darts Ch,23.74,debit,entertainment_other
 Flight Club Bloomsbury,FLIGHT CLUB BLOOMS,51.32,debit,entertainment_other
@@ -99,54 +99,54 @@ Cooper's,Cooper's,9.5,debit,eating_out_other
 Morr Derby,MORR DERBY,8.99,debit,eating_out_other
 Nao Pool Club,NAO POOL CLUB SPAIN AMOUNT IN EUR 50.00 ON 06 AUG VISA 1.14713 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £1.30 ,44.89,debit,eating_out_other
 Bar Salon,BAR SALON,3.28,debit,beauty_treatment
-Glam Rituals,GLAM RITUALS 400000001643332597,210,debit,beauty_treatment
+Glam Rituals,GLAM RITUALS 400000001643332597,210.0,debit,beauty_treatment
 Argyll And Bute,Argyll And Bute Co-Ips,0.8,debit,car_parking
 Boston Borough Cou-ips,BOSTON BOROUGH COU,1.6,debit,car_parking
-Charnwood,CHARNWOOD BOROUGH LEICESTERSHIR   GB  ,2,debit,car_parking
-Genistar Limited,9393 29AUG25      GENISTAR LIMITED  CATERHAM GB,49,debit,unclassified_card_spend
-Char.gy,CHAR.GY,25,debit,fuel
-Highlandfuelsltd,NYX*HighlandFuelsLtd CD 2188,1,debit,fuel
+Charnwood,CHARNWOOD BOROUGH LEICESTERSHIR   GB  ,2.0,debit,car_parking
+Genistar Limited,9393 29AUG25      GENISTAR LIMITED  CATERHAM GB,49.0,debit,unclassified_card_spend
+Char.gy,CHAR.GY,25.0,debit,fuel
+Highlandfuelsltd,NYX*HighlandFuelsLtd CD 2188,1.0,debit,fuel
 Sainsbury's Petrol Station,1285 31JUL25 CD   SAINSBURYS PETROL WALSALL GB,20.01,debit,fuel
-Stratford Sst,STRATFORD SST,15,debit,fuel
-Deposit With Spinland,Deposit with Dream Veg Deposit With Spinland,20,debit,gambling_casino
-Leisure Services Bbc,LEISURE SERVICES BBC3069090 FIRST DDR PAYMENT DDR,15,debit,gym_fitness
+Stratford Sst,STRATFORD SST,15.0,debit,fuel
+Deposit With Spinland,Deposit with Dream Veg Deposit With Spinland,20.0,debit,gambling_casino
+Leisure Services Bbc,LEISURE SERVICES BBC3069090 FIRST DDR PAYMENT DDR,15.0,debit,gym_fitness
 Team Rh,TEAM RH,7.99,debit,gym_fitness
 Team Rh Trhs,TEAM RH TRHS0000341308 FIRST DDR PAYMENT DDR,7.99,debit,gym_fitness
 Ashfield D.c.,ASHFIELD D.C.,411.96,debit,council_tax
 Broadland,BROADLAND DC      INITIAL PAYMENT,153.05,debit,council_tax
 Halifax District,HALIFAX DISTRICT PHALIFAX,2.08,debit,council_tax
-Hinckley & Boswor,HINCKLEY  & BOSWOR 802475706,202,debit,council_tax
-Kings Lynn & W Nfl,KINGS LYNN & W NFL  01 33873743 DDR,127,debit,council_tax
-Mddc,MDDC DIRECT DEBITS  7872219 DDR,148,debit,council_tax
+Hinckley & Boswor,HINCKLEY  & BOSWOR 802475706,202.0,debit,council_tax
+Kings Lynn & W Nfl,KINGS LYNN & W NFL  01 33873743 DDR,127.0,debit,council_tax
+Mddc,MDDC DIRECT DEBITS  7872219 DDR,148.0,debit,council_tax
 Basingstoke & Deane Bo,BASINGSTOKE & DEAN  ON 18 JUL CLP BASINGSTOKE & DEANE BO,11.9,debit,government_services
-Bus Lane Enforcement,BUS LANE ENFORCEME,35,debit,government_services
+Bus Lane Enforcement,BUS LANE ENFORCEME,35.0,debit,government_services
 Cd Car,4615 05AUG25 CD   CARMARTHENSHIRE C C                 CARMARTHEN GB,2.2,debit,government_services
-Chesterfield Bc,CHESTERFIELD BC,32,debit,government_services
+Chesterfield Bc,CHESTERFIELD BC,32.0,debit,government_services
 Autotrader,AUTO TRADER  ON 30 AUG CPM Autotrader,4.95,debit,advertising_services
-Awin,AWIN74522AWIN LTD,90,debit,advertising_services
+Awin,AWIN74522AWIN LTD,90.0,debit,advertising_services
 Paperchase,The Paperchase,2.26,debit,stationery
 Ryman,RYMAN Ryman Stationery,5.99,debit,stationery
 Avolta Alc Net The Sho,Avolta ALC Net The SPAIN ON 14 SEP CLP AVOLTA ALC NET THE SHO,14.6,debit,airport_spend
-B & Q,B&Q,14,debit,home_improvement
+B & Q,B&Q,14.0,debit,home_improvement
 Dedeman,DEDEMAN,18.82,debit,home_improvement
-N Bashiru,"N BASHIRU REFUND 200000001596757565 REFUND,200000001596757565",-15.5,credit,refund_received
+N Bashiru,"N BASHIRU REFUND 200000001596757565 REFUND,200000001596757565",15.5,credit,refund_received
 Bains Off Lice,PPOINT_*BAINS OFF  ON 25 AUG CLP PPOINT_*BAINS OFF LICE,0.49,debit,alcohol_beer_spirits
 Best Wood Off,7834 18JUL25 C    BEST WOOD OFF     LICENCE           NOTTINGHAM GB,4.74,debit,alcohol_beer_spirits
 Cd In Spirit,1433 02SEP25 CD   IN SPIRIT         TAMWORTH GB,13.4,debit,alcohol_beer_spirits
 Bandcamp,BANDCAMPHORNSEYHARDCO Bandcamp,32.6,debit,music_other
-Banquet Records,BANQUET RECORDS  ON 07 AUG BCC,28,debit,physical_media
+Banquet Records,BANQUET RECORDS  ON 07 AUG BCC,28.0,debit,physical_media
 Base London,SP BASE LONDON,38.99,debit,footwear
-Clarks,4211 26AUG25      CLARKS            STREET GB         REFUND,-11.6,credit,refund_received
+Clarks,4211 26AUG25      CLARKS            STREET GB         REFUND,11.6,credit,refund_received
 Deichmann,Deichmann,36.48,debit,footwear
-Dune,DUNE              STRATFORD,69,debit,footwear
+Dune,DUNE              STRATFORD,69.0,debit,footwear
 Gillette Stadium,WWW.GILLETTE.COM,25.87,debit,health_beauty_general
 Glossybox,GLOSSYBOX Glossybox,12.5,debit,health_beauty_general
 Elemis,BT *ELEMIS        BRISTOL,57.95,debit,skin_hair_care
-Berwick Lc,BERWICK LC,2,debit,gym_fitness
+Berwick Lc,BERWICK LC,2.0,debit,gym_fitness
 Bookplanet,www.bookplanet247.,9.95,debit,books
-Gamesys,Gamesys Operation Limited                NV2YXROBGB3928756,10,debit,gambling_unspecified
-Lbs Play Service,LBS PLAY SERVICE  PSJOSEPH,128,debit,gambling_unspecified
-Beryl,Beryl,1,debit,bicycle
+Gamesys,Gamesys Operation Limited                NV2YXROBGB3928756,10.0,debit,gambling_unspecified
+Lbs Play Service,LBS PLAY SERVICE  PSJOSEPH,128.0,debit,gambling_unspecified
+Beryl,Beryl,1.0,debit,bicycle
 Sigma Sports,Sigma Sports - Hampton,11.97,debit,bicycle
 Delikatesy Smaczek,DELIKATESY SMACZEK,14.11,debit,groceries_specialist
 Huel,WWW.HUEL.COM,36.49,debit,groceries_specialist
@@ -175,7 +175,7 @@ Pets at Home,Pets at Home PETS AT HOME LTD       CHESTERFIELD  GBR,7.0,debit,pet
 Pets at Home,Pets at Home PETS AT HOME LTD       BOLTON        GBR,9.49,debit,pet_supplies
 Pets at Home,PETS AT HOME      DERBY,44.2,debit,pet_supplies
 Pets At Home,PETS AT HOME LTD  SALFORD,17.98,debit,pet_supplies
-Pets At Home,PETS AT HOME LTD  ON 02 JUN CPM Pets at Home,34,debit,pet_supplies
+Pets At Home,PETS AT HOME LTD  ON 02 JUN CPM Pets at Home,34.0,debit,pet_supplies
 Pets At Home,PETS AT HOME LTD,23.9,debit,pet_supplies
 Halifax,HALIFAX,429.44,debit,mortgage
 Halifax,HALIFAX,826.99,debit,mortgage
@@ -184,8 +184,8 @@ Admiral Insurance,ADMIRAL INSURANCE,513.07,debit,insurance_general
 Admiral Insurance,ADMIRAL INSURANCE,13.3,debit,insurance_general
 LayBuy,CARD PAYMENT TO LAYBUY* AMAZON ON 05-09-2023,7.33,debit,marketplace_amazon
 TV Licensing ,TV LICENCE QBP1,41.0,debit,tv_licence
-TV LICENSING,TV LICENCE MBP 2769698723,15,debit,tv_licence
-TV LICENSING,Direct debit TV LICENCE MBP 608009 30287634,15,debit,tv_licence
+TV LICENSING,TV LICENCE MBP 2769698723,15.0,debit,tv_licence
+TV LICENSING,Direct debit TV LICENCE MBP 608009 30287634,15.0,debit,tv_licence
 TV LICENSING,"TV LICENCE MBP
 TV LICENCE MBP - SortCodeAccountNumber: 60800930287634",34.9,debit,tv_licence
 Wayfair,Klarna*Wayfair UK,55.19,debit,home_accessories
@@ -197,12 +197,12 @@ W.H.Smith,WHSmith from Savings Pot WH Smith Chiswi        W4 5YA  LO    GBR,1.99
 W.H.Smith,"READING S/W WH SMITHS (VIA APPLE PAY), ON 01-12-2023",5.65,debit,books
 W.H.Smith,WHSmith WELCOME BREAK WHS      SOUTH MIMMS   GBR,7.0,debit,books
 OVO Energy,Visa purchase OVO ENERGY,20.0,debit,energy
-Ovo Energy,WWW.OVOENERGY.COM  ON 20 AUG BCC OVO Energy,5,debit,energy
+Ovo Energy,WWW.OVOENERGY.COM  ON 20 AUG BCC OVO Energy,5.0,debit,energy
 Mango,MRS J CORDUKES  MANGO BALLS OFF FT,40.0,debit,transfer_p2p
 Bet365,BET365,200.0,credit,gambling_betting
 Bet365,BET365,20.0,debit,gambling_betting
 Bet365,Bet365 BET365                 GIBRALTAR     GBR,10.0,debit,gambling_betting
-Bet365,BET365  ON 12 AUG BCC bet365,7,debit,gambling_betting
+Bet365,BET365  ON 12 AUG BCC bet365,7.0,debit,gambling_betting
 Park Holidays UK,Park Holidays - He  ON 28 MAY CLP PARK HOLIDAYS - HEDLEY,14.0,debit,holiday_uk
 East Yorkshire MOT,EAST YORKSHIRE MOT EAST YORKSHIRE MOTOR SERV,2.0,debit,public_transport_rail_coach
 Child Benefits,HMRC CHILD BENEFIT,93.4,credit,benefits_state
@@ -231,7 +231,7 @@ Oxfam Shop,OXFAM GB,46.92,debit,charity_shop
 Scottish Widows,SCOTTISH WIDOWS,88.52,debit,insurance_life
 Tesco,TESCO STORES 3396 Tesco,31.67,debit,groceries
 Tesco,TESCO STORES 2358,32.5,debit,groceries
-Tesco,TESCO DALKEITH           DALKEITH     GB2025-09-28,100,debit,groceries
+Tesco,TESCO DALKEITH           DALKEITH     GB2025-09-28,100.0,debit,groceries
 Butlins,BUTLINS,22.6,debit,holiday_uk
 Plus500,0129 22MAY25      PLUS500           LONDON          GBCREDIT,75.0,credit,investment_trading
 Plus500,7456 03MAR25  D   PLUS500           LONDON GB,244.0,debit,investment_trading
@@ -245,13 +245,13 @@ Save The Pennies,SAVE THE PENNIES 777628-00021229,2.89,debit,savings_transfer
 Screwfix,4953 16SEP23 C    SCREWFIX DIR LTD  NORWICH B1680 GB,7.99,debit,tools
 Screwfix,SCREWFIX DIR LTD,16.99,debit,tools
 Screwfix,SCREWFIX DIR LTD,7.39,debit,tools
-Screwfix,Screwfix Charlie Monti,37,debit,tools
+Screwfix,Screwfix Charlie Monti,37.0,debit,tools
 Screwfix,SCREWFIX DIR LTD,7.49,debit,tools
 Google,Google GOOGLE *Google Storage 650-253-0000  USA,1.59,debit,web_services
 Animal Friends Insurance,Direct Debit - First Payment ANIMAL FRIENDS INS 070976 05342230,30.17,debit,insurance_pet
 Packlink,PACKLINK,2.97,debit,delivery_courier
 PRA Group,PRA Group PRA GROUP              LONDON        GBR,132.0,debit,debt_collection
-PRA Group,PRA GROUP UK LIMI  1396153 STO PRA Group,3,debit,debt_collection
+PRA Group,PRA GROUP UK LIMI  1396153 STO PRA Group,3.0,debit,debt_collection
 Air Ambulance,CARD PAYMENT TO WALES AIR AMBULANCE ON 26-02-2025,1.0,debit,charitable_donation
 Roadchef,VMS ROADCHEF WHSMISTAFFORD,27.08,debit,restaurant_cafe
 The Healthy Pet Club,HEALTHY PET CLUB  463/B0005267806 DDR Healthy Pet Club,18.99,debit,veterinary
@@ -278,121 +278,121 @@ Runners for Public Lands,Runners,9.69,debit,charitable_donation
 Cd Wh Smith Black Pool Vic,1318 10OCT25 CD   WH SMITH BLACKPOOLVIC               BLACKPOOL GB,2.78,debit,books
 Cd Wh Smith Black Pool Vic,1318 10OCT25 CD   WH SMITH BLACKPOOLVIC               BLACKPOOL GB,1.39,debit,books
 Companion Care Vets,4084 20AUG25 C    COMPANION CARE VETSUR               HUDDERSFIELD GB,10.23,debit,veterinary
-BoilerJuice,BoilerJuice,-121.9,credit,refund_received
-Ecuadorian Crafts,Ecuadorian Crafts,18,debit,arts_crafts
-Barclaycard,MISS MAXINE CASSID  XXXXXXXXXXXX8001 BBP Barclaycard,9,debit,credit_card_repayment
-Barclaycard,BARCLAYCARD       NORTHAMPTON,400,debit,credit_card_repayment
-Nest Client,Returned direct debit NEST CLIENT ACCOUN 070806 30658407,-74,credit,returned_payment
-Nest Client,Returned direct debit NEST CLIENT ACCOUN 070806 30658407,-74,credit,returned_payment
+BoilerJuice,BoilerJuice,121.9,credit,refund_received
+Ecuadorian Crafts,Ecuadorian Crafts,18.0,debit,arts_crafts
+Barclaycard,MISS MAXINE CASSID  XXXXXXXXXXXX8001 BBP Barclaycard,9.0,debit,credit_card_repayment
+Barclaycard,BARCLAYCARD       NORTHAMPTON,400.0,debit,credit_card_repayment
+Nest Client,Returned direct debit NEST CLIENT ACCOUN 070806 30658407,74.0,credit,returned_payment
+Nest Client,Returned direct debit NEST CLIENT ACCOUN 070806 30658407,74.0,credit,returned_payment
 Madison F Kenndy Loan,MADISON F KENNDY  LOAN FT,0.05,debit,loan_repayment_manual
 Nintendo,Nintendo,3.49,debit,gaming_console_pc
 Nintendo,Nintendo CA1444091,3.99,debit,gaming_console_pc
 J&f Consulting LTD,United Kingdom Account - Tn - Frank T J&F Consulting Ltd - SortCodeAccountNumber: 60837141492497,3562.5,debit,business_services
 Pretty Little Thing,Pretty Little Thing,17.5,debit,clothing_womens
 British Heart Founlondon,BRITISH HEART FOUNLONDON,5.5,debit,charity_shop
-Mnv Trade LTD,Mnv Trade LTD,20,debit,unclassified_other
+Mnv Trade LTD,Mnv Trade LTD,20.0,debit,unclassified_other
 Audleys Wood,Audleys Wood Hotel ,5.5,debit,accommodation
-D R Mills Car Insurance,D R MILLS         CAR INSURANCE,53,debit,insurance_motor
+D R Mills Car Insurance,D R MILLS         CAR INSURANCE,53.0,debit,insurance_motor
 Uber Eats,UBER * EATS PENDIN  ON 05 SEP CPM UBER   * EATS PENDING,25.65,debit,takeaway
-James Paget Hospital,JAMES PAGET HOSPIT  ON 08 AUG CPM JAMES PAGET HOSPITAL,3,debit,hospital
+James Paget Hospital,JAMES PAGET HOSPIT  ON 08 AUG CPM JAMES PAGET HOSPITAL,3.0,debit,hospital
 Animal Health Care,ANIMAL HEALTH CARE,18.99,debit,veterinary
 Animal Health Care,ANIMAL HEALTH CARE CX001537554,18.99,debit,veterinary
-Patricia Robinson,United Kingdom Account - Rent Patricia Robinson - SortCodeAccountNumber: 77010427581568,50,debit,rent
-Matthew Gay,MATTHEW GAY 300000001615235413,1800,debit,transfer_p2p
+Patricia Robinson,United Kingdom Account - Rent Patricia Robinson - SortCodeAccountNumber: 77010427581568,50.0,debit,rent
+Matthew Gay,MATTHEW GAY 300000001615235413,1800.0,debit,transfer_p2p
 Bizlend LTD,BIZLEND LTD GBP AC BIZLEND3421,214.92,debit,business_loan_repayment
 Bizlend LTD,BIZLEND LTD GBP AC BIZLEND3421,214.92,debit,business_loan_repayment
 Lavazza,CARD PAYMENT TO LAVAZZA PROFESSIONAL U ON 15-08-2025,1.4,debit,restaurant_cafe
 Ck Sempol Padel,CK SEMPOL PADEL INDONESIA AMOUNT IN IDR 21500.00 ON 11 AUG VISA 21870.830873 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.03 ,1.01,debit,sports_participation
 Ck Sempol Padel,CK SEMPOL PADEL INDONESIA AMOUNT IN IDR 27000.00 ON 31 JUL VISA 21647.833052 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.04 ,1.29,debit,sports_participation
-J Nainu,J NAINU 100000001632000301,35,debit,transfer_p2p
-J Nainu,J NAINU 200000001601192044,30,debit,transfer_p2p
+J Nainu,J NAINU 100000001632000301,35.0,debit,transfer_p2p
+J Nainu,J NAINU 200000001601192044,30.0,debit,transfer_p2p
 AAA Membership,Direct debit AA MEMBERSHIP 200526 33924904,29.97,debit,breakdown_cover
 Espress Organi,Zettle_*ESPRESS ORGANI Espress Organi,2.5,debit,restaurant_cafe
 Dott,Dott,2.61,debit,bicycle
-Edf Uk Card Payments,EDF UK CARD PAYMEN,30,debit,energy
+Edf Uk Card Payments,EDF UK CARD PAYMEN,30.0,debit,energy
 Microsoft,3115 29AUG25      MICROSOFT*M       ARKETPLACE        MSBILL.INFO GB,3.29,debit,software
 Microsoft,CARD PAYMENT TO MICROSOFT*MICROSOFT 36 ON 27-06-2025,1.99,debit,software
 Microsoft,PAYPAL *MICROSOFT CD 7903,9.99,debit,software
-Microsoft,MICROSOFT*STORE  ON 12 SEP BCC,1,debit,software
-Surevend,SUREVEND  ON 14 AUG CPM,1,debit,confectionary
+Microsoft,MICROSOFT*STORE  ON 12 SEP BCC,1.0,debit,software
+Surevend,SUREVEND  ON 14 AUG CPM,1.0,debit,confectionary
 Cd Bubble Bar,9571 16AUG25 CD   BUBBLE BAR        MABLETHORPE GB,1.4,debit,pub_bar
-Greene King,Greene King Brewing And Retailing L Greene King B&RNo2,-28.95,credit,salary
-Poundbakery,Poundbakery - Rhyl,3,debit,takeaway
+Greene King,Greene King Brewing And Retailing L Greene King B&RNo2,28.95,credit,salary
+Poundbakery,Poundbakery - Rhyl,3.0,debit,takeaway
 Deli Carlo,Deli carlo,6.9,debit,restaurant_cafe
-St George's School Sho,"ST GEORGE'S SCHOOL SHO (VIA APPLE PAY), ON 03-10-2025",1,debit,school_fees
+St George's School Sho,"ST GEORGE'S SCHOOL SHO (VIA APPLE PAY), ON 03-10-2025",1.0,debit,school_fees
 National Health Service,NHSBSA PPC 2 DD14695314,11.45,debit,pharmacy
 National Health Service,Direct debit NHSBSA PPC 2 607080 10027823,11.45,debit,pharmacy
 Terry Monthly,"MOB, Stephen Terry, Monthly Board",387.26,debit,rent
-DHA,DHA MAIN SAVING  DH DIVIDENDS STO,5000,debit,savings_transfer
-DHA,DHA MAIN SAVING  DH DIVIDENDS STO,5000,debit,savings_transfer
-Nga T Nguyen Nails,NGA T NGUYEN  NAILS FT,30,debit,beauty_treatment
+DHA,DHA MAIN SAVING  DH DIVIDENDS STO,5000.0,debit,savings_transfer
+DHA,DHA MAIN SAVING  DH DIVIDENDS STO,5000.0,debit,savings_transfer
+Nga T Nguyen Nails,NGA T NGUYEN  NAILS FT,30.0,debit,beauty_treatment
 Cd Abbey Mini Market,5507 13JUL25 CD   ABBEY MINI MARKET BARKING GB,2.05,debit,convenience_store
-Catering And Beverage Supplies,Catering And Beverage Supplies / ref: Inv 27834,198,debit,catering
+Catering And Beverage Supplies,Catering And Beverage Supplies / ref: Inv 27834,198.0,debit,catering
 Salvation Army Trading,The Salvation Army 977 Salvation Army Trading,31.5,debit,charity_shop
 Times Newspapers LTD,Times Newspapers Ltd,3.99,debit,newspapers
 My Sticravenme,1042 25JUN25      ETSY.COM*MY       STICRAVENME       LONDON GB,1.99,debit,marketplace_general
-Cofee Marrakech,COFEE MARRAKECH  ON 20 AUG CPM,10,debit,restaurant_cafe
-Cofee Marrakech,COFEE MARRAKECH  ON 06 AUG CPM,8,debit,restaurant_cafe
-Lvl-london Vet Special, Lvl-London Vet Special,500,debit,veterinary
+Cofee Marrakech,COFEE MARRAKECH  ON 20 AUG CPM,10.0,debit,restaurant_cafe
+Cofee Marrakech,COFEE MARRAKECH  ON 06 AUG CPM,8.0,debit,restaurant_cafe
+Lvl-london Vet Special, Lvl-London Vet Special,500.0,debit,veterinary
 Animal Health Care Cj,ANIMAL HEALTH CARE  CJ001503389 DDR,15.99,debit,veterinary
-Mr Kian Morgan,MR KIAN MORGAN 100000001615647739,25,debit,transfer_p2p
+Mr Kian Morgan,MR KIAN MORGAN 100000001615647739,25.0,debit,transfer_p2p
 Tv Licensing Spp,TV LICENSING SPP  ON 05 SEP BCC,6.98,debit,tv_licence
-Hybridworld LTD,HYBRIDWORLD LTD  I10 AIRBAG FT,425,debit,spares_repairs
+Hybridworld LTD,HYBRIDWORLD LTD  I10 AIRBAG FT,425.0,debit,spares_repairs
 Costa,COSTA - HAYLE,12.45,debit,restaurant_cafe
 HP,HPI INSTANT INK UK,4.49,debit,printing_supplies
 HP,HPI INSTANT INK UK,2.78,debit,printing_supplies
 HP,HPI INSTANT INK UK,13.49,debit,printing_supplies
-Anthony Pestano,ANTHONY PESTANO 200000001618311277,10,debit,transfer_p2p
+Anthony Pestano,ANTHONY PESTANO 200000001618311277,10.0,debit,transfer_p2p
 Le-Vel,Level,8.2,debit,supplements
 Royals Off Licence & Conv,Royals Off Licence & Conv,4.19,debit,alcohol_beer_spirits
-Rbwm,Returned direct debit RBWM COUNCIL TAX 070806 01052737,-135,credit,returned_payment
-Rbwm,Returned direct debit RBWM COUNCIL TAX 070806 01052737,-135,credit,returned_payment
+Rbwm,Returned direct debit RBWM COUNCIL TAX 070806 01052737,135.0,credit,returned_payment
+Rbwm,Returned direct debit RBWM COUNCIL TAX 070806 01052737,135.0,credit,returned_payment
 Kadima Career,"KADIMA CAREER XLR8R - 631 3rd Street, BROOKLYN",184.98,debit,career_services
-Adz Lawro,ADZ LAWRO,5,debit,unclassified_other
+Adz Lawro,ADZ LAWRO,5.0,debit,unclassified_other
 Gurujee's Limited,GURUJEE'S LIMITED  ON 14 AUG CLP,0.99,debit,unclassified_other
-Betano.co.uk,BETANO.CO.UK,40,debit,gambling_betting
+Betano.co.uk,BETANO.CO.UK,40.0,debit,gambling_betting
 Euro Plus,Euro Plus,8.49,debit,unclassified_card_spend
-Gk Estate,GK ESTATE         GK ESTATE         VIA MOBILE - PYMT FP 05/09/25 10    14094043723750000N,1590,debit,rent
-Mayfair London Ass,MAYFAIR LONDON ASS 100000001608747364 PAYMENT 040605     10 26AUG25 07:57,2770,debit,rent
+Gk Estate,GK ESTATE         GK ESTATE         VIA MOBILE - PYMT FP 05/09/25 10    14094043723750000N,1590.0,debit,rent
+Mayfair London Ass,MAYFAIR LONDON ASS 100000001608747364 PAYMENT 040605     10 26AUG25 07:57,2770.0,debit,rent
 Spencers News,PPOINT_*SPENCERS N  ON 28 SEP CLP PPOINT_*SPENCERS NEWS,6.3,debit,convenience_store
 Decathlon,Decathlon,35.26,debit,sports_equipment
-Betfred Chargeback,BFCB,41,debit,gambling_betting
-Betfred Chargeback,BFCB,30,debit,gambling_betting
-Mychildatschool Bromcom,Visa purchase MYCHILDATSCHOOL BROMCOM,30,debit,school_fees
-Ref.v,REF.V-2508-24790  Dispute refund,-156.87,credit,refund_received
-Easipay Carpets,EASIPAY CARPETS,17,debit,home_accessories
-Creation.co.uk,REVERSAL OF 14-07 CREATION.CO.UK,-29.95,credit,returned_payment
+Betfred Chargeback,BFCB,41.0,debit,gambling_betting
+Betfred Chargeback,BFCB,30.0,debit,gambling_betting
+Mychildatschool Bromcom,Visa purchase MYCHILDATSCHOOL BROMCOM,30.0,debit,school_fees
+Ref.v,REF.V-2508-24790  Dispute refund,156.87,credit,refund_received
+Easipay Carpets,EASIPAY CARPETS,17.0,debit,home_accessories
+Creation.co.uk,REVERSAL OF 14-07 CREATION.CO.UK,29.95,credit,returned_payment
 Vendmarque Limited,VENDMARQUE LIMITED,1.1,debit,confectionary
-Cd Nails,4137 25JUN25 CD   NAILS 4 U         ROWLEY REGIS GB,55,debit,beauty_treatment
+Cd Nails,4137 25JUN25 CD   NAILS 4 U         ROWLEY REGIS GB,55.0,debit,beauty_treatment
 Nikepos Uk,NikePOS_UK  ON 13 SEP CPM NIKEPOS_UK,24.99,debit,sportswear
-I M Timmins,I M TIMMINS 600000001570896029,10,debit,transfer_p2p
-Paul Bray,PAUL BRAY 300000001635431192 770921     10 19SEP25 13:13,350,debit,transfer_p2p
+I M Timmins,I M TIMMINS 600000001570896029,10.0,debit,transfer_p2p
+Paul Bray,PAUL BRAY 300000001635431192 770921     10 19SEP25 13:13,350.0,debit,transfer_p2p
 Starbucks,STARBUCKS  ON 19 AUG CPM Starbucks,2.85,debit,restaurant_cafe
 Starbucks,STARBUCKS         LONDON,5.55,debit,restaurant_cafe
 West Lothian Leisu,Direct debit WEST LOTHIAN LEISU 070436 21919402,21.95,debit,gym_fitness
 West Lothian Leisu,Direct debit WEST LOTHIAN LEISU 070436 21919402,21.95,debit,gym_fitness
-Mr Raul,MR RAUL-CRISTIAN B  CK FT,40,debit,transfer_p2p
-Mr Raul,MR RAUL-CRISTIAN B  CK FT,30,debit,transfer_p2p
+Mr Raul,MR RAUL-CRISTIAN B  CK FT,40.0,debit,transfer_p2p
+Mr Raul,MR RAUL-CRISTIAN B  CK FT,30.0,debit,transfer_p2p
 Assurant Auk,ASSURANT AUK00000286538,11.99,debit,insurance_other
 Assurant Auk,ASSURANT AUK00000286538,11.99,debit,insurance_other
 Assurant Auk,ASSURANT AUK00000282001,11.99,debit,insurance_other
 Assurant Auk,ASSURANT AUK00000286538,11.99,debit,insurance_other
 Assurant Auk,ASSURANT AUK00000271934,8.99,debit,insurance_other
-RAC Insurance Services,BISL RAC INSURANCE  136705833398790742 UNP,-47.84,credit,returned_payment
+RAC Insurance Services,BISL RAC INSURANCE  136705833398790742 UNP,47.84,credit,returned_payment
 Bb-samsung,BB-SAMSUNG GERMANY ON 11 JUL BCC,1.46,debit,unclassified_other
-Beenetwork,BEENETWORK.COM/CHA0161 244 1000,4,debit,public_transport_rail_coach
+Beenetwork,BEENETWORK.COM/CHA0161 244 1000,4.0,debit,public_transport_rail_coach
 Whatnot,WHATNOT,9.69,debit,marketplace_general
 Yellow Vending,6460 08AUG25 CD   NYA*YELLOW VENDINGABERYSTWYTH GB,1.75,debit,confectionary
-Sky Tv,SKY TV  ON 13 JUL BCC,20,debit,broadband_tv_phone
+Sky Tv,SKY TV  ON 13 JUL BCC,20.0,debit,broadband_tv_phone
 Sky Tv,SKY TV  ON 19 AUG BCC,26.57,debit,broadband_tv_phone
-Daniel Hill Loan,DANIEL HILL       LOAN              VIA MOBILE - PYMT FP 28/06/25 10    44195059475653000N,20,debit,personal_loan_repayment
+Daniel Hill Loan,DANIEL HILL       LOAN              VIA MOBILE - PYMT FP 28/06/25 10    44195059475653000N,20.0,debit,personal_loan_repayment
 Yorkshire Water,YORKSHIRE WATER 19123 4567 5626 79,11.7,debit,water
-Lantern,LANTERN  0455847 DDR,5,debit,debt_collection
-Oxfam,OXFAM F0845       MIRFIELD,4,debit,charity_shop
+Lantern,LANTERN  0455847 DDR,5.0,debit,debt_collection
+Oxfam,OXFAM F0845       MIRFIELD,4.0,debit,charity_shop
 Aral Tankstelle,Aral Tankstelle 201898,3.69,debit,fuel
 Aral Tankstelle,Aral Tankstelle 181303,5.96,debit,fuel
-Pamela,Pamela O'Rourke & C Muldoon,2,debit,transfer_p2p
-Petar Kirilov,Petar Kirilov     no ref,30,debit,transfer_p2p
+Pamela,Pamela O'Rourke & C Muldoon,2.0,debit,transfer_p2p
+Petar Kirilov,Petar Kirilov     no ref,30.0,debit,transfer_p2p
 Street,0809 18OCT25 C    AUGHTON STREET    WHOLESA           ORMSKIRK GB,16.35,debit,discount_store
 Village News,Village News  ON 27 JUN CPM,6.78,debit,convenience_store
 VCE,VCE2775821076 SAVE,31.25,debit,savings_transfer
@@ -400,89 +400,89 @@ Lothian Buses,Lothian Buses Edtrams,6.4,debit,public_transport_rail_coach
 Cd Mieszko,6107 02JUN25 CD   MIESZKO           SUDBURYHILL       GREENFORD GB,4.6,debit,groceries_specialist
 Barclays Bank,BARCLAYS UK MTGES 9745870217,641.1,debit,mortgage
 Cash Convert Ers Thornaby,CASH CONVERTERS TH,19.99,debit,pawnbroker
-Bushra Khan Save,Bushra khan       Save,20,debit,transfer_p2p
+Bushra Khan Save,Bushra khan       Save,20.0,debit,transfer_p2p
 The Global,THE GLOBAL NEWSAGE,2.1,debit,convenience_store
-Beauty Box,Beauty box,30,debit,beauty_treatment
+Beauty Box,Beauty box,30.0,debit,beauty_treatment
 Water World,WATER WORLD       BURTON  SOUTH,9.99,debit,days_out
 Go Local Extra,Go Local Extra,17.24,debit,convenience_store
-Cdc Revs,Direct debit CDC REVS 600524 26121204,128,debit,council_tax
-J Pennington,J PENNINGTON 777754 72527868,6,debit,transfer_p2p
+Cdc Revs,Direct debit CDC REVS 600524 26121204,128.0,debit,council_tax
+J Pennington,J PENNINGTON 777754 72527868,6.0,debit,transfer_p2p
 Trowell S W Costa,TROWELL S/W COSTA,5.7,debit,restaurant_cafe
 Walker Convenience,WALKER CONVENIENCE,6.19,debit,convenience_store
 Littlejohn Ck,LITTLEJOHN CK,123.5,debit,cheque
 Cash Convert Ers Jarrow,CASH CONVERTERS JA,32.5,debit,pawnbroker
-Stanif Client Ac,"STANIF CLIENT AC TSP - TAX REFUND RP4659982286918500 TSP - TAX REFUND,RP4659982286918500",-3035.38,credit,tax_refund
+Stanif Client Ac,"STANIF CLIENT AC TSP - TAX REFUND RP4659982286918500 TSP - TAX REFUND,RP4659982286918500",3035.38,credit,tax_refund
 Wilco Motor Spares,9410 16JUL25 CD   WILCO MOTOR SPARES) 1               BURY ST EDMUN GB,78.75,debit,spares_repairs
-Dvla Vehicle,0114 31JUL25      DVLA VEHICLE TAX  SWANSEA GB,265,debit,road_tax
+Dvla Vehicle,0114 31JUL25      DVLA VEHICLE TAX  SWANSEA GB,265.0,debit,road_tax
 Zurich Assurance,ZURICH ASSURANCE L,25.44,debit,insurance_life
-Jack's,Jack's Holiday Money pot transfer,-10,credit,savings_transfer
-Jack's,Jack's Savings pot transfer,-10,credit,savings_transfer
-Hmrc Shipley,HMRC SHIPLEY      475PL010340582509 FP 27/08/25 30    41023310987180000N,50,debit,tax_payment
-Bates House & Gard,BATES HOUSE & GARD,70,debit,garden
+Jack's,Jack's Holiday Money pot transfer,10.0,credit,savings_transfer
+Jack's,Jack's Savings pot transfer,10.0,credit,savings_transfer
+Hmrc Shipley,HMRC SHIPLEY      475PL010340582509 FP 27/08/25 30    41023310987180000N,50.0,debit,tax_payment
+Bates House & Gard,BATES HOUSE & GARD,70.0,debit,garden
 Mr Simms Olde Sweet Shopp,Contactless Payment MR SIMMS OLDE SWEET SHOPP APPLEPAY 5564,8.93,debit,confectionary
-Oasis Tanning Centre,OASIS TANNING CENT,20,debit,beauty_treatment
-Mcparland Pharmacies,McParland Pharmacies,3,debit,pharmacy
+Oasis Tanning Centre,OASIS TANNING CENT,20.0,debit,beauty_treatment
+Mcparland Pharmacies,McParland Pharmacies,3.0,debit,pharmacy
 The Millennium,SumUp  *THE MILLENNIUM Sumup *the Millennium,1.5,debit,pub_bar
 Protect Your Bubble,PROTECT YOUR BUBBL AUK00000238998,7.59,debit,insurance_other
-Places For People Leisure,PLACES FOR PEOPLE,38,debit,gym_fitness
-Voxi,WWW.VOXI.CO.UK  ON 25 JUN BCC,10,debit,mobile_phone_contract
-Council,Returned direct debit COUNCIL TAX 074456 13047253,-24.7,credit,returned_payment
+Places For People Leisure,PLACES FOR PEOPLE,38.0,debit,gym_fitness
+Voxi,WWW.VOXI.CO.UK  ON 25 JUN BCC,10.0,debit,mobile_phone_contract
+Council,Returned direct debit COUNCIL TAX 074456 13047253,24.7,credit,returned_payment
 Reading Transport Limited,Contactless Payment READING TRANSPORT LIMITED,4.3,debit,public_transport_rail_coach
-The Beach Hut,The Beach Hut,2,debit,restaurant_cafe
+The Beach Hut,The Beach Hut,2.0,debit,restaurant_cafe
 Svl Leisure Limite,Svl Leisure Limite,8.8,debit,entertainment_other
 Electronic First Fz Ll,Electronic First F U.A.EMIRATES ON 28 JUL BCC ELECTRONIC FIRST FZ LL,11.76,debit,gaming_console_pc
 Wizz Air,INT'L 0064837503  Wizz Air MalMI7RKFValetta           EUR 271.97        @1.1453 Visa Rate,237.46,debit,flights
 Jsm Vending,Jsm Vending,1.1,debit,confectionary
 PureGym,Pure Gym Ltd PureGym,25.99,debit,gym_fitness
-Susan Jones,SUSAN JONES  00 FT,20,debit,transfer_p2p
+Susan Jones,SUSAN JONES  00 FT,20.0,debit,transfer_p2p
 Elios,Elios  ON 06 SEP CPM ELIOS,10.8,debit,restaurant_cafe
 Cd The Harbour Inn Gar,9047 24JUN25 CD   THE HARBOUR INN   GARLIESTON GB,115.7,debit,accommodation
-Utility Warehouse,UTILITY WAREHOUSE  2050221/2050221/23 DDR Utility Warehouse,81,debit,utility_other
+Utility Warehouse,UTILITY WAREHOUSE  2050221/2050221/23 DDR Utility Warehouse,81.0,debit,utility_other
 United Utilities,UNITED UTILITIES W 4319851435,44.05,debit,water
 United Utilities,UNITED UTILITIES W,36.05,debit,water
-Nutmeg,NUTMEG  29HS8V3 DDR Nutmeg,35,debit,investment_general
+Nutmeg,NUTMEG  29HS8V3 DDR Nutmeg,35.0,debit,investment_general
 Areas S.a.u.,AREAS S.A.U. SPAIN AMOUNT IN EUR 3.60 ON 02 AUG VISA 1.145161 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.09 ,3.23,debit,foreign_spend_unspecified
 Diamond Discounts An,Diamond Discounts an )))),4.2,debit,discount_store
 Victoria Smk,Victoria Smk L,15.74,debit,unclassified_other
 Keys Totton,KEYS TOTTON  ON 06 JUL CPM 23375 - KEYS TOTTON -,6.57,debit,pub_bar
-H K Discount Store,H K DISCOUNT STORE,1,debit,discount_store
+H K Discount Store,H K DISCOUNT STORE,1.0,debit,discount_store
 Ryanair,Ryanair,91.57,debit,flights
 Nrhealthandfitness,"NYX*NRHEALTHANDFITNESS (VIA APPLE PAY), ON 05-07-2025",2.5,debit,gym_fitness
 Dvla-j,DVLA-J24HUG  000000000062048784 DDR,29.31,debit,road_tax
-Dividends Gareth Jenkins,Dividends Gareth Jenkins,557,debit,transfer_p2p
-Tgtg,TGTG 7qmt189epmac0,6,debit,takeaway
-Miss Amani K Musht,MISS AMANI K MUSHT 200000001612555609,140,debit,transfer_p2p
-Dimond Stores,DIMOND STORES  ON 27 JUL CLP,5,debit,convenience_store
-Babyclinic,Babyclinic,49,debit,health_other
-All Star Soccer,ALL  STAR SOCCER W 500000001603282150,50,debit,sports_participation
+Dividends Gareth Jenkins,Dividends Gareth Jenkins,557.0,debit,transfer_p2p
+Tgtg,TGTG 7qmt189epmac0,6.0,debit,takeaway
+Miss Amani K Musht,MISS AMANI K MUSHT 200000001612555609,140.0,debit,transfer_p2p
+Dimond Stores,DIMOND STORES  ON 27 JUL CLP,5.0,debit,convenience_store
+Babyclinic,Babyclinic,49.0,debit,health_other
+All Star Soccer,ALL  STAR SOCCER W 500000001603282150,50.0,debit,sports_participation
 Bounce No1 LTD,BOUNCE NO1 LTD,3.5,debit,days_out
-Bp Phoenix Filling Stat,BP PHOENIX FILLING,10,debit,fuel
+Bp Phoenix Filling Stat,BP PHOENIX FILLING,10.0,debit,fuel
 Natwest Loan,NATWEST LOAN,201.23,debit,personal_loan_repayment
-Kings Pawfection,Payment to KINGS PAWFECTION L 206815 83739589,282,debit,pet_other
-Sean Philburn Powe None,SEAN PHILBURN POWE  NONE FT,15,debit,transfer_p2p
+Kings Pawfection,Payment to KINGS PAWFECTION L 206815 83739589,282.0,debit,pet_other
+Sean Philburn Powe None,SEAN PHILBURN POWE  NONE FT,15.0,debit,transfer_p2p
 Big Discount Dewsbury,BIG DISCOUNT DEWSBDEWSBURY,14.48,debit,discount_store
 Costa Antrim,COSTA             ANTRIM,5.65,debit,restaurant_cafe
-First Central Insufp,FIRST CENTRAL INSUFP 04/08/25 30    24013031401919000N,30,debit,insurance_motor
+First Central Insufp,FIRST CENTRAL INSUFP 04/08/25 30    24013031401919000N,30.0,debit,insurance_motor
 Ring Standard Planlondon,RING STANDARD PLANLONDON,7.99,debit,home_accessories
 W Boyes & Co LTD,W BOYES & CO LTD,16.98,debit,department_store
-Leandro Campanico Bras Leandro,Leandro Campanico Bras Leandro Campanico,60,debit,transfer_p2p
+Leandro Campanico Bras Leandro,Leandro Campanico Bras Leandro Campanico,60.0,debit,transfer_p2p
 Affinity Water,Direct debit AFFINITY WATER 200503 20992747,64.76,debit,water
 Google Play,Google Play Apps CD 0633,1.09,debit,software
 Mcafee,MCAFEE*AUTORENEWAL IRELAND ON 10 SEP BCC MCAFEE *WWW.MCAFEE.COM,95.99,debit,software
-OpenAI,OPENAI *CHATGPT SUBS,20,debit,software
+OpenAI,OPENAI *CHATGPT SUBS,20.0,debit,software
 Mimicpc,WWW.MIMICPC.COM        +6598928358     SG,7.65,debit,software
 Nanosoft,Visa purchase WWW.NANOSOFT.CO.UK APPLEPAY 6823,42.91,debit,software
 eBay,eBay O*17-13430-22  ON 12 AUG CPM EBAY O*17-13430-22340,21.54,debit,marketplace_general
 Etsy,Etsy,5.54,debit,marketplace_general
 Gumtree,5017 14JUL25      GUMTREE COM       LONDON GB,9.99,debit,marketplace_general
 Fruugo,Fruugo,17.8,debit,marketplace_general
-NOW,PAYPAL *NOW 4E979,26,debit,streaming
+NOW,PAYPAL *NOW 4E979,26.0,debit,streaming
 Nisa,LNK NISA LOCAL 1A,91.99,debit,groceries
 Costcutter,Costcutter,3.99,debit,groceries
 Spar,Spar,4.34,debit,groceries
 V Kent Minimart LTD,V KENT MINIMART LT,3.5,debit,convenience_store
 Superdrug,"SUPERDRUG STORES PLC (VIA GOOGLE PAY), ON 09-08-2025",31.14,debit,pharmacy
-Pharmacy2U,Pharmacy2U,-0.01,credit,refund_received
+Pharmacy2U,Pharmacy2U,0.01,credit,refund_received
 Health Express,Health Express,21.99,debit,pharmacy
 Express Chemist,Express Chemist,13.3,debit,pharmacy
 Lwc Drinks,HFAI01 Lwc Drinks,196.98,debit,cash_and_carry
@@ -490,7 +490,7 @@ Joe & The Juice,JOE THE JUICE UK L  ON 20 JUL CPM Joe & The Juice,14.8,debit,res
 Pactcoffee,4446 03SEP25  D   WWW.PACTCOFFEE.COMLONDON GB,9.95,debit,groceries_specialist
 OnlyFans,OnlyFans,7.36,debit,adult_entertainment
 Everai Limited,EVERAI LIMITED,12.99,debit,adult_entertainment
-Nest,NEST,50,debit,electrical_goods
+Nest,NEST,50.0,debit,electrical_goods
 JD Williams,JD WILLIAMS  941393F3508388 DDR JD Williams,67.89,debit,catalogue_retail
 Secret Sales,SECRETSALES.COM,37.99,debit,catalogue_retail
 Home Choice,"HOME CHOICE (VIA APPLE PAY), ON 03-08-2025",13.97,debit,catalogue_retail
@@ -500,31 +500,31 @@ Grimsby Fisheries,GRIMSBY FISHERIES,13.8,debit,takeaway
 Star Pizza,Star Pizza,24.2,debit,takeaway
 Ring Basic Plan,7137 30JUL25      RING BASIC PLAN   LONDON GB,49.99,debit,online_services
 That Prize Guy,0153 21SEP25  D   THAT PRIZE GUY LTDBANGOR GB,5.64,debit,prize_competitions
-Kilted Competition,KILTED COMPETITION,4,debit,prize_competitions
+Kilted Competition,KILTED COMPETITION,4.0,debit,prize_competitions
 Pet Drugs Online,PET DRUGS ONLINE,73.75,debit,veterinary
 Holland & Barrett,Holland And Barrett,19.25,debit,supplements
 Herbalife,Herbalife,66.79,debit,supplements
-Paypal Credit,PAYPAL *PAYPAL CRE,21,debit,bnpl
+Paypal Credit,PAYPAL *PAYPAL CRE,21.0,debit,bnpl
 Paypal Pay in 4,CARD PAYMENT TO PAYPAL *PYPL PAYIN3 ON 31-08-2025,8.56,debit,bnpl
-The Entertainer,The Entertainer 163,42,debit,toys
+The Entertainer,The Entertainer 163,42.0,debit,toys
 Gousto,Gousto,44.79,debit,groceries
-Icelandair,Contactless Payment ICELAND,4,debit,groceries
+Icelandair,Contactless Payment ICELAND,4.0,debit,groceries
 Southern Co-op,SOUTHERN CO-OP RET LAMBOURN        GB  ,13.65,debit,groceries
 Freesnaps.co.uk,FREESNAPS.CO.UK   OMAGH,6.54,debit,photography_services
 Waltham Cross Autopoin,Contactless Payment WALTHAM CROSS AUTOPOIN APPLEPAY 5082,3.65,debit,fuel
-Center Parcs,CENTER PARCS,100,debit,holiday_uk
+Center Parcs,CENTER PARCS,100.0,debit,holiday_uk
 Blue Anchor Leisure Limi,Blue Anchor Leisure Li,8.4,debit,holiday_uk
-British Heart Foundation,"BRITISH HEART FOUNDATI (VIA APPLE PAY), ON 24-09-2025",3,debit,charity_shop
+British Heart Foundation,"BRITISH HEART FOUNDATI (VIA APPLE PAY), ON 24-09-2025",3.0,debit,charity_shop
 Traid, TRAID,1.98,debit,charity_shop
 Schuh,schuh,23.99,debit,footwear
-SKECHERS,Skechers,95,debit,footwear
-Wynsors,WYNSORS,12,debit,footwear
+SKECHERS,Skechers,95.0,debit,footwear
+Wynsors,WYNSORS,12.0,debit,footwear
 Walkabout,WALKABOUT,12.65,debit,pub_bar
 Mandate No,"DIRECT DEBIT PAYMENT TO PAYPAL PAYMENT REF 5S9J2223HE3H8, MANDATE NO 0001",2.99,debit,payment_intermediary
 Kashing,Kashing*amusement/Leicester,2.99,debit,entertainment_other
-Fashionworld,WWW.FASHIONWORLD.C,7,debit,clothing_womens
+Fashionworld,WWW.FASHIONWORLD.C,7.0,debit,clothing_womens
 Quiz Clothing,QUIZ CLOTHING,68.57,debit,clothing_womens
-Marisota,MARISOTA  ON 12 SEP CPM,5,debit,clothing_womens
+Marisota,MARISOTA  ON 12 SEP CPM,5.0,debit,clothing_womens
 Uphold,"BILL PAYMENT VIA FASTER PAYMENT TO UPHOLD REFERENCE DOMINIC MATTHEWS , MANDATE NO 158",3.52,debit,crypto
 Grant Leisure Group Lt,Grant Leisure Grou  ON 28 JUN CPM GRANT LEISURE GROUP LT,51.98,debit,entertainment_other
 DHL,DHL SUPPLY CHAIN L,1640.98,credit,salary
@@ -745,7 +745,7 @@ Invoice Home,2421 14NOV24      INVOICEHOME.COM   AUSTIN US,5.0,debit,business_se
 Burger King,ZILCH Burger King CD 1648,9.08,credit,refund_received
 Aqua,AQUA CREDIT CARD  ON 07 JAN BCC,30.0,debit,credit_card_repayment
 Aqua,AQUA  87423304B229460F9F FT,200.0,debit,credit_card_repayment
-Aqua,AQUA  000001MAFPI43HLH FT,140,debit,credit_card_repayment
+Aqua,AQUA  000001MAFPI43HLH FT,140.0,debit,credit_card_repayment
 Carter and Bond,A CARTER AND A CARBUDGET,250.0,credit,transfer_p2p
 Carter and Bond,A CARTER AND A CARBUDGET,150.0,credit,transfer_p2p
 Carter and Bond,A CARTER AND A CARBUDGET,700.0,credit,transfer_p2p
@@ -857,158 +857,158 @@ Betway,BETWAY,25.0,debit,gambling_betting
 Newend Food And Winewent,NEWEND FOOD AND WINEWENT,44.29,debit,alcohol_wine
 Studio,"Card 48, Www.Studio.Co.Uk",251.98,debit,catalogue_retail
 Jollyes,"Jollyes - The Pet Supe - 1 Lea Road, Waltham Abbey",74.5,debit,pet_supplies
-MAN,D HACKMAN-HEATH   RENT              VIA MOBILE - PYMT FP 06/08/25 10    39101632334820000N,900,debit,rent
+MAN,D HACKMAN-HEATH   RENT              VIA MOBILE - PYMT FP 06/08/25 10    39101632334820000N,900.0,debit,rent
 Ruta Usd,Visa purchase RUTA USD 6.00000 at 1.3422 9296,4.47,debit,foreign_spend_unspecified
-Meccabingo,MECCABINGO  ON 22 AUG CPM,15,debit,gambling_bingo
+Meccabingo,MECCABINGO  ON 22 AUG CPM,15.0,debit,gambling_bingo
 Bargain Booze,"BARGAIN BOOZE 1952 (VIA GOOGLE PAY), ON 30-06-2025",3.18,debit,alcohol_beer_spirits
 Bargain Booze,BARGAIN BOOZE 1499,6.48,debit,alcohol_beer_spirits
 Ford Credit,FORD CREDIT  UK,315.1,debit,car_finance_repayment
-Scottish Water Bus,SCOTTISH WATER BUS,1174,debit,water
-K9s & Felines Limi,K9S & FELINES LIMI 400000001622703254,30,debit,pet_supplies
+Scottish Water Bus,SCOTTISH WATER BUS,1174.0,debit,water
+K9s & Felines Limi,K9S & FELINES LIMI 400000001622703254,30.0,debit,pet_supplies
 Williams Trade Sup Guild,WILLIAMS TRADE SUP,78.25,debit,home_improvement
 Queens University,Queens University,1.8,debit,education_general
-Law And Lawyers Li,Law And Lawyers Li REFUND,-456.8,credit,refund_received
+Law And Lawyers Li,Law And Lawyers Li REFUND,456.8,credit,refund_received
 Premier Store,PREMIER STORE,2.3,debit,groceries
 Premier Store,PREMIER STORE,2.6,debit,groceries
 Wise,Wise Payments Fee for 51.66 GBP Moved To PKR,0.31,debit,money_transfer_fee
 Halfway Convenience Store,Halfway Convenience Store from Bills Pot,3.84,debit,convenience_store
 Peacock,PEACOCK STORES LTDBOREHAMWOOD,16.25,debit,clothing_general
-Peacock,PEACOCK STORES Peacocks,6,debit,clothing_general
-Pfplm,Returned direct debit PFPLM MEMBERSHIP A 071226 05038286,-38,credit,returned_payment
-Pfplm,Returned direct debit PFPLM MEMBERSHIP A 070436 25981978,-31,credit,returned_payment
-Pfplm,Returned direct debit PFPLM MEMBERSHIP A 070436 25981978,-31,credit,returned_payment
-Pfplm,Returned direct debit PFPLM MEMBERSHIP A 071226 05038286,-38,credit,returned_payment
+Peacock,PEACOCK STORES Peacocks,6.0,debit,clothing_general
+Pfplm,Returned direct debit PFPLM MEMBERSHIP A 071226 05038286,38.0,credit,returned_payment
+Pfplm,Returned direct debit PFPLM MEMBERSHIP A 070436 25981978,31.0,credit,returned_payment
+Pfplm,Returned direct debit PFPLM MEMBERSHIP A 070436 25981978,31.0,credit,returned_payment
+Pfplm,Returned direct debit PFPLM MEMBERSHIP A 071226 05038286,38.0,credit,returned_payment
 M News,CARD PAYMENT TO H M NEWS MARKET ON 26-07-2025,0.75,debit,convenience_store
-Manzoor,MANZOOR N  RETURNING LOAN FT,-1300,credit,transfer_p2p
-Manzoor,MANZOOR N  RETURNING LOAN FT,-200,credit,transfer_p2p
+Manzoor,MANZOOR N  RETURNING LOAN FT,1300.0,credit,transfer_p2p
+Manzoor,MANZOOR N  RETURNING LOAN FT,200.0,credit,transfer_p2p
 Bigdug,BiGDUG Ltd CD 7516    29JUN25,166.61,debit,home_improvement
 Tiki Chichester Gb,CRV*Tiki Chicheste CD 3551,20.3,debit,restaurant_cafe
 Delta Force Paintball,DELTA FORCE PAINTB  ON 13 JUL CPM DELTA FORCE PAINTBALL,2.5,debit,sports_participation
 Puccino's,Puccino's Willesden Ju,5.43,debit,restaurant_cafe
 Platinum Mastercar,PLATINUM MASTERCAR,89.86,debit,unclassified_other
-Wescot Credit Services,WESCOT CREDIT SVS DM/289447757,20,debit,debt_collection
-Wescot Credit Services,"DIRECT DEBIT PAYMENT TO WESCOT CREDIT SVS REF DM/820651370, MANDATE NO 0200",25,debit,debt_collection
-Wescot Credit Services,WESCOT CREDIT SVS,5,debit,debt_collection
+Wescot Credit Services,WESCOT CREDIT SVS DM/289447757,20.0,debit,debt_collection
+Wescot Credit Services,"DIRECT DEBIT PAYMENT TO WESCOT CREDIT SVS REF DM/820651370, MANDATE NO 0200",25.0,debit,debt_collection
+Wescot Credit Services,WESCOT CREDIT SVS,5.0,debit,debt_collection
 United Utilities W United Utilities,United Utilities W United Utilities,62.51,debit,water
 United Utilities W United Utilities,United Utilities W United Utilities,48.84,debit,water
-The Park Hair Stu,THE PARK HAIR STUDRESERVE CASH,120,debit,beauty_treatment
+The Park Hair Stu,THE PARK HAIR STUDRESERVE CASH,120.0,debit,beauty_treatment
 Humble Coffi Ll,HUMBLE COFFI      LLANELLI,3.6,debit,restaurant_cafe
 Smyths,ZILCH SMYTHS TOYS,31.99,debit,toys
-Tm Legal Services Tmls,TM LEGAL SERVICES TMLS-841175-1,1,debit,debt_collection
+Tm Legal Services Tmls,TM LEGAL SERVICES TMLS-841175-1,1.0,debit,debt_collection
 Golden Sands,GOLDEN SANDS,10.65,debit,holiday_uk
 Washco LTD,NYA*WashCo Ltd,1.4,debit,carwash
 Home Retail Group,HOME RETAIL GROUP  ON 13 AUG BCC Home Retail Group,14.56,debit,retail_other
 The Farmer's Dog,THE FARM NUSA INDONESIA AMOUNT IN IDR 309000.00 ON 27 AUG VISA 21851.23678 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.42 ,14.56,debit,foreign_spend_unspecified
-Kia Morgan,KIA MORGAN 300000001594185831,100,debit,transfer_p2p
+Kia Morgan,KIA MORGAN 300000001594185831,100.0,debit,transfer_p2p
 Ltduk,NYX*LtdUK,1.6,debit,health_beauty_general
-Jd Glasgow,JD GLASGOW,27,debit,sportswear
+Jd Glasgow,JD GLASGOW,27.0,debit,sportswear
 Supersave,Supersave,1.99,debit,savings_transfer
-Samuel,Samuel AkinpeluDapSchool stipends,21,debit,transfer_p2p
-Samuel,Samuel AkinpeluDapSchool stipends,10,debit,transfer_p2p
-Umair Hassan,UMAIR HASSAN 500000001648926660,5,debit,transfer_p2p
+Samuel,Samuel AkinpeluDapSchool stipends,21.0,debit,transfer_p2p
+Samuel,Samuel AkinpeluDapSchool stipends,10.0,debit,transfer_p2p
+Umair Hassan,UMAIR HASSAN 500000001648926660,5.0,debit,transfer_p2p
 Reading Transport,CARD PAYMENT TO READING TRANSPORT LIMI ON 26-07-2025,2.6,debit,public_transport_rail_coach
-The Pokemon Pl,The Pokemon Pl,5,debit,gaming_mobile
-Bushwackers,BUSHWACKERS       WORCESTER,5,debit,pub_bar
+The Pokemon Pl,The Pokemon Pl,5.0,debit,gaming_mobile
+Bushwackers,BUSHWACKERS       WORCESTER,5.0,debit,pub_bar
 United Utilities Water,UNITED UTILITIES W,8.06,debit,water
 Ubertrip Cd,PAYPAL *UBERTRIP CD 4839,4.99,debit,taxi_rideshare
-Food Catering,Food Catering,8,debit,catering
+Food Catering,Food Catering,8.0,debit,catering
 TSB Bank,TSB PLC,205.05,debit,financial_institution_unspecified
 Nutravetukl,PAYPAL *NUTRAVETUK,25.63,debit,pet_supplies
 Ee Device,EE DEVICE PAYMENT,6.36,debit,mobile_handset
-Ee Device,EE DEVICE PAYMENT,10,debit,mobile_handset
+Ee Device,EE DEVICE PAYMENT,10.0,debit,mobile_handset
 Bold Veterinary Clinic,Bold Veterinary Clinic,83.4,debit,veterinary
 Market Sitges,MARKET SITGES SPAIN AMOUNT IN EUR 64.73 ON 23 AUG VISA 1.153079 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £1.68 ,57.82,debit,foreign_spend_unspecified
 Prime Video Add-on,Prime Video*RU1083  ON 21 AUG BCC PRIME  VIDEO ADD-ON,7.99,debit,streaming
 Magazin Mixt,Magazin Mixt Vrm,0.17,debit,convenience_store
-Curaleafpharma-rokshaw,Curaleafpharma-Rokshaw,85,debit,pharmacy
+Curaleafpharma-rokshaw,Curaleafpharma-Rokshaw,85.0,debit,pharmacy
 Angling Direct,2192 10AUG25 CD   ANGLING DIRECT    CANNOCK           CANNOCK GB,26.25,debit,sports_equipment
 Omyco,CRV*WWWPARKONOMYCOCRV*,5.3,debit,car_parking
 Collect,4519 18SEP25  D   COSTA COLLECT     DUNSTABLE GB,10.78,debit,restaurant_cafe
 Beagle,Beagle Sheffield,4.8,debit,pub_bar
 Amber Pool & Sports,Amber Pool & Sports,4.6,debit,sports_participation
-F Tait,F Tait Refunded,-60,credit,refund_received
+F Tait,F Tait Refunded,60.0,credit,refund_received
 YouTube,2936 12JUL25      GOOGLE *YOUTUBE   VIDEOS            G.CO/HELPPAY# GB,13.99,debit,streaming
 Spotless Water,8907 08SEP25      SPOTLESS WATER LTDSURREY GB,8.73,debit,water
 August Bakery, August Bakery,3.7,debit,restaurant_cafe
-K Smith,K SMITH 110001 13701463,50,debit,transfer_p2p
+K Smith,K SMITH 110001 13701463,50.0,debit,transfer_p2p
 Wombwell Main Barnsley Gb,WOMBWELL MAIN BARN,3.3,debit,unclassified_other
-E Scarezzati,E SCAREZZATI 110576 15221960,100,debit,transfer_p2p
+E Scarezzati,E SCAREZZATI 110576 15221960,100.0,debit,transfer_p2p
 Ad Free For Primevideo,Ad free for PrimeV,2.99,debit,streaming
 Ad Free For Primevideo,3551 30JUN25      AD FREE FOR       PRIMEVIDEO        353-12477661 GB,2.99,debit,streaming
 Ad Free For Primevideo,Ad free for PrimeV,2.99,debit,streaming
 Cd Afro,4488 14AUG25 CD   AFROCREST         LIVINGSTON GB,12.7,debit,groceries_specialist
-Zable Cards London,Zable Cards       LONDON,145,debit,credit_card_repayment
+Zable Cards London,Zable Cards       LONDON,145.0,debit,credit_card_repayment
 Cash Convert Ers Stratford,CASH CONVERTERS ST,28.75,debit,pawnbroker
-The Courier,The Courier,1,debit,newspapers
-Waveney Gymnastics Clu,Waveney Gymnastics Clu,57,debit,sports_participation
+The Courier,The Courier,1.0,debit,newspapers
+Waveney Gymnastics Clu,Waveney Gymnastics Clu,57.0,debit,sports_participation
 Poole Waite & Co LTD,Poole Waite & Co Ltd,26.22,debit,home_improvement
-D Ag Communications,0018 13OCT25  D   AG COMMUNICATIONS LONDON GB,10,debit,broadband_tv_phone
+D Ag Communications,0018 13OCT25  D   AG COMMUNICATIONS LONDON GB,10.0,debit,broadband_tv_phone
 Victorian Plumbing,Victorian Plumbing,1259.97,debit,bathroom
-Party Bar Folkestone,PARTY BAR FOLKESTO,6,debit,pub_bar
+Party Bar Folkestone,PARTY BAR FOLKESTO,6.0,debit,pub_bar
 Old Farmhouse,OLD FARMHOUSE  ON 12 SEP CPM Old Farmhouse,30.48,debit,accommodation
 Third Eye,"THIRD EYE (VIA APPLE PAY), ON 05-08-2025",6.99,debit,clothing_general
-Devinexl Afro Shop LTD,DevineXL Afro shop,9,debit,skin_hair_care
-Kingsbury Food & Wine,KINGSBURY FOOD & W,2,debit,convenience_store
+Devinexl Afro Shop LTD,DevineXL Afro shop,9.0,debit,skin_hair_care
+Kingsbury Food & Wine,KINGSBURY FOOD & W,2.0,debit,convenience_store
 Yolo Lounge Albufeira,YOLO LOUNGE ALBUFE PORTUGAL AMOUNT IN EUR 30.00 ON 29 JUN VISA 1.16907 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.77 YOLO LOUNGE ALBUFEIRA,26.43,debit,pub_bar
 Northridge,011201571557 Northridge,608.61,debit,car_finance_repayment
-Kmmassage.co.uk,kmmassage.co.uk,25,debit,beauty_treatment
+Kmmassage.co.uk,kmmassage.co.uk,25.0,debit,beauty_treatment
 Blackpool And Fylde Colle,Blackpool and Fyld,7.5,debit,education_general
 Longchamp,Zilch Longchamp,30.75,debit,clothing_general
 Tesla West,Tesla             West Drayton,9.99,debit,fuel
-MY.,https://my.northtynesi,35,debit,government_services
-Go-rrito Sask,Go-Rrito Sask,9,debit,takeaway
-Jade Linney Save,Jade linney       Save,60,debit,savings_transfer
+MY.,https://my.northtynesi,35.0,debit,government_services
+Go-rrito Sask,Go-Rrito Sask,9.0,debit,takeaway
+Jade Linney Save,Jade linney       Save,60.0,debit,savings_transfer
 White Lion Cd,White Lion CD 2413,5.1,debit,pub_bar
 White Lion Cd,White Lion CD 2413,5.1,debit,pub_bar
 White Lion Cd,White Lion CD 2413,5.1,debit,pub_bar
-Csc Pcn,CSC PCN,25,debit,car_parking
-Csc Pcn,CSC PCN  ON 26 AUG BDC,25,debit,car_parking
-Indigo Sun Partner,INDIGO SUN PARTNERINVERNESS,10,debit,beauty_treatment
+Csc Pcn,CSC PCN,25.0,debit,car_parking
+Csc Pcn,CSC PCN  ON 26 AUG BDC,25.0,debit,car_parking
+Indigo Sun Partner,INDIGO SUN PARTNERINVERNESS,10.0,debit,beauty_treatment
 Paul Jepson,Contactless Payment ZETTLE_*PAUL JEPSON APPLEPAY 6727,8.3,debit,restaurant_cafe
 Eurl Cristal,NYA*EURL CRISTAL,1.3,debit,unclassified_other
-Premier Vet Allian,PREMIER VET ALLIAN UK010902830OZZY,24,debit,veterinary
-Hartlepool United,HARTLEPOOL UNITED,3,debit,sports_tickets
-Angel Hill,"ANGEL HILL 1084 (VIA APPLE PAY), ON 17-09-2025",2,debit,restaurant_cafe
+Premier Vet Allian,PREMIER VET ALLIAN UK010902830OZZY,24.0,debit,veterinary
+Hartlepool United,HARTLEPOOL UNITED,3.0,debit,sports_tickets
+Angel Hill,"ANGEL HILL 1084 (VIA APPLE PAY), ON 17-09-2025",2.0,debit,restaurant_cafe
 The Paper Shop,VER*THE PAPER SHOP,2.64,debit,stationery
-Complet,7469 25SEP25      WLY*COMPLET       ESAVE.CO.UK       08003896960 CH,18,debit,memberships
+Complet,7469 25SEP25      WLY*COMPLET       ESAVE.CO.UK       08003896960 CH,18.0,debit,memberships
 Cd Boots,2595 19JUL25 CD   BOOTS 1815        CHELMSFORD GB,1.75,debit,pharmacy
-Weezevent,6779 27AUG25  D   WEEZEVENT UK LTD  BRIGHTON GB       REFUND,-0.6,credit,refund_received
-Flip Out,"Flip Out Uk - Chester - Chester Gates Business Park, Chester",2,debit,days_out
+Weezevent,6779 27AUG25  D   WEEZEVENT UK LTD  BRIGHTON GB       REFUND,0.6,credit,refund_received
+Flip Out,"Flip Out Uk - Chester - Chester Gates Business Park, Chester",2.0,debit,days_out
 M. Afzaal,SumUp  *M. Afzaal,6.5,debit,transfer_p2p
 In Hand,CARD PAYMENT TO BOWL IN HAND MANSFIELD ON 06-07-2025,7.45,debit,pub_bar
 Cd Thomsonfly,0899 10SEP25 CD   THOMSONFLY HANGER 61                LUTON GB,4.35,debit,restaurant_cafe
 Sprucefield,679 - Sprucefield,29.75,debit,discount_store
-Home Super Store,HOME SUPER STORE,1,debit,discount_store
+Home Super Store,HOME SUPER STORE,1.0,debit,discount_store
 C B&m,3551 15AUG25 C    B&M 809 MARSH     MILLS             PLYMOUTH GB,7.2,debit,discount_store
 C B&m,3551 15AUG25 C    B&M 809 MARSH     MILLS             PLYMOUTH GB,7.2,debit,discount_store
-John Radcliff Hospital,JOHN RADCLIFF HOSP  ON 23 SEP CPM JOHN RADCLIFF HOSPITAL,6,debit,hospital
+John Radcliff Hospital,JOHN RADCLIFF HOSP  ON 23 SEP CPM JOHN RADCLIFF HOSPITAL,6.0,debit,hospital
 Hh Golf LTD,HH Golf Ltd  ON 18 SEP CPM HH GOLF LTD,5.19,debit,sports_equipment
-Mr J D Murrell,MR J D MURRELL 200000001627168408,3,debit,transfer_p2p
+Mr J D Murrell,MR J D MURRELL 200000001627168408,3.0,debit,transfer_p2p
 Cvrplan,CVRPLAN 9121954714,2.7,debit,insurance_general
 Brokersure LTD,Brokersure Ltd,12.46,debit,insurance_general
-Matchbook,Matchbook,20,debit,gambling_betting
+Matchbook,Matchbook,20.0,debit,gambling_betting
 Axe Convenienc,Axe Convenienc,2.65,debit,convenience_store
 New Street Hco,NEW STREET HCO,11.99,debit,unclassified_other
 Tj Hughes,6490 16AUG25 C    TJ HUGHES         LIVERPOOL GB,8.75,debit,department_store
-Vodafone Topup,VESTA  *VODAFONE T,5,debit,mobile_phone_contract
-Motonovo Finance,MotoNovo Finance L  23021023 X23SWC BGC,-486.09,credit,loan_disbursement
+Vodafone Topup,VESTA  *VODAFONE T,5.0,debit,mobile_phone_contract
+Motonovo Finance,MotoNovo Finance L  23021023 X23SWC BGC,486.09,credit,loan_disbursement
 Aspitgenova Ovest,ASPIT VILLANOVA B. ITALY AMOUNT IN EUR 13.80 ON 20 AUG VISA 1.15571 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.36 ASPITGENOVA OVEST,12.3,debit,foreign_spend_unspecified
 Justpark,ZILCH JUSTPARK,1.1,debit,car_parking
-Bloomandwild,Visa purchase WWW.BLOOMANDWILD.COM GOOGLE 5929,19,debit,gifts_flowers
+Bloomandwild,Visa purchase WWW.BLOOMANDWILD.COM GOOGLE 5929,19.0,debit,gifts_flowers
 Masters,0303 24JUL25      WWW.MASTERS       HOE-SPORTSH       TROWBRIDGE GB,124.47,debit,sports_equipment
 Ajet,AJET - ajet.com CD 5833    27JUL25,922.8,debit,flights
 Dwr Cymru Welsh Water,DWR CYMRU WELSH WA  847415480060 DDR DWR CYMRU WELSH WATER,44.5,debit,water
 Early To Late,Early To Late,2.29,debit,convenience_store
-Sally Offen,Nationwide Building Society account - Paid with Starling Sally Offen - SortCodeAccountNumber: 07003063183303,40,debit,transfer_p2p
+Sally Offen,Nationwide Building Society account - Paid with Starling Sally Offen - SortCodeAccountNumber: 07003063183303,40.0,debit,transfer_p2p
 Fearns,Sq *fearns,6.75,debit,unclassified_other
-Rooster Money Pocket Money Sto,ROOSTER MONEY  POCKET MONEY STO,10,debit,prepaid_card
-Petplan,Petplan pot transfer,-108,credit,savings_transfer
+Rooster Money Pocket Money Sto,ROOSTER MONEY  POCKET MONEY STO,10.0,debit,prepaid_card
+Petplan,Petplan pot transfer,108.0,credit,savings_transfer
 Ar Foods And Wine,Ar Foods And Wine,1.69,debit,alcohol_wine
 Hutchison 3G UK,To Hutchison 3g UK Limited,16.62,debit,mobile_phone_contract
 Portland Wines,Portland Wines,2.15,debit,alcohol_wine
 Pass Jkpy,LIME*PASS JKPY  ON 30 AUG BCC,3.99,debit,public_transport_rail_coach
-StepChange Debt Charity,4023947 Stepchange Debt Charity,70,debit,debt_management_plan
-Saver,REVERSAL OF 24-10 SAVER             1400005176216,-25,credit,returned_payment
+StepChange Debt Charity,4023947 Stepchange Debt Charity,70.0,debit,debt_management_plan
+Saver,REVERSAL OF 24-10 SAVER             1400005176216,25.0,credit,returned_payment
 Ref Rc,HELLINGLY PRESCHOOL Ref Rc2911,59.85,debit,childcare
 Newquay Bay Resort,NEWQUAY  ON 04 JUL CLP NEWQUAY BAY RESORT,5.45,debit,holiday_uk
 Agp La Manon,AGP LA MANON 5211 SPAIN AMOUNT IN EUR 5.15 ON 25 JUL VISA 1.14817 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.13 ,4.62,debit,foreign_spend_unspecified
@@ -1016,43 +1016,43 @@ Baby Fair,SP BABY FAIR,90.73,debit,baby_products
 Elite Competition,elitecompetitions,2.9,debit,prize_competitions
 Imperial Mojacar Be,Imperial Mojacar B SPAIN AMOUNT IN EUR 52.50 ON 13 SEP VISA 1.15393 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £1.36 IMPERIAL MOJACAR BEACH,46.86,debit,accommodation
 Boston Cafe,BOSTON CAFE  ON 25 JUL CPM Boston Cafe,5.7,debit,restaurant_cafe
-Patrol Base,ZILCH Patrol Base  ON 26 SEP BCC ZILCH PATROL BASE,-87.53,credit,refund_received
+Patrol Base,ZILCH Patrol Base  ON 26 SEP BCC ZILCH PATROL BASE,87.53,credit,refund_received
 Cd Selecta,8990 04AUG25 CD   SELECTA U.K.      LIMITED           SOUTH RUISLIP GB,2.7,debit,confectionary
-Medivet-knypersley,MEDIVET-KNYPERSLEY  ON 20 JUN CLP,57,debit,veterinary
-Cancer Research U Rfr,CANCER RESEARCH U RFR25330438,10,debit,charitable_donation
-Eui LTD Pet,REVERSAL OF 03-09 EUI LTD PET,-16.14,credit,returned_payment
+Medivet-knypersley,MEDIVET-KNYPERSLEY  ON 20 JUN CLP,57.0,debit,veterinary
+Cancer Research U Rfr,CANCER RESEARCH U RFR25330438,10.0,debit,charitable_donation
+Eui LTD Pet,REVERSAL OF 03-09 EUI LTD PET,16.14,credit,returned_payment
 Streamline Taxis,"STREAMLINE TAXIS* CPT (VIA APPLE PAY), ON 19-07-2025",15.61,debit,taxi_rideshare
 ITVX,ITVX PREMIUM,5.99,debit,streaming
 David Lloyd,4127 22AUG25 C    DAVID LLOYD       NOTTINGHAM GB,3.85,debit,gym_fitness
 Dean Holden MD,CARD PAYMENT TO COLDEAN CONVENIENCE 0 ON 15-08-2025,45.4,debit,convenience_store
 The Albion,THE ALBION The Albion,3.4,debit,pub_bar
-Barnardo's,Contactless Payment BARNARDO'S 55362,1,debit,charity_shop
+Barnardo's,Contactless Payment BARNARDO'S 55362,1.0,debit,charity_shop
 Serhat Off License,Serhat Off License,1.5,debit,alcohol_beer_spirits
 Medexpress,MedExpress,138.94,debit,pharmacy
 The Gym,THE GYM LTD,38.59,debit,gym_fitness
 Uw Utility Wareho,UW (UTILITY WAREHO,47.83,debit,utility_other
-Wellness Communica,Payment to WELLNESS COMMUNICA 087199 10176657,2,debit,unclassified_other
+Wellness Communica,Payment to WELLNESS COMMUNICA 087199 10176657,2.0,debit,unclassified_other
 Lets Win,"LETS WIN (VIA APPLE PAY), ON 27-06-2025",0.47,debit,prize_competitions
-Slugandlett,STONEGATE* SLUGANDLETT Stonegate* Slugandlett,60,debit,pub_bar
+Slugandlett,STONEGATE* SLUGANDLETT Stonegate* Slugandlett,60.0,debit,pub_bar
 Aruk Ac Amp Ap,PAYPAL *ARUK AC AM  ON 22 JUN BCC PAYPAL *ARUK AC AMP AP,3.99,debit,charitable_donation
 Ajb Plumbing And H,AJB PLUMBING AND H 600000001632093125 KINGSLEIGH 301816     10 19SEP25 21:22,2557.5,debit,tradesmen
-Ajjb Law,AJJB LAW  ON 13 SEP BCC,10,debit,legal_services
+Ajjb Law,AJJB LAW  ON 13 SEP BCC,10.0,debit,legal_services
 Duelz,duelz.com Duelz,25.63,debit,gambling_casino
 Bmac Nicholls Limavady,"BMAC NICHOLLS LIMAVADY,
-E070504 -511567",180,debit,unclassified_other
-Nando's,NANDOS CHICKENLAND BGC  NANDOS CHICKENLAND BGC ,-359.04,credit,salary
+E070504 -511567",180.0,debit,unclassified_other
+Nando's,NANDOS CHICKENLAND BGC  NANDOS CHICKENLAND BGC ,359.04,credit,salary
 National Education First,NATIONAL EDUCATIONFIRST PAYMENT,65.68,debit,student_loan_repayment
-Douglas Hughes Dividends Sto,DOUGLAS HUGHES  DIVIDENDS STO,15000,debit,transfer_p2p
+Douglas Hughes Dividends Sto,DOUGLAS HUGHES  DIVIDENDS STO,15000.0,debit,transfer_p2p
 Cricut,Cricut,7.49,debit,arts_crafts
-Elaine Conroy,United Kingdom Account - Full payment villa Elaine Conroy - SortCodeAccountNumber: 40478360299952,950,debit,holiday_rental
+Elaine Conroy,United Kingdom Account - Full payment villa Elaine Conroy - SortCodeAccountNumber: 40478360299952,950.0,debit,holiday_rental
 Cd Big Saver,1177 30JUN25 CD   BIG SAVER         STOCKPORT GB,6.1,debit,convenience_store
-Charity Donation,CHARITY DONATION  1241752 DDR,10,debit,charitable_donation
+Charity Donation,CHARITY DONATION  1241752 DDR,10.0,debit,charitable_donation
 M & S Blackpool Royal,M & S BLACKPOOL RO,2.1,debit,department_store
-Nwl & Esw,Direct debit NWL & ESW WATER 601508 63586428,29,debit,water
+Nwl & Esw,Direct debit NWL & ESW WATER 601508 63586428,29.0,debit,water
 Cash Convert Ers Grays,CASH CONVERTERS GR  ON 17 JUL BCC CASH CONVERTERS GRAYS,596.25,debit,pawnbroker
 Www.amazon.uk.co,WWW.AMAZON.* RM0IN  ON 14 AUG BCC WWW.AMAZON.UK.CO,16.99,debit,marketplace_amazon
-Electraworks,"ELECTRAWORKS LTD (VIA APPLE PAY), ON 24-08-2025",59,debit,gambling_casino
-Moorcroft Group,"DIRECT DEBIT PAYMENT TO MOORCROFT GROUP REF 004298478838, MANDATE NO 0027",1,debit,debt_collection
+Electraworks,"ELECTRAWORKS LTD (VIA APPLE PAY), ON 24-08-2025",59.0,debit,gambling_casino
+Moorcroft Group,"DIRECT DEBIT PAYMENT TO MOORCROFT GROUP REF 004298478838, MANDATE NO 0027",1.0,debit,debt_collection
 Pure Barber,Pure Barber,18.5,debit,beauty_treatment
-Ovoenergy,WWW.OVOENERGY.COM,20,debit,energy
-Larches Dog Fields,Larches Dog Fields,33,debit,pet_other
+Ovoenergy,WWW.OVOENERGY.COM,20.0,debit,energy
+Larches Dog Fields,Larches Dog Fields,33.0,debit,pet_other
