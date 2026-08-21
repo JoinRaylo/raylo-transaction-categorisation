@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import csv
+import pathlib
+ROOT = pathlib.Path(__file__).resolve().parents[1]
 # (merchant, leaf, confidence, note)
 D = [
 # ---- GROCERIES / SUPERMARKETS
@@ -208,18 +210,56 @@ D = [
 ("apple store gb","computing_devices","medium","Apple retail - hardware"),
 ]
 
+# ---- context-dependent merchants from gating adjudication (2026-08-19), resolved to a
+# single best-guess leaf where the evidence (eqx_category_mix dominance, or an explicit
+# human correct_leaf) clearly favours one reading. The other ~30 of the 49 flagged
+# context-dependent merchants had no dominant signal and are deliberately left out --
+# forcing a leaf there would misclassify a large minority share. See
+# data/gating_adjudication_completed.xlsx for the full set and reasoning.
+CONTEXT_DEPENDENT = [
+    ("marks & spencer","department_store","medium","alias of 'marks and spencer' - M&S Bank credit card vs store entity split"),
+    ("freemans","catalogue_retail","low","Plaid native 100% marketplace; Equifax's own retail-finance tag reflects its dictionary convention, not independent evidence"),
+    ("betuk","gambling_casino","low","evidence-backed: eqx 100% Poker and Casino Games, despite betting-sounding brand name"),
+    ("the bottle shop","alcohol_beer_spirits","medium","evidence-backed: eqx 100% Alcoholic Beverages Wines"),
+    ("rangers fc","sports_tickets","low","evidence-backed: eqx 97% Sporting General"),
+    ("st vincent de paul society","charitable_donation","medium","evidence-backed: eqx 99% Charitable Giving, overrides LLM's charity_shop guess"),
+    ("arsenal fc","sports_tickets","low","evidence-backed: eqx 95% Sporting General"),
+    ("habitat","home_accessories","medium","evidence-backed: eqx 85% Home Improvements"),
+    ("tiso","clothing_outdoor","low","evidence-backed: eqx 70% Sports Equipment; outdoor-gear retailer"),
+    ("reeds rains","estate_agent","low","evidence-backed: eqx 96% Property Rental; safe either way (housing general category)"),
+    ("jigsaw homes","rent","medium","human-adjudicated correct_leaf (gating review) - housing-association payment"),
+    ("emmaus","charity_shop","low","evidence-backed: eqx 77% Charitable Giving; charity_shop and charitable_donation share a general category"),
+    ("scrumbles","pet_supplies","medium","evidence-backed: eqx 98% Pet Care"),
+    ("secc arena","days_out","medium","evidence-backed: eqx 100% Days Out, overrides LLM's live_music guess"),
+    ("the cash shop","payday_loan","medium","evidence-backed: eqx 97% Payday Loans, overrides LLM's pawnbroker guess"),
+    ("toffs","sportswear","medium","evidence-backed: eqx 100% Sportswear"),
+    ("kickers","footwear","medium","evidence-backed: eqx 95% General Fashion"),
+    ("extracare","charitable_donation","medium","evidence-backed: eqx 100% Charitable Giving, overrides LLM's adult_care guess"),
+    ("bh live tickets","live_music","medium","evidence-backed: eqx 100% Music Tickets, overrides LLM's sports_tickets guess"),
+]
+
 seen=set(); rows=[]
 for m,leaf,conf,note in D:
     if m in seen: print("DUPLICATE:",m); continue
     seen.add(m); rows.append({"normalised_merchant":m,"detailed_category":leaf,
         "confidence":conf,"source":"llm_proposed","review_status":"pending","notes":note})
 
+for m,leaf,conf,note in CONTEXT_DEPENDENT:
+    if m in seen: print("DUPLICATE:",m); continue
+    seen.add(m); rows.append({"normalised_merchant":m,"detailed_category":leaf,
+        "confidence":conf,"source":"gating_adjudication","review_status":"approved","notes":note})
+
+for r in csv.DictReader(open(ROOT / "data" / "gating_dictionary_additions.csv")):
+    m = r["normalised_merchant"]
+    if m in seen: print("DUPLICATE:",m); continue
+    seen.add(m); rows.append(r)
+
 # validate leaves exist in taxonomy
-tax={r['detailed_category'] for r in csv.DictReader(open('../taxonomy/taxonomy.csv'))}
+tax={r['detailed_category'] for r in csv.DictReader(open(ROOT / "taxonomy" / "taxonomy.csv"))}
 bad=[r for r in rows if r['detailed_category'] not in tax]
 print("INVALID LEAF REFERENCES:", [(r['normalised_merchant'],r['detailed_category']) for r in bad] or "none")
 
-with open('../taxonomy/merchant_dictionary.csv','w',newline='') as f:
+with open(ROOT / "taxonomy" / "merchant_dictionary.csv",'w',newline='') as f:
     w=csv.DictWriter(f,fieldnames=["normalised_merchant","detailed_category","confidence","source","review_status","notes"])
     w.writeheader(); w.writerows(rows)
 

@@ -61,8 +61,8 @@ Every transaction resolves at the highest tier that fires, and **records which t
 | T1 | Direction-dependent overrides | in `sql/apply_crosswalk.sql` |
 | T2 | Compound rules (gig income) | in `sql/apply_crosswalk.sql` |
 | T3 | **Mechanism-override primaries** | in `sql/apply_crosswalk.sql` |
-| T4 | Merchant dictionary | `taxonomy/merchant_dictionary.csv` — **not yet wired in** |
-| T5 | Deterministic regex rules | `taxonomy/rules/deterministic_rules.csv` — **not yet wired in** |
+| T4 | Merchant dictionary | `taxonomy/merchant_dictionary.csv` — wired in `sql/apply_crosswalk.sql` 2026-08-20 |
+| T5 | Deterministic regex rules | `taxonomy/rules/deterministic_rules.csv` — wired in `sql/apply_crosswalk.sql` 2026-08-20 (R13/rent disabled via an `enabled` column, not a string flag) |
 | T6 | Provider crosswalk | in `sql/apply_crosswalk.sql` |
 | T7 | `unclassified` | explicit, monitored |
 
@@ -132,11 +132,11 @@ Classify **distinct merchant strings, not transactions.** 209,985 unmatched stri
 
 ## 7. Backlog after that
 
-1. **Four-field categoriser** (see §6 next steps): ML baseline on Equifax raw text → evaluate on `data/gold_merchant_labels.csv`; then context-enriched LLM labelling run; then combine
-2. Merge the 195 adjudicated dictionary entries into T4 (via the build script, not the generated CSV); write T1/T2 direction rules for the 49 context-dependent merchants
-3. Wire T4 (dictionary) and T5 (rules) into `sql/apply_crosswalk.sql`; measure tier distribution per provider
-4. Recompute feature IVs on the new taxonomy; benchmark against the current live model on the same `oot` split
-5. **Investigate the `rent` detection gap** — IV 0.0093 vs mortgage 0.0653, on the largest household outgoing for most customers. Rule R13 is disabled pending this. Do not trust rent features until resolved.
+1. ~~Four-field categoriser~~ — **done 2026-08-20**: three-way statistical tie between architectures (hashed n-grams / TF-IDF+logreg / LightGBM); adopted TF-IDF + logistic regression. See `docs/project-summary.md`.
+2. ~~Merge dictionary additions + write direction rules~~ — **done 2026-08-20**: `build_merchant_dictionary.py` now merges the 195 gating-approved entries plus 19 evidence-backed context-dependent merchants (535 entries total, up from 321). 3 new T5 direction rules added (`R15`–`R17`: child maintenance, we buy any car). Of the ~100 context-dependent merchants accumulated across gating + all three production tranches, most were deliberately left unresolved — either genuine same-direction product ambiguity (e.g. building societies: mortgage vs savings) or merchant-string normalisation collisions (the production-tranche cases — e.g. `"water"` merging a Teemill order in Freshwater with an unrelated water-bill narrative) where forcing a single leaf would misclassify a real sub-population. Full reasoning per merchant is in `src/build_merchant_dictionary.py` and `data/gating_adjudication_completed.xlsx`.
+3. ~~Wire T4 + T5 into the crosswalk SQL~~ — **done 2026-08-20**. Measured tier distribution (2%/20% BigQuery sample): Equifax now resolves 34.8% via T4 dictionary + 4.1% T3 + 0.5% T1 + 0.3% T5 rules + 0.1% T2, 54.4% still falls to the T6 provider-crosswalk fallback, 5.9% unclassified. Plaid resolves 30.5% via T4 + 3.1% T5 rules + 0.2% T1, 66.1% via T6 fallback. Also caught and fixed a genuine pre-existing bug while wiring this up: the T1 gambling-credit rule pointed at `gambling_winnings`, a leaf that doesn't exist in the taxonomy — silently orphaning ~8k+2k transactions per sample. Fixed to `gambling_unspecified`.
+4. Recompute feature IVs on the new taxonomy; benchmark against the current live model on the same `oot` split (Experiment 3)
+5. **Investigate the `rent` detection gap** — IV 0.0093 vs mortgage 0.0653, on the largest household outgoing for most customers. Rule R13 is disabled pending this (now via a structured `enabled` column in `deterministic_rules.csv`, not a string flag). Do not trust rent features until resolved.
 
 ## 8. Feature-layer findings (affect how features are built, not the taxonomy)
 

@@ -1,5 +1,8 @@
 
 -- ============ RAYLO UNIFIED TAXONOMY - crosswalk application (sample test) ============
+-- Precedence waterfall (CLAUDE.md section 4): T1 direction overrides -> T2 compound rules ->
+-- T3 mechanism-override primaries -> T4 merchant dictionary -> T5 deterministic rules ->
+-- T6 provider crosswalk (fallback) -> T7 unclassified.
 WITH sub_xw AS (SELECT * FROM UNNEST([STRUCT<eqx_sub STRING, leaf STRING>
     ('Account Charges','account_charge'),
     ('Account Misuse','account_misuse'),
@@ -399,6 +402,543 @@ plaid_xw AS (SELECT * FROM UNNEST([STRUCT<plaid_cat STRING, leaf STRING>
     ('TRAVEL_AND_TRANSPORTATION_PUBLIC_TRANSIT','public_transport_rail_coach'),
     ('TRAVEL_AND_TRANSPORTATION_TAXIS_AND_RIDE_SHARES','taxi_rideshare')
 ])),
+dict_xw AS (SELECT * FROM UNNEST([STRUCT<merchant STRING, leaf STRING>
+    ('118 money','payday_loan'),
+    ('32 red online casino','gambling_casino'),
+    ('888 games','gambling_casino'),
+    ('a & s outdoor ltd','clothing_outdoor'),
+    ('a&f bargains ltd','discount_store'),
+    ('aa','breakdown_cover'),
+    ('admiral insurance','insurance_motor'),
+    ('adobe','software'),
+    ('aldi','groceries'),
+    ('aliexpress','marketplace_general'),
+    ('all that falafel','takeaway'),
+    ('amazon','marketplace_amazon'),
+    ('amazon prime video','streaming'),
+    ('american express','credit_card_repayment'),
+    ('ancoats general store','convenience_store'),
+    ('anglian water','water'),
+    ('animal friends insurance','insurance_pet'),
+    ('ann summers','adult_products'),
+    ('anyvan','delivery_courier'),
+    ('apcoa parking','car_parking'),
+    ('apple','software'),
+    ('apple app store','software'),
+    ('apple store gb','computing_devices'),
+    ('applegreen','fuel'),
+    ('aqua','credit_card_repayment'),
+    ('argos','catalogue_retail'),
+    ('arriva','public_transport_rail_coach'),
+    ('arsenal fc','sports_tickets'),
+    ('asda','groceries'),
+    ('asda (petrol)','fuel'),
+    ('asos','clothing_general'),
+    ('atlassian','software'),
+    ('audible','streaming'),
+    ('autotrader','advertising_services'),
+    ('avg','software'),
+    ('aviva','insurance_general'),
+    ('aviva li','insurance_life'),
+    ('b&m','discount_store'),
+    ('b&q (diy.com)','home_improvement'),
+    ('back market uk ltd','marketplace_refurbished'),
+    ('bandcamp','music_other'),
+    ('banquet records','physical_media'),
+    ('barclaycard','credit_card_repayment'),
+    ('barclays','financial_institution_unspecified'),
+    ('barclays partner finance','retail_finance_repayment'),
+    ('bargain booze','alcohol_beer_spirits'),
+    ('base london','footwear'),
+    ('beauty outlet','health_beauty_general'),
+    ('berghaus','clothing_outdoor'),
+    ('beryl','bicycle'),
+    ('best meat','groceries_specialist'),
+    ('best-one','groceries'),
+    ('bestway','cash_and_carry'),
+    ('bet365','gambling_betting'),
+    ('betfair','gambling_betting'),
+    ('betfred','gambling_betting'),
+    ('betuk','gambling_casino'),
+    ('betvictor','gambling_betting'),
+    ('betway','gambling_betting'),
+    ('bh live tickets','live_music'),
+    ('bolt','taxi_rideshare'),
+    ('bonmarche','clothing_womens'),
+    ('boohoo','clothing_general'),
+    ('booking.com','accommodation'),
+    ('boots','pharmacy'),
+    ('botb','prize_competitions'),
+    ('boux avenue','clothing_womens'),
+    ('boylesports','gambling_betting'),
+    ('bp','fuel'),
+    ('brass monkey','pub_bar'),
+    ('bravissimo','clothing_womens'),
+    ('british gas','energy'),
+    ('british heart foundation','charity_shop'),
+    ('brittany ferries','ferry_rail_travel'),
+    ('bt','broadband_tv_phone'),
+    ('budgens','groceries'),
+    ('burger king','takeaway'),
+    ('burton','clothing_general'),
+    ('butlers bingo','gambling_bingo'),
+    ('buzz group ltd','gambling_bingo'),
+    ('cabot','debt_collection'),
+    ('caffe nero','restaurant_cafe'),
+    ('canva','software'),
+    ('capital one','credit_card_repayment'),
+    ('card factory','gifts_flowers'),
+    ('carers allowance','benefits_state'),
+    ('carrefour','groceries'),
+    ('castle bingo','gambling_bingo'),
+    ('center parcs','holiday_uk'),
+    ('centra','groceries'),
+    ('central convenience stores','convenience_store'),
+    ('central england co-op','groceries'),
+    ('cex','computing_devices'),
+    ('char.gy','fuel'),
+    ('charlotte tilbury','skin_hair_care'),
+    ('child benefits','benefits_state'),
+    ('child maintenance','income_other_unspecified'),
+    ('child tax credit','benefits_state'),
+    ('chip shed bourton limited','takeaway'),
+    ('cineworld','cinema'),
+    ('citylink','public_transport_rail_coach'),
+    ('clarks','footwear'),
+    ('clearpay','bnpl'),
+    ('click competitions','prize_competitions'),
+    ('co-op','groceries'),
+    ('coinbase','crypto'),
+    ('competition fox','prize_competitions'),
+    ('corgi homeplan','insurance_home'),
+    ('cosmetix limited','health_beauty_general'),
+    ('costa','restaurant_cafe'),
+    ('costco','groceries'),
+    ('costcutter','groceries'),
+    ('craft gin club','alcohol_beer_spirits'),
+    ('creation online','retail_finance_repayment'),
+    ('creditspring','payday_loan'),
+    ('crocs','footwear'),
+    ('cross foxes','pub_bar'),
+    ('crunchyroll','streaming'),
+    ('current','unclassified_other'),
+    ('currys','computing_devices'),
+    ('daniel footwear','footwear'),
+    ('dawat-e-islami uk','charitable_donation'),
+    ('debit finance','unclassified_other'),
+    ('deezer','streaming'),
+    ('deichmann','footwear'),
+    ('delikatesy smaczek','groceries_specialist'),
+    ('deliveroo','takeaway'),
+    ('depop','marketplace_amazon'),
+    ('disability living allowance','benefits_state'),
+    ('discovery cove','days_out'),
+    ('disney plus','streaming'),
+    ('domestic and general','insurance_general'),
+    ('dominos pizza','takeaway'),
+    ('double bubble bingo','gambling_bingo'),
+    ('dr martens','footwear'),
+    ('dune','footwear'),
+    ('dunelm','home_accessories'),
+    ('dvla','road_tax'),
+    ('e','unclassified_other'),
+    ('e.leclerc','groceries'),
+    ('e.on','energy'),
+    ('east of england co-op','groceries'),
+    ('easyjet','flights'),
+    ('easyjet holidays','holiday_package'),
+    ('ebay','marketplace_general'),
+    ('edf','energy'),
+    ('ee mobile','mobile_phone_contract'),
+    ('electraworks limit','gambling_casino'),
+    ('elemis','skin_hair_care'),
+    ('ellis brigham','clothing_outdoor'),
+    ('emigrantas tv','streaming'),
+    ('emmaus','charity_shop'),
+    ('employment and support allowance','benefits_state'),
+    ('escentual','fragrances'),
+    ('esso','fuel'),
+    ('etsy','marketplace_general'),
+    ('euphorium bakery','restaurant_cafe'),
+    ('euro car parts','spares_repairs'),
+    ('europa delikatesy','groceries_specialist'),
+    ('express chemist','pharmacy'),
+    ('extracare','charitable_donation'),
+    ('facebook','online_services'),
+    ('falafel stop','takeaway'),
+    ('farmfoods','groceries'),
+    ('feel good contacts','optician'),
+    ('findmeagift','gifts_flowers'),
+    ('first bus','public_transport_rail_coach'),
+    ('flair afro cosmetics','skin_hair_care'),
+    ('flannels','clothing_general'),
+    ('foodhub','takeaway'),
+    ('freemans','catalogue_retail'),
+    ('freetrade','investment_trading'),
+    ('fruugo','marketplace_amazon'),
+    ('george at asda','clothing_general'),
+    ('giffgaff.com','mobile_phone_contract'),
+    ('gift company','gifts_flowers'),
+    ('global exchange','foreign_currency'),
+    ('glossybox','health_beauty_general'),
+    ('go north east','public_transport_rail_coach'),
+    ('go outdoors','clothing_outdoor'),
+    ('go south coast','public_transport_rail_coach'),
+    ('gocardless','payment_intermediary'),
+    ('gohenry','prepaid_card'),
+    ('google','software'),
+    ('google play','software'),
+    ('grab-a-bite','takeaway'),
+    ('greene king','pub_bar'),
+    ('greensquareaccord','rent'),
+    ('greggs','restaurant_cafe'),
+    ('grosvenor casinos','gambling_casino'),
+    ('gumtree','marketplace_amazon'),
+    ('h&m','clothing_general'),
+    ('habitat','home_accessories'),
+    ('halfords','vehicle_maintenance'),
+    ('halifax','financial_institution_unspecified'),
+    ('harvey nichols','department_store'),
+    ('hastings direct','insurance_motor'),
+    ('haven holidays','holiday_uk'),
+    ('hayu','streaming'),
+    ('health express','pharmacy'),
+    ('herbalife','supplements'),
+    ('heron foods','groceries'),
+    ('hm revenue and customs','tax_payment'),
+    ('hmrc','tax_payment'),
+    ('hmv','physical_media'),
+    ('holland & barrett','supplements'),
+    ('home bargains','discount_store'),
+    ('home group','rent'),
+    ('home retail','catalogue_retail'),
+    ('hotel chocolat','confectionary'),
+    ('housing benefits','benefits_state'),
+    ('hsbc','financial_institution_unspecified'),
+    ('huel','groceries_specialist'),
+    ('iceland','groceries'),
+    ('id mobile','mobile_phone_contract'),
+    ('ideal world','retail_tv_online_shopping'),
+    ('ikea','home_accessories'),
+    ('infinity foods','groceries_specialist'),
+    ('interactive investor','investment_trading'),
+    ('iss food','catering'),
+    ('j d sport','sportswear'),
+    ('jackpot joy','gambling_bingo'),
+    ('jagex','gaming_online'),
+    ('jd sports','sportswear'),
+    ('jd williams','catalogue_retail'),
+    ('jigsaw homes','rent'),
+    ('jin bo law uk limited','legal_services'),
+    ('just drinks 4u uk ltd','alcohol_beer_spirits'),
+    ('just eat','takeaway'),
+    ('kcom','broadband_tv_phone'),
+    ('keystore','groceries'),
+    ('kfc','takeaway'),
+    ('kickers','footwear'),
+    ('kilted competition','prize_competitions'),
+    ('klarna','bnpl'),
+    ('knickerbox','clothing_womens'),
+    ('lacoste','clothing_general'),
+    ('ladbrokes','gambling_betting'),
+    ('lavazza professional','confectionary'),
+    ('laybuy','bnpl'),
+    ('lc international','gambling_betting'),
+    ('leasys uk ltd','car_lease'),
+    ('lebara','mobile_phone_contract'),
+    ('legal & general','insurance_life'),
+    ('lendable','personal_loan_repayment'),
+    ('lending stream','payday_loan'),
+    ('leon','restaurant_cafe'),
+    ('lidl','groceries'),
+    ('lightinthebox','retail_tv_online_shopping'),
+    ('lily\'s kitchen','pet_supplies'),
+    ('livecareer','career_services'),
+    ('livescore bet','gambling_betting'),
+    ('lloyds','financial_institution_unspecified'),
+    ('londis','groceries'),
+    ('lookfantastic','health_beauty_general'),
+    ('loqbox','savings_transfer'),
+    ('lothian buses','public_transport_rail_coach'),
+    ('lotto land','gambling_lottery'),
+    ('loveholidays.com','holiday_package'),
+    ('lowell financial','debt_collection'),
+    ('mainline menswear','clothing_mens'),
+    ('mangopay','payment_intermediary'),
+    ('marisota','clothing_womens'),
+    ('marketplace','marketplace_general'),
+    ('marks & spencer','department_store'),
+    ('marks and spencer','department_store'),
+    ('marks and spencer food','groceries'),
+    ('marquess of anglesey','pub_bar'),
+    ('martin mccoll','convenience_store'),
+    ('matalan','clothing_general'),
+    ('mcafee','software'),
+    ('mcdonald\'s','takeaway'),
+    ('mcdonalds','takeaway'),
+    ('mcqueens dairies','groceries_specialist'),
+    ('mecca bingo','gambling_bingo'),
+    ('mercato metropolitano','restaurant_cafe'),
+    ('microsoft','software'),
+    ('mipermit','car_parking'),
+    ('mircosoft','software'),
+    ('missguided','clothing_womens'),
+    ('mojang','gaming_console_pc'),
+    ('moneybox','savings_transfer'),
+    ('monopoly casino','gambling_casino'),
+    ('monzo','transfer_own_account'),
+    ('monzo flex','bnpl'),
+    ('moonpig','gifts_flowers'),
+    ('moorcroft debt recovery','debt_collection'),
+    ('morrisons','groceries'),
+    ('morrisons (petrol)','fuel'),
+    ('motor fuel group','fuel'),
+    ('mountain warehouse','clothing_outdoor'),
+    ('mrq','gambling_casino'),
+    ('nandos','restaurant_cafe'),
+    ('national express','public_transport_rail_coach'),
+    ('nationwide','financial_institution_unspecified'),
+    ('natwest','financial_institution_unspecified'),
+    ('ncp','car_parking'),
+    ('netflix','streaming'),
+    ('new balance','sportswear'),
+    ('new look','clothing_general'),
+    ('newday limited','credit_card_repayment'),
+    ('next','clothing_general'),
+    ('next directory','catalogue_retail'),
+    ('nike','sportswear'),
+    ('nintendo','gaming_console_pc'),
+    ('nisa','groceries'),
+    ('now tv','streaming'),
+    ('o2','mobile_phone_contract'),
+    ('octopus energy','energy'),
+    ('odeon','cinema'),
+    ('office shoes','footwear'),
+    ('ogmore valley store ltd','convenience_store'),
+    ('omaze','prize_competitions'),
+    ('one stop','groceries'),
+    ('onebelow','discount_store'),
+    ('online carpets','home_accessories'),
+    ('onlyfans','adult_entertainment'),
+    ('overpayments','income_other_unspecified'),
+    ('ovo energy','energy'),
+    ('pactcoffee','groceries_specialist'),
+    ('paddy power','gambling_betting'),
+    ('palmers quality butchers','groceries_specialist'),
+    ('paperchase','stationery'),
+    ('parent pay','school_fees'),
+    ('parkdean resorts','holiday_uk'),
+    ('parklands country club','private_members_club'),
+    ('pay by phone','car_parking'),
+    ('paypal','payment_intermediary'),
+    ('paypal credit','bnpl'),
+    ('pension credit','benefits_state'),
+    ('personal independence payment','benefits_state'),
+    ('pets at home','pet_supplies'),
+    ('pharmacy2u','pharmacy'),
+    ('pizza express','restaurant_cafe'),
+    ('pizza hut','takeaway'),
+    ('planet organic','groceries_specialist'),
+    ('play.com','gaming_console_pc'),
+    ('playstation','gaming_console_pc'),
+    ('plum','savings_transfer'),
+    ('pockit','prepaid_card'),
+    ('polani travel','travel_other'),
+    ('popeyes','takeaway'),
+    ('post office','government_services'),
+    ('postcode lottery','gambling_lottery'),
+    ('poundland','discount_store'),
+    ('poundstretcher','discount_store'),
+    ('premier man','clothing_mens'),
+    ('premier stores','groceries'),
+    ('pret a manger','restaurant_cafe'),
+    ('pretty little things','clothing_general'),
+    ('primark','clothing_general'),
+    ('prime','streaming'),
+    ('punch bowl','pub_bar'),
+    ('pure gym','gym_fitness'),
+    ('quiz clothing','clothing_womens'),
+    ('rac','breakdown_cover'),
+    ('rainbow riches casino','gambling_casino'),
+    ('rajapack','office_supplies'),
+    ('rangers fc','sports_tickets'),
+    ('rated people','tradesmen'),
+    ('raylo','retail_finance_repayment'),
+    ('reeds rains','estate_agent'),
+    ('remitly','transfer_international'),
+    ('residential management group','property_management'),
+    ('revolucion de cuba','pub_bar'),
+    ('revolut','transfer_own_account'),
+    ('revolution skatepark','sports_participation'),
+    ('ring.com','home_accessories'),
+    ('ringgo parking','car_parking'),
+    ('river island','clothing_general'),
+    ('rocket dog','footwear'),
+    ('royal mail','delivery_courier'),
+    ('ryanair','flights'),
+    ('ryman','stationery'),
+    ('sainsbury\'s','groceries'),
+    ('sainsbury\'s petrol','fuel'),
+    ('saltrock surfwear','clothing_outdoor'),
+    ('sandwi on the go ltd','takeaway'),
+    ('santander bank','financial_institution_unspecified'),
+    ('save the change','savings_transfer'),
+    ('save the pennies','savings_transfer'),
+    ('savers health','pharmacy'),
+    ('school days direct','clothing_childrens'),
+    ('school gateway','school_fees'),
+    ('school uniform direct','clothing_childrens'),
+    ('schoolmoney','school_fees'),
+    ('schuh','footwear'),
+    ('scotmid co-op','groceries'),
+    ('scottish power','energy'),
+    ('screwfix','tools'),
+    ('scrumbles','pet_supplies'),
+    ('secc arena','days_out'),
+    ('selecta','confectionary'),
+    ('severn trent','water'),
+    ('shein','clothing_general'),
+    ('shell','fuel'),
+    ('skechers','footwear'),
+    ('skill on net ltd','gambling_casino'),
+    ('skillz esports','gambling_unspecified'),
+    ('sky','broadband_tv_phone'),
+    ('sky bet','gambling_betting'),
+    ('sky mobile','mobile_phone_contract'),
+    ('skybet','gambling_betting'),
+    ('smarty','mobile_phone_contract'),
+    ('smyths toys','toys'),
+    ('sony','gaming_console_pc'),
+    ('spar','groceries'),
+    ('specsavers','optician'),
+    ('sports direct','sportswear'),
+    ('spotify','streaming'),
+    ('st vincent de paul society','charitable_donation'),
+    ('stagecoach','public_transport_rail_coach'),
+    ('star fish bar','takeaway'),
+    ('star pizza','takeaway'),
+    ('starbucks','restaurant_cafe'),
+    ('starling bank','transfer_own_account'),
+    ('state pension','pension_received'),
+    ('steamgames','gaming_console_pc'),
+    ('stop n shop ltd','convenience_store'),
+    ('stripe','payment_intermediary'),
+    ('student loans company','student_loan_repayment'),
+    ('subway','takeaway'),
+    ('sun bingo','gambling_bingo'),
+    ('sunlife','insurance_life'),
+    ('super pound saver','discount_store'),
+    ('supercell','gaming_mobile'),
+    ('superdrug','pharmacy'),
+    ('taco bell','takeaway'),
+    ('tails.com','pet_supplies'),
+    ('takeaway.je','takeaway'),
+    ('talktalk','broadband_tv_phone'),
+    ('taptap send uk limited','transfer_international'),
+    ('tariq halal meats','groceries_specialist'),
+    ('tasty plaice','takeaway'),
+    ('temptation gifts','gifts_flowers'),
+    ('terrys fabrics','home_accessories'),
+    ('tesco','groceries'),
+    ('tesco bank','financial_institution_unspecified'),
+    ('tesco fuel','fuel'),
+    ('tesco mobile','mobile_phone_contract'),
+    ('texaco','fuel'),
+    ('tfl','public_transport_rail_coach'),
+    ('thai express','takeaway'),
+    ('thames water','water'),
+    ('that prize guy','prize_competitions'),
+    ('the bat and ball','pub_bar'),
+    ('the beauty room','beauty_treatment'),
+    ('the bedford','pub_bar'),
+    ('the bike club','bicycle'),
+    ('the bottle shop','alcohol_beer_spirits'),
+    ('the cash shop','payday_loan'),
+    ('the cricketers','pub_bar'),
+    ('the entertainer','toys'),
+    ('the gym website','gym_fitness'),
+    ('the national lottery','gambling_lottery'),
+    ('the north face','clothing_outdoor'),
+    ('the orange tree','pub_bar'),
+    ('the range','home_accessories'),
+    ('the real china','restaurant_cafe'),
+    ('the red lion','pub_bar'),
+    ('the sheaf island','pub_bar'),
+    ('the southern co-op','groceries'),
+    ('the tan studio limited','beauty_treatment'),
+    ('the tanning rooms','beauty_treatment'),
+    ('the volunteer tavern','pub_bar'),
+    ('the water margin','restaurant_cafe'),
+    ('the white company','home_accessories'),
+    ('the works','books'),
+    ('the world\'s end','pub_bar'),
+    ('thetrainline','public_transport_rail_coach'),
+    ('thistle insurance','insurance_general'),
+    ('three','mobile_phone_contract'),
+    ('tian tian market','groceries_specialist'),
+    ('tick tock loans','payday_loan'),
+    ('tiktok','online_services'),
+    ('tiso','clothing_outdoor'),
+    ('tk maxx','clothing_general'),
+    ('toffs','sportswear'),
+    ('tombola','gambling_bingo'),
+    ('toolstation','tools'),
+    ('top wok','takeaway'),
+    ('topshop','clothing_womens'),
+    ('traid','charity_shop'),
+    ('transport for london','public_transport_rail_coach'),
+    ('treatwell','beauty_treatment'),
+    ('trip.com','accommodation'),
+    ('triple s caterers','catering'),
+    ('trustly group','payment_intermediary'),
+    ('tsb','financial_institution_unspecified'),
+    ('tv licensing','tv_licence'),
+    ('u.s. post office','delivery_courier'),
+    ('uber','taxi_rideshare'),
+    ('uber eats','takeaway'),
+    ('ugg australia','footwear'),
+    ('uk usa eliquids ltd','vaping'),
+    ('ultrasound direct','health_other'),
+    ('unibet','gambling_betting'),
+    ('united utilities','water'),
+    ('universal credit','benefits_state'),
+    ('uphold','crypto'),
+    ('utilita','energy'),
+    ('v kent minimart ltd','convenience_store'),
+    ('v12 retail finance','retail_finance_repayment'),
+    ('vanquis bank','credit_card_repayment'),
+    ('very','catalogue_retail'),
+    ('vets gen','veterinary'),
+    ('vetsure','insurance_pet'),
+    ('vinted','marketplace_general'),
+    ('virgin bet','gambling_betting'),
+    ('virgin games','gambling_casino'),
+    ('virgin media','broadband_tv_phone'),
+    ('vistaprint','printing_services'),
+    ('vodafone','mobile_phone_contract'),
+    ('voxi','mobile_phone_contract'),
+    ('vue cinemas','cinema'),
+    ('w.h.smith','books'),
+    ('waitrose','groceries'),
+    ('walkabout','pub_bar'),
+    ('wawel polski sklep','groceries_specialist'),
+    ('welcome break','convenience_store'),
+    ('wetherspoon','pub_bar'),
+    ('wickes','home_improvement'),
+    ('wiggleys fun farm ltd','days_out'),
+    ('wilko.com','home_accessories'),
+    ('william hill','gambling_betting'),
+    ('workwear express','clothing_workwear'),
+    ('wynsors','footwear'),
+    ('xbox','gaming_console_pc'),
+    ('yew tree mini market','convenience_store'),
+    ('youtube premium','streaming'),
+    ('zable credit card','credit_card_repayment'),
+    ('zara','clothing_general'),
+    ('zenfolio','photography_services'),
+    ('zilch','bnpl'),
+    ('zopa','personal_loan_repayment')
+])),
 leaf_meta AS (SELECT * FROM UNNEST([STRUCT<leaf STRING, general_category STRING, necessity STRING,
   cash_flow_type STRING, is_debt_related BOOL, is_priority_debt BOOL, is_age_restricted BOOL, risk_flag STRING>
     ('accommodation','travel_holidays','discretionary','spend',false,false,false,'none'),
@@ -683,6 +1223,8 @@ eqx_raw AS (
   SELECT
     PrimaryCategoryDescription AS pri,
     SubCategoryDescription AS sub,
+    VendorDescription AS vendor,
+    Description AS description_raw,
     IF(TransactionTypeId=1,'credit','debit') AS direction,
     Amount
   FROM `raylo-production.equifax_data.open_banking_full_dump`
@@ -692,7 +1234,7 @@ eqx_resolved AS (
   SELECT r.*,
     CASE
       -- T1: direction-dependent overrides
-      WHEN r.pri LIKE 'Gambling and Betting%' AND r.direction='credit' THEN 'gambling_winnings'
+      WHEN r.pri LIKE 'Gambling and Betting%' AND r.direction='credit' THEN 'gambling_unspecified'
       WHEN r.sub='Council' AND r.direction='credit' THEN 'salary'
       -- T2: compound rule - gig income
       WHEN r.pri='Identified Salary' AND r.sub IN ('Taxis','Delivery','Take Away') THEN 'salary_gig'
@@ -709,9 +1251,27 @@ eqx_resolved AS (
       WHEN r.pri IN ('Interest','Interests and Dividends') THEN 'savings_interest_received'
       WHEN r.pri='Balance Transfers' THEN 'balance_transfer'
       WHEN r.pri='Adjustments' THEN 'adjustment'
-      -- T4: sub (WHAT) match
+      -- T4: merchant dictionary (provider-independent, overrides both providers' own categories)
+      WHEN d.leaf IS NOT NULL THEN d.leaf
+      -- T5: deterministic rules
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '^(mr|mrs|miss|ms|dr)\\s+') THEN 'transfer_p2p'
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '^[a-z]\\s+[a-z]{2,}$') THEN 'transfer_p2p'
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), CONCAT(r'\b(', 'mum|dad|mom|nan|nana|gran|granny|grandad|sister|brother|son|daughter|wife|husband', r')\b')) THEN 'transfer_p2p'
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '^exchanged to (btc|eth|sol|xrp|ada|doge)') THEN 'crypto'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '(petrol|fuel)\\s*(station)?$') AND r.direction = 'debit') THEN 'fuel'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '(bingo|casino)') AND r.direction = 'debit') THEN 'gambling_unspecified'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(bet|betting|bookmaker)\\b') AND r.direction = 'debit') THEN 'gambling_betting'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(lottery|lotto)\\b') AND r.direction = 'debit') THEN 'gambling_lottery'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(debt (collection|recovery)|collections? ltd)\\b') AND r.direction = 'debit') THEN 'debt_collection'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), CONCAT(r'\b(', 'child maintenance', r')\b')) AND r.direction = 'credit') THEN 'income_other_unspecified'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'credit') THEN 'income_other_unspecified'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'debit') THEN 'vehicle_purchase'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(car park|parking)\\b') AND r.direction = 'debit') THEN 'car_parking'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(vets?|veterinary)\\b') AND r.direction = 'debit') THEN 'veterinary'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(pharmacy|chemist)\\b') AND r.direction = 'debit') THEN 'pharmacy'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bcouncil tax\\b') AND r.direction = 'debit') THEN 'council_tax'
+      -- T6: provider crosswalk fallback (sub = WHAT, primary = mechanism fallback)
       WHEN s.leaf IS NOT NULL THEN s.leaf
-      -- T5: primary fallback
       WHEN p.leaf IS NOT NULL THEN p.leaf
       ELSE 'unclassified_other'
     END AS leaf,
@@ -723,18 +1283,38 @@ eqx_resolved AS (
       WHEN r.pri IN ('Identified Salary','Refund','Benefits','Welfare','Pension Payout','Tax Refund',
         'Cash Back','Cash Machine','Cash Deposit','Interest','Interests and Dividends',
         'Balance Transfers','Adjustments') THEN 'T3_mechanism_override'
-      WHEN s.leaf IS NOT NULL THEN 'T4_sub_match'
-      WHEN p.leaf IS NOT NULL THEN 'T5_primary_fallback'
-      ELSE 'T6_unresolved'
+      WHEN d.leaf IS NOT NULL THEN 'T4_merchant_dictionary'
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '^(mr|mrs|miss|ms|dr)\\s+') THEN 'T5_rule_R01'
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '^[a-z]\\s+[a-z]{2,}$') THEN 'T5_rule_R02'
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), CONCAT(r'\b(', 'mum|dad|mom|nan|nana|gran|granny|grandad|sister|brother|son|daughter|wife|husband', r')\b')) THEN 'T5_rule_R03'
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '^exchanged to (btc|eth|sol|xrp|ada|doge)') THEN 'T5_rule_R04'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '(petrol|fuel)\\s*(station)?$') AND r.direction = 'debit') THEN 'T5_rule_R05'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '(bingo|casino)') AND r.direction = 'debit') THEN 'T5_rule_R06'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(bet|betting|bookmaker)\\b') AND r.direction = 'debit') THEN 'T5_rule_R07'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(lottery|lotto)\\b') AND r.direction = 'debit') THEN 'T5_rule_R08'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(debt (collection|recovery)|collections? ltd)\\b') AND r.direction = 'debit') THEN 'T5_rule_R14'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), CONCAT(r'\b(', 'child maintenance', r')\b')) AND r.direction = 'credit') THEN 'T5_rule_R15'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'credit') THEN 'T5_rule_R16'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'debit') THEN 'T5_rule_R17'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(car park|parking)\\b') AND r.direction = 'debit') THEN 'T5_rule_R09'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(vets?|veterinary)\\b') AND r.direction = 'debit') THEN 'T5_rule_R10'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(pharmacy|chemist)\\b') AND r.direction = 'debit') THEN 'T5_rule_R11'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bcouncil tax\\b') AND r.direction = 'debit') THEN 'T5_rule_R12'
+      WHEN s.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
+      WHEN p.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
+      ELSE 'T7_unclassified'
     END AS resolution_tier
   FROM eqx_raw r
   LEFT JOIN sub_xw s ON r.sub = s.eqx_sub
   LEFT JOIN pri_xw p ON r.pri = p.eqx_pri
+  LEFT JOIN dict_xw d ON LOWER(TRIM(r.vendor)) = d.merchant
 ),
 
 -- ---------- PLAID ----------
 plaid_raw AS (
   SELECT credit_category_detailed AS cat,
+         merchant_name AS merchant_raw,
+         COALESCE(original_description, transaction_name) AS description_raw,
          IF(amount < 0,'credit','debit') AS direction, amount AS Amount
   FROM `raylo-production.dbt_production.credit_plaid_open_banking_transactions`
   TABLESAMPLE SYSTEM (20 PERCENT)
@@ -742,16 +1322,56 @@ plaid_raw AS (
 plaid_resolved AS (
   SELECT r.*,
     CASE
-      WHEN r.cat='ENTERTAINMENT_CASINOS_AND_GAMBLING' AND r.direction='credit' THEN 'gambling_winnings'
+      -- T1: direction-dependent overrides
+      WHEN r.cat='ENTERTAINMENT_CASINOS_AND_GAMBLING' AND r.direction='credit' THEN 'gambling_unspecified'
+      -- T4: merchant dictionary (provider-independent, overrides both providers' own categories)
+      WHEN d.leaf IS NOT NULL THEN d.leaf
+      -- T5: deterministic rules
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '^(mr|mrs|miss|ms|dr)\\s+') THEN 'transfer_p2p'
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '^[a-z]\\s+[a-z]{2,}$') THEN 'transfer_p2p'
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), CONCAT(r'\b(', 'mum|dad|mom|nan|nana|gran|granny|grandad|sister|brother|son|daughter|wife|husband', r')\b')) THEN 'transfer_p2p'
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '^exchanged to (btc|eth|sol|xrp|ada|doge)') THEN 'crypto'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '(petrol|fuel)\\s*(station)?$') AND r.direction = 'debit') THEN 'fuel'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '(bingo|casino)') AND r.direction = 'debit') THEN 'gambling_unspecified'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(bet|betting|bookmaker)\\b') AND r.direction = 'debit') THEN 'gambling_betting'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(lottery|lotto)\\b') AND r.direction = 'debit') THEN 'gambling_lottery'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(debt (collection|recovery)|collections? ltd)\\b') AND r.direction = 'debit') THEN 'debt_collection'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), CONCAT(r'\b(', 'child maintenance', r')\b')) AND r.direction = 'credit') THEN 'income_other_unspecified'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'credit') THEN 'income_other_unspecified'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'debit') THEN 'vehicle_purchase'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(car park|parking)\\b') AND r.direction = 'debit') THEN 'car_parking'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(vets?|veterinary)\\b') AND r.direction = 'debit') THEN 'veterinary'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(pharmacy|chemist)\\b') AND r.direction = 'debit') THEN 'pharmacy'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bcouncil tax\\b') AND r.direction = 'debit') THEN 'council_tax'
+      -- T6: provider crosswalk fallback
       WHEN x.leaf IS NOT NULL THEN x.leaf
       ELSE 'unclassified_other'
     END AS leaf,
     CASE
       WHEN r.cat='ENTERTAINMENT_CASINOS_AND_GAMBLING' AND r.direction='credit' THEN 'T1_direction'
-      WHEN x.leaf IS NOT NULL THEN 'T4_provider_crosswalk'
-      ELSE 'T6_unresolved'
+      WHEN d.leaf IS NOT NULL THEN 'T4_merchant_dictionary'
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '^(mr|mrs|miss|ms|dr)\\s+') THEN 'T5_rule_R01'
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '^[a-z]\\s+[a-z]{2,}$') THEN 'T5_rule_R02'
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), CONCAT(r'\b(', 'mum|dad|mom|nan|nana|gran|granny|grandad|sister|brother|son|daughter|wife|husband', r')\b')) THEN 'T5_rule_R03'
+      WHEN REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '^exchanged to (btc|eth|sol|xrp|ada|doge)') THEN 'T5_rule_R04'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '(petrol|fuel)\\s*(station)?$') AND r.direction = 'debit') THEN 'T5_rule_R05'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '(bingo|casino)') AND r.direction = 'debit') THEN 'T5_rule_R06'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(bet|betting|bookmaker)\\b') AND r.direction = 'debit') THEN 'T5_rule_R07'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(lottery|lotto)\\b') AND r.direction = 'debit') THEN 'T5_rule_R08'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(debt (collection|recovery)|collections? ltd)\\b') AND r.direction = 'debit') THEN 'T5_rule_R14'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), CONCAT(r'\b(', 'child maintenance', r')\b')) AND r.direction = 'credit') THEN 'T5_rule_R15'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'credit') THEN 'T5_rule_R16'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'debit') THEN 'T5_rule_R17'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(car park|parking)\\b') AND r.direction = 'debit') THEN 'T5_rule_R09'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(vets?|veterinary)\\b') AND r.direction = 'debit') THEN 'T5_rule_R10'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(pharmacy|chemist)\\b') AND r.direction = 'debit') THEN 'T5_rule_R11'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bcouncil tax\\b') AND r.direction = 'debit') THEN 'T5_rule_R12'
+      WHEN x.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
+      ELSE 'T7_unclassified'
     END AS resolution_tier
-  FROM plaid_raw r LEFT JOIN plaid_xw x ON r.cat = x.plaid_cat
+  FROM plaid_raw r
+  LEFT JOIN plaid_xw x ON r.cat = x.plaid_cat
+  LEFT JOIN dict_xw d ON LOWER(TRIM(r.merchant_raw)) = d.merchant
 ),
 
 combined AS (
