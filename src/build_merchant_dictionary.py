@@ -313,6 +313,32 @@ for m, recs in sorted(_by_merchant.items()):
         "source": "gold_v2_review", "review_status": "approved", "notes": notes[0]})
 print(f"gold_v2_review additions: {_gv2_added}")
 
+# ---- production-labelling tranches (2026-08-20/21) ----
+# The 50,000-string production-labelled vocabulary (two-model consensus + Opus
+# tiebreak + policy gate) was built and validated for the classifier/SLM training
+# set, but was never wired into the live T4 dictionary that actually serves the
+# crosswalk -- this closes that gap. Same tiered-trust filter already validated
+# against the clean gold set (auto_accept/accepted/human_reviewed measured at
+# 82-91% accuracy; accepted_tiebreak at 66.9% and accepted_general at 33.3% are
+# excluded as too weak). Tier A (gold_transactions_v2/v3) supersedes: any merchant
+# already resolved there is skipped here, both because Tier A is higher-trust and
+# to avoid re-introducing the exact circularity the gold-set leakage audit found.
+_PROD_GOOD_TIERS = {"auto_accept", "accepted", "human_reviewed"}
+_prod_added = 0
+for r in csv.DictReader(open(ROOT / "data" / "production_labels_tranche3.csv")):
+    m = r["merchant"].strip().lower()
+    # exclude the FULL Tier A merchant set (_by_merchant), not just `seen` -- most Tier A
+    # merchants never passed the stricter gold_v2_review promotion filter above and so
+    # aren't in `seen` yet, but they're still higher-trust and excluding only `seen` would
+    # silently reintroduce the exact circularity the leakage audit found.
+    if r["tier"] not in _PROD_GOOD_TIERS or m in seen or m in _by_merchant:
+        continue
+    seen.add(m); _prod_added += 1
+    rows.append({"normalised_merchant": m, "detailed_category": r["final_leaf"], "confidence": "medium",
+        "source": f"production_tranche3_{r['tier']}", "review_status": "approved",
+        "notes": f"LLM-consensus label, tier={r['tier']}, measured 82-91% accurate against the clean gold set"})
+print(f"production_tranche3 additions: {_prod_added}")
+
 # validate leaves exist in taxonomy
 tax={r['detailed_category'] for r in csv.DictReader(open(ROOT / "taxonomy" / "taxonomy.csv"))}
 bad=[r for r in rows if r['detailed_category'] not in tax]
