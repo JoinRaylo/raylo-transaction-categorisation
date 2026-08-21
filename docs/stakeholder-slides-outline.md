@@ -1,96 +1,161 @@
 # Stakeholder slides — outline
 
-Skeleton for the upcoming stakeholder presentation. **Structure and talking points only — not final slides.** All three production tranches and the Gemini/Opus tiebreak comparison are now fully closed (2026-08-20). Source of truth for every number here: `docs/project-summary.md` and the Notion page.
+For handoff to whoever builds the actual deck. Each slide below lists: **Title**, **Subtitle** (if any), **Main body** (the content/bullets), and **Chart** (if one is warranted — otherwise "None"). This is a skeleton, not final copy — polish wording to house style when building the real slides.
+
+All numbers sourced from `docs/project-summary.md`, `data/final_evaluation_report.md`, and the Notion page (single source of truth — pull fresh numbers from there if anything has moved on since this outline was written, 2026-08-21).
+
+**One rule that matters for slide 11 specifically: always show the audited/clean numbers alongside the full-sample numbers, never the full-sample number alone.** We found and fixed real leakage in our own evaluation (see that slide's notes) — presenting only the inflated figure would undermine the credibility this project has been built on.
 
 ---
 
-### 1. Title
-- Unified Transaction Taxonomy: a Raylo-owned category system for Open Banking
-- Carlos, AI Acceleration — [date of presentation]
+### Slide 1 — Title
+- **Title**: Unified Transaction Taxonomy
+- **Subtitle**: A Raylo-owned category system for Open Banking
+- **Main body**: Presenter name, AI Acceleration, date
+- **Chart**: None
 
-### 2. Why we're doing this (motivation #1 — provider risk)
-- The live risk model reads **Plaid's category names directly**
-- Plaid shipped a breaking taxonomy change (PFC v2, 3 Dec 2025) months after we went live (Aug 2025) — the same transaction can be relabelled between versions with no warning
-- We don't control Plaid's roadmap. We should control our own categories.
+### Slide 2 — Why we did this (1): provider risk
+- **Title**: Why We Did This
+- **Subtitle**: Reason one — we don't control Plaid's category taxonomy
+- **Main body**:
+  - The live risk model reads Plaid's category names directly
+  - Plaid shipped a breaking taxonomy change (PFC v2, 3 Dec 2025) months after go-live (Aug 2025) — same transaction, different label, no warning
+  - We don't control Plaid's roadmap; we should control our own categories
+- **Chart**: None (optional: simple before/after icon showing a transaction's label changing under PFC v1→v2)
 
-### 3. Why we're doing this (motivation #2 — a stronger risk model)
-- The live model trains on Plaid data only: **Aug 2025 → present**, a few months of history, few realised bad outcomes observed yet
-- Equifax's one-time dump covers **Jul 2022 – Sep 2025** — 37,404 proposals with realised 3-month and 12-month arrears already observed
-- A shared taxonomy is what lets that history become usable training data for a next-generation model, not just an archive
-- Equifax is a **dead source** (no new data ever) — this is a one-off depth boost, not a second ongoing pipeline
+### Slide 3 — Why we did this (2): a stronger risk model
+- **Title**: Why We Did This
+- **Subtitle**: Reason two — unlocking Equifax's history for a richer model
+- **Main body**:
+  - Live model trains on Plaid only: Aug 2025 → present, few realised bad outcomes observed yet
+  - Equifax's one-time dump: Jul 2022 – Sep 2025, 37,404 proposals with realised 3-month and 12-month arrears already observed
+  - A shared taxonomy is what makes that history usable as training data — Equifax is a dead source (no new data ever), so this is a one-off depth boost
+- **Chart**: Simple timeline — Equifax bar (Jul 2022–Sep 2025) vs Plaid bar (Aug 2025–present), annotated with the outcome-richness gap
 
-### 4. Starting point — the data
-| | Equifax | Plaid |
-|---|---|---|
-| Rows | 73.2M | 4.3M |
-| Period | Jul 2022 – Sep 2025 | Aug 2025 – present |
-| Status | dead (one-time dump) | live |
-| History per proposal | 189 days avg | 90 days (hard cap — see backup) |
-| Merchant field | resolved entity, 6,518 distinct | raw text, 212,300 distinct |
-| Native category coverage | 65.8% purpose-known | 100% assigns *something*, but 50.6% lands on coarse catch-alls |
+### Slide 4 — Where we started: the data
+- **Title**: Where We Started
+- **Subtitle**: Two providers, very different data
+- **Main body**: comparison table —
+  | | Equifax | Plaid |
+  |---|---|---|
+  | Rows | 73.2M | 4.3M |
+  | Period | Jul 2022–Sep 2025 | Aug 2025–present |
+  | Status | Dead (one-time dump) | Live |
+  | Merchant field | Resolved entity, 6,518 distinct | Raw text, 212,300 distinct |
+  | Native category coverage | 65.8% purpose-known | 100% assigns *something*, but 50.6% lands on coarse catch-alls |
+- **Chart**: Two-bar comparison of "distinct merchant strings" (6,518 vs 212,300) — makes the scale difference visceral
 
-### 5. The naive option we rejected — just crosswalk the categories
-- Tested: map Equifax categories → Plaid categories directly, no taxonomy work
-- Result: for merchants both providers cover, the two crosswalks disagree on **72.2% of merchants (45.2% of volume)**
-- Concrete examples: Uber Eats (takeaway vs restaurant), M&S (credit card repayment vs department store), Sky (broadband vs mobile) — table of 4-5 examples
-- A crosswalk-only pipeline propagates these silently. Nothing fails a test; both outputs look valid.
+### Slide 5 — The naive option we rejected
+- **Title**: Why a Simple Crosswalk Isn't Enough
+- **Subtitle**: Just mapping Equifax categories onto Plaid — tested and rejected
+- **Main body**:
+  - For merchants both providers cover, the two independent crosswalks disagree on 72.2% of merchants (45.2% of volume)
+  - Examples table: Uber Eats (takeaway vs restaurant), M&S (credit-card repayment vs department store), Sky (broadband vs mobile)
+  - A crosswalk-only pipeline propagates these silently — nothing fails a test, both answers look valid
+- **Chart**: Small table of the 3 examples above (merchant / Equifax→leaf / Plaid→leaf / correct answer)
 
-### 6. Building a taxonomy Raylo owns
-- 275 detailed categories → 29 general categories, strict rollup (one parent per leaf)
-- Plus 6 **orthogonal dimensions** that aren't tree-shaped: necessity, cash-flow type, is-debt-related, is-priority-debt, is-age-restricted, risk flag
-- Why orthogonal, not nested — one sharp example: rent vs mortgage (both essential, only mortgage is debt) — collapsing them distorts essential-spend features by tenure, a fair-lending problem
-- Why granularity survives IV pruning — gambling subtypes example (Lottery IV 0.0498 alone vs 0.0053 combined)
+### Slide 6 — Building a taxonomy Raylo owns
+- **Title**: A Taxonomy Raylo Owns
+- **Subtitle**: 275 categories, 29 general groups, 6 risk dimensions
+- **Main body**:
+  - 275 detailed categories → 29 general categories, strict rollup (one parent per leaf)
+  - Plus 6 orthogonal risk dimensions that aren't tree-shaped: necessity, cash-flow type, debt-related, priority-debt, age-restricted, risk flag
+  - One sharp example: rent vs mortgage — both essential, only mortgage is debt; collapsing them distorts essential-spend features by tenure (a fair-lending problem)
+- **Chart**: None (optional: simple 2-axis diagram showing a leaf plotted on necessity × debt-related to illustrate orthogonality)
 
-### 7. The categorisation strategy — precedence waterfall
-- Every transaction resolves at the highest tier that fires; the tier is recorded (`resolution_tier`) — provenance matters for fair-lending review
-- T1 direction overrides → T2 compound rules → T3 mechanism-override primaries → **T4 merchant dictionary (provider-independence mechanism)** → T5 regex rules → T6 provider crosswalk (fallback) → T7 explicit unclassified
-- One diagram slide: the waterfall as a flowchart
+### Slide 7 — How we resolve every transaction
+- **Title**: The Categorisation Waterfall
+- **Subtitle**: Every transaction resolves at the highest tier that fires — and we record which one
+- **Main body**: T1 direction overrides → T2 compound rules → T3 mechanism-override primaries → T4 merchant dictionary (provider-independent) → T5 regex rules → T6 provider crosswalk (fallback) → T7 unclassified
+- **Chart**: Flowchart of the 7 tiers (this is the single most useful diagram in the deck — worth real design effort)
 
-### 8. The hard problem — what do we benchmark against?
-- Equifax's own categorisation is a **vendor-level dictionary** (modal category share ~100% per merchant) — reproducing it isn't independent truth, it's reproducing its conventions
-- Measured: where our own curated dictionary disagrees with Equifax, it sides with an independent LLM's judgement ~75% of the time (Netflix→streaming not broadband, Boots→pharmacy, eBay→marketplace…)
-- **Conclusion: Equifax cannot be the benchmark.** Needed an independent, evidence-based gold standard.
+### Slide 8 — The hard problem: what's the benchmark?
+- **Title**: What Do We Compare Against?
+- **Subtitle**: Equifax's own category isn't independent truth
+- **Main body**:
+  - Equifax's categorisation is a vendor-level dictionary (modal category share ~100% per merchant) — reproducing it isn't independent validation, it's reproducing its conventions
+  - Where our curated dictionary disagrees with Equifax, an independent LLM sides with us ~75% of the time (Netflix→streaming not broadband, Boots→pharmacy, eBay→marketplace)
+  - Conclusion: needed an independent, evidence-based gold standard
+- **Chart**: None
 
-### 9. Building the gold standard — the gating experiment
-- Two independent LLMs (Haiku 4.5, Sonnet 5) label merchant strings from a closed 275-value taxonomy, blind to each other
-- Where they agree with each other but disagree with Equifax → escalate to human adjudication (376 rows)
-- Human adjudication result (2026-08-19): **96.1% leaf-level, 98.2% general-level corrected accuracy** — GREEN LIGHT
-- By-products: 1,563-merchant gold set (head), 247-merchant gold set (tail), 195 approved dictionary additions, 49+ direction-rule candidates
+### Slide 9 — Building an independent gold standard
+- **Title**: Building the Gold Standard
+- **Subtitle**: Two-model consensus + human adjudication
+- **Main body**:
+  - Two independent LLMs label merchants blind to each other; where they agree with each other but disagree with Equifax → escalate to human adjudication (376 disputes)
+  - Result: 96.1% leaf-level / 98.2% general-level corrected accuracy — green light
+  - By-products: 1,563-merchant gold set (head), 247-merchant gold set (tail), 195 approved dictionary entries
+- **Chart**: Simple funnel — 2,307 shared merchants → 376 disputes → adjudicated verdicts
 
-### 10. Scaling it up — production labelling (tranches 1–3)
-- Same two-model + human-escalation approach, extended to the highest-volume unmatched Plaid merchant strings, plus a third-model tiebreak (Opus 5) on residual disagreements
-- Policy gate: general-category consensus auto-accepts; risk-dimension disagreement always goes to a human; everything else abstains
-| Tranche | Strings | Share of unmatched volume | Human review |
-|---|---|---|---|
-| 1 (top 5k) | 5,000 | 30.0% | 113 (2.3%) |
-| 2 (top 20k) | 20,000 | 45.4% | 321 (0.7%) |
-| 3 (top 50k) | 50,000 | 56.1% | 692 reviewed (1.4%) — closed |
-- Net effect: an accepted, provenance-tracked category on **~41%+ of all Plaid transactions**, up from 26.2% with the crosswalk alone
+### Slide 10 — Scaling up: production labelling
+- **Title**: Scaling Coverage
+- **Subtitle**: Three tranches, 56.1% of unmatched Plaid volume
+- **Main body**: tranche table —
+  | Tranche | Strings | Share of unmatched volume | Human review |
+  |---|---|---|---|
+  | 1 (top 5k) | 5,000 | 30.0% | 113 (2.3%) |
+  | 2 (top 20k) | 20,000 | 45.4% | 321 (0.7%) |
+  | 3 (top 50k) | 50,000 | 56.1% | 692 (1.4%) |
+  - Human review burden *shrinks* as a share of volume with every tranche
+- **Chart**: Bar chart — cumulative coverage % per tranche (30.0% → 45.4% → 56.1%)
 
-### 11. The residual classifier — distillation bake-off
-- Built a small offline classifier to serve the long tail no dictionary or LLM pass will ever cover economically
-- Confirmed the same benchmark bias by testing it: trained on Equifax labels → 69% head / 30% tail, and only **10%** on merchants our adjudication had already overruled Equifax on
-- Fixed by training on our own production labels instead → tail accuracy roughly doubled (30% → 57.5%)
-- Three architectures (hashed n-grams, bounded TF-IDF + logistic regression, gradient-boosted trees) converged to a **statistical three-way tie**; adopted TF-IDF + logistic regression for practical reasons (34× smaller, fully auditable, no training instability)
+### Slide 11 — Does this actually work? The final validation
+- **Title**: Does This Actually Work?
+- **Subtitle**: Our pipeline vs trusting either provider's own category — audited for leakage before trusting it
+- **Main body**:
+  - Scored our pipeline, Equifax's own category, and Plaid's own category against the same independent gold sets
+  - **Before presenting results, we explicitly checked our own evaluation for bias/leakage** — found two real issues (see notes below) and fixed the scoring to show both a full-sample figure and a clean, audited figure
+  - Full sample (representative, but includes some unreviewed model-agreement rows): Equifax native 82.3% leaf / Plaid native 31.9% leaf / **our pipeline 95.0%** (via Equifax txns) / **50.4%** (via Plaid txns)
+  - Clean, audited subset (small, deliberately adversarial — cases a human specifically checked): our pipeline still leads (e.g. 62.0% vs Equifax-native 43.4%), margin narrower, n=129
+  - **Conclusion: directionally decisive — our approach beats trusting either provider's native category — most starkly against Plaid, the live data source**
+- **Chart**: Grouped bar chart — 3 groups (Equifax native / Plaid native / Our pipeline) × 2 bars each (full sample / clean audited subset). This is the headline chart of the whole deck.
+- **Speaker notes for whoever presents**: the leakage audit found (1) 79% of gold "head" labels were never human-reviewed — just two similar LLMs agreeing with each other — and (2) 75% of gold "tail" labels were literally copied from the exact prediction being scored. Both are now fixed with a clean-subset comparison. Be ready to explain this if asked — it's a credibility strength ("we checked ourselves"), not a weakness, but it means the precise 93.9%/95.0% figures shouldn't be quoted as exact facts, only the direction and rough scale.
 
-### 12. Speed/accuracy check — Opus vs Gemini 3.7 Flash tiebreak
-- Ran the same tiebreak role through both models on tranche 3's full 18,430-string disagreement queue as a side-by-side comparison
-- Result: **73.6% leaf agreement, 82.7% general-category agreement** between the two models — neither is simply "right" (no adjudicated ground truth for this comparison), but the gap shows real per-model disagreement worth knowing about before picking one for future tranches
-- Gemini measured at 2.8 strings/sec; comparable wall-clock on Opus's side (no built-in timing log to cite a precise figure)
+### Slide 12 — Why the remaining gap, and what closes it
+- **Title**: The Biggest Lever Left
+- **Subtitle**: Dictionary coverage, not further taxonomy design
+- **Main body**:
+  - Only 25.8% of gold head merchants are in the current 535-entry merchant dictionary yet
+  - Where covered: pipeline is provider-independent, ~95% either way
+  - Where not covered: still falls back to the provider crosswalk, inheriting Plaid's weak native categories
+  - Provider-independence check: our pipeline agrees with itself across Equifax vs Plaid transactions 51.2% of the time, vs 27.8% for naive crosswalk alone
+- **Chart**: Simple 2-bar comparison — "in dictionary" vs "not in dictionary" accuracy (via Plaid txns)
 
-### 13. Where this leaves us today
-- One sentence per pillar: taxonomy built and tested; benchmark problem solved and validated; production coverage scaling (tranches 1–3); residual classifier resolved and adopted
-- Coverage now vs at the start — before/after bar or table
+### Slide 13 — The residual classifier
+- **Title**: Handling the Long Tail
+- **Subtitle**: A small offline classifier for what no dictionary will ever cover
+- **Main body**:
+  - Confirmed the same provider-bias risk by testing it: a classifier trained on Equifax labels scored 69% head / 30% tail / only 10% on merchants we'd already overruled Equifax on
+  - Retrained on our own production labels instead — tail accuracy roughly doubled (30% → 57.5%)
+  - Three architectures converged to a statistical tie; adopted TF-IDF + logistic regression (34× smaller, fully auditable, no training instability)
+- **Chart**: Small table — 3 architectures × head/tail accuracy
 
-### 14. What's next
-- Wire the merchant dictionary (T4) and regex rules (T5) into the live crosswalk SQL
-- Write direction/entity rules for the 100+ context-dependent merchants surfaced along the way
-- Re-derive risk features on the unified taxonomy and benchmark against the current live model (Experiment 3)
-- Investigate the rent-detection gap (IV 0.0093 vs mortgage 0.0653) — largest household outgoing, currently under-detected
-- Fix the Plaid 90-day pull-window limit (every asset report requests exactly 90 days — a Raylo-side parameter, not a Plaid limit; this is what unlocks using longer history at all)
+### Slide 14 — Where this leaves us
+- **Title**: Where We Are Today
+- **Main body**: one line per pillar —
+  - Taxonomy: built, tested, 0 uncovered provider values
+  - Benchmark problem: solved and validated (independent gold standard, not provider-derived)
+  - Production coverage: 56.1% of unmatched Plaid volume labelled across 3 tranches
+  - Residual classifier: resolved and adopted
+  - **Final validation: our approach beats native provider categories, audited for leakage**
+- **Chart**: None (could reuse the slide-4 style provider comparison as a closing visual)
 
-### 15. Backup / appendix (not for the main deck)
-- Full cost model (LLM labelling cost, why cost was never the binding constraint)
-- Full precedence-waterfall tier definitions
-- Full data-quality caveats (Plaid `payment_method`/`reference_number` unpopulated, `confidence_level` not ingested, etc.)
-- Link to Notion page and `docs/project-summary.md` for full detail and progress log
+### Slide 15 — What's next
+- **Title**: What's Next
+- **Main body**:
+  - Expand T4 dictionary coverage (biggest lever identified by the validation)
+  - Wire the remaining direction/entity rules for the ~100 context-dependent merchant backlog
+  - Experiment 3: re-derive risk features on the new taxonomy, benchmark GINI against the live model on the same out-of-time split
+  - Investigate the rent-detection gap (IV 0.0093 vs mortgage 0.0653) — largest household outgoing, currently under-detected
+  - Flag: fix the Plaid 90-day pull-window limit (Raylo-side parameter, not a Plaid limit) — unlocks real use of transaction history depth
+- **Chart**: None
+
+### Slide 16 — Backup / appendix (not for the main deck)
+- **Title**: Appendix
+- **Main body**:
+  - Full leakage-audit methodology and the complete clean-vs-full numbers table
+  - Full precedence-waterfall tier definitions
+  - Cost model for the LLM labelling route
+  - Data-quality caveats (Plaid `payment_method`/`reference_number` unpopulated, `confidence_level` not ingested)
+  - Links: Notion page, `docs/project-summary.md`, `data/final_evaluation_report.md`
+- **Chart**: None
