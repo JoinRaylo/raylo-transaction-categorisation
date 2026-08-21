@@ -74,7 +74,7 @@ SLM_EVAL_CSV = ROOT / "data" / "gold_v2_slm_eval_holdout.csv"
 SPLIT_MANIFEST = OUT_DIR / "tuning_gold_v2_split_manifest.csv"
 SEED = 42
 VAL_FRACTION = 0.15
-EVAL_HOLDOUT_FRACTION = 0.2
+EVAL_HOLDOUT_FRACTION = 0.4  # Tier A is only ~1.5% of total training rows, so favouring eval size here is cheap
 OVERSAMPLE_FACTOR = 3  # how many times a conflicting (context-dependent) Tier A merchant's rows are repeated
 DEFAULT_CAP = 10
 # Agent Platform hard limit (undocumented in the bundled skill reference,
