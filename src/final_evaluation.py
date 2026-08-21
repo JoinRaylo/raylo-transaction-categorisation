@@ -214,9 +214,23 @@ def score():
 
     comparison_rows = []
 
+    # Circularity check (CLAUDE.md-mandated leakage audit, ran 2026-08-21): a dictionary entry
+    # sourced from `gating_adjudication` records the SAME human verdict as a gold row whose
+    # gold_source is 'adjudicated_llm'/'adjudicated_either'/'adjudicated_correction' (that
+    # verdict is literally what put the entry in the dictionary in the first place) --
+    # scoring the dictionary against that gold row is not independent validation.
+    # 'adjudicated_equifax' is NOT circular: that verdict explicitly rejected the LLM/dictionary
+    # answer, so if the merchant is in the dictionary anyway it's via the original (pre-gold-set)
+    # llm_proposed entries, not this adjudication.
+    CIRCULAR_GOLD_SOURCES = {"adjudicated_llm", "adjudicated_llm+taxonomy_split_20260819",
+                             "adjudicated_either", "adjudicated_correction",
+                             "adjudicated_correction+taxonomy_split_20260819"}
+    dict_source = {r["normalised_merchant"]: r["source"] for r in csv.DictReader(open(DICT_CSV))}
+
     for r in gold_head:
         m = r["merchant"].strip().lower()
         gold_leaf = r["gold_leaf"]
+        gold_source = r["gold_source"]
         e = eqx_modal.get(m)
         p = plaid_modal.get(m)
         eqx_leaf_val = eqx_native_leaf(e["pri"], e["sub"], e["direction"]) if e else None
@@ -225,22 +239,34 @@ def score():
                                   if e else (None, None))
         our_leaf_plaid, tier_plaid = (our_leaf(m, p["direction"], None, plaid_native_leaf, p["cat"], p["direction"])
                                        if p else (None, None))
+        human_verified = gold_source.startswith("adjudicated")
+        circular = dict_source.get(m) == "gating_adjudication" and gold_source in CIRCULAR_GOLD_SOURCES
         comparison_rows.append({
             "merchant": m, "stratum": "head", "gold_leaf": gold_leaf,
+            "gold_source": gold_source, "human_verified": human_verified, "circular": circular,
             "equifax_native_leaf": eqx_leaf_val, "equifax_n": e["n"] if e else None,
             "plaid_native_leaf": plaid_leaf_val, "plaid_n": p["n"] if p else None,
             "our_leaf_on_equifax": our_leaf_eqx, "our_tier_on_equifax": tier_eqx,
             "our_leaf_on_plaid": our_leaf_plaid, "our_tier_on_plaid": tier_plaid,
         })
 
+    # Tail circularity: 'consensus_correct'/'haiku_correct'/'sonnet_correct' gold rows set
+    # gold_leaf TO the exact haiku/sonnet prediction being scored (see build_tail_eval.py
+    # finalise()) -- scoring our pipeline against those rows is tautological. Only
+    # 'override' (human rejected both models) and 'unclassifiable' (human confirmed neither
+    # answer works) are independent tests of the pipeline.
+    TAIL_CIRCULAR_GOLD_SOURCES = {"consensus_correct", "haiku_correct", "sonnet_correct"}
     for r in gold_tail:
         m = r["merchant"].strip().lower()
         gold_leaf = r["gold_leaf"]
+        gold_source = r["gold_source"]
         p = plaid_modal.get(m)
         plaid_leaf_val = plaid_native_leaf(p["cat"], p["direction"]) if p else None
         our_leaf_val, our_tier = tail_pipeline_leaf(m)
+        circular = gold_source in TAIL_CIRCULAR_GOLD_SOURCES
         comparison_rows.append({
             "merchant": m, "stratum": "tail", "gold_leaf": gold_leaf,
+            "gold_source": gold_source, "human_verified": True, "circular": circular,
             "equifax_native_leaf": None, "equifax_n": None,
             "plaid_native_leaf": plaid_leaf_val, "plaid_n": p["n"] if p else None,
             "our_leaf_on_equifax": None, "our_tier_on_equifax": None,
@@ -269,41 +295,80 @@ def score():
     head_rows = [r for r in comparison_rows if r["stratum"] == "head"]
     tail_rows = [r for r in comparison_rows if r["stratum"] == "tail"]
 
-    report = ["# Final evaluation: Equifax-native vs Plaid-native vs our pipeline\n",
-              "Ground truth: `data/gold_merchant_labels.csv` (1,563 head merchants, both providers) "
-              "+ `data/gold_tail_labels.csv` (247 tail merchants, Plaid-only) -- independently "
-              "human-verified, never derived from either provider's own category.\n",
-              "'Native' = crosswalking each provider's own category field only (no dictionary, no rules). "
-              "'Our pipeline' = dictionary -> rules -> native fallback (head); actual production-labelling "
-              "output (tail, since that population needs LLM consensus, not a static lookup).\n"]
-
-    def row(label, rows, key_a, key_b=None):
+    def row(label, rows, key_a):
         leaf_acc, n = acc(rows, "gold_leaf", key_a, "leaf")
         gen_acc, _ = acc(rows, "gold_leaf", key_a, "general")
         if leaf_acc is None:
             return f"| {label} | n/a | n/a | 0 |"
         return f"| {label} | {leaf_acc:.1%} | {gen_acc:.1%} | {n} |"
 
+    report = ["# Final evaluation: Equifax-native vs Plaid-native vs our pipeline\n",
+              "Ground truth: `data/gold_merchant_labels.csv` (1,563 head merchants, both providers) "
+              "+ `data/gold_tail_labels.csv` (247 tail merchants, Plaid-only).\n",
+              "'Native' = crosswalking each provider's own category field only (no dictionary, no rules). "
+              "'Our pipeline' = dictionary -> rules -> native fallback (head); the enriched two-model LLM "
+              "consensus (tail).\n"]
+
+    # --- Leakage audit (requested explicitly before trusting these numbers) ---
+    n_head_unreviewed = sum(1 for r in head_rows if not r["human_verified"])
+    n_head_circular = sum(1 for r in head_rows if r["circular"])
+    n_tail_circular = sum(1 for r in tail_rows if r["circular"])
+    report.append("## Leakage audit\n")
+    report.append(f"**Head set**: only {len(head_rows) - n_head_unreviewed} of {len(head_rows)} gold labels "
+                   f"({(len(head_rows)-n_head_unreviewed)/len(head_rows):.1%}) went through actual human "
+                   f"adjudication (`gold_source` starting `adjudicated_*`). The other {n_head_unreviewed} "
+                   f"(`consensus_all_agree`) are simply cases where Haiku and Sonnet -- two models from the "
+                   f"same family, given the same prompt -- agreed with each other, with no human check. That's "
+                   f"not independent ground truth; it's model self-consistency, which could share blind spots. "
+                   f"Separately, {n_head_circular} of the human-adjudicated rows are directly circular: the "
+                   f"same adjudication verdict both produced the gold label AND was used to add that merchant "
+                   f"to the T4 dictionary, so scoring the dictionary against those specific rows is tautological.\n")
+    report.append(f"**Tail set**: every row went through human review, but for {n_tail_circular} of "
+                   f"{len(tail_rows)} rows (`consensus_correct`/`haiku_correct`/`sonnet_correct`), gold_leaf "
+                   f"was set TO the exact haiku/sonnet prediction being scored (see `build_tail_eval.py "
+                   f"finalise()`) -- scoring our pipeline against those rows is tautological by construction. "
+                   f"Only `override` (human rejected both models) and `unclassifiable` (human confirmed "
+                   f"neither answer works) are independent tests.\n")
+    report.append("**Fix applied below**: every table reports a `Clean, non-circular` row using only "
+                   "genuinely independent evidence -- head: human-adjudicated AND not circular "
+                   "(`adjudicated_equifax` only, since that's the one verdict type that never feeds the "
+                   "dictionary); tail: `override` + `unclassifiable` only. Small-sample sizes are called out "
+                   "explicitly rather than hidden behind a percentage.\n")
+
+    clean_head = [r for r in head_rows if r["human_verified"] and not r["circular"]]
+    clean_tail = [r for r in tail_rows if not r["circular"]]
+
     report.append("\n## Head merchants (n=1,563, both providers)\n")
     report.append("| Source | Leaf accuracy | General-category accuracy | Scored n |")
     report.append("|---|---|---|---|")
-    report.append(row("Equifax native category", head_rows, "equifax_native_leaf"))
-    report.append(row("Plaid native category", head_rows, "plaid_native_leaf"))
-    report.append(row("Our pipeline (via Equifax txn)", head_rows, "our_leaf_on_equifax"))
-    report.append(row("Our pipeline (via Plaid txn)", head_rows, "our_leaf_on_plaid"))
+    report.append(row("Equifax native category -- full sample", head_rows, "equifax_native_leaf"))
+    report.append(row("Equifax native category -- clean, non-circular (n=" + str(len(clean_head)) + ")",
+                       clean_head, "equifax_native_leaf"))
+    report.append(row("Plaid native category -- full sample", head_rows, "plaid_native_leaf"))
+    report.append(row("Plaid native category -- clean, non-circular", clean_head, "plaid_native_leaf"))
+    report.append(row("Our pipeline (via Equifax txn) -- full sample", head_rows, "our_leaf_on_equifax"))
+    report.append(row("Our pipeline (via Equifax txn) -- clean, non-circular", clean_head, "our_leaf_on_equifax"))
+    report.append(row("Our pipeline (via Plaid txn) -- full sample", head_rows, "our_leaf_on_plaid"))
+    report.append(row("Our pipeline (via Plaid txn) -- clean, non-circular", clean_head, "our_leaf_on_plaid"))
+    report.append(f"\nThe clean subset is small (n={len(clean_head)}) because it's restricted to "
+                   f"`adjudicated_equifax` verdicts -- cases where a human explicitly preferred Equifax's own "
+                   f"category over the LLM consensus. That's a genuinely adversarial subset for our pipeline "
+                   f"(it's selected FOR cases where Equifax was judged right), so if our pipeline still holds "
+                   f"up here that's meaningful; if it drops, that's expected and informative, not alarming.\n")
 
     agree_rows = [r for r in head_rows if r["our_leaf_on_equifax"] and r["our_leaf_on_plaid"]]
     agree_n = sum(1 for r in agree_rows if r["our_leaf_on_equifax"] == r["our_leaf_on_plaid"])
-    report.append(f"\n**Provider-independence check**: of {len(agree_rows)} head merchants scoreable via "
-                   f"both transaction sources, our pipeline gives the *same* leaf regardless of which "
-                   f"provider the transaction came from for {agree_n} ({agree_n/len(agree_rows):.1%}) -- "
-                   f"vs. the known 27.8% crosswalk-only agreement rate.\n")
+    report.append(f"\n**Provider-independence check** (unaffected by the leakage above -- this compares our "
+                   f"own pipeline's two outputs to each other, not to gold): of {len(agree_rows)} head "
+                   f"merchants scoreable via both transaction sources, our pipeline gives the *same* leaf "
+                   f"regardless of which provider the transaction came from for {agree_n} "
+                   f"({agree_n/len(agree_rows):.1%}) -- vs. the known 27.8% crosswalk-only agreement rate.\n")
 
     in_dict = [r for r in head_rows if r["merchant"] in DICTIONARY]
     not_in_dict = [r for r in head_rows if r["merchant"] not in DICTIONARY]
-    report.append(f"\n**Why the gap between the two 'our pipeline' rows**: only {len(in_dict)} of "
-                   f"{len(head_rows)} gold head merchants ({len(in_dict)/len(head_rows):.1%}) are in the "
-                   f"current 535-entry T4 dictionary. Split by that:\n")
+    report.append(f"\n**Dictionary coverage breakdown**: only {len(in_dict)} of {len(head_rows)} gold head "
+                   f"merchants ({len(in_dict)/len(head_rows):.1%}) are in the current 535-entry T4 "
+                   f"dictionary (full sample, includes circular rows):\n")
     report.append("| Segment | Our leaf (via Equifax txn) | Our leaf (via Plaid txn) | n |")
     report.append("|---|---|---|---|")
     for label, seg in [("In T4 dictionary", in_dict), ("Not in T4 dictionary (T5/T6 fallback)", not_in_dict)]:
@@ -315,20 +380,39 @@ def score():
     report.append("\nWhere the dictionary covers a merchant, the pipeline is provider-independent by "
                    "construction (same lookup key either way). The remaining ~74% of the gold head set "
                    "isn't in the curated dictionary yet, so it still falls back to the native crosswalk -- "
-                   "this is the single biggest lever left for improving head-population accuracy further.\n")
-    report.append("\n**Leakage caveat**: 214 of the 535 dictionary entries (the 195 gating-approved "
-                   "additions + 19 evidence-backed context-dependent entries) came from the same gating "
-                   "adjudication exercise that also produced `gold_merchant_labels.csv` -- so the "
-                   "'in T4 dictionary' accuracy figure is partly circular for that slice (not for the "
-                   "original 321 llm-proposed entries, which predate the gold set). This does not affect "
-                   "the 'not in dictionary' row, the tail results, or the overall provider-vs-provider "
-                   "comparison, which are the load-bearing numbers for this evaluation.\n")
+                   "this is the single biggest lever left for improving head-population accuracy further. "
+                   "Note this breakdown includes the circular rows flagged above, so treat the 'in "
+                   "dictionary' figure as an upper bound, not a clean measurement.\n")
 
     report.append("\n## Tail merchants (n=247, Plaid-only unmatched vocabulary)\n")
     report.append("| Source | Leaf accuracy | General-category accuracy | Scored n |")
     report.append("|---|---|---|---|")
-    report.append(row("Plaid native category", tail_rows, "plaid_native_leaf"))
-    report.append(row("Our pipeline (2-model LLM consensus)", tail_rows, "our_leaf_on_plaid"))
+    report.append(row("Plaid native category -- full sample", tail_rows, "plaid_native_leaf"))
+    report.append(row("Plaid native category -- clean, non-circular (n=" + str(len(clean_tail)) + ")",
+                       clean_tail, "plaid_native_leaf"))
+    report.append(row("Our pipeline (LLM consensus) -- full sample", tail_rows, "our_leaf_on_plaid"))
+    report.append(row("Our pipeline (LLM consensus) -- clean, non-circular", clean_tail, "our_leaf_on_plaid"))
+    report.append(f"\nThe clean tail subset (n={len(clean_tail)}) is exactly the population the pipeline is "
+                   f"weakest on by construction: `override` rows are cases a human explicitly said BOTH "
+                   f"models got wrong, and `unclassifiable` rows are cases where abstaining is the only "
+                   f"correct answer. This is a deliberately hard, adversarial slice -- not a representative "
+                   f"sample of tail performance -- so a lower number here doesn't mean the tail pipeline is "
+                   f"unreliable in general; it means these specific hard cases remain hard.\n")
+
+    all_rows_clean = clean_head + clean_tail
+    plaid_clean_acc, plaid_clean_n = acc(all_rows_clean, "gold_leaf", "plaid_native_leaf", "leaf")
+    our_clean = [{"gold_leaf": r["gold_leaf"],
+                  "pred": r["our_leaf_on_plaid"] if r["stratum"] == "tail" else r["our_leaf_on_equifax"]}
+                 for r in all_rows_clean]
+    our_clean_correct = sum(1 for r in our_clean if r["pred"] and r["pred"] == r["gold_leaf"])
+    our_clean_scored = sum(1 for r in our_clean if r["pred"])
+    report.append(f"\n## Overall, clean/non-circular only (n={len(all_rows_clean)})\n")
+    report.append(f"- Plaid native category: {plaid_clean_acc:.1%} leaf accuracy (n={plaid_clean_n})")
+    report.append(f"- Our pipeline: {our_clean_correct/our_clean_scored:.1%} leaf accuracy "
+                   f"(n={our_clean_scored}) -- **{our_clean_correct}/{our_clean_scored} correct**")
+    report.append("\nThis combined clean slice is deliberately adversarial (Equifax-preferred head cases + "
+                   "hard-override/unclassifiable tail cases), so treat it as a stress test / lower bound, "
+                   "not the headline number.\n")
 
     all_rows = head_rows + tail_rows
     plaid_all_acc, plaid_all_n = acc(all_rows, "gold_leaf", "plaid_native_leaf", "leaf")
@@ -337,9 +421,12 @@ def score():
                for r in all_rows]
     our_all_correct = sum(1 for r in our_all if r["pred"] and r["pred"] == r["gold_leaf"])
     our_all_scored = sum(1 for r in our_all if r["pred"])
-    report.append(f"\n## Overall (n={len(all_rows)}, head + tail combined)\n")
+    report.append(f"\n## Overall, full sample including consensus/circular rows (n={len(all_rows)})\n")
     report.append(f"- Plaid native category: {plaid_all_acc:.1%} leaf accuracy (n={plaid_all_n})")
     report.append(f"- Our pipeline: {our_all_correct/our_all_scored:.1%} leaf accuracy (n={our_all_scored})")
+    report.append("\nThis is the representative, best-estimate number (most of the gold set genuinely is "
+                   "this population), but it is inflated to an unknown degree by the leakage documented "
+                   "above -- treat the clean-subset numbers as the floor and this as the ceiling.\n")
 
     not_scored = [r for r in all_rows if r["stratum"] == "tail" and not r["our_leaf_on_plaid"]]
     if not_scored:
