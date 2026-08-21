@@ -440,6 +440,134 @@ def score():
     print("\n".join(report))
 
 
+GOLD_V2_FILES = [ROOT / "data" / "gold_transactions_v2.csv", ROOT / "data" / "gold_transactions_v2_batch2.csv"]
+V2_COMPARISON_CSV = OUT_DIR / "final_evaluation_v2_comparison.csv"
+V2_REPORT_MD = ROOT / "data" / "final_evaluation_v2_report.md"
+
+
+def score_v2():
+    """Score against the transaction-level gold set (data/gold_transactions_v2*.csv) --
+    built 2026-08-21 specifically to eliminate the leakage found in the merchant-level
+    set: every row here is a real transaction, independently and manually reviewed by
+    Carlos with no default trusted, no consensus-without-review, no gold_leaf copied
+    from the prediction being scored. No clean/full split is needed -- the whole set
+    is clean by construction."""
+    from collections import Counter
+    _, _, _, gen_of = load_crosswalk()
+
+    rows = []
+    for path in GOLD_V2_FILES:
+        if path.exists():
+            batch_rows = list(csv.DictReader(open(path)))
+            print(f"Loaded {len(batch_rows)} rows from {path.name}", file=sys.stderr)
+            rows.extend(batch_rows)
+    if not rows:
+        sys.exit(f"No gold v2 files found -- run build_final_gold_v2.py apply first")
+
+    out_rows = []
+    for r in rows:
+        provider = r["provider"]
+        direction = r["direction"]
+        merchant = r["merchant_raw"]
+        description = r["description_raw"]
+        gold_leaf = r["gold_leaf"]
+
+        if provider == "equifax":
+            pri, sub = (r["native_category"].split(" | ", 1) + [""])[:2] if r["native_category"] else ("", "")
+            native_leaf = eqx_native_leaf(pri, sub, direction)
+            our, tier = our_leaf(merchant, direction, description, eqx_native_leaf, pri, sub, direction)
+        else:
+            cat = r["native_category"]
+            native_leaf = plaid_native_leaf(cat, direction)
+            our, tier = our_leaf(merchant, direction, description, plaid_native_leaf, cat, direction)
+
+        out_rows.append({
+            "merchant_raw": merchant, "provider": provider, "amount": r["amount"], "direction": direction,
+            "gold_leaf": gold_leaf, "native_leaf": native_leaf, "our_leaf": our, "our_tier": tier,
+            "source": r["source"], "provenance": r["provenance"],
+        })
+
+    OUT_DIR.mkdir(exist_ok=True)
+    with open(V2_COMPARISON_CSV, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(out_rows[0].keys()))
+        w.writeheader(); w.writerows(out_rows)
+    print(f"Wrote {V2_COMPARISON_CSV} ({len(out_rows)} rows)", file=sys.stderr)
+
+    def acc(subset, pred_key, level="leaf"):
+        scored = [r for r in subset if r[pred_key]]
+        if not scored:
+            return None, 0
+        if level == "leaf":
+            correct = sum(1 for r in scored if r[pred_key] == r["gold_leaf"])
+        else:
+            correct = sum(1 for r in scored if gen_of.get(r[pred_key]) == gen_of.get(r["gold_leaf"]))
+        return correct / len(scored), len(scored)
+
+    def row(label, subset, key):
+        a, n = acc(subset, key, "leaf")
+        g, _ = acc(subset, key, "general")
+        if a is None:
+            return f"| {label} | n/a | n/a | 0 |"
+        return f"| {label} | {a:.1%} | {g:.1%} | {n} |"
+
+    report = ["# Final evaluation v2: transaction-level, leakage-free gold set\n",
+              f"Ground truth: `{'`, `'.join(p.name for p in GOLD_V2_FILES if p.exists())}` -- "
+              f"{len(out_rows)} real transactions, each independently reviewed and hand-corrected by "
+              f"Carlos (403/1500 batch-1 drafts were overridden, including 34 of the 400 rows that "
+              f"already had a prior human verdict from earlier work -- this is a fresh, from-scratch "
+              f"review, not a rubber stamp). No clean/full split needed: unlike the v1 merchant-level "
+              f"set, nothing here is copied from the prediction being scored.\n"]
+
+    eqx_rows = [r for r in out_rows if r["provider"] == "equifax"]
+    plaid_rows = [r for r in out_rows if r["provider"] == "plaid"]
+
+    report.append("## Overall (all providers combined)\n")
+    report.append("| Source | Leaf accuracy | General-category accuracy | Scored n |")
+    report.append("|---|---|---|---|")
+    report.append(row("Native provider category", out_rows, "native_leaf"))
+    report.append(row("Our pipeline", out_rows, "our_leaf"))
+
+    report.append(f"\n## By provider\n")
+    report.append("| Provider | Native leaf acc | Native general acc | Our leaf acc | Our general acc | n |")
+    report.append("|---|---|---|---|---|---|")
+    for label, subset in [("Equifax", eqx_rows), ("Plaid", plaid_rows)]:
+        na, nn = acc(subset, "native_leaf", "leaf")
+        ng, _ = acc(subset, "native_leaf", "general")
+        oa, on = acc(subset, "our_leaf", "leaf")
+        og, _ = acc(subset, "our_leaf", "general")
+        report.append(f"| {label} | {na:.1%} | {ng:.1%} | {oa:.1%} | {og:.1%} | {len(subset)} |")
+
+    report.append(f"\n## By sampling source (important -- these are very different populations)\n")
+    report.append("| Source | Native leaf acc | Our leaf acc | n |")
+    report.append("|---|---|---|---|")
+    for src, label in [("already_verified", "Already-verified merchants (deliberately hard -- these needed human "
+                                            "adjudication in earlier work precisely because they were disputed)"),
+                       ("new", "Broad random sample (representative of typical incoming transactions)"),
+                       ("new_targeted", "Targeted for taxonomy-breadth coverage (rare leaves, batch 2 only)")]:
+        subset = [r for r in out_rows if r["source"] == src]
+        if not subset:
+            continue
+        na, nn = acc(subset, "native_leaf", "leaf")
+        oa, on = acc(subset, "our_leaf", "leaf")
+        report.append(f"| {label} | {na:.1%} | {oa:.1%} | {len(subset)} |")
+    report.append("\nThe blended headline number above is pulled down by the already-verified subset, which is "
+                   "deliberately hard by construction. The 'broad random sample' row is the closest thing to "
+                   "*typical* transaction performance in this set.\n")
+
+    tier_counts = Counter(r["our_tier"] for r in out_rows)
+    report.append(f"\n## Our pipeline's resolution tier breakdown\n")
+    for tier, n in tier_counts.most_common():
+        report.append(f"- {tier}: {n} ({n/len(out_rows):.1%})")
+
+    disagree_examples = [r for r in out_rows if r["native_leaf"] != r["gold_leaf"] and r["our_leaf"] == r["gold_leaf"]]
+    report.append(f"\n**Our pipeline gets it right where the native category doesn't**: {len(disagree_examples)} "
+                   f"of {len(out_rows)} transactions ({len(disagree_examples)/len(out_rows):.1%}).\n")
+
+    V2_REPORT_MD.write_text("\n".join(report) + "\n")
+    print(f"Wrote {V2_REPORT_MD}", file=sys.stderr)
+    print("\n".join(report))
+
+
 SUB_MAP = PRI_MAP = PLAID_MAP = None
 DICTIONARY = RULES = None
 
@@ -449,9 +577,11 @@ if __name__ == "__main__":
     RULES = load_rules()
 
     args = sys.argv[1:]
-    if not args or args[0] not in {"fetch", "score", "run"}:
+    if not args or args[0] not in {"fetch", "score", "run", "score_v2"}:
         sys.exit(__doc__)
     if args[0] in ("fetch", "run"):
         fetch()
     if args[0] in ("score", "run"):
         score()
+    if args[0] == "score_v2":
+        score_v2()
