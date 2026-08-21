@@ -215,6 +215,101 @@ def retrain_lightgbm():
     print("lightgbm retrained (attempt 3).", file=sys.stderr)
 
 
+def _parse_tuning_jsonl(path):
+    """Parse outputs/tuning_{train,val}.jsonl (chat format, produced by
+    build_tuning_dataset.py) back into the vendor/description/amount/is_credit/leaf
+    columns this script's feature pipeline expects."""
+    import json
+    rows = []
+    with open(path) as f:
+        for line in f:
+            ex = json.loads(line)
+            user_msg = next(m["content"] for m in ex["messages"] if m["role"] == "user")
+            leaf = next(m["content"] for m in ex["messages"] if m["role"] == "assistant")
+            fields = {}
+            for part in user_msg.split("\n"):
+                k, _, v = part.partition(": ")
+                fields[k] = v
+            rows.append({
+                "vendor": fields.get("merchant", ""), "description": fields.get("description", ""),
+                "amount": float(fields.get("amount", 0) or 0),
+                "is_credit": 1 if fields.get("direction") == "credit" else 0,
+                "leaf": leaf,
+            })
+    return pd.DataFrame(rows)
+
+
+def train_v2():
+    """Retrain B (tfidf_logreg, the architecture adopted from the original bake-off)
+    on the new tiered training set (outputs/tuning_train.jsonl -- Tier A supersedes
+    Tier B per-merchant, accepted_tiebreak/accepted_general excluded, conflicting
+    merchants oversampled). Same architecture as train()'s B, only the data source
+    and the resulting file name change, so this is a fair like-for-like retrain,
+    not a new model family."""
+    import joblib
+    from scipy.sparse import csr_matrix, hstack
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.linear_model import SGDClassifier
+
+    MODELS_DIR.mkdir(exist_ok=True)
+    train_path = OUT_DIR / "tuning_train.jsonl"
+    print(f"Loading {train_path}...", file=sys.stderr)
+    df = _parse_tuning_jsonl(train_path)
+    rng = np.random.default_rng(SEED)
+    df = df.iloc[rng.permutation(len(df))].reset_index(drop=True)
+    text = build_text(df)
+    y = df["leaf"].to_numpy()
+    num = np.column_stack([np.log1p(df["amount"].to_numpy(dtype=np.float32)),
+                          df["is_credit"].to_numpy(dtype=np.float32)])
+    print(f"Training on {len(df)} rows, {df['leaf'].nunique()} classes", file=sys.stderr)
+
+    tv = TfidfVectorizer(analyzer="char_wb", ngram_range=(2, 5), max_features=30_000, min_df=2)
+    X_text = tv.fit_transform(text)
+    X_tfidf = hstack([X_text, csr_matrix(num)], format="csr")
+    clf = SGDClassifier(loss="log_loss", alpha=1e-6, random_state=SEED, tol=None, max_iter=50)
+    clf.fit(X_tfidf, y)
+    joblib.dump({"vectorizer": tv, "clf": clf, "kind": "tfidf"}, MODELS_DIR / "tfidf_logreg_v2.joblib")
+    print(f"Wrote {MODELS_DIR / 'tfidf_logreg_v2.joblib'}", file=sys.stderr)
+
+
+def evaluate_v2():
+    """Score the v2-retrained classifier per-TRANSACTION against
+    data/gold_v2_slm_eval_holdout.csv -- the exact same clean, leakage-free eval
+    set the SLM fine-tune will be judged on. No merchant-level modal voting (unlike
+    the original evaluate()): this is a small, mostly-one-row-per-merchant set, and
+    per-transaction scoring is what actually matters at serving time."""
+    import joblib
+
+    _, _, _, gen_of, _ = load_crosswalk()
+    bundle = joblib.load(MODELS_DIR / "tfidf_logreg_v2.joblib")
+
+    holdout = pd.read_csv(ROOT / "data" / "gold_v2_slm_eval_holdout.csv")
+    df = pd.DataFrame({
+        "vendor": holdout["merchant_raw"], "description": holdout["description_raw"],
+        "amount": holdout["amount"].astype(float),
+        "is_credit": (holdout["direction"] == "credit").astype(int),
+    })
+    preds, confs = predict(bundle, df)
+
+    leaf_ok = preds == holdout["gold_leaf"].to_numpy()
+    gen_ok = leaf_ok | (pd.Series(preds).map(gen_of).to_numpy() == holdout["gold_leaf"].map(gen_of).to_numpy())
+
+    with open(OUT_DIR / "tuning_train.jsonl") as f:
+        n_train = sum(1 for _ in f)
+    lines = ["# TF-IDF classifier v2 -- scored on the clean gold_v2 eval holdout\n",
+             f"Retrained on the new tiered training set (`outputs/tuning_train.jsonl`, "
+             f"{n_train} rows), scored per-transaction "
+             f"against `data/gold_v2_slm_eval_holdout.csv` ({len(holdout)} real transactions, zero training "
+             f"overlap) -- the same set the SLM fine-tune will be judged on, for a fair comparison.\n",
+             f"**Leaf accuracy: {leaf_ok.mean():.1%}**",
+             f"**General-category accuracy: {gen_ok.mean():.1%}**\n"]
+
+    report = "\n".join(lines)
+    (ROOT / "data" / "distillation_v2_holdout_report.md").write_text(report)
+    print(report)
+    print(f"\nWrote {ROOT / 'data' / 'distillation_v2_holdout_report.md'}", file=sys.stderr)
+
+
 def featurise_for(bundle, df):
     from scipy.sparse import csr_matrix, hstack
     text = build_text(df)
@@ -310,7 +405,7 @@ def evaluate():
 
 if __name__ == "__main__":
     cmds = {"fetch-train": fetch_train, "train": train, "evaluate": evaluate,
-             "retrain-lightgbm": retrain_lightgbm}
+             "retrain-lightgbm": retrain_lightgbm, "train-v2": train_v2, "evaluate-v2": evaluate_v2}
     args = sys.argv[1:]
     if not args or args[0] not in cmds:
         sys.exit(__doc__)
