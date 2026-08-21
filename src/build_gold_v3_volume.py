@@ -358,7 +358,7 @@ def apply_review(path):
 
 
 def score():
-    _, _, _, gen_of = load_crosswalk()
+    _, _, _, gen_of, _ = load_crosswalk()
     self_sourced = {r["normalised_merchant"] for r in csv.DictReader(open(ROOT / "taxonomy" / "merchant_dictionary.csv"))
                     if r["source"] == "gold_v2_review"}
 
