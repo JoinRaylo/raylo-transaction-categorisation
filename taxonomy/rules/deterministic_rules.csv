@@ -1,18 +1,18 @@
-rule_id,priority,field,pattern_type,pattern,detailed_category,direction,enabled,notes
-R01,10,merchant_name,regex,^(mr|mrs|miss|ms|dr)\s+,transfer_p2p,any,true,"personal title prefix - 4,848 strings / 27,557 txns"
-R02,10,merchant_name,regex,"^[a-z]\s+[a-z]{2,}$",transfer_p2p,any,true,"initial + surname - 3,049 strings / 57,971 txns"
-R03,10,merchant_name,exact_set,mum|dad|mom|nan|nana|gran|granny|grandad|sister|brother|son|daughter|wife|husband,transfer_p2p,any,true,family word
-R04,20,merchant_name,regex,^exchanged to (btc|eth|sol|xrp|ada|doge),crypto,any,true,Revolut crypto conversion strings
-R05,20,merchant_name,regex,(petrol|fuel)\s*(station)?$,fuel,debit,true,grocer forecourts: tesco petrol / asda petrol / sainsburys petrol station
-R06,20,merchant_name,regex,(bingo|casino),gambling_unspecified,debit,true,fallback if operator not in dictionary
-R07,20,merchant_name,regex,\b(bet|betting|bookmaker)\b,gambling_betting,debit,true,fallback if operator not in dictionary
-R08,20,merchant_name,regex,\b(lottery|lotto)\b,gambling_lottery,debit,true,
-R09,30,merchant_name,regex,\b(car park|parking)\b,car_parking,debit,true,
-R10,30,merchant_name,regex,\b(vets?|veterinary)\b,veterinary,debit,true,
-R11,30,merchant_name,regex,\b(pharmacy|chemist)\b,pharmacy,debit,true,
-R12,40,description,regex,\bcouncil tax\b,council_tax,debit,true,description-level fallback where merchant absent
-R13,40,description,regex,\b(rent|landlord)\b,rent,debit,false,"DISABLED - validate first, see rent detection gap in docs"
-R14,20,merchant_name,regex,\b(debt (collection|recovery)|collections? ltd)\b,debt_collection,debit,true,
-R15,20,merchant_name,exact_set,child maintenance,income_other_unspecified,credit,true,"context-dependent merchant (gating adjudication) - direction discriminates: 62% credit = maintenance received"
-R16,20,merchant_name,exact_set,we buy any car,income_other_unspecified,credit,true,"context-dependent merchant (gating adjudication) - 90% credit = selling a car, one-off receipt"
-R17,20,merchant_name,exact_set,we buy any car,vehicle_purchase,debit,true,"context-dependent merchant (gating adjudication) - debit direction = buying a car from them"
+rule_id,priority,field,pattern_type,pattern,detailed_category,direction,enabled,exclude_pattern,notes
+R01,10,merchant_name,regex,^(mr|mrs|miss|ms|dr)\s+,transfer_p2p,any,true,,"personal title prefix - 4,848 strings / 27,557 txns"
+R02,10,merchant_name,regex,"^[a-z]\s+[a-z]{2,}$",transfer_p2p,any,true,,"initial + surname - 3,049 strings / 57,971 txns"
+R03,10,merchant_name,exact_set,mum|dad|mom|nan|nana|gran|granny|grandad|sister|brother|son|daughter|wife|husband,transfer_p2p,any,true,,family word
+R04,20,merchant_name,regex,^exchanged to (btc|eth|sol|xrp|ada|doge),crypto,any,true,,Revolut crypto conversion strings
+R05,20,merchant_name,regex,(petrol|fuel)\s*(station)?$,fuel,debit,true,,grocer forecourts: tesco petrol / asda petrol / sainsburys petrol station
+R06,20,merchant_name,regex,(bingo|casino),gambling_unspecified,debit,true,,fallback if operator not in dictionary
+R07,20,merchant_name,regex,\b(bet|betting|bookmaker)\b,gambling_betting,debit,true,,fallback if operator not in dictionary
+R08,20,merchant_name,regex,\b(lottery|lotto)\b,gambling_lottery,debit,true,,
+R09,30,merchant_name,regex,\b(car park|parking)\b,car_parking,debit,true,,
+R10,30,merchant_name,regex,\b(vets?|veterinary)\b,veterinary,debit,true,,
+R11,30,merchant_name,regex,\b(pharmacy|chemist)\b,pharmacy,debit,true,,
+R12,40,description,regex,\bcouncil tax\b,council_tax,debit,true,,description-level fallback where merchant absent
+R13,40,description,regex,\b(rent|landlord)\b,rent,debit,true,"rent\s*/\s*buy|video rent|rent.?a.?car","Re-enabled 2026-08-21 after measuring real false-positive causes: naive keyword match wrongly caught 'Prime Video Rent / Buy' (video rental) and 'Enterprise Rent-A-Car' (car rental). Exclude pattern targets exactly those two observed patterns -- catches genuine gap (neobank savings-pot transfers like 'Rent pot_0000...' that have no vendor/category at all) without the false positives. May need widening if other non-housing 'rent' senses turn up."
+R14,20,merchant_name,regex,\b(debt (collection|recovery)|collections? ltd)\b,debt_collection,debit,true,,
+R15,20,merchant_name,exact_set,child maintenance,income_other_unspecified,credit,true,,"context-dependent merchant (gating adjudication) - direction discriminates: 62% credit = maintenance received"
+R16,20,merchant_name,exact_set,we buy any car,income_other_unspecified,credit,true,,"context-dependent merchant (gating adjudication) - 90% credit = selling a car, one-off receipt"
+R17,20,merchant_name,exact_set,we buy any car,vehicle_purchase,debit,true,,"context-dependent merchant (gating adjudication) - debit direction = buying a car from them"

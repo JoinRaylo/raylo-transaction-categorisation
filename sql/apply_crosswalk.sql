@@ -19560,6 +19560,7 @@ eqx_resolved AS (
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(vets?|veterinary)\\b') AND r.direction = 'debit') THEN 'veterinary'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(pharmacy|chemist)\\b') AND r.direction = 'debit') THEN 'pharmacy'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bcouncil tax\\b') AND r.direction = 'debit') THEN 'council_tax'
+      WHEN ((REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\b(rent|landlord)\\b') AND NOT REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'rent\\s*/\\s*buy|video rent|rent.?a.?car')) AND r.direction = 'debit') THEN 'rent'
       -- T6: provider crosswalk fallback (sub = WHAT, primary = mechanism fallback)
       WHEN s.leaf IS NOT NULL THEN s.leaf
       WHEN p.leaf IS NOT NULL THEN p.leaf
@@ -19590,6 +19591,7 @@ eqx_resolved AS (
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(vets?|veterinary)\\b') AND r.direction = 'debit') THEN 'T5_rule_R10'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(pharmacy|chemist)\\b') AND r.direction = 'debit') THEN 'T5_rule_R11'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bcouncil tax\\b') AND r.direction = 'debit') THEN 'T5_rule_R12'
+      WHEN ((REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\b(rent|landlord)\\b') AND NOT REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'rent\\s*/\\s*buy|video rent|rent.?a.?car')) AND r.direction = 'debit') THEN 'T5_rule_R13'
       WHEN s.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
       WHEN p.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
       ELSE 'T7_unclassified'
@@ -19633,6 +19635,7 @@ plaid_resolved AS (
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(vets?|veterinary)\\b') AND r.direction = 'debit') THEN 'veterinary'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(pharmacy|chemist)\\b') AND r.direction = 'debit') THEN 'pharmacy'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bcouncil tax\\b') AND r.direction = 'debit') THEN 'council_tax'
+      WHEN ((REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\b(rent|landlord)\\b') AND NOT REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'rent\\s*/\\s*buy|video rent|rent.?a.?car')) AND r.direction = 'debit') THEN 'rent'
       -- T6: provider crosswalk fallback
       WHEN x.leaf IS NOT NULL THEN x.leaf
       ELSE 'unclassified_other'
@@ -19656,6 +19659,7 @@ plaid_resolved AS (
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(vets?|veterinary)\\b') AND r.direction = 'debit') THEN 'T5_rule_R10'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(pharmacy|chemist)\\b') AND r.direction = 'debit') THEN 'T5_rule_R11'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bcouncil tax\\b') AND r.direction = 'debit') THEN 'T5_rule_R12'
+      WHEN ((REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\b(rent|landlord)\\b') AND NOT REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'rent\\s*/\\s*buy|video rent|rent.?a.?car')) AND r.direction = 'debit') THEN 'T5_rule_R13'
       WHEN x.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
       ELSE 'T7_unclassified'
     END AS resolution_tier

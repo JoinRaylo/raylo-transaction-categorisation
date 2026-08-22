@@ -41,6 +41,9 @@ def _rule_condition(rule, merchant_expr, desc_expr):
     else:  # exact_set -- plain string(s), auto-wrapped as a word-boundary alternation
         pattern_sql = f"CONCAT(r'\\b(', '{pat}', r')\\b')"
     cond = f"REGEXP_CONTAINS({field_expr}, {pattern_sql})"
+    exclude = rule.get('exclude_pattern', '').strip()
+    if exclude:
+        cond = f"({cond} AND NOT REGEXP_CONTAINS({field_expr}, '{esc(exclude)}'))"
     if rule['direction'] != 'any':
         cond = f"({cond} AND r.direction = '{rule['direction']}')"
     return cond

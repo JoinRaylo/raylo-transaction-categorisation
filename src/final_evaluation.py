@@ -131,7 +131,12 @@ def _rule_matches(rule, merchant_text, description_text, direction):
     pattern = rule["pattern"]
     if rule["pattern_type"] != "regex":
         pattern = r"\b(" + pattern + r")\b"
-    return bool(_re.search(pattern, field_text, flags=_re.IGNORECASE))
+    if not _re.search(pattern, field_text, flags=_re.IGNORECASE):
+        return False
+    exclude = rule.get("exclude_pattern", "").strip()
+    if exclude and _re.search(exclude, field_text, flags=_re.IGNORECASE):
+        return False
+    return True
 
 
 def our_leaf(merchant, direction, description, native_leaf_fn, *native_args):
