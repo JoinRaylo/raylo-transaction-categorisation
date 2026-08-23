@@ -35,10 +35,14 @@ production-labelling tranche -- so this is genuinely novel material nobody
 has looked at, not just a fresh transaction-level sample of already-seen
 merchants.
 
+Two-model pair is Gemini 3.7 Flash + Sonnet 5 (Option 1, matching
+production_labelling.py -- NOT Haiku, which the Option-1 refactor retired
+from every live labelling path 2026-08-23).
+
 ## Usage
 
     python src/build_gold_v5_locked.py fetch
-    python src/build_gold_v5_locked.py label haiku
+    python src/build_gold_v5_locked.py label gemini
     python src/build_gold_v5_locked.py label sonnet
     python src/build_gold_v5_locked.py sheet
     python src/build_gold_v5_locked.py apply [path]
@@ -51,6 +55,7 @@ mid-project wondering whether it's OK to score against it "just to check" --
 it isn't; that's exactly the discipline this file exists to protect.
 """
 import csv
+import json
 import pathlib
 import sys
 
@@ -62,13 +67,20 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT_DIR = ROOT / "outputs"
 sys.path.insert(0, str(ROOT / "src"))
 from gating_experiment import (  # noqa: E402
-    MODELS, build_system_prompt, build_tool_schema, load_example_merchants, load_example_notes,
+    build_system_prompt, build_tool_schema, load_example_merchants, load_example_notes,
     build_notes_addendum, load_crosswalk,
 )
 from build_final_gold_v2 import TXN_ADDENDUM  # noqa: E402
 
 SAMPLE_CSV = OUT_DIR / "gold_v5_locked_sample.csv"
-PREDICTIONS = {k: OUT_DIR / f"gold_v5_locked_predictions_{k}.csv" for k in MODELS}
+# Option 1 pair (2026-08-23): Gemini 3.7 Flash + Sonnet 5, matching
+# production_labelling.py.PRODUCTION_MODELS -- not gating_experiment.MODELS,
+# which is the frozen historical Haiku-vs-Sonnet gating-experiment record.
+V5_MODELS = {
+    "gemini": {"backend": "gemini", "id": "gemini-3.7-flash", "extra": {}},
+    "sonnet": {"backend": "anthropic", "id": "claude-sonnet-5", "max_tokens": 16000, "extra": {}},
+}
+PREDICTIONS = {k: OUT_DIR / f"gold_v5_locked_predictions_{k}.csv" for k in V5_MODELS}
 REVIEW_XLSX = OUT_DIR / "gold_v5_locked_review.xlsx"
 REVIEW_COMPLETED_XLSX = OUT_DIR / "gold_v5_locked_review_completed.xlsx"
 FINAL_CSV = ROOT / "data" / "gold_transactions_v5_LOCKED.csv"
@@ -171,13 +183,10 @@ def fetch():
 
 
 def label(model_key):
-    import anthropic
-
-    cfg = MODELS[model_key]
+    cfg = V5_MODELS[model_key]
     _, _, leaves, gen_of, notes_of = load_crosswalk()
     system_prompt = (build_system_prompt(leaves, gen_of, notes_of, load_example_merchants())
                       + TXN_ADDENDUM + build_notes_addendum(load_example_notes()))
-    tool = build_tool_schema(leaves)
 
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     out_path = PREDICTIONS[model_key]
@@ -187,7 +196,6 @@ def label(model_key):
         print(f"Resuming: {len(predictions)} already labelled", file=sys.stderr)
     todo = [r for r in rows if r["row_id"] not in predictions]
 
-    client = anthropic.Anthropic()
     BATCH = 20
 
     def render(i, r):
@@ -203,37 +211,108 @@ def label(model_key):
             for k, p in predictions.items():
                 w.writerow(p)
 
-    def classify_batch(batch, tag, attempt=0):
-        user_msg = ("Classify each of these real transactions:\n\n"
-                    + "\n".join(render(j + 1, r) for j, r in enumerate(batch)))
-        try:
-            resp = client.messages.create(
-                model=cfg["id"], max_tokens=cfg.get("max_tokens", 8000),
-                system=system_prompt, tools=[tool],
-                tool_choice={"type": "tool", "name": "submit_classifications"},
-                messages=[{"role": "user", "content": user_msg}], timeout=90.0,
-                **cfg.get("extra", {}),
-            )
-        except Exception as e:
-            if attempt < 2:
-                print(f"  [{tag}] error ({e}), retrying...", file=sys.stderr)
-                import time
-                time.sleep(2 ** attempt)
-                return classify_batch(batch, tag, attempt + 1)
-            print(f"  [{tag}] FAILED after retries: {e}", file=sys.stderr)
-            return {}
-        tool_use = next((b for b in resp.content if b.type == "tool_use"), None)
-        if not tool_use:
-            return {}
-        by_idx = {j + 1: r for j, r in enumerate(batch)}
-        out = {}
-        for res in tool_use.input.get("results", []):
-            r = by_idx.get(res.get("index"))
-            if not r:
-                continue
-            out[r["row_id"]] = {"row_id": r["row_id"], "merchant": r["merchant"],
-                                "llm_leaf": res.get("detailed_category"), "llm_confidence": res.get("confidence")}
-        return out
+    if cfg["backend"] == "anthropic":
+        import anthropic
+
+        client = anthropic.Anthropic()
+        tool = build_tool_schema(leaves)
+
+        def classify_batch(batch, tag, attempt=0):
+            user_msg = ("Classify each of these real transactions:\n\n"
+                        + "\n".join(render(j + 1, r) for j, r in enumerate(batch)))
+            try:
+                resp = client.messages.create(
+                    model=cfg["id"], max_tokens=cfg.get("max_tokens", 8000),
+                    system=system_prompt, tools=[tool],
+                    tool_choice={"type": "tool", "name": "submit_classifications"},
+                    messages=[{"role": "user", "content": user_msg}], timeout=90.0,
+                    **cfg.get("extra", {}),
+                )
+            except Exception as e:
+                if attempt < 2:
+                    print(f"  [{tag}] error ({e}), retrying...", file=sys.stderr)
+                    import time
+                    time.sleep(2 ** attempt)
+                    return classify_batch(batch, tag, attempt + 1)
+                print(f"  [{tag}] FAILED after retries: {e}", file=sys.stderr)
+                return {}
+            tool_use = next((b for b in resp.content if b.type == "tool_use"), None)
+            if not tool_use:
+                return {}
+            by_idx = {j + 1: r for j, r in enumerate(batch)}
+            out = {}
+            for res in tool_use.input.get("results", []):
+                r = by_idx.get(res.get("index"))
+                if not r:
+                    continue
+                out[r["row_id"]] = {"row_id": r["row_id"], "merchant": r["merchant"],
+                                    "llm_leaf": res.get("detailed_category"), "llm_confidence": res.get("confidence")}
+            return out
+
+    elif cfg["backend"] == "gemini":
+        import os
+
+        from google import genai
+        from google.genai import types
+
+        client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"], vertexai=False)
+        leaf_list = sorted(leaves)
+        index_addendum = "\n\n## Category index (output this number, not the name)\n" + "\n".join(
+            f"{i + 1}. {leaf}" for i, leaf in enumerate(leaf_list))
+        gemini_system = system_prompt + index_addendum
+        schema = {
+            "type": "object",
+            "properties": {
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "index": {"type": "integer"},
+                            "merchant": {"type": "string"},
+                            "category_index": {"type": "integer", "minimum": 1, "maximum": len(leaf_list)},
+                            "confidence": {"type": "number"},
+                        },
+                        "required": ["index", "merchant", "category_index", "confidence"],
+                    },
+                }
+            },
+            "required": ["results"],
+        }
+
+        def classify_batch(batch, tag, attempt=0):
+            user_msg = ("Classify each of these real transactions:\n\n"
+                        + "\n".join(render(j + 1, r) for j, r in enumerate(batch)))
+            try:
+                resp = client.models.generate_content(
+                    model=cfg["id"], contents=user_msg,
+                    config=types.GenerateContentConfig(
+                        system_instruction=gemini_system,
+                        response_mime_type="application/json", response_schema=schema, temperature=0.0,
+                    ),
+                )
+                data = json.loads(resp.text)
+            except Exception as e:
+                if attempt < 2:
+                    print(f"  [{tag}] error ({e}), retrying...", file=sys.stderr)
+                    import time
+                    time.sleep(2 ** attempt)
+                    return classify_batch(batch, tag, attempt + 1)
+                print(f"  [{tag}] FAILED after retries: {e}", file=sys.stderr)
+                return {}
+            by_idx = {j + 1: r for j, r in enumerate(batch)}
+            out = {}
+            for res in data.get("results", []):
+                cat_idx = res.get("category_index")
+                r = by_idx.get(res.get("index"))
+                if not r or not (isinstance(cat_idx, int) and 1 <= cat_idx <= len(leaf_list)):
+                    continue
+                out[r["row_id"]] = {"row_id": r["row_id"], "merchant": r["merchant"],
+                                    "llm_leaf": leaf_list[cat_idx - 1], "llm_confidence": res.get("confidence")}
+            return out
+
+    else:
+        sys.exit(f"unknown backend {cfg['backend']!r}")
 
     n_batches = (len(todo) + BATCH - 1) // BATCH
     for i in range(0, len(todo), BATCH):
@@ -256,18 +335,18 @@ def label(model_key):
 
 def sheet():
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
-    haiku = {r["row_id"]: r for r in csv.DictReader(open(PREDICTIONS["haiku"]))} \
-        if PREDICTIONS["haiku"].exists() else {}
+    gemini = {r["row_id"]: r for r in csv.DictReader(open(PREDICTIONS["gemini"]))} \
+        if PREDICTIONS["gemini"].exists() else {}
     sonnet = {r["row_id"]: r for r in csv.DictReader(open(PREDICTIONS["sonnet"]))} \
         if PREDICTIONS["sonnet"].exists() else {}
 
     for r in rows:
         k = r["row_id"]
-        h, s = haiku.get(k), sonnet.get(k)
-        r["haiku_leaf"] = h["llm_leaf"] if h else ""
+        g, s = gemini.get(k), sonnet.get(k)
+        r["gemini_leaf"] = g["llm_leaf"] if g else ""
         r["sonnet_leaf"] = s["llm_leaf"] if s else ""
-        r["agree"] = "yes" if (h and s and h["llm_leaf"] == s["llm_leaf"]) else ("missing" if not (h and s) else "no")
-        r["proposed_gold_leaf"] = h["llm_leaf"] if r["agree"] == "yes" else ""
+        r["agree"] = "yes" if (g and s and g["llm_leaf"] == s["llm_leaf"]) else ("missing" if not (g and s) else "no")
+        r["proposed_gold_leaf"] = g["llm_leaf"] if r["agree"] == "yes" else ""
 
     _, _, leaves, gen_of, _ = load_crosswalk()
 
@@ -299,13 +378,13 @@ def sheet():
 
     ws = wb.create_sheet("Review")
     header = ["merchant_raw", "description_raw", "amount", "direction", "provider", "native_category",
-              "haiku_leaf", "sonnet_leaf", "agree", "proposed_gold_leaf", "final_leaf", "notes"]
+              "gemini_leaf", "sonnet_leaf", "agree", "proposed_gold_leaf", "final_leaf", "notes"]
     ws.append(header)
     for c in ws[1]:
         c.font = Font(bold=True)
     for r in rows:
         ws.append([r["merchant_raw"], r["description_raw"], r["amount"], r["direction"], r["provider"],
-                   r["native_category"], r["haiku_leaf"], r["sonnet_leaf"], r["agree"],
+                   r["native_category"], r["gemini_leaf"], r["sonnet_leaf"], r["agree"],
                    r["proposed_gold_leaf"], r["proposed_gold_leaf"], ""])
     yellow = PatternFill(start_color="FFF9C4", end_color="FFF9C4", fill_type="solid")
     for row_idx in range(2, ws.max_row + 1):
@@ -383,8 +462,8 @@ if __name__ == "__main__":
     if args[0] == "fetch":
         fetch()
     elif args[0] == "label":
-        if len(sys.argv) < 3 or sys.argv[2] not in MODELS:
-            sys.exit(f"Usage: label [{'|'.join(MODELS)}]")
+        if len(sys.argv) < 3 or sys.argv[2] not in V5_MODELS:
+            sys.exit(f"Usage: label [{'|'.join(V5_MODELS)}]")
         label(sys.argv[2])
     elif args[0] == "sheet":
         sheet()
