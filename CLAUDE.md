@@ -182,7 +182,7 @@ Conclusion: prompt length (84,348 chars) is not itself the risk — prompt cachi
 4. Recompute feature IVs on the new taxonomy; benchmark against the current live model on the same `oot` split (Experiment 3)
 5. ~~Investigate the `rent` detection gap~~ — **done 2026-08-22**: R13 re-enabled with a targeted false-positive exclusion. Measured the real IV impact against outcomes (`src/rent_iv_analysis.py`, `data/rent_iv_report.md`): essentially flat (0.0086→0.0085 etc., within noise) — R13 fixed 16,282 transaction-level misclassifications, but only 0.6% of proposals (485/83,873) had their rent-persistence count actually change. Kept the fix for audit-trail/fair-lending defensibility, not as a risk-model win.
 6. ~~Score `data/gold_transactions_v4_slm_volume.csv`~~ — **done 2026-08-23**: Option 1 confirmed; see §6a and `data/gold_v4_scoring_report.md`.
-7. **Resume the `production_labelling.py` Option-1 refactor** (Gemini 3.7 + Sonnet consensus, Opus tiebreak, replacing Haiku) — scoped, paused for determinism validation (which passed), then confirmed by the v4 scoring. Not yet started. See §6a for full context.
+7. ~~Resume the `production_labelling.py` Option-1 refactor~~ — **done 2026-08-23**: Gemini 3.7 Flash replaces Haiku in `PRODUCTION_MODELS`; `run_labelling()` dispatches Anthropic vs Gemini backends; `apply_review()` keeps tranches 1–3's `haiku_leaf`/`haiku_correct` workbooks re-appliable. Smoke-tested on 12 real tranche-3 strings. Not yet run on a full tranche.
 
 ## 8. Feature-layer findings (affect how features are built, not the taxonomy)
 
