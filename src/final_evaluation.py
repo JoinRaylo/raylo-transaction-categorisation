@@ -140,8 +140,16 @@ def _rule_matches(rule, merchant_text, description_text, direction):
 
 
 def our_leaf(merchant, direction, description, native_leaf_fn, *native_args):
-    """T4 (dictionary) -> T5 (rules) -> native crosswalk fallback (T6/T1/T3)."""
+    """T2 (narrative-disambiguated merchant collisions) -> T4 (dictionary) -> T5 (rules)
+    -> native crosswalk fallback (T6/T1/T3)."""
     m = merchant.strip().lower() if merchant else ""
+    # T2: mirrors sql/apply_crosswalk.sql (2026-08-23) -- Plaid's own merchant-name
+    # resolution collapses "Tesco Bank" transactions down to bare "tesco", identical
+    # to the supermarket's string, so the T4 dictionary's tesco->groceries match
+    # would otherwise win. Must fire before T4. Kept in sync here so this
+    # evaluation harness can't silently drift from what production actually does.
+    if m == "tesco" and _re.search(r"\btesco bank\b", description or "", flags=_re.IGNORECASE):
+        return "financial_institution_unspecified", "T2_compound_tesco_bank"
     if m in DICTIONARY:
         return DICTIONARY[m], "T4_dictionary"
     for rule in RULES:
