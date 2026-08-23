@@ -422,11 +422,22 @@ def apply_review(path):
 
     out_rows = []
     blank = 0
+    empty_merchant_kept = 0
     bad_leaf = []
     for row in ws.iter_rows(min_row=2, values_only=True):
         merchant_raw = row[idx["merchant_raw"]]
-        if merchant_raw is None:
+        description_raw = row[idx["description_raw"]]
+        # End-of-sheet rows have BOTH fields empty. A blank merchant_raw alone is
+        # real source data (Plaid merchant_name is only 63.4% filled) and the row
+        # can still carry a genuinely reviewed label off the narrative alone --
+        # do not drop it just because merchant_raw is blank (see
+        # build_gold_risk_categories.py, where this exact bug dropped 84/711
+        # reviewed rows on the first run).
+        if merchant_raw is None and not description_raw:
             continue
+        if merchant_raw is None:
+            merchant_raw = ""
+            empty_merchant_kept += 1
         final_leaf = row[idx["final_leaf"]]
         if not final_leaf:
             blank += 1
@@ -436,7 +447,7 @@ def apply_review(path):
             continue
         amount = row[idx["amount"]]
         out_rows.append({
-            "merchant_raw": merchant_raw, "description_raw": row[idx["description_raw"]] or "",
+            "merchant_raw": merchant_raw, "description_raw": description_raw or "",
             "amount": abs(float(amount)), "direction": row[idx["direction"]],
             "gold_leaf": final_leaf,
         })
@@ -450,7 +461,8 @@ def apply_review(path):
         w.writeheader()
         w.writerows(out_rows)
     print(f"Wrote {FINAL_CSV}: {len(out_rows)} gold transactions "
-          f"({blank} left blank/unclassifiable, excluded)", file=sys.stderr)
+          f"({blank} left blank/unclassifiable, excluded; {empty_merchant_kept} kept with no merchant field, "
+          f"reviewed off the narrative alone)", file=sys.stderr)
     print("REMINDER: this is the locked test set. Do not score anything against it "
           "until the actual go/no-go decision.", file=sys.stderr)
 

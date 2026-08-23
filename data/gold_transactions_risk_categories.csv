@@ -1,0 +1,712 @@
+merchant_raw,description_raw,amount,direction,gold_leaf,target_leaf
+SkyBet,SKY BETTING AND GA  ON 06 AUG BCC Sky Bet,50.0,debit,gambling_betting,gambling_betting
+Virgin Bet,VIRGIN BET CD 5097,10.0,debit,gambling_betting,gambling_betting
+Paddy Power,4498 29MAY25      PADDY POWER       LONDON GB,10.0,debit,gambling_betting,gambling_betting
+Bet365,BET365            GIBRALTAR,5.0,debit,gambling_betting,gambling_betting
+Betfair,BETFAIR  ON 16 OCT CPM Betfair,5.0,debit,gambling_betting,gambling_betting
+BetFred,Betfred,5.0,debit,gambling_betting,gambling_betting
+LC International,LC INTERNATIONAL L,6.0,debit,gambling_betting,gambling_betting
+SkyBet,Sky Bet,5.0,debit,gambling_betting,gambling_betting
+SkyBet,"WLT 01, Sky Bet",10.0,debit,gambling_betting,gambling_betting
+SkyBet,SKY BET,5.0,debit,gambling_betting,gambling_betting
+Bet365,BET365,5.0,debit,gambling_betting,gambling_betting
+LC International,LC INTERNATIONAL L,5.0,debit,gambling_betting,gambling_betting
+SkyBet,SKY BET           WWW.SKYBET.CO,10.0,debit,gambling_betting,gambling_betting
+LC International,INT'L 0061658318  LC INTERNATIONAL LWWW.SPORTS.CO,10.0,debit,gambling_betting,gambling_betting
+Betfair,BETFAIR,20.0,debit,gambling_betting,gambling_betting
+William Hill,WILLIAMHILL*INTERN  ON 27 AUG CPM WILLIAMHILL*INTERNET,10.0,debit,gambling_betting,gambling_betting
+William Hill,WILLIAMHILL*INTERN,5.0,credit,gambling_betting,gambling_betting
+SkyBet,Sky Bet,5.0,debit,gambling_betting,gambling_betting
+BetFred,BETFRED                                  500001030002422011,10.0,credit,gambling_betting,gambling_betting
+SkyBet,SKY BET  ON 25 JUL CPM,5.0,debit,gambling_betting,gambling_betting
+Electraworks Casinos & Bingo Sites,Electraworks Casinos & Bingo Sites,20.0,debit,gambling_unspecified,gambling_casino
+Rainbow Riches,Rainbow Riches,20.0,debit,gambling_casino,gambling_casino
+MRQ,MrQ.com,20.0,debit,gambling_casino,gambling_casino
+Virgin Games,VIRGIN GAMES GIBRALTAR ON 12 AUG BCC,30.0,debit,gambling_casino,gambling_casino
+Virgin Games,Visa purchase VIRGIN GAMES APPLEPAY 0989 2025-10-05,25.0,debit,gambling_casino,gambling_casino
+Skill On Net,SKILL ON NET,19.0,debit,gambling_casino,gambling_casino
+32Red,INT'L 0008329871  32red             32red,10.0,debit,gambling_casino,gambling_casino
+Virgin Games,CARD PAYMENT TO VIRGIN GAMES ON 09-10-2025,10.0,debit,gambling_casino,gambling_casino
+Virgin Games,VIRGIN GAMES,15.0,debit,gambling_casino,gambling_casino
+32Red,32RED,10.0,debit,gambling_casino,gambling_casino
+Skill On Net,SKILL ON NET  ON 01 SEP CPM,10.0,debit,gambling_casino,gambling_casino
+Virgin Games,Virgin Games,95.87,debit,gambling_casino,gambling_casino
+Bally's,Visa purchase BALLYCASINO,10.0,debit,gambling_casino,gambling_casino
+Monopoly Casino,Monopoly Casino,10.0,debit,gambling_casino,gambling_casino
+Virgin Games,CARD PAYMENT TO VIRGIN GAMES ON 22-08-2025,10.0,debit,gambling_casino,gambling_casino
+Admiralcasino,admiralcasino.co.uk Admiralcasino,10.0,debit,gambling_casino,gambling_casino
+Electraworks LTD,ELECTRAWORKS LTD,5.0,debit,gambling_unspecified,gambling_casino
+888.com,UK REGULATED LIM GIBRALTAR ON 09 AUG BCC,10.0,debit,gambling_casino,gambling_casino
+Magicalvegas Cd,MAGICALVEGAS CD 1957,30.0,debit,gambling_casino,gambling_casino
+Ballycasino Cd,BALLYCASINO CD 2413,20.0,debit,gambling_casino,gambling_casino
+Bingo Cash,Bingo Cash,5.0,debit,gambling_unspecified,gambling_bingo
+tombola,TOMBOLA,15.0,debit,gambling_bingo,gambling_bingo
+tombola,TOMBOLA GIBRALTAR ON 10 OCT BCC TOMBOLA UK,50.0,debit,gambling_bingo,gambling_bingo
+tombola,TOMBOLA,10.0,debit,gambling_bingo,gambling_bingo
+tombola,Visa purchase TOMBOLA,10.0,debit,gambling_bingo,gambling_bingo
+tombola,CARD PAYMENT TO TOMBOLA ON 02-08-2025,15.0,debit,gambling_bingo,gambling_bingo
+tombola,Tombola,5.0,debit,gambling_bingo,gambling_bingo
+Kittybingo,Kittybingo,5.0,debit,gambling_bingo,gambling_bingo
+tombola,TOMBOLA,13.02,debit,gambling_bingo,gambling_bingo
+tombola,Visa purchase TOMBOLA,10.0,debit,gambling_bingo,gambling_bingo
+tombola,TOMBOLA,5.0,debit,gambling_bingo,gambling_bingo
+tombola,INT'L 0014356005  TOMBOLA           TOMBOLA UK,28.0,debit,gambling_bingo,gambling_bingo
+Heart Bingo Gibraltar,2652 11JUL25  D   HEART BINGO       GIBRALTAR GI,5.0,debit,gambling_bingo,gambling_bingo
+Sun Bingo,SUNBINGO,200.0,credit,gambling_bingo,gambling_bingo
+tombola,TOMBOLA,25.0,debit,gambling_bingo,gambling_bingo
+tombola,INT'L 0094506367  TOMBOLA           TOMBOLA UK,25.0,debit,gambling_bingo,gambling_bingo
+tombola,"TOMBOLA (VIA APPLE PAY), ON 29-07-2025",25.0,debit,gambling_bingo,gambling_bingo
+Doublebubblebingo,DOUBLEBUBBLEBINGO,20.0,debit,gambling_bingo,gambling_bingo
+tombola,Visa purchase TOMBOLA,10.0,debit,gambling_bingo,gambling_bingo
+Mecca Bingo,MECCABINGO,10.0,debit,gambling_bingo,gambling_bingo
+The National Lottery,6342 27AUG25      NATIONAL LOTTERY  LONDON GB,48.0,debit,gambling_lottery,gambling_lottery
+The National Lottery,5224 29AUG25      NATIONAL LOTTERY  LONDON GB,2.5,debit,gambling_lottery,gambling_lottery
+The National Lottery,NATIONAL LOTTERY CD 4411,10.0,debit,gambling_lottery,gambling_lottery
+The National Lottery,CARD PAYMENT TO NATIONAL LOTTERY ON 19-08-2025,10.0,debit,gambling_lottery,gambling_lottery
+Postcode Lottery,POSTCODE LOTTERY,12.25,debit,gambling_lottery,gambling_lottery
+The National Lottery,Visa purchase NATIONAL LOTTERY,5.0,debit,gambling_lottery,gambling_lottery
+The National Lottery,NATIONAL LOTTERY CD 7012,15.0,debit,gambling_lottery,gambling_lottery
+The National Lottery,3961 27AUG25      NATIONAL LOTTERY  LONDON GB,15.0,debit,gambling_lottery,gambling_lottery
+The National Lottery,NATIONAL LOTTERY,7.0,debit,gambling_lottery,gambling_lottery
+The National Lottery,Visa purchase NATIONAL LOTTERY,2.5,debit,gambling_lottery,gambling_lottery
+The National Lottery,NATIONAL LOTTERY,15.0,debit,gambling_lottery,gambling_lottery
+The National Lottery,NATIONAL LOTTERY  ON 14 JUN BCC,10.0,debit,gambling_lottery,gambling_lottery
+Postcode Lottery,POSTCODE LOTTERY  03MS91BESA48PG021 DDR Postcode Lottery,12.25,debit,gambling_lottery,gambling_lottery
+The National Lottery,NATIONAL LOTTERY  WWW.NATIONAL-,5.0,debit,gambling_lottery,gambling_lottery
+The National Lottery,NATIONAL LOTTERY The National Lottery,6.0,debit,gambling_lottery,gambling_lottery
+The National Lottery,8575 09AUG25      NATIONAL LOTTERY  LONDON GB,9.5,debit,gambling_lottery,gambling_lottery
+The National Lottery,The National Lottery,15.0,debit,gambling_lottery,gambling_lottery
+The National Lottery,9403 27JUN25      NATIONAL LOTTERY  LONDON GB,4.6,debit,gambling_lottery,gambling_lottery
+The National Lottery,NATIONAL LOTTERY  ON 03 JUN BCC,2.0,debit,gambling_lottery,gambling_lottery
+The National Lottery,NATIONAL LOTTERY,6.0,debit,gambling_lottery,gambling_lottery
+Ry's Competitions,Ry's Competitions CD 3103,2.0,debit,prize_competitions,prize_competitions
+That Prize Guy,9764 09JUL25  D   THAT PRIZE GUY LTDBANGOR GB,0.4,debit,prize_competitions,prize_competitions
+That Prize Guy LTD,THAT PRIZE GUY LTD,0.5,debit,prize_competitions,prize_competitions
+Palladium Competitions,0430 14JUL25      PALLADIUM         COMPETITIONS      WESTHILL GB,5.07,debit,prize_competitions,prize_competitions
+Compcity Giveaways,Compcity Giveaways,14.3,debit,prize_competitions,prize_competitions
+Dreamcargiv,PAYPAL *DREAMCARGI,9.99,debit,prize_competitions,prize_competitions
+Palladium Competitions,PALLADIUM COMPETIT,0.24,debit,prize_competitions,prize_competitions
+Omaze,4785 14AUG25      SP OMAZE UK       ALTRINCHAM GB,15.0,debit,prize_competitions,prize_competitions
+Palladium Competitions,Visa purchase PALLADIUM COMPETITIONS APPLEPAY 1755,0.84,debit,prize_competitions,prize_competitions
+Prize Paradise,Prize Paradise,1.92,debit,prize_competitions,prize_competitions
+Bauer Uk Competition,Visa purchase BAUER UK COMPETITIONS,5.0,debit,prize_competitions,prize_competitions
+Nitrous Competitions,Nitrous Competitions,16.1,debit,prize_competitions,prize_competitions
+Bright Competition,Bright Competition  ON 04 OCT CPM BRIGHT COMPETITIONS,1.0,debit,prize_competitions,prize_competitions
+Gaming,"GAMING GIVEAWAYS (VIA APPLE PAY), ON 26-06-2025",0.35,debit,prize_competitions,prize_competitions
+Ukcc.co.uk,UKCC.CO.UK Uk Carp Competitions,0.88,debit,prize_competitions,prize_competitions
+That Prize Guy LTD,THAT PRIZE GUY LTD,0.9,debit,prize_competitions,prize_competitions
+Botb,BOTB,16.55,debit,prize_competitions,prize_competitions
+Jackpotz Competitions,Jackpotz Competitions,0.28,debit,prize_competitions,prize_competitions
+Click Competition,CLICK COMPETITIONS  ON 27 AUG CPM,2.04,debit,prize_competitions,prize_competitions
+Rev Corp,Rev Corp,17.35,debit,prize_competitions,prize_competitions
+Telematic Interactivbg,TELEMATIC INTERACT BULGARIA AMOUNT IN BGN 50.00 ON 27 AUG VISA 2.25135 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.66 TELEMATIC INTERACTIVBG,22.87,debit,gambling_unspecified,gambling_unspecified
+Uk Limited,888*UK LIMITED,10.0,debit,gambling_unspecified,gambling_unspecified
+Rankinterac,PAYPAL *RANKINTERA,10.0,debit,gambling_unspecified,gambling_unspecified
+Telematic Interactivbg,TELEMATIC INTERACT BULGARIA AMOUNT IN BGN 28.00 ON 11 SEP VISA 2.252049 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.37 TELEMATIC INTERACTIVBG,12.8,debit,gambling_unspecified,gambling_unspecified
+Rk Winnerz,Rk Winnerz,5.55,debit,groceries,gambling_unspecified
+Telematic Interactivbg,TELEMATIC INTERACT BULGARIA AMOUNT IN BGN 50.00 ON 18 SEP VISA 2.233928 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.67 TELEMATIC INTERACTIVBG,23.05,debit,gambling_unspecified,gambling_unspecified
+Uk Limited,888*UK Limited    Internet,15.0,debit,gambling_unspecified,gambling_unspecified
+Rankinterac,PAYPAL *RANKINTERA,10.0,debit,gambling_unspecified,gambling_unspecified
+Uk Limited,888*UK LIMITED,30.0,debit,gambling_unspecified,gambling_unspecified
+Uk Limited,888*UK Limited    Internet,10.0,debit,gambling_unspecified,gambling_unspecified
+Telematic Interactivbg,TELEMATIC INTERACT BULGARIA AMOUNT IN BGN 18.00 ON 18 AUG VISA 2.256985 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.24 TELEMATIC INTERACTIVBG,8.22,debit,gambling_unspecified,gambling_unspecified
+Telematic Interactivbg,TELEMATIC INTERACT BULGARIA AMOUNT IN BGN 48.00 ON 21 AUG VISA 2.252181 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.64 TELEMATIC INTERACTIVBG,21.95,debit,gambling_unspecified,gambling_unspecified
+Telematic Interactivbg,TELEMATIC INTERACT BULGARIA AMOUNT IN BGN 22.00 ON 05 SEP VISA 2.247757 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.29 TELEMATIC INTERACTIVBG,10.08,debit,gambling_unspecified,gambling_unspecified
+Telematic Interactivbg,TELEMATIC INTERACT BULGARIA AMOUNT IN BGN 60.00 ON 21 AUG VISA 2.252181 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.80 TELEMATIC INTERACTIVBG,27.44,debit,gambling_unspecified,gambling_unspecified
+Telematic Interactivbg,TELEMATIC INTERACT BULGARIA AMOUNT IN BGN 48.00 ON 21 AUG VISA 2.252181 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.64 TELEMATIC INTERACTIVBG,21.95,debit,gambling_unspecified,gambling_unspecified
+Telematic Interactivbg,TELEMATIC INTERACT BULGARIA AMOUNT IN BGN 40.00 ON 18 SEP VISA 2.233928 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.54 TELEMATIC INTERACTIVBG,18.45,debit,gambling_unspecified,gambling_unspecified
+Rankinterac,PAYPAL *RANKINTERA,10.0,debit,gambling_unspecified,gambling_unspecified
+Telematic Interactivbg,TELEMATIC INTERACT BULGARIA AMOUNT IN BGN 48.00 ON 21 AUG VISA 2.252181 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.64 TELEMATIC INTERACTIVBG,21.95,debit,gambling_unspecified,gambling_unspecified
+Uk Limited,888*uk Limited,20.0,debit,gambling_unspecified,gambling_unspecified
+Telematic Interactivbg,TELEMATIC INTERACT BULGARIA AMOUNT IN BGN 80.00 ON 27 SEP VISA 2.224615 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £1.08 TELEMATIC INTERACTIVBG,37.04,debit,gambling_unspecified,gambling_unspecified
+Barclaycard,BARCLAYCARD,6.85,debit,credit_card_repayment,credit_card_repayment
+NewDay,To Newday Ltd - XXXXXXXXXXXX3986,52.81,debit,credit_card_repayment,credit_card_repayment
+Capital One,Capital One PBB00016880206,80.0,debit,credit_card_repayment,credit_card_repayment
+Capital One,CAPITAL ONE XXXXXXXXXXXX3860,15.0,debit,credit_card_repayment,credit_card_repayment
+Vanquis Bank,VANQUIS BANK XXXXXXXXXXXX5229,7.19,debit,credit_card_repayment,credit_card_repayment
+Barclaycard,MR ARMENS GALUSTJA  XXXXXXXXXXXX1007 BBP Barclaycard,93.32,debit,credit_card_repayment,credit_card_repayment
+Barclaycard,B/CARD FORWARD  XXXXXXXXXXXX0009 DDR Barclaycard,15.0,debit,credit_card_repayment,credit_card_repayment
+Barclaycard,"BILL PAYMENT VIA FASTER PAYMENT TO MR PAUL GIBSON REFERENCE BARCLAYCARD , MANDATE NO 2",15.0,debit,transfer_p2p,credit_card_repayment
+Capital One,CAPITAL ONE PI9352934831420801,10.0,debit,credit_card_repayment,credit_card_repayment
+Barclaycard,BARCLAYCARD Barclaycard,240.0,debit,credit_card_repayment,credit_card_repayment
+Capital One,CAPITAL ONE XXXXXXXXXXXX9605,17.39,debit,credit_card_repayment,credit_card_repayment
+Barclaycard,BARCLAYCARD,200.0,debit,credit_card_repayment,credit_card_repayment
+Vanquis Bank,Vanquis Bank Ltd 000034959764250909,75.0,debit,credit_card_repayment,credit_card_repayment
+Capital One,To Capital One - PBB00017119242 - SortCodeAccountNumber: 40025081077082,5.91,debit,credit_card_repayment,credit_card_repayment
+NewDay,NEWDAY LTD  XXXXXXXXXXXX0069 DDR Newday,28.26,debit,credit_card_repayment,credit_card_repayment
+Capital One,CAPITAL ONE  PBB00016742054 FT,58.44,debit,credit_card_repayment,credit_card_repayment
+Vanquis Bank,VANQUIS BANK  XXXXXXXXXXXX2288 DDR Vanquis Bank,33.53,debit,credit_card_repayment,credit_card_repayment
+Capital One,CAPITAL ONE,25.65,debit,credit_card_repayment,credit_card_repayment
+Capital One,Capital One - SortCodeAccountNumber: 40025081077082,20.0,debit,credit_card_repayment,credit_card_repayment
+Capital One,CAPITAL ONE PI2664653280271465,160.0,debit,credit_card_repayment,credit_card_repayment
+American Express,American Express Payment Services AX7588779454,100.0,credit,refund_received,charge_card_repayment
+American Express,AMERICAN EXPRESS  INITIAL PAYMENT,237.61,debit,charge_card_repayment,charge_card_repayment
+American Express,American Express P Amex Payment Servi,9.42,debit,charge_card_repayment,charge_card_repayment
+American Express,American Express Payment Services AX7588779454,139.5,credit,refund_received,charge_card_repayment
+American Express,AMERICAN EXPRESS  FIRST PAYMENT,1148.9,debit,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS 3412-701065-71000 FIRST DDR PAYMENT DDR American Express,18.94,debit,charge_card_repayment,charge_card_repayment
+American Express,American Express Payment Services AX7588779454,120.0,credit,refund_received,charge_card_repayment
+American Express,AMERICAN EXPRESS 3412-765964-21002 FIRST DDR PAYMENT DDR American Express,25.0,debit,charge_card_repayment,charge_card_repayment
+American Express,American Express Payment Services,130.05,credit,refund_received,charge_card_repayment
+American Express,American Express Payment Services AX7588779454,237.2,credit,refund_received,charge_card_repayment
+,JOHN THORNHILL    AMEX PAYMENT      VIA MOBILE - PYMT,302.0,debit,transfer_p2p,charge_card_repayment
+American Express,American Express Payment Services,27.85,credit,refund_received,charge_card_repayment
+American Express,American Express Payment Services,63.0,credit,refund_received,charge_card_repayment
+American Express,American Express Payment Services AX7588779454,157.1,credit,refund_received,charge_card_repayment
+American Express,American Express Payment Services,206.1,credit,refund_received,charge_card_repayment
+,Amex Payments pot transfer,2.75,credit,savings_transfer,charge_card_repayment
+,JOHN THORNHILL    AMEX PAYMENT      VIA MOBILE - PYMT,1749.75,debit,transfer_p2p,charge_card_repayment
+American Express,AMERICAN EXPRESS  FIRST PAYMENT,200.0,debit,charge_card_repayment,charge_card_repayment
+American Express,American Express Payment Services,65.5,credit,refund_received,charge_card_repayment
+American Express,American Express Payment Services,130.0,credit,refund_received,charge_card_repayment
+Loqbox Grow,LOQBOX Grow  ON 01 AUG BCC LOQBOX GROW,14.95,debit,revolving_credit_repayment,revolving_credit_repayment
+Loqbox Grow,LOQBOX       Grow BRISTOL,10.0,debit,revolving_credit_repayment,revolving_credit_repayment
+Credit,4498 17JUN25      PAYPAL *PAYPAL    CREDIT            35314369001 GB,96.61,debit,revolving_credit_repayment,revolving_credit_repayment
+Credit,Visa purchase PAYPAL *PAYPAL CREDIT 1536,58.35,debit,revolving_credit_repayment,revolving_credit_repayment
+Credit, Paypal Credit,200.93,debit,revolving_credit_repayment,revolving_credit_repayment
+Newpay,Newpay 0000015HI51t7Ufi,39.6,debit,revolving_credit_repayment,revolving_credit_repayment
+Loqbox Grow,LOQBOX       Grow,19.95,debit,revolving_credit_repayment,revolving_credit_repayment
+Loqbox Grow,LOQBOX GROW,14.95,debit,revolving_credit_repayment,revolving_credit_repayment
+Loqbox Grow,LOQBOX       Grow,19.95,debit,revolving_credit_repayment,revolving_credit_repayment
+Loqbox Grow,Loqbox Grow,12.5,debit,revolving_credit_repayment,revolving_credit_repayment
+Loqbox Grow,Loqbox Grow,10.0,debit,revolving_credit_repayment,revolving_credit_repayment
+Credit,6157 02AUG25      PAYPAL *PAYPAL    CREDIT            35314369001 GB,50.0,debit,revolving_credit_repayment,revolving_credit_repayment
+Credit,2211 01AUG25      PAYPAL *PAYPAL    CREDIT            35314369001 GB,40.0,debit,revolving_credit_repayment,revolving_credit_repayment
+Credit,8669 03SEP25      PAYPAL *PAYPAL    CREDIT            35314369001 GB,31.57,debit,revolving_credit_repayment,revolving_credit_repayment
+Credit,9227 22AUG25      PAYPAL *PAYPAL    CREDIT            35314369001 GB,5.46,debit,revolving_credit_repayment,revolving_credit_repayment
+Credit,6007 16JUL25      PAYPAL *PAYPAL    CREDIT            35314369001 GB,82.56,debit,revolving_credit_repayment,revolving_credit_repayment
+Loqbox Grow,LOQBOX       Grow,11.96,debit,revolving_credit_repayment,revolving_credit_repayment
+Credit,Creditladder,8.0,debit,credit_reporting_service,revolving_credit_repayment
+Loqbox Grow,LOQBOX       Grow,15.98,debit,revolving_credit_repayment,revolving_credit_repayment
+Loqbox Grow,Loqbox Grow,14.95,debit,revolving_credit_repayment,revolving_credit_repayment
+Payoff,5507 05JUL25  D   LIME*PAYOFF NFVO  LONDON GB,2.45,debit,taxi_rideshare,personal_loan_repayment
+Garnash Limited,Garnash Limited,5.0,debit,groceries,personal_loan_repayment
+Zopa,ZOPA BANK LIMITED,195.76,debit,personal_loan_repayment,personal_loan_repayment
+Mr S T Page Loan,MR S T PAGE  LOAN FT,21.0,debit,loan_repayment_manual,personal_loan_repayment
+Halifax Personal,HALIFAX PERSONAL L 600000001644789611,20.0,debit,personal_loan_repayment,personal_loan_repayment
+Zopa,ZOPA,5.5,debit,personal_loan_repayment,personal_loan_repayment
+Lendable,LENDABLE                              REFERENCE: XY3NMRZ-5U1310676,30.5,credit,refund_received,personal_loan_repayment
+Zopa,4084 15AUG25      WWW.ZOPA.COM      LONDON GB,29.43,debit,personal_loan_repayment,personal_loan_repayment
+Novuna Personal Fi,NOVUNA PERSONAL FI  033892991/26 DDR,23.2,debit,personal_loan_repayment,personal_loan_repayment
+Zopa,4440 30SEP25      WWW.ZOPA.COM      LONDON GB,100.0,debit,personal_loan_repayment,personal_loan_repayment
+Lendable,REVERSAL OF 29-09 LENDABLE,128.75,credit,returned_payment,personal_loan_repayment
+Zopa,ZOPA BANK LIMITED 91116395,342.71,debit,personal_loan_repayment,personal_loan_repayment
+Zopa,Transfer to Zopa,100.0,debit,savings_transfer,personal_loan_repayment
+Payment-assist,Visa purchase WWW.PAYMENT-ASSIST,175.11,debit,bnpl,personal_loan_repayment
+Lendable,"DIRECT DEBIT PAYMENT TO LENDABLE REF PEY55DE, MANDATE NO 0088",235.55,debit,personal_loan_repayment,personal_loan_repayment
+Zopa,ZOPA CREDIT CARDS,31.3,debit,credit_card_repayment,personal_loan_repayment
+First Response Fin,FIRST RESPONSE FIN 72859515-2-1,27.44,debit,car_finance_repayment,personal_loan_repayment
+Zopa,"DIRECT DEBIT PAYMENT TO ZOPA BANK LIMITED REF 91354358, MANDATE NO 0113",82.62,debit,personal_loan_repayment,personal_loan_repayment
+Lendable,LENDABLE  Z5A3CWC-0U1347435 DDR Lendable,115.25,debit,personal_loan_repayment,personal_loan_repayment
+Zopa,1424 28JUN25      WWW.ZOPA.COM      LONDON GB,11.71,debit,personal_loan_repayment,personal_loan_repayment
+Slc Receipts,SLC RECEIPTS 0612CAJ/307443W265,37.0,debit,student_loan_repayment,student_loan_repayment
+Slc Receipts,SLC RECEIPTS,5.0,debit,student_loan_repayment,student_loan_repayment
+Student Loans Company,0309ZAG/013886 Student Loans Company,5.0,debit,student_loan_repayment,student_loan_repayment
+Student Loans Company,STUDENT LOANS COM  1504SER6472GR STO Student Loans Company,30.0,debit,student_loan_repayment,student_loan_repayment
+Student Loans Company,SLC RECEIPTS  0211SPJ/661940W223 DDR Student Loans Company,5.0,debit,student_loan_repayment,student_loan_repayment
+Slc Receipts,SLC RECEIPTS 2305KHA/157771W213,2.93,debit,student_loan_repayment,student_loan_repayment
+Student Loans Company,SLC RECEIPTS  1309GUM/435247W213 DDR Student Loans Company,15.0,debit,student_loan_repayment,student_loan_repayment
+Slc Receipts,SLC RECEIPTS 1905MOS/184256W274,30.0,debit,student_loan_repayment,student_loan_repayment
+Slc Receipts Student Loans Company,Slc Receipts Student Loans Company,71.42,debit,student_loan_repayment,student_loan_repayment
+Slc Receipts Student Loans Company,Slc Receipts Student Loans Company,30.0,debit,student_loan_repayment,student_loan_repayment
+Slc Receipts,SLC RECEIPTS 2305KHA/157771W244,2.93,debit,student_loan_repayment,student_loan_repayment
+Slc Receipts,SLC RECEIPTS 2305KHA/157771W244,7.07,debit,student_loan_repayment,student_loan_repayment
+Slc Receipts,SLC RECEIPTS,10.0,debit,student_loan_repayment,student_loan_repayment
+Slc Receipts,SLC RECEIPTS 2305KHA/157771W213,7.07,debit,student_loan_repayment,student_loan_repayment
+Slc Receipts,SLC RECEIPTS 2303STS/178082W289,20.0,debit,student_loan_repayment,student_loan_repayment
+Student Loans Company,SLC RECEIPTS  0603TOA/576121W209 DDR Student Loans Company,15.0,debit,student_loan_repayment,student_loan_repayment
+Slc Receipts,SLC RECEIPTS,10.0,debit,student_loan_repayment,student_loan_repayment
+Student Loans Company,SLC RECEIPTS  1309GUM/435247W244 DDR Student Loans Company,15.0,debit,student_loan_repayment,student_loan_repayment
+Student Loans Company,SLC RECEIPTS  0603TOA/576121W181 DDR Student Loans Company,15.0,debit,student_loan_repayment,student_loan_repayment
+Student Loans Company,SLC RECEIPTS  3103BAS/866516W216 DDR Student Loans Company,5.0,debit,student_loan_repayment,student_loan_repayment
+Stellantis Fs,STELLANTIS FS UK  ZX1468453GRLUK DDR,232.46,debit,car_finance_repayment,car_finance_repayment
+Closebrosmotfin,CLOSEBROSMOTFIN,141.6,debit,car_finance_repayment,car_finance_repayment
+Stell,Direct debit STELLANTIS FS UK 600001 83609520,429.1,debit,car_finance_repayment,car_finance_repayment
+Closebrosmotfin,CLOSEBROSMOTFIN,141.6,debit,car_finance_repayment,car_finance_repayment
+BMW,BMW FINANCIAL SERV 4020498/111068109,330.09,debit,car_finance_repayment,car_finance_repayment
+Oodle Car,"DIRECT DEBIT PAYMENT TO OODLE CAR FINANCE REF 201229114709050-02, MANDATE NO 0096",261.67,debit,car_finance_repayment,car_finance_repayment
+Advantage Finance ,ADVANTAGE FINANCE A259837,331.71,debit,car_finance_repayment,car_finance_repayment
+Toyota Financial,TOYOTA FIN SERV 000035165133/16,398.33,debit,car_finance_repayment,car_finance_repayment
+Advantage Finance ,8782 31JUL25      ADVANTAGE FINANCE GRIMSBY GB,353.81,debit,car_finance_repayment,car_finance_repayment
+BMW,I Breitare                               car  BMW - MK14UVU,4500.0,credit,transfer_p2p,car_finance_repayment
+Closebrosmotfin,CLOSEBROSMOTFIN 11-804605,280.0,debit,car_finance_repayment,car_finance_repayment
+Toyota Financial,TOYOTA FIN SERV,354.42,debit,car_finance_repayment,car_finance_repayment
+Advantage Finance ,ADVANTAGE FINANCE  A289037 DDR Advantage Finance,197.15,debit,car_finance_repayment,car_finance_repayment
+Go Car Credit Finance,GO CAR CREDIT FINA,40.0,debit,car_finance_repayment,car_finance_repayment
+Mi Vehicle Finance,MI VEHICLE FINANCE M46235205253012,334.49,debit,car_finance_repayment,car_finance_repayment
+Stellantis Fs Uk,STELLANTIS FS UK 2573323GG75ZD,606.18,debit,car_finance_repayment,car_finance_repayment
+Vw Fs Uk Volkswagen Finance,Vw Fs Uk Volkswagen Finance,318.06,debit,car_finance_repayment,car_finance_repayment
+Moneybarn No1,Returned direct debit MONEYBARN NO1 LTD 070246 17985879,303.04,credit,returned_payment,car_finance_repayment
+BMW,Spire Parts LTD   BMW Tyres,20.0,debit,spares_repairs,car_finance_repayment
+Advantage Finance ,ADVANTAGE FINANCE  A278199 DDR Advantage Finance,108.9,debit,car_finance_repayment,car_finance_repayment
+Ald Automotive Sa,ALD AUTOMOTIVE      SA03018499,651.29,debit,car_lease,car_lease
+Ald Automotive,ALD AUTOMOTIVE  SA05343075 DDR ALD Automotive,539.94,debit,car_lease,car_lease
+Leasys Uk LTD,LEASYS UK LTD,276.88,debit,car_lease,car_lease
+Ald Automotive,SQ2710651 Ald Automotive,2544.14,debit,car_lease,car_lease
+Ald Automotive,SQ2716625 Ald Automotive,525.0,debit,car_lease,car_lease
+Leaseplan USA,LEASEPLAN UK LTD 0135935-64547005,15.0,debit,car_lease,car_lease
+Ald Automotive,ALD AUTOMOTIVE,705.92,debit,car_lease,car_lease
+Ald Automotive,ALD AUTOMOTIVE,2692.41,debit,car_lease,car_lease
+Ald Automotive,ALD AUTOMOTIVE,658.72,debit,car_lease,car_lease
+Arval Uk,ARVAL UK LTD MO4725,570.86,debit,car_lease,car_lease
+Ald Automotive,SQ2716625 Ald Automotive,525.0,debit,car_lease,car_lease
+Leasys Uk LTD,LEASYS UK LTD,276.88,debit,car_lease,car_lease
+Ald Automotive,SQ2710651 Ald Automotive,7121.43,debit,car_lease,car_lease
+Ald Automotive,SQ2710651 Ald Automotive,2544.14,debit,car_lease,car_lease
+Land Rover Chire,"DIRECT DEBIT PAYMENT TO LAND ROVER CHIRE REF QF2664V00466806, MANDATE NO 0031",357.35,debit,car_lease,car_lease
+Ald Automotive,ALD AUTOMOTIVE       SQ2678885,481.09,debit,car_lease,car_lease
+Leasys Uk LTD,LEASYS UK LTD,324.12,debit,car_lease,car_lease
+Ald Automotive,ALD AUTOMOTIVE       SQ2678885,481.09,debit,car_lease,car_lease
+Arval Uk,ARVAL UK LTD MO4725,1298.06,debit,car_lease,car_lease
+Ald Automotive,ALD AUTOMOTIVE,2692.41,debit,car_lease,car_lease
+Grenkeleasing Limi,GRENKELEASING LIMI1700009985,73.94,debit,hire_purchase_repayment,hire_purchase_repayment
+Grenkeleasing Limi,GRENKELEASING LIMI,153.0,debit,hire_purchase_repayment,hire_purchase_repayment
+Grenkeleasing Limi,GRENKELEASING LIMI,88.92,debit,hire_purchase_repayment,hire_purchase_repayment
+Interbay Asset Fin,INTERBAY ASSET FIN FAL01630,428.4,debit,hire_purchase_repayment,hire_purchase_repayment
+Grenkeleasing Limi,GRENKELEASING LIMI1700009985,168.0,debit,hire_purchase_repayment,hire_purchase_repayment
+Bpce Equipment Solutions Uk Limit,A096045538 Bpce Equipment Solutions Uk Limit,345.11,debit,hire_purchase_repayment,hire_purchase_repayment
+Grenkeleasing Limi,GRENKELEASING LIMI,318.25,debit,hire_purchase_repayment,hire_purchase_repayment
+Bpce Equipment Solutions Uk Limit,A096045538 Bpce Equipment Solutions Uk Limit,345.11,debit,hire_purchase_repayment,hire_purchase_repayment
+Bpce Equipment Solutions Uk Limit,A096045538 Bpce Equipment Solutions Uk Limit,345.11,debit,hire_purchase_repayment,hire_purchase_repayment
+Interbay Asset Fin,INTERBAY ASSET FIN FAL03325,1772.99,debit,hire_purchase_repayment,hire_purchase_repayment
+Grenkeleasing Limi,GRENKELEASING LIMI1220027127,168.0,debit,hire_purchase_repayment,hire_purchase_repayment
+Interbay Asset Fin,INTERBAY ASSET FIN FAL01630,203.4,debit,hire_purchase_repayment,hire_purchase_repayment
+Grenkeleasing Limi,GRENKELEASING LIMI1220027127        INITIAL PAYMENT,154.26,debit,hire_purchase_repayment,hire_purchase_repayment
+Interbay Asset Fin,INTERBAY ASSET FIN FAL03325,1772.99,debit,hire_purchase_repayment,hire_purchase_repayment
+Daimler Truck Fina Sfof,DAIMLER TRUCK FINA SFOF6006721001,4678.7,debit,hire_purchase_repayment,hire_purchase_repayment
+Daimler Truck Fina Sfof,DAIMLER TRUCK FINA SFOF6006721001,4678.7,debit,hire_purchase_repayment,hire_purchase_repayment
+Grenkeleasing Limi,GRENKELEASING LIMI,88.92,debit,hire_purchase_repayment,hire_purchase_repayment
+Daimler Truck Fina Sfof,DAIMLER TRUCK FINA SFOF6006721001,5038.92,debit,hire_purchase_repayment,hire_purchase_repayment
+Bpce Equipment Solutions Uk Limit,A096045538 Bpce Equipment Solutions Uk Limit,345.11,debit,hire_purchase_repayment,hire_purchase_repayment
+Daimler Truck Fina Sfof,DAIMLER TRUCK FINA SFOF6006721001,5038.92,debit,hire_purchase_repayment,hire_purchase_repayment
+Raylo,RAYLO,17.56,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,RAYLO  A46ZBGG DDR,15.49,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,NRW8QCZ Raylo,23.29,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,RAYLO  EZETFZ4 DDR,8.9,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,RAYLO,21.99,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,RAYLO BQZNKCW,17.95,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,RAYLO,62.61,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,RAYLO HXPYCVK,34.91,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,RAYLO,39.16,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,XPMHPGS Raylo,26.19,debit,retail_finance_repayment,retail_finance_repayment
+V12 Retail Finance,V12 RETAIL FINANCE 022017619,36.56,debit,retail_finance_repayment,retail_finance_repayment
+Barclays Prtnr,BARCLAYS PRTNR FIN 300 0110 737981747,63.7,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,RAYLO JWKBTBZ,39.47,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,Direct debit RAYLO 162224 10135836,21.74,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,Direct debit RAYLO 162224 10135836,20.95,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,RAYLO 4ZV8MGX,10.49,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,RAYLO K6TBZ6V,21.36,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,RAYLO,38.27,debit,retail_finance_repayment,retail_finance_repayment
+Raylo,Returned direct debit RAYLO 070806 07536299,39.88,credit,returned_payment,retail_finance_repayment
+Raylo,RAYLO,25.99,debit,retail_finance_repayment,retail_finance_repayment
+Clearpay,CLEARPAY,1.65,debit,bnpl,bnpl
+Zilch,ZILCH UBR* PENDING  ON 03 JUL BCC ZILCH UBR* PENDING.UBE,4.99,debit,taxi_rideshare,bnpl
+Klarna,CARD PAYMENT TO KLARNA*DUNELM SOFT ON 13-08-2025,24.33,debit,home_accessories,bnpl
+Klarna,Klarna Fsuk,16.66,debit,bnpl,bnpl
+Clearpay,Visa purchase CLEARPAY 1967,55.27,debit,bnpl,bnpl
+Clearpay,CLEARPAY,10.46,debit,bnpl,bnpl
+Zilch,Visa purchase ZILCH INSTALMENT,4.29,debit,bnpl,bnpl
+Klarna,Klarna - SortCodeAccountNumber: 16222410135836,35.4,debit,bnpl,bnpl
+Clearpay,Clearpay  ON 31 JUL BCC,12.24,debit,bnpl,bnpl
+Zilch,Visa purchase ZILCH INSTALMENT,1.5,debit,bnpl,bnpl
+Zilch,ZILCH INSTALMENT  ON 23 OCT BCC,3.25,debit,bnpl,bnpl
+Zilch,"WLT 30, Zilch *      Instalmen",23.9,debit,bnpl,bnpl
+Clearpay,Visa purchase Clearpay APPLEPAY 2154 2025-08-31,9.75,debit,bnpl,bnpl
+Clearpay,4594 26SEP25      CLEARPAY          MANCHESTER GB,8.0,debit,bnpl,bnpl
+Zilch,9403 14JUL25      ZILCH INSTALMENT  GB GB,22.1,debit,bnpl,bnpl
+Klarna,Klarna*Klarna  ON 08 SEP BCC KLARNA*KLARNA,178.18,debit,bnpl,bnpl
+Clearpay,Visa purchase CLEARPAY,2.32,debit,bnpl,bnpl
+Clearpay,Clearpay,29.94,debit,bnpl,bnpl
+Klarna,Klarna*OFFICE  ON 03 JUL CPM KLARNA*OFFICE,14.01,debit,footwear,bnpl
+Zilch,Zilch Marks Spencer Plc,8.0,debit,department_store,bnpl
+Clonard Cu,Direct debit CLONARD CU 950797 20051861,41.37,debit,credit_union_repayment,credit_union_repayment
+Castle Community B Ac,CASTLE COMMUNITY B AC735145,98.06,debit,credit_union_repayment,credit_union_repayment
+My Community,MY COMMUNITY BANK  AM227209 DDR,229.3,debit,credit_union_repayment,credit_union_repayment
+Tpm Credit Union,United Kingdom Account - 7943craig bennett Tpm Credit Union - SortCodeAccountNumber: 98145060552060,18000.0,debit,unclassified_transfer,credit_union_repayment
+Clonard Cu,CLONARD CU,290.0,debit,credit_union_repayment,credit_union_repayment
+The Co-op Credit Union,THE CO-OP CREDIT U,13.94,debit,credit_union_repayment,credit_union_repayment
+My Community,MY COMMUNITY BANK  AM699870 DDR,354.63,debit,credit_union_repayment,credit_union_repayment
+Derrycu,Visa purchase WWW.DERRYCU.COM,100.0,debit,credit_union_repayment,credit_union_repayment
+Clonard Cu,Direct debit CLONARD CU 950797 20051861,41.37,debit,credit_union_repayment,credit_union_repayment
+The Co-op Credit Union,THE CO-OP CREDIT U,16.42,debit,credit_union_repayment,credit_union_repayment
+Blantyre,BLANTYRE CREDIT UN,25.0,debit,credit_union_repayment,credit_union_repayment
+My Community,MY COMMUNITY BANK AM894967,177.36,debit,credit_union_repayment,credit_union_repayment
+Castle Community B Ac,CASTLE COMMUNITY B  AC986603 DDR,73.31,debit,credit_union_repayment,credit_union_repayment
+Tpm Credit Union,United Kingdom Account - 7943craig bennett Tpm Credit Union - SortCodeAccountNumber: 98145060552060,2050.0,debit,unclassified_transfer,credit_union_repayment
+My Community,MY COMMUNITY BANK,108.51,debit,credit_union_repayment,credit_union_repayment
+My Community,MY COMMUNITY BANK AM545581,191.99,debit,credit_union_repayment,credit_union_repayment
+My Community,MY COMMUNITY BANK  AM533867 DDR,361.85,debit,credit_union_repayment,credit_union_repayment
+Nhs Cu,NHS CU,22.75,debit,credit_union_repayment,credit_union_repayment
+Clonard Cu,Direct debit CLONARD CU 950797 20051861,41.37,debit,credit_union_repayment,credit_union_repayment
+New Easterhouse Cr,NEW EASTERHOUSE CR                      5977 FLEMING,40.0,debit,credit_union_repayment,credit_union_repayment
+,"BFA ACC SWITCH GLO FSCB840626B01F473B DF2528311215267700 BALANCE TRANSFER FSCB840626B01F473B,DF2528311215267700",5.27,credit,transfer_own_account,balance_transfer
+,"MATHEW HOLCROFT FSCB840626B01946D3 00153425632HXXLDPH BALANCE TRANSFER FSCB840626B01946D3,00153425632HXXLDPH",141.69,credit,transfer_own_account,balance_transfer
+,Chase (trading Name Of Jp Morgan Europe Ltd) Account Switch Balance Transfer,0.87,credit,transfer_own_account,balance_transfer
+,"BFA ACC SWITCH GLO FSCB840626B01FC43B DF2528711269874100 BALANCE TRANSFER FSCB840626B01FC43B,DF2528711269874100",2.55,credit,transfer_own_account,balance_transfer
+,"BFA ACC SWITCH GLO FSCB840626B01F473B DF2528311215267700 BALANCE TRANSFER FSCB840626B01F473B,DF2528311215267700",5.27,credit,transfer_own_account,balance_transfer
+,"BFA ACC SWITCH GLO FSCB840626B0203B9B DF2529011345300300 BALANCE TRANSFER FSCB840626B0203B9B,DF2529011345300300",0.98,credit,transfer_own_account,balance_transfer
+,Zempler Bank Limited Account Switch Balance Transfer,46.38,credit,transfer_own_account,balance_transfer
+,Santander Uk Plc Account Switch Balance Transfer,0.5,credit,transfer_own_account,balance_transfer
+,Balance Transfer,1300.0,debit,balance_transfer,balance_transfer
+Barclays,Barclays Bank Uk Plc Account Switch Balance Transfer,51.07,credit,transfer_own_account,balance_transfer
+,The Co-operative Bank Plc Account Switch Balance Transfer,1983.05,credit,transfer_own_account,balance_transfer
+,CASS RAJI R  BALANCE TRANSFER TFR,447.87,credit,transfer_own_account,balance_transfer
+,Santander Uk Plc Account Switch Balance Transfer,0.61,credit,transfer_own_account,balance_transfer
+,Lloyds Bank Plc Account Switch Balance Transfer,1707.06,credit,transfer_own_account,balance_transfer
+,CASS WHITE C  BALANCE TRANSFER TFR,125.48,credit,transfer_own_account,balance_transfer
+,Balance Transfer,1500.0,debit,balance_transfer,balance_transfer
+,CASS RENDER S  BALANCE TRANSFER TFR,874.65,credit,transfer_own_account,balance_transfer
+,"DOUGLAS GEORGE DEN FSCB840626B01BFFBD 250805060129710038 BALANCE TRANSFER FSCB840626B01BFFBD,250805060129710038",1910.47,credit,transfer_p2p,balance_transfer
+Virgin Money,Virgin Money (28 Clydesdale Bank) Account Switch Balance Transfer,9.46,credit,transfer_own_account,balance_transfer
+National Westminster Bank,National Westminster Bank Plc Account Switch Balance Transfer,65.73,credit,transfer_own_account,balance_transfer
+Suzanne Draper Loan,Suzanne Draper    loan,50.0,debit,loan_repayment_manual,loan_repayment_manual
+H Khuhendranath Loan,H KHUHENDRANATH   LOAN              VIA MOBILE - PYMT FP 13/07/25 10    26214205775280000R,10.0,debit,loan_repayment_manual,loan_repayment_manual
+P Dixon Loan,P DIXON  LOAN FT,40.0,debit,loan_repayment_manual,loan_repayment_manual
+Nicolas Hallifax Loan,NICOLAS HALLIFAX  LOAN              VIA MOBILE - PYMT FP 19/08/25 10    58135212021291000N,150.0,debit,loan_repayment_manual,loan_repayment_manual
+M B Fellingham,M B FELLINGHAM  DEBT FT,20.0,debit,loan_repayment_manual,loan_repayment_manual
+Spag,Spag33 limited / ref: Cait,511.0,debit,transfer_p2p,loan_repayment_manual
+Holli Murphy Loan,holli murphy                             loan,10.0,debit,loan_repayment_manual,loan_repayment_manual
+Holli Murphy Loan,holli murphy                             loan,20.0,debit,loan_repayment_manual,loan_repayment_manual
+P Dixon Loan,P DIXON  LOAN FT,40.0,debit,loan_repayment_manual,loan_repayment_manual
+Spag,Spag33 limited / ref: Loan,200.0,debit,loan_repayment_manual,loan_repayment_manual
+Miss Zoeann Sharples Lend,miss zoeann sharples                     lend,30.0,debit,loan_repayment_manual,loan_repayment_manual
+Samantha Stirling Loan,SAMANTHA STIRLING LOAN              VIA MOBILE - PYMT FP 11/09/25 10    48213933560107000R,30.0,debit,loan_repayment_manual,loan_repayment_manual
+Leo Edwards Debt,LEO EDWARDS  DEBT FT,20.0,debit,loan_repayment_manual,loan_repayment_manual
+Jade Burrell Lend Ft,JADE BURRELL  LEND FT,5.0,debit,loan_repayment_manual,loan_repayment_manual
+Spag,Spag33 limited / ref: Stephen,89.0,debit,transfer_p2p,loan_repayment_manual
+Paige Jeffries Lend Ft,PAIGE JEFFRIES  LEND FT,5.0,debit,loan_repayment_manual,loan_repayment_manual
+Keith Dixon Loan,KEITH DIXON       LOAN              VIA MOBILE - PYMT FP 31/07/25 10    63125007883220000N,100.0,debit,loan_repayment_manual,loan_repayment_manual
+H Khuhendranath Loan,H KHUHENDRANATH   LOAN              VIA MOBILE - PYMT FP 21/07/25 10    04145515323885000R,2.0,debit,loan_repayment_manual,loan_repayment_manual
+Leo Edwards Debt,LEO EDWARDS  DEBT FT,20.0,debit,loan_repayment_manual,loan_repayment_manual
+Paige Jeffries Lend Ft,PAIGE JEFFRIES  LEND FT,163.0,debit,loan_repayment_manual,loan_repayment_manual
+,"SARWAT SIDDIQ LOAN REPAYMENT YBBPI1418074010201 LOAN REPAYMENT,YBBPI1418074010201",50.0,credit,transfer_p2p,loan_repayment_dd
+Cambrian Credit Union,98WRV3K Cambrian Credit Union,15.0,debit,credit_union_repayment,loan_disbursement
+Cambrian Credit Union,98WRV3K Cambrian Credit Union,15.0,debit,credit_union_repayment,loan_disbursement
+Cambrian Credit Union,98WRV3K Cambrian Credit Union,15.0,debit,credit_union_repayment,loan_disbursement
+Curve,Crv*curve Subscription,17.99,debit,financial_services_other,financial_services_other
+Curve,CURVE  ON 05 OCT CPM,11.4,debit,payment_intermediary,financial_services_other
+Elfin Market,Direct debit ELFIN MARKET 304065 00009222,2.36,debit,revolving_credit_repayment,financial_services_other
+Curve,CRV*EXPERIAN Curve,14.99,debit,credit_reporting_service,financial_services_other
+Elfin Market,Elfin Market PRQ00096S1VF8TM,25.0,debit,revolving_credit_repayment,financial_services_other
+Curve,CURVE  ON 05 OCT CPM,5.75,debit,payment_intermediary,financial_services_other
+Curve,CURVE  ON 16 AUG CPM,7.2,debit,payment_intermediary,financial_services_other
+Fe Fundinfo,FE FUNDINFO UK LTDGPX54ZB,195.0,debit,financial_services_other,financial_services_other
+Curve,CRV*Curve subscription,17.99,debit,financial_services_other,financial_services_other
+Fe Fundinfo,FE FUNDINFO UK LTDGPX54ZB,195.0,debit,financial_services_other,financial_services_other
+Curve,CRV*APPLE.COM BILL Curve,16.99,debit,software,financial_services_other
+Elfin Market,Elfin Market PRQ0008X229K3GF,10.0,debit,revolving_credit_repayment,financial_services_other
+Curve,CRV*Curve subscription,17.99,debit,financial_services_other,financial_services_other
+Curve,CRV*Clearpay Curve,18.31,debit,bnpl,financial_services_other
+Curve,CRV*Curve subscription,17.99,debit,financial_services_other,financial_services_other
+Fe Fundinfo,FE FUNDINFO UK LTDGPX54ZB,195.0,debit,financial_services_other,financial_services_other
+Curve,CURVE  ON 30 AUG CPM,18.5,debit,payment_intermediary,financial_services_other
+Elfin Market,ELFIN MARKET ELFIN-MT76A19OK,232.27,debit,revolving_credit_repayment,financial_services_other
+Curve,CRV*Curve subscrip  ON 01 OCT BCC CRV*CURVE SUBSCRIPTION,9.99,debit,financial_services_other,financial_services_other
+Curve,CRV*PAYPAL *SPORTEY CD Curve,5.22,debit,payment_intermediary,financial_services_other
+Premfina,DDI000187454 Premfina,22.35,debit,loan_repayment_other,loan_repayment_other
+Premfina,DDI000139137 Premfina,33.05,debit,loan_repayment_other,loan_repayment_other
+Premfina,PREMFINA LIMITED Premfina,110.22,debit,loan_repayment_other,loan_repayment_other
+Premfina,000253864 Premfina,526.58,debit,loan_repayment_other,loan_repayment_other
+Premfina,000253864 Premfina,526.58,debit,loan_repayment_other,loan_repayment_other
+Premfina,000618808 Premfina,103.26,debit,loan_repayment_other,loan_repayment_other
+Premfina,000253864 Premfina,526.58,debit,loan_repayment_other,loan_repayment_other
+Creditspring,CREDITSPRING 2FD9GJK,28.0,debit,payday_loan,payday_loan
+Creditspring,Creditspring - SortCodeAccountNumber: 16222410135836,33.35,debit,payday_loan,payday_loan
+Creditspring,"DIRECT DEBIT PAYMENT TO CREDITSPRING REF BJF9FN3, MANDATE NO 0024",7.0,debit,payday_loan,payday_loan
+Creditspring,CREDITSPRING 3SETZA5,166.66,debit,payday_loan,payday_loan
+Creditspring,CREDITSPRING,28.0,debit,payday_loan,payday_loan
+118 118 Money,4231 19JUN25      118 MONEY CREDIT  LONDON GB,110.0,debit,payday_loan,payday_loan
+Creditspring,CREDITSPRING,33.33,debit,payday_loan,payday_loan
+Lending Stream,LENDING STREAM,24.06,debit,payday_loan,payday_loan
+Lending Stream,Lending Stream,96.45,debit,payday_loan,payday_loan
+Creditspring,To Creditspring - V6FZBSQ,33.33,debit,payday_loan,payday_loan
+Creditspring,CREDITSPRING,7.0,debit,payday_loan,payday_loan
+118 118 Money,4231 24JUN25      118 MONEY CREDIT  LONDON GB,5.0,debit,payday_loan,payday_loan
+Creditspring,CREDITSPRING FMHP6VT,166.66,debit,payday_loan,payday_loan
+Creditspring,Creditspring,100.0,debit,payday_loan,payday_loan
+118 118 Money,118 MONEY LOAN  ON 29 JUL BCC,5340.28,debit,payday_loan,payday_loan
+118 118 Money,118 MONEY CREDIT,60.0,debit,payday_loan,payday_loan
+118 118 Money,"BILL PAYMENT VIA FASTER PAYMENT TO 118 118 MONEY REFERENCE XXXXXXXXXXXX8814 , MANDATE NO 14",7.0,debit,payday_loan,payday_loan
+Creditspring,Direct debit CREDITSPRING 162224 10135836,20.0,debit,payday_loan,payday_loan
+Creditspring,Creditspring - SortCodeAccountNumber: 16222410135836,20.0,debit,payday_loan,payday_loan
+Creditspring,CREDITSPRING,20.0,debit,payday_loan,payday_loan
+Converters,Cash Converters,180.0,debit,pawnbroker,pawnbroker
+Converters,CASH CONVERTERS YORKSH CD 4104,79.5,debit,pawnbroker,pawnbroker
+Converters,CASH CONVERTERS,64.99,debit,pawnbroker,pawnbroker
+Cash Convert Ers Lancas Blackpool,CASH CONVERTERS LANCAS Cash Converters Lancas Blackpool,14.99,debit,pawnbroker,pawnbroker
+Zilch,Zilch Cash Converters from Empire  Pot,62.56,debit,pawnbroker,pawnbroker
+Cash Convert Ers Hanley,CASH CONVERTERS HA,66.25,debit,pawnbroker,pawnbroker
+Ramsdens,3396 01JUL25      RAMSDENS FINANCIALLTD               CLEVELAND GB,15.0,debit,pawnbroker,pawnbroker
+Cash Convert Ers,CASH CONVERTERS  ON 02 AUG CPM,200.0,debit,pawnbroker,pawnbroker
+Cash Convert Ers,CASH CONVERTERS,16.81,debit,pawnbroker,pawnbroker
+Converters,Cash Converters,7.21,debit,pawnbroker,pawnbroker
+Cashconverters Dartford,Cashconverters Dartfor,490.25,debit,pawnbroker,pawnbroker
+Converters,Cash Converters,2.65,debit,pawnbroker,pawnbroker
+Ramsdens,RAMSDENS  ON 08 SEP CPM RAMSDENS FINANCIAL LTD,64.83,debit,pawnbroker,pawnbroker
+H&t Peterborough,H&T PETERBOROUGH  ON 27 JUN BCC,1000.0,debit,pawnbroker,pawnbroker
+Converters,Cash Converters,1.5,debit,pawnbroker,pawnbroker
+Converters,Cash Converters,5.39,debit,pawnbroker,pawnbroker
+Ramsdens,RAMSDENS FINANCIAL CD 0614,552.8,debit,pawnbroker,pawnbroker
+Ramsdens,RAMSDENS FINANCIAL Ramsdens Financial Great Britai Gbr,206.51,debit,pawnbroker,pawnbroker
+Cash Convert Ers,CASH CONVERTERS,75.0,debit,pawnbroker,pawnbroker
+H&t Peterborough,H&T PETERBOROUGH  ON 05 JUL BCC,1000.0,debit,pawnbroker,pawnbroker
+,Cash Advance,80.0,credit,cash_advance,cash_advance
+,Cash Advance,10.0,credit,cash_advance,cash_advance
+,Cash Advance,10.0,credit,cash_advance,cash_advance
+,Cash Advance,20.0,credit,cash_advance,cash_advance
+,Cash Advance,40.0,credit,cash_advance,cash_advance
+,Cash Advance,30.0,credit,cash_advance,cash_advance
+,Cash Advance,60.0,credit,cash_advance,cash_advance
+,Cash Advance,40.0,credit,cash_advance,cash_advance
+,Cash Advance,10.0,credit,cash_advance,cash_advance
+,Cash Advance,20.0,credit,cash_advance,cash_advance
+,Cash Advance,81.9,credit,cash_advance,cash_advance
+,Cash Advance,230.0,credit,cash_advance,cash_advance
+,Cash Advance,20.0,credit,cash_advance,cash_advance
+,Cash Advance,20.0,credit,cash_advance,cash_advance
+,Cash Advance,40.0,credit,cash_advance,cash_advance
+,Cash Advance,60.0,credit,cash_advance,cash_advance
+,Cash Advance,60.0,credit,cash_advance,cash_advance
+,Cash Advance,20.0,credit,cash_advance,cash_advance
+,Cash Advance,50.0,credit,cash_advance,cash_advance
+,Cash Advance,5.0,credit,cash_advance,cash_advance
+Lowell Financial,LOWELL PORTFOLIO 1 00027226860804,2.0,debit,debt_collection,debt_collection
+Lowell Financial,Direct debit LOWELL PORTFOLIO 1 600001 39543749,3.0,debit,debt_collection,debt_collection
+Intrum Uk Co,INTRUM UK  CO/11482346 DDR,1.0,debit,debt_collection,debt_collection
+Lowell Financial,LOWELL PORTFOLIO 1                    REFERENCE:   00020621432204,10.0,debit,debt_collection,debt_collection
+Lowell Financial,LOWELL PORTFOLIO 1  00047518440404 DDR Lowell Group,2.0,debit,debt_collection,debt_collection
+Lowell Financial,LOWELL PORTFOLIO I 00026151780904,10.0,debit,debt_collection,debt_collection
+Cent Rec Group,Direct debit CENT REC GROUP DD 607080 10027416,28.13,debit,debt_collection,debt_collection
+Lowell Financial,LOWELL PORTFOLIO 1 00045623750204,10.0,debit,debt_collection,debt_collection
+Lowell Financial,LOWELL PORTFOLIO 1,2.0,debit,debt_collection,debt_collection
+Lowell Financial,LOWELL PORTFOLIO I 00017809867904,2.0,debit,debt_collection,debt_collection
+Lowell Financial,LOWELL PORTFOLIO I                    REFERENCE:   00015536974704,1.25,debit,debt_collection,debt_collection
+Lowell Financial,LOWELL PORTFOLIO 1,5.0,debit,debt_collection,debt_collection
+Lowell Financial,Lowell Portfolio 1 - SortCodeAccountNumber: 60000149130080,10.0,debit,debt_collection,debt_collection
+Credit Resource Solutions (CSR),Credit Resource Solutions,2.0,debit,debt_collection,debt_collection
+Lowell Financial,LOWELL PORTFOLIO 1  00026890318404 DDR,10.0,debit,debt_collection,debt_collection
+Lowell Financial,LOWELL PORTFOLIO I,10.0,debit,debt_collection,debt_collection
+Lowell Financial,LOWELL PORTFOLIO 1 00033217898704,20.0,debit,debt_collection,debt_collection
+Lowell Financial,LOWELL PORTFOLIO I  00020689527804 DDR,1.0,debit,debt_collection,debt_collection
+Lowell Financial,LOWELL PORTFOLIO I                    REFERENCE:   00044182012304,10.0,debit,debt_collection,debt_collection
+Lowell Financial,LOWELL PORTFOLIO 1 00046399907804,50.0,debit,debt_collection,debt_collection
+Stirling Park Llp,PENDING STIRLING PARK LLP,62.5,debit,debt_enforcement,debt_enforcement
+Dukes Bailiffs,Visa purchase DUKES BAILIFFS,152.0,debit,debt_enforcement,debt_enforcement
+Bailiff Mini Market,Contactless Payment BAILIFF MINI MARKET APPLEPAY 2800,1.5,debit,convenience_store,debt_enforcement
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO DUKES BAILIFFS LIMITED REFERENCE 1572701 SANTANDER REFERENCE E12B69575F8F426F8D,94.17,debit,debt_enforcement,debt_enforcement
+Cder Group LTD,Account - OB7245134 CDER Group Ltd - SortCodeAccountNumber: 60800158574522,274.0,debit,debt_enforcement,debt_enforcement
+Scott & Co Llp,SCOTT & CO LLP,10.0,debit,debt_enforcement,debt_enforcement
+Scott & Co Llp,SCOTT & CO LLP,10.0,debit,debt_enforcement,debt_enforcement
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO DUKES BAILIFFS LIMITED REFERENCE 1572701 SANTANDER REFERENCE D9F735D647F0439FA6,50.0,debit,debt_enforcement,debt_enforcement
+Scott & Co Llp,SCOTT & CO LLP,5.0,debit,debt_enforcement,debt_enforcement
+High Court,HIGH COURT WRIT RE  ON 29 AUG BCC,100.0,debit,debt_enforcement,debt_enforcement
+Dukes Bailiffs,Dukes Bailiffs Limited 1545947,204.0,debit,debt_enforcement,debt_enforcement
+Scott & Co,SCOTT & CO (SCOTLA,40.0,debit,debt_enforcement,debt_enforcement
+Scott & Co Llp,SCOTT & CO LLP,150.0,debit,debt_enforcement,debt_enforcement
+,FASTER PAYMENTS RECEIPT REF.BAILIFF COSTS FROM LEGACY RESTORATION (SOUTH WEST) LIMITED,72.0,credit,refund_received,debt_enforcement
+Bailiff Mini Market,Contactless Payment BAILIFF MINI MARKET APPLEPAY 2800,1.5,debit,convenience_store,debt_enforcement
+Scott & Co Llp,SCOTT & CO LLP,10.0,debit,debt_enforcement,debt_enforcement
+Scott & Co,SCOTT & CO (SCOTLA,327.27,debit,debt_enforcement,debt_enforcement
+Scott & Co Llp,SCOTT & CO LLP,10.0,debit,debt_enforcement,debt_enforcement
+Stirling Park Llp,PENDING STIRLING PARK LLP,35.5,debit,debt_enforcement,debt_enforcement
+Dukes Bailiffs,DUKES BAILIFFS,200.0,debit,debt_enforcement,debt_enforcement
+Dwp Debt Management,6461 26JUN25      DWP DEBT          MANAGEMENT        BLACKPOOL GB,135.3,debit,debt_collection,debt_management_plan
+Dwp Debt Management,CENT REC GROUP DD  JH755018C DDR DWP Debt Management,25.0,debit,debt_collection,debt_management_plan
+Dwp Debt Management,DWP DEBT MANAGEMEN,22.0,debit,debt_collection,debt_management_plan
+Dwp Debt Management,CENT REC GROUP DD  JW190220A DDR DWP Debt Management,10.0,debit,debt_collection,debt_management_plan
+Payplan Bespoke Solutions,Payplan Bespoke Solutions 14254531,175.0,debit,debt_management_plan,debt_management_plan
+Fresh Start Insolv,FRESH START INSOLV  V39WEKH DDR,118.0,debit,debt_management_plan,debt_management_plan
+Creditfix,CREDITFIX,100.0,debit,debt_management_plan,debt_management_plan
+Dwp Debt Management,DWP DEBT MANAGEMENT Dwp Debt Management,7.0,debit,debt_collection,debt_management_plan
+National Debt Reli,NATIONAL DEBT RELI D36344,80.0,debit,debt_management_plan,debt_management_plan
+Dwp Debt Management,DWP DEBT MANAGEMEN,30.56,debit,debt_collection,debt_management_plan
+Step Change,UK Account - 3395086 Step Change - SortCodeAccountNumber: 20484670238163,232.0,debit,debt_management_plan,debt_management_plan
+J3 Debt Solutions,J3 DEBT SOLUTIONS,355.0,debit,debt_management_plan,debt_management_plan
+Dwp Debt Management,Dwp Debt Management,21.0,debit,debt_collection,debt_management_plan
+Dwp Debt Management,CENT REC GROUP DD  PA185851D DDR DWP Debt Management,50.0,debit,debt_collection,debt_management_plan
+Dwp Debt Management,CENT REC GROUP DD  JW082783D DDR DWP Debt Management,50.0,debit,debt_collection,debt_management_plan
+Step Change,UK Account - 3395086 Step Change - SortCodeAccountNumber: 20484670238163,245.0,debit,debt_management_plan,debt_management_plan
+Dwp Debt Management,DWP DEBT MANAGEMEN,153.25,debit,debt_collection,debt_management_plan
+Dwp Debt Management,CENT REC GROUP DD  JW944365B DDR DWP Debt Management,19.2,debit,debt_collection,debt_management_plan
+Dwp Debt Management,Dwp Debt Management,156.25,debit,debt_collection,debt_management_plan
+Dwp Debt Management,CENT REC GROUP DD  JZ214391D DDR DWP Debt Management,5.0,debit,debt_collection,debt_management_plan
+,June overdraft fees,0.48,debit,overdraft_arranged,overdraft_unarranged
+,June overdraft fees,13.24,debit,overdraft_arranged,overdraft_unarranged
+,September overdraft fees,1.11,debit,overdraft_arranged,overdraft_unarranged
+,May overdraft fees,0.03,debit,overdraft_arranged,overdraft_unarranged
+,July overdraft fees,18.01,debit,overdraft_arranged,overdraft_unarranged
+,August overdraft fees,18.12,debit,overdraft_arranged,overdraft_unarranged
+,July overdraft fees,9.89,debit,overdraft_arranged,overdraft_unarranged
+,June overdraft fees,0.01,debit,overdraft_arranged,overdraft_unarranged
+,August overdraft fees,4.55,debit,overdraft_arranged,overdraft_unarranged
+,July overdraft fees,0.03,debit,overdraft_arranged,overdraft_unarranged
+,July overdraft fees,14.35,debit,overdraft_arranged,overdraft_unarranged
+,August overdraft fees,13.1,debit,overdraft_arranged,overdraft_unarranged
+,July overdraft fees,0.01,debit,overdraft_arranged,overdraft_unarranged
+,July overdraft fees,0.17,debit,overdraft_arranged,overdraft_unarranged
+,July overdraft fees,24.98,debit,overdraft_arranged,overdraft_unarranged
+,July overdraft fees,21.06,debit,overdraft_arranged,overdraft_unarranged
+,July overdraft fees,1.09,debit,overdraft_arranged,overdraft_unarranged
+,August overdraft fees,30.95,debit,overdraft_arranged,overdraft_unarranged
+,July overdraft fees,5.37,debit,overdraft_arranged,overdraft_unarranged
+,July overdraft fees,0.96,debit,overdraft_arranged,overdraft_unarranged
+Manageyourscores,MANAGEYOURSCORES 1,14.95,debit,credit_reporting_service,credit_reporting_service
+Score,ref: Credit Score Insights subscription - Sep 2025,5.99,debit,credit_reporting_service,credit_reporting_service
+Clearscore,ClearScore,7.99,debit,credit_reporting_service,credit_reporting_service
+Myukcreditreport,MYUKCREDITREPORT.N USA ON 28 AUG BCC MYUKCREDITREPORT.NET,29.95,debit,credit_reporting_service,credit_reporting_service
+Clearscore,CLEARSCORE,4.99,debit,credit_reporting_service,credit_reporting_service
+Manageyourscores,MANAGEYOURSCORES 2,19.95,debit,credit_reporting_service,credit_reporting_service
+Clearscore,CLEARSCORE  ON 03 JUL CPM,4.99,debit,credit_reporting_service,credit_reporting_service
+Ukcreditratings,UKCREDITRATINGS 79P9XXH,24.95,debit,credit_reporting_service,credit_reporting_service
+Manageyourscores,MANAGEYOURSCORES 2,19.95,debit,credit_reporting_service,credit_reporting_service
+Clearscore,CLEARSCORE  ON 03 SEP CPM,4.99,debit,credit_reporting_service,credit_reporting_service
+Score,ref: Credit Score Insights subscription - Jul 2025,5.99,debit,credit_reporting_service,credit_reporting_service
+Score Insights,ref: Credit Score Insights subscription - Aug 2025,5.99,debit,credit_reporting_service,credit_reporting_service
+Manageyourscores,MANAGEYOURSCORES 2  ON 09 SEP BCC,19.95,debit,credit_reporting_service,credit_reporting_service
+Manageyourscores,Visa purchase MANAGEYOURSCORES 2,19.95,debit,credit_reporting_service,credit_reporting_service
+Manageyourscores,MANAGEYOURSCORES 1,19.95,debit,credit_reporting_service,credit_reporting_service
+Loqbox Gold Bolton,LOQBOX GOLD BOLTON,20.0,debit,money_management_service,credit_reporting_service
+Score,ref: Credit Score Insights subscription - Jul 2025,5.99,debit,credit_reporting_service,credit_reporting_service
+Myukcreditreport,MYUKCREDITREPORT.N USA ON 27 SEP BCC MYUKCREDITREPORT.NET,29.95,debit,credit_reporting_service,credit_reporting_service
+Ukcreditratings,UKCREDITRATINGS.CO,29.95,debit,credit_reporting_service,credit_reporting_service
+Manageyourscores,MANAGEYOURSCORES 1,19.95,debit,credit_reporting_service,credit_reporting_service
+,Direct debit STEPCHANGE 204846 70238163,56.0,debit,debt_management_plan,money_management_service
+,STEPCHANGE,160.0,debit,debt_management_plan,money_management_service
+Stepchange,STEPCHANGE  3452322 DDR Stepchange,45.0,debit,debt_management_plan,money_management_service
+,Direct debit STEPCHANGE 074456 32470265,71.0,debit,debt_management_plan,money_management_service
+,"FOUND CR CNS TST STEPCHANGE3086417 MF0021401351185300 STEPCHANGE3086417,MF0021401351185300",13.0,credit,refund_received,money_management_service
+,Stepchange - StepChange - SortCodeAccountNumber: 20484670238163,103.0,debit,debt_management_plan,money_management_service
+,"DIRECT DEBIT PAYMENT TO STEPCHANGE REF 3769041, MANDATE NO 0030",75.0,debit,debt_management_plan,money_management_service
+,Stepchange - StepChange - SortCodeAccountNumber: 20484670238163,157.0,debit,debt_management_plan,money_management_service
+,"DIRECT DEBIT PAYMENT TO STEPCHANGE REF 3769041, MANDATE NO 0030",75.0,debit,debt_management_plan,money_management_service
+,STEPCHANGE,189.0,debit,debt_management_plan,money_management_service
+,STEPCHANGE                            REFERENCE: 1119617,100.0,debit,debt_management_plan,money_management_service
+,Stepchange - StepChange - SortCodeAccountNumber: 20484670238163,300.0,debit,debt_management_plan,money_management_service
+Stepchange,REVERSAL OF 10-09 STEPCHANGE,73.0,credit,returned_payment,money_management_service
+,STEPCHANGE DEBT CH                       3876740 MCDONOUGH,93.0,debit,debt_management_plan,money_management_service
+,STEPCHANGE,119.0,debit,debt_management_plan,money_management_service
+,STEPCHANGE        3121579           VIA MOBILE - PYMT FP 15/08/25 10    47060357717108000N,110.0,debit,debt_management_plan,money_management_service
+,STEPCHANGE  4212577 DDR Stepchange,100.0,debit,debt_management_plan,money_management_service
+,STEPCHANGE,393.0,debit,debt_management_plan,money_management_service
+,Stepchange - StepChange - SortCodeAccountNumber: 20484670238163,128.0,debit,debt_management_plan,money_management_service
+,STEPCHANGE                            REFERENCE: 4248301,154.0,debit,debt_management_plan,money_management_service
+Bet365,Bet365,10.0,debit,gambling_betting,gambling_broad_pool
+SkyBet,3779 19AUG25      SKY BET           LEEDS           GBCREDIT,85.0,credit,gambling_betting,gambling_broad_pool
+Betfair,Betfair,10.0,debit,gambling_betting,gambling_broad_pool
+Paddy Power,PADDY POWER  ON 09 AUG BCC Paddy Power,6.0,debit,gambling_betting,gambling_broad_pool
+BetVictor,BETVICTOR LTD,10.0,debit,gambling_betting,gambling_broad_pool
+LC International,LC INTERNATIONAL LTD  Ladbrokes Coral Group,20.0,debit,gambling_betting,gambling_broad_pool
+Ladbrokes,Ladbrokes,5.0,debit,gambling_betting,gambling_broad_pool
+Bet365,BET365,5.0,debit,gambling_betting,gambling_broad_pool
+LC International,9319 06AUG25      LC INTERNATIONAL  LTD               GIBRALTAR GI,15.7,debit,gambling_betting,gambling_broad_pool
+Doublebubblebingo,DOUBLEBUBBLEBINGO,20.0,debit,gambling_bingo,gambling_broad_pool
+LC International,LC INTERNATIONAL L GIBRALTAR ON 10 JUL BCC LC INTERNATIONAL LTD,20.0,debit,gambling_betting,gambling_broad_pool
+Virgin Games,3396 16JUL25      VIRGIN GAMES      LONDON GB,10.0,debit,gambling_casino,gambling_broad_pool
+LC International,LC International L,5.0,debit,gambling_betting,gambling_broad_pool
+BetVictor,BETVICTOR LIMITED,20.0,credit,gambling_betting,gambling_broad_pool
+Wind Street Stores,Wind Street Stores,1.5,debit,convenience_store,gambling_broad_pool
+Tom Round,TOM ROUND 300000001620541541,10.0,debit,transfer_p2p,gambling_broad_pool
+SkyBet,SKY BET  ON 16 AUG BCC,8.0,debit,gambling_betting,gambling_broad_pool
+Hull Super League,HULL SUPER LEAGUE,37.99,debit,sports_tickets,gambling_broad_pool
+BetFred,1969 24JUL25      BETFRED           GIBRALTAR GI,99.0,debit,gambling_betting,gambling_broad_pool
+Bet365,BET365,10.0,debit,gambling_betting,gambling_broad_pool
+The National Lottery,6857 23AUG25      NATIONAL LOTTERY  LONDON GB,5.0,debit,gambling_lottery,gambling_broad_pool
+Virgin Bet,VIRGIN BET CD 3356,24.0,debit,gambling_betting,gambling_broad_pool
+tombola,TOMBOLA,5.0,debit,gambling_bingo,gambling_broad_pool
+SkyBet,Sky Bet,30.0,debit,gambling_betting,gambling_broad_pool
+Bet365,Bet365,20.0,debit,gambling_betting,gambling_broad_pool
+Ladbrokes,Ladbrokes,20.0,debit,gambling_betting,gambling_broad_pool
+Capitol Cardiff,Capitol Cardiff,4.5,debit,car_parking,gambling_broad_pool
+William Hill,WILLIAMHILL*INTERNET      VISAXR CD6585 2025-06-06,190.0,credit,gambling_betting,gambling_broad_pool
+Jackpotjoy,JACKPOTJOY GIBRALTAR ON 29 SEP BCC,10.0,debit,gambling_bingo,gambling_broad_pool
+Bet365,BET365,50.0,debit,gambling_betting,gambling_broad_pool
+Bet365,9218 25JUN25      BET365            STOKE GB,10.0,debit,gambling_betting,gambling_broad_pool
+LC International,LC INTERNATIONAL LTD CD 4409,9.93,debit,gambling_betting,gambling_broad_pool
+Buzz Bingo,Buzz Group Limited  ON 20 JUL CLP 5695 BUZZ BINGO DUNDEE,30.5,debit,gambling_bingo,gambling_broad_pool
+Midnite,8988 29AUG25  D   MIDNITE.COM       LONDON GB,5.0,debit,gambling_betting,gambling_broad_pool
+Pokerstars,Pokerstars,30.0,debit,gambling_casino,gambling_broad_pool
+Progress Play LTD,Progressplay Ltd,30.0,debit,gambling_casino,gambling_broad_pool
+Virgin Games,VIRGIN GAMES GIBRALTAR ON 21 JUL BCC,10.0,debit,gambling_casino,gambling_broad_pool
+Bet365,BET365,10.0,debit,gambling_betting,gambling_broad_pool
+Electraworks LTD,Electraworks Ltd,10.0,debit,gambling_casino,gambling_broad_pool
+Paddy Power,3961 27JUN25      PADDY POWER       LONDON GB,50.0,debit,gambling_betting,gambling_broad_pool
+SkyBet,Sky Bet,30.0,debit,gambling_betting,gambling_broad_pool
+Midnite,0731 16JUL25      MIDNITE.COM       LONDON GB,154.0,debit,gambling_betting,gambling_broad_pool
+Bet365,BET365 CD 7638,20.0,debit,gambling_betting,gambling_broad_pool
+William Hill,WILLIAMHILL*INTERN,10.0,debit,gambling_betting,gambling_broad_pool
+Bet365,BET365,10.0,debit,gambling_betting,gambling_broad_pool
+The National Lottery,CARD PAYMENT TO NATIONAL LOTTERY ON 27-08-2025,20.0,debit,gambling_lottery,gambling_broad_pool
+SkyBet,SKY BET Sky Bet,5.0,debit,gambling_betting,gambling_broad_pool
+Kwiff,KWIFF.COM,10.0,debit,gambling_betting,gambling_broad_pool
+Talksport Bet,TALKSPORTBET,10.0,debit,gambling_betting,gambling_broad_pool
+BetVictor,BETVICTOR LTD,10.0,debit,gambling_betting,gambling_broad_pool
+LC International,9453 23AUG25      LC INTERNATIONAL  LTD               GIBRALTAR GI,30.0,debit,gambling_betting,gambling_broad_pool
+Jackpotjoy,Visa purchase JACKPOTJOY APPLEPAY 4916,10.0,debit,gambling_bingo,gambling_broad_pool
+The National Lottery,9872 02AUG25      NATIONAL LOTTERY  LONDON GB,12.0,debit,gambling_lottery,gambling_broad_pool
+MRQ,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO MRQ REFERENCE 1VK44VOQQH5LVN4T5L SANTANDER REFERENCE 1VK44VOQQH5LVN4T5L,16.0,debit,gambling_casino,gambling_broad_pool
+Paddy Power,CARD PAYMENT TO PADDY POWER ON 26-06-2025,10.0,debit,gambling_betting,gambling_broad_pool
+SkyBet,VISA DIRECT PAYMENT Sky Bet ON 21 SEP CRE,10.0,credit,gambling_betting,gambling_broad_pool
+,U7buy,1.33,debit,gaming_online,gambling_broad_pool
+BetMGM,betmgm.co.uk,10.0,debit,gambling_unspecified,gambling_broad_pool
+Bet365,Bet365,10.0,debit,gambling_betting,gambling_broad_pool
+Angel Hill Site,ANGEL HILL SITE 68  ON 11 AUG CPM ANGEL HILL SITE 682,1.0,debit,restaurant_cafe,gambling_broad_pool
+Kwiff,Kwiff CD 1612,20.0,debit,gambling_betting,gambling_broad_pool
+Heart Bingo,"HEART BINGO (VIA APPLE PAY), ON 02-08-2025",10.0,debit,gambling_bingo,gambling_broad_pool
+Clover Casino,CLOVER CASINO  ON 08 SEP CPM,20.0,debit,gambling_casino,gambling_broad_pool
+LC International,LC INTERNATIONAL LTD CD 5097,10.0,debit,gambling_betting,gambling_broad_pool
+Virgin Games,INT'L 0042871137  VIRGIN GAMES      WWW.VIRGINGAM,50.0,debit,gambling_casino,gambling_broad_pool
+Paddy Power,Paddy Power,5.0,debit,gambling_betting,gambling_broad_pool
+Lottomart,LOTTOMART,10.0,debit,gambling_casino,gambling_broad_pool
+SkyBet,SKY BETTING AND GA  ON 31 JUL BCC Sky Bet,10.0,debit,gambling_betting,gambling_broad_pool
+Paddy Power,Paddy Power,30.0,debit,gambling_betting,gambling_broad_pool
+The National Lottery,NATIONAL LOTTERY  WWW.NATIONAL-,5.0,debit,gambling_lottery,gambling_broad_pool
+Buzz Group,Buzz Group Limited  ON 01 AUG BCC,10.0,debit,gambling_bingo,gambling_broad_pool
+SkyBet,SKY BET,20.93,debit,gambling_betting,gambling_broad_pool
+SkyBet,SKY BET,5.0,debit,gambling_betting,gambling_broad_pool
+Julie Derbyshire,GB Account - From L Hearldon Julie Derbyshire - SortCodeAccountNumber: 11067200561076,65.0,debit,transfer_p2p,gambling_broad_pool
+Paddy Power,PADDY POWER CD 0541,202.0,debit,gambling_betting,gambling_broad_pool
+LC International,LC International LLondon,5.0,debit,gambling_betting,gambling_broad_pool
+Eleven Eleven Gaming,Seven Eleven Foods,5.89,debit,convenience_store,gambling_broad_pool
+The National Lottery,NATIONAL LOTTERY,13.0,debit,gambling_lottery,gambling_broad_pool
+William Hill,WILLIAMHILL*INTERNET CD 6585,50.0,debit,gambling_betting,gambling_broad_pool
+Pubcasino.co.uk,PUBCASINO.CO.UK MALTA ON 12 SEP BCC,20.0,debit,gambling_casino,gambling_broad_pool
+32Red,32RED,10.0,debit,gambling_casino,gambling_broad_pool
+SkyBet,4396 08AUG25      SKY BET           LEEDS GB,10.0,debit,gambling_betting,gambling_broad_pool
+tombola,Tombola,10.0,debit,gambling_bingo,gambling_broad_pool
+LC International,LC INTERNATIONAL L,20.0,debit,gambling_betting,gambling_broad_pool
+AviaGames,INT'L 0041511115  AviaGames         Hong Kong,25.0,debit,gambling_unspecified,gambling_broad_pool
+SkyBet,Visa purchase SKY BET 8273,14.0,debit,gambling_betting,gambling_broad_pool
+William Hill,WILLIAMHILL*INTERNET William Hill,20.0,debit,gambling_betting,gambling_broad_pool
+BetFred,9968 16AUG25      BETFRED           GIBRALTAR GI,30.0,debit,gambling_betting,gambling_broad_pool
+Bet365,VISA DIRECT PAYMENT Bet365 GIBRALTAR ON 25 AUG CRE,6.2,credit,gambling_betting,gambling_broad_pool
+Bet365,BET365,10.0,debit,gambling_betting,gambling_broad_pool
+Paddy Power,PADDY POWER  ON 06 AUG BCC Paddy Power,50.0,debit,gambling_betting,gambling_broad_pool
+Postcode Lottery,"DIRECT DEBIT PAYMENT TO POSTCODE LOTTERY REF 05ITPFAJWN71HE014, MANDATE NO 0120",12.25,debit,gambling_lottery,gambling_broad_pool
+BetFred,Betfred,20.0,debit,gambling_betting,gambling_broad_pool
+Jackpotjoy,JACKPOTJOY,10.0,debit,gambling_bingo,gambling_broad_pool
+Bingo Cash,Bingo Cash,5.0,debit,gambling_unspecified,gambling_broad_pool
+SkyBet,SKY BET,5.0,debit,gambling_betting,gambling_broad_pool
+Midnite,MIDNITE.COM Midnite,10.0,debit,gambling_betting,gambling_broad_pool
+BetFred,3396 24JUN25      BETFRED           GIBRALTAR GI,10.0,debit,gambling_betting,gambling_broad_pool
+Bet365,BET365,20.0,debit,gambling_betting,gambling_broad_pool
+,CARD PAYMENT TO LOTTOMART ON 04-09-2025,13.41,debit,gambling_casino,gambling_broad_pool
+Midnite,Midnite.com,10.0,debit,gambling_betting,gambling_broad_pool
+William Hill,Visa purchase WILLIAMHILL*INTERNET 0744,100.0,debit,gambling_betting,gambling_broad_pool
+The National Lottery,NATIONAL LOTTERY,7.5,debit,gambling_lottery,gambling_broad_pool
+Bet365,BET365 Bet365,10.0,debit,gambling_betting,gambling_broad_pool
+The National Lottery,NATIONAL LOTTERY  ON 02 JUL BCC,2.5,debit,gambling_lottery,gambling_broad_pool
+Jackpotjoy,9968 01AUG25      JACKPOTJOY        LONDON GB,13.0,debit,gambling_bingo,gambling_broad_pool
+SkyBet,2000 14JUN25      SKY BET           3300244777 GB,20.0,debit,gambling_betting,gambling_broad_pool
+Jackpotjoy Cd,JACKPOTJOY CD 0541,30.0,debit,gambling_bingo,gambling_broad_pool
+Winner Winner Chic,8839 22AUG25      WINNER WINNER CHICLONDON GB,1.52,debit,prize_competitions,gambling_broad_pool
+BetVictor,Visa purchase BETVICTOR GOOGLE 5665,30.0,debit,gambling_betting,gambling_broad_pool
+Katkin Club,KATKIN CLUB,20.99,debit,pet_supplies,gambling_broad_pool
+LC International,LC International Ltd CD 9646,8.72,debit,gambling_betting,gambling_broad_pool
+Ladbrokes,Ladbrokes,5.0,debit,gambling_betting,gambling_broad_pool
+William Hill,CARD PAYMENT TO WILLIAMHILL*INTERNET ON 17-07-2025,10.0,debit,gambling_betting,gambling_broad_pool
+SkyBet,9100 09AUG25      SKY BET           LEEDS           GBCREDIT,15.0,credit,gambling_betting,gambling_broad_pool
+Pokerstars,POKERSTARS,35.0,debit,gambling_casino,gambling_broad_pool
+Clover Casino,CLOVER CASINO  ON 25 AUG CPM,20.0,debit,gambling_casino,gambling_broad_pool
+Paddy Power,PADDY POWER  ON 29 SEP CPM Paddy Power,11.0,debit,gambling_betting,gambling_broad_pool
+Jackpotjoy,JACKPOTJOY,10.0,debit,gambling_bingo,gambling_broad_pool
+Midnite,MIDNITE.COM Midnite,10.0,debit,gambling_betting,gambling_broad_pool
