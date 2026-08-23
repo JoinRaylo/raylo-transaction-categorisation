@@ -5,7 +5,7 @@ R03,10,merchant_name,exact_set,mum|dad|mom|nan|nana|gran|granny|grandad|sister|b
 R04,20,merchant_name,regex,^exchanged to (btc|eth|sol|xrp|ada|doge),crypto,any,true,,Revolut crypto conversion strings
 R05,20,merchant_name,regex,(petrol|fuel)\s*(station)?$,fuel,debit,true,,grocer forecourts: tesco petrol / asda petrol / sainsburys petrol station
 R06,20,merchant_name,regex,(bingo|casino),gambling_unspecified,debit,true,,fallback if operator not in dictionary
-R07,20,merchant_name,regex,\b(bet|betting|bookmaker)\b,gambling_betting,debit,true,,fallback if operator not in dictionary
+R07,20,merchant_name,regex,\b(bet|betting|bookmaker)\b|\bbet\s?\d\d+\b|\b(sky|uni|coral|lad|net|virgin|paddy|smark)bet\b|\bbet(fred|fair|victor|way|uk|bright)\b,gambling_betting,debit,true,,"fallback if operator not in dictionary. Extended 2026-08-23: the word-boundary alternation alone missed every glued brand name (skybet / bet365 / betfred / betfair / betvictor / betway / unibet / betuk) - harmless today because T4 covers those nine, but this rule exists precisely for operators the dictionary has NOT seen, so the morphology matters. Added digit-suffix and known prefix/suffix forms. Validated against all 18825 dictionary merchants: 24 hits / 0 non-gambling false positives. Deliberately NOT a loose *bet* contains - that hits 81 merchants of which 49 are personal names (bethany / leadbetter / nisbets / betts) and 35 are transfer_p2p. Keep the alternation explicit."
 R08,20,merchant_name,regex,\b(lottery|lotto)\b,gambling_lottery,debit,true,,
 R09,30,merchant_name,regex,\b(car park|parking)\b,car_parking,debit,true,,
 R10,30,merchant_name,regex,\b(vets?|veterinary)\b,veterinary,debit,true,,
