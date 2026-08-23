@@ -130,13 +130,59 @@ Classify **distinct merchant strings, not transactions.** 209,985 unmatched stri
 
 **Never run an LLM per-transaction at runtime.** This applies regardless of the gating outcome.
 
+## 6a. Frontier LLM benchmark, prompt-engineering fix, and fine-tuning experiments (2026-08-22/23)
+
+All numbers below are scored against `data/gold_v2_slm_eval_holdout.csv` (1,055 real transactions, merchant-disjoint from all training data) — the standard SLM/LLM benchmark set. Scripts live in `outputs/mlx_full_run/`.
+
+**Prompt bug found and fixed.** The labelling system prompt had silently grown to 2.39M characters: `load_example_notes()` in `src/gating_experiment.py` was including a `"LLM-consensus label, tier=..."` boilerplate string as if it were a human-authored disambiguation note (root cause: a bulk dictionary-wiring commit). Fixed by excluding that prefix (restores the genuine 375 notes) and added a hard guardrail — `load_example_notes()` now raises if the note count leaves the 300–600 band, so a future bulk-add can't silently re-inflate the prompt.
+
+**Prompt-compression was tested and rejected — keep the full worked-example set.** Four alternative designs were measured against the full-375-example baseline on Haiku/Sonnet/Opus, controlling for leakage (excluding rows whose merchant appears verbatim in the examples) and for note-coverage (splitting by leaves with zero example coverage, to separate genuine reasoning transfer from lookup-table memorisation):
+1. Full 375 examples (baseline) — but carrying a genuine bug: `TAIL_ADDENDUM` told models to default personal-name transfers to `transfer_p2p` even when the narrative had an explicit debt keyword (LOAN/LEND/OWE/DEBT/IOU).
+2. 7 synthesized general principles, no examples: 4–4.5pp WORSE on all three models, and the gap widens (Opus +10pp) on categories with zero note coverage — proof the examples teach transferable reasoning, not just lookup.
+3. Principles + a curated 75-example subset: recovered only 1–2.5pp of the gap.
+4. Principles + the full 375 examples: still 1.8–2.6pp below plain baseline — principles text is mildly dilutive once full-breadth examples are already present.
+5. **Adopted**: just the one verified bugfix + the full 375 examples, no principles text — ties variant 1 within noise while fixing the real bug. Full history is in `src/build_tail_eval.py`'s `TAIL_ADDENDUM` comment.
+
+Conclusion: prompt length (84,348 chars) is not itself the risk — prompt caching (`cache_control` in `production_labelling.py`) neutralises most of the cost, and no instruction-following degradation was measured at this length. The real risk is *ungoverned* growth, now caught by the 300–600 note-count guardrail. **Do not re-attempt principle-based compression** without re-running this same leakage-and-coverage-adjusted test — it has failed twice at different compression levels.
+
+**Full model comparison, final production prompt** (Haiku/Sonnet/Opus/Gemini 3.7 all scored on the identical 84,348-char prompt):
+
+| Model | Leaf | General | Throughput |
+|---|---|---|---|
+| Gemini 3.7 Flash (untuned, 3-run avg) | 84.2% ± 0.15pp | 90.9% ± 0.12pp | ~3.1–3.9 rows/sec |
+| Claude Opus 5 | 80.6–81.7% | 87.6–88.5% | ~1.2–3.8 rows/sec |
+| Claude Sonnet 5 | 76.8–76.9% | 83.0–84.1% | ~1.3–4.7 rows/sec |
+| Claude Haiku 4.5 | 72.9–73.7% | 81.1–81.6% | ~7.0 rows/sec |
+| Tuned Gemini 2.5 Flash (fine-tuned endpoint, no prompt examples) | 53.9% | 61.6% | 20.2 rows/sec, 97.6% in-vocab |
+| Local fine-tuned Gemma SLM (ckpt 38000, direct generation, closed vocab learned via fine-tune) | 50.0% | 59.5% | — |
+| Local fine-tuned SLM + full taxonomy in context + constrained decoding | 39.5% | 55.0% | 3.1 rows/sec |
+| TF-IDF + logistic regression v2 (`outputs/distill_models/tfidf_logreg_v2.joblib`) | 32.0% | 37.6% | — |
+| Sentence-embedding (MiniLM) + logistic regression, same training data | 27.6% | 32.5% | — |
+| Local vanilla Gemma (no fine-tune) + full taxonomy in context + constrained decoding | 17.7% | 36.7% | 3.65 rows/sec |
+| Vanilla Gemma, taxonomy as text hint only (no constrained decoding) | 3.5% | 8.2% | 17.5% in-vocab |
+| Vanilla Gemma, no taxonomy context at all | 0.0% | 0.0% | 0% in-vocab |
+
+**Genuine, load-bearing negative-interaction finding**: giving the *fine-tuned* local SLM the full taxonomy in its context window (plus constrained decoding to force a valid leaf) makes it WORSE (50.0%→39.5% leaf) — the fine-tune already learned direct merchant→leaf mappings and the extra list appears to distract it. The same technique helps the *vanilla* (non-fine-tuned) model enormously (0–3.5%→17.7%), because it never learned the taxonomy any other way. **Implication: a fine-tuned-SLM deployment should NOT show the full taxonomy at inference — closed-vocabulary direct generation from the fine-tune alone is both faster and more accurate.**
+
+**Gemini's temperature=0 is not fully deterministic** (unlike the local MLX model's provably-deterministic greedy decode) — validated empirically rather than assumed, per Carlos's explicit request. Two identical temp=0 calls against Gemini 3.7 Flash differed on 5/40 rows (12.5%). However, **the 3-run aggregate benchmark above is stable** (leaf SD ≈0.15pp, general SD ≈0.12pp across 3 full 1,055-row runs) — row-level flips appear to roughly balance correct↔wrong, so single-run benchmark numbers for this model are trustworthy at the aggregate level even though individual predictions aren't.
+
+**Platform facts (verified, don't re-derive):** Opus 5 / Sonnet 5 / Opus 4.8 all reject the `temperature` parameter (400 error, "deprecated for this model") — only Haiku 4.5 and older Sonnet 4.6/Opus 4.6 accept it. Gemini's `response_schema` rejects string enums above ~100–150 values (workaround: numbered index + bounded integer, mapped back locally). Gemini 3.7 Flash is only available via the direct Gemini Developer API (`vertexai=False` + explicit `api_key`) in this project/region, not Vertex AI — a stray un-stopped background process using the wrong (Vertex) config previously caused confusing 404s while debugging this; always verify no stale background job is still writing to a shared log before trusting its errors. Gemini 2.5's "thinking" can silently consume the whole output-token budget unless `thinking_config=ThinkingConfig(thinking_budget=0)` is set.
+
+**Gemini 2.5 Flash fine-tuning (Vertex AI supervised tuning) works end-to-end and is essentially free.** Smoke test (15 rows) and full run (164,445 rows, `outputs/mlx_full_run/gemini_full_train.jsonl`) both SUCCEEDED (72.1min / 80.7min). Full run: 17,001,755 billable training tokens × ~$0.005/1M ≈ **$0.085 total**. Endpoint scored 53.9%/61.6% (table above) — genuine learned behaviour, but well behind the frontier models and even behind the un-tuned local fine-tune's direct-generation mode. Config notes: no `response_schema` at inference on a tuned model (Google's documented caveat — bake format into training data instead, validate post-hoc with an `unclassified_other` fallback); `thinking_budget=0`.
+
+**Labelling-architecture decision (Option 1 chosen, NOT yet implemented).** Carlos decided to replace Haiku in the `production_labelling.py` consensus layer with Gemini 3.7 Flash (Gemini + Sonnet consensus, Opus tiebreak), given Gemini 3.7's clear lead above. The refactor (renaming `MODELS`/`PREDICTIONS` keys, `gate()`, `review_sheet()`'s `"haiku_leaf"` column, `REVIEW_VERDICTS`'s `"haiku_correct"`, `apply_review()`) was scoped but **not started** — paused when Carlos asked for the determinism validation above. `production_labelling.py` is unmodified on disk as of 2026-08-23. The determinism finding likely doesn't change the plan (aggregate accuracy is stable), but confirm before resuming.
+
+**New gold set built, not yet scored:** `data/gold_transactions_v4_slm_volume.csv` (900 rows, true-random over the *unmatched-Plaid* population specifically, unlike v3's whole-population sample) — built, LLM-labelled (Haiku+Sonnet), human-reviewed (568 agree / 165 disagree / 167 pre-resolved via Tier A), and applied via `src/build_gold_v4_slm_volume.py`. Evaluates the LLM/SLM tier's realistic production-volume accuracy. Not yet scored against any model — natural next step.
+
 ## 7. Backlog after that
 
 1. ~~Four-field categoriser~~ — **done 2026-08-20**: three-way statistical tie between architectures (hashed n-grams / TF-IDF+logreg / LightGBM); adopted TF-IDF + logistic regression. See `docs/project-summary.md`.
 2. ~~Merge dictionary additions + write direction rules~~ — **done 2026-08-20**: `build_merchant_dictionary.py` now merges the 195 gating-approved entries plus 19 evidence-backed context-dependent merchants (535 entries total, up from 321). 3 new T5 direction rules added (`R15`–`R17`: child maintenance, we buy any car). Of the ~100 context-dependent merchants accumulated across gating + all three production tranches, most were deliberately left unresolved — either genuine same-direction product ambiguity (e.g. building societies: mortgage vs savings) or merchant-string normalisation collisions (the production-tranche cases — e.g. `"water"` merging a Teemill order in Freshwater with an unrelated water-bill narrative) where forcing a single leaf would misclassify a real sub-population. Full reasoning per merchant is in `src/build_merchant_dictionary.py` and `data/gating_adjudication_completed.xlsx`.
 3. ~~Wire T4 + T5 into the crosswalk SQL~~ — **done 2026-08-20**. Measured tier distribution (2%/20% BigQuery sample): Equifax now resolves 34.8% via T4 dictionary + 4.1% T3 + 0.5% T1 + 0.3% T5 rules + 0.1% T2, 54.4% still falls to the T6 provider-crosswalk fallback, 5.9% unclassified. Plaid resolves 30.5% via T4 + 3.1% T5 rules + 0.2% T1, 66.1% via T6 fallback. Also caught and fixed a genuine pre-existing bug while wiring this up: the T1 gambling-credit rule pointed at `gambling_winnings`, a leaf that doesn't exist in the taxonomy — silently orphaning ~8k+2k transactions per sample. Fixed to `gambling_unspecified`.
 4. Recompute feature IVs on the new taxonomy; benchmark against the current live model on the same `oot` split (Experiment 3)
-5. **Investigate the `rent` detection gap** — IV 0.0093 vs mortgage 0.0653, on the largest household outgoing for most customers. Rule R13 is disabled pending this (now via a structured `enabled` column in `deterministic_rules.csv`, not a string flag). Do not trust rent features until resolved.
+5. ~~Investigate the `rent` detection gap~~ — **done 2026-08-22**: R13 re-enabled with a targeted false-positive exclusion. Measured the real IV impact against outcomes (`src/rent_iv_analysis.py`, `data/rent_iv_report.md`): essentially flat (0.0086→0.0085 etc., within noise) — R13 fixed 16,282 transaction-level misclassifications, but only 0.6% of proposals (485/83,873) had their rent-persistence count actually change. Kept the fix for audit-trail/fair-lending defensibility, not as a risk-model win.
+6. **Score `data/gold_transactions_v4_slm_volume.csv`** (900 rows, built/labelled/reviewed/applied — see §6a) against the model comparison table in §6a. Not yet done.
+7. **Resume the `production_labelling.py` Option-1 refactor** (Gemini 3.7 + Sonnet consensus, Opus tiebreak, replacing Haiku) — scoped, paused for determinism validation, not yet started. See §6a for full context.
 
 ## 8. Feature-layer findings (affect how features are built, not the taxonomy)
 
@@ -163,6 +209,8 @@ Classify **distinct merchant strings, not transactions.** 209,985 unmatched stri
 | Normalising merchant strings closes the Plaid gap | Only 43.1% → 48.8% |
 | `_months` features just re-derive history length | Correlation with `total_months` only 0.18–0.37 |
 | IV should decide which categories exist | **No** — IV is a risk-model feature-selection criterion. Low IV proves only that a category doesn't predict *that* outcome. Use IV to decide **where aggregation is safe**, never to prune categories. An earlier version pruned 127 leaves to 73 on this basis and had to be rebuilt. |
+| Gemini is fully deterministic at temperature=0, like the local MLX model's greedy decode | **No** — 5/40 rows (12.5%) differed between two identical temp=0 Gemini 3.7 Flash calls. But a 3-run full-benchmark average was stable (leaf SD ≈0.15pp) — row-level flips roughly balance correct↔wrong, so aggregate single-run numbers still hold. See §6a. |
+| A shorter, principles-based labelling prompt would perform as well as (or better than) the full 375 worked examples, since it's cheaper | **No, tested twice at different compression levels, both failed** — principles-only lost 4–4.5pp vs full examples even after excluding leakage; principles+full-375 also underperformed plain full-375. Prompt caching neutralises the cost concern anyway. See §6a. |
 
 ## 10. Separate high-impact finding (not taxonomy work)
 

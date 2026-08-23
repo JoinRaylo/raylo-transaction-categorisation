@@ -195,9 +195,48 @@ TAIL_ADDENDUM = (
     "classify by the FINANCIAL PRODUCT being paid (loan repayment, catalogue credit, "
     "debt collection), never by the merchant's trade description (a debt-litigation "
     "solicitor is debt_collection, not legal_services). Personal names and bare "
-    "transfer references are transfer_p2p when the evidence supports a person-to-person "
-    "payment; use unclassified_other only when the evidence is genuinely uninformative."
+    "transfer references are transfer_p2p ONLY when nothing else in the narrative "
+    "identifies a purpose -- if the raw narrative contains an explicit debt keyword "
+    "(LOAN, LEND, OWE, DEBT, IOU) even alongside a personal name, classify as "
+    "loan_repayment_manual instead, never transfer_p2p or personal_loan_repayment. "
+    "Use unclassified_other only when the evidence is genuinely uninformative."
 )
+
+# HISTORY (2026-08-22): this addendum went through four iterations before
+# settling here, each measured on the same 1,055-row gold_v2_slm_eval_holdout
+# set across Haiku/Sonnet/Opus:
+#   1. Raw dump of all 375 gold_v2_review/gating_adjudication worked-example
+#      notes via build_notes_addendum(load_example_notes()) -- worked, but an
+#      84KB prompt that regrows with every correction, and (separately) had a
+#      real bug: the pre-fix TAIL_ADDENDUM told models to use transfer_p2p for
+#      personal-name transfers even when the narrative had an explicit debt
+#      keyword (LOAN/LEND/OWE/DEBT), causing repeated misclassification.
+#   2. Replaced the raw dump with 7 synthesized general principles (no
+#      examples) -- much shorter (29KB total), but measured 4-4.5pp WORSE
+#      leaf accuracy than #1 on ALL THREE models, even after excluding every
+#      row whose merchant literally appeared in the notes (i.e. not just
+#      leakage) -- confirmed via a second test that the gap holds (in fact
+#      widens for Opus, +10pp) on leaf categories with ZERO note coverage,
+#      meaning the raw examples were teaching transferable reasoning skill,
+#      not acting as a lookup table. Breadth of demonstration, not just
+#      specific facts, was doing real work.
+#   3. Principles + a curated 75-example subset (dropping near-duplicate
+#      templates and single-use unresolvable strings) -- only recovered
+#      ~1-2.5pp of the ~4-4.5pp gap. Curation cut real value, not just noise.
+#   4. Principles + the FULL 375 examples (testing whether principles add
+#      anything on top of full breadth) -- scored slightly BELOW plain #1 on
+#      all three models (-1.8 to -2.6pp) -- the principles text is mildly
+#      dilutive once the examples already demonstrate the same reasoning.
+#   5. THIS VERSION: just the one verified bugfix (the sentence above) + the
+#      full 375 examples, no broader principles text -- ties #1 within noise
+#      (Haiku +0.8pp, Sonnet -0.1pp, Opus -1.1pp) while actually fixing the
+#      known bug. Adopted as the standard.
+# Conclusion: prompt caching (see run_labelling()'s cache_control) means the
+# raw length of this addendum is not the real sustainability risk -- the
+# risk is UNGOVERNED growth. See load_example_notes()'s bound-check assertion
+# for the actual safeguard. Do not re-attempt principle-based compression
+# without re-running this same three-way leakage-and-coverage-adjusted test;
+# it has now failed twice at different compression levels.
 
 
 def label(model_key):

@@ -143,15 +143,34 @@ def load_example_merchants():
 
 
 def load_example_notes():
-    """(merchant, leaf, note) for every dictionary entry that carries a reviewer note --
-    375 of them as of 2026-08-21, mostly from the gold_transactions_v2 hand review and
-    the gating adjudication. These are worked disambiguation reasoning, not just a leaf
+    """(merchant, leaf, note) for every dictionary entry that carries a genuine reviewer
+    note -- 375 of them as of 2026-08-21, mostly from the gold_transactions_v2 hand review
+    and the gating adjudication. These are worked disambiguation reasoning, not just a leaf
     assignment: 'AFSL is Admiral Financial Services Ltd unsecured personal loans' teaches
-    the model HOW to resolve an opaque string, which a bare example-merchant list can't."""
+    the model HOW to resolve an opaque string, which a bare example-merchant list can't.
+
+    Excludes the generic 'LLM-consensus label, tier=...' boilerplate that
+    build_merchant_dictionary.py's tranche-3 T4 wiring (commit f0f7eb4, 2026-08-21)
+    attached to 18,019 entries -- that's tier provenance, not disambiguation
+    reasoning, and indiscriminately including it bloated this from 375 to 18,394
+    notes (2.36M chars), discovered when a full assembled prompt print came out at
+    2.39M characters instead of the expected ~30KB."""
     out = []
     for r in csv.DictReader(open(ROOT / "taxonomy" / "merchant_dictionary.csv")):
-        if r["notes"] and r["notes"].strip():
-            out.append((r["normalised_merchant"], r["detailed_category"], r["notes"].strip()))
+        note = r["notes"].strip() if r["notes"] else ""
+        if note and not note.startswith("LLM-consensus label, tier="):
+            out.append((r["normalised_merchant"], r["detailed_category"], note))
+    # Guardrail against a repeat of the 375 -> 18,394 regression above: this
+    # count should grow slowly with deliberate curation, not explode from a
+    # bulk data-wiring script. Fails loudly rather than silently bloating the
+    # prompt this function feeds into build_notes_addendum().
+    if not (300 <= len(out) <= 600):
+        raise RuntimeError(
+            f"load_example_notes() returned {len(out)} notes, expected ~300-600. "
+            "This bound exists because a bulk wiring script once inflated this to "
+            "18,394 by attaching boilerplate provenance text as 'notes' -- if this "
+            "is a deliberate, reviewed expansion, raise the bound; otherwise find "
+            "and exclude whatever just got bulk-added.")
     return out
 
 

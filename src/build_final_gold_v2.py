@@ -57,7 +57,11 @@ TXN_ADDENDUM = (
     "alone cannot (e.g. a payment TO a person's name vs a refund FROM a retailer with the "
     "same string). For lenders, debt collectors and credit providers, classify by the "
     "FINANCIAL PRODUCT being paid (loan repayment, catalogue credit, debt collection), "
-    "never by the merchant's trade description."
+    "never by the merchant's trade description. Personal names and bare transfer "
+    "references are transfer_p2p ONLY when nothing else in the narrative identifies a "
+    "purpose -- if the raw narrative contains an explicit debt keyword (LOAN, LEND, OWE, "
+    "DEBT, IOU) even alongside a personal name, classify as loan_repayment_manual "
+    "instead, never transfer_p2p or personal_loan_repayment."
 )
 
 
