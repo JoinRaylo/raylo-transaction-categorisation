@@ -132,7 +132,7 @@ Classify **distinct merchant strings, not transactions.** 209,985 unmatched stri
 
 ## 6a. Frontier LLM benchmark, prompt-engineering fix, and fine-tuning experiments (2026-08-22/23)
 
-All numbers below are scored against `data/gold_v2_slm_eval_holdout.csv` (1,055 real transactions, merchant-disjoint from all training data) — the standard SLM/LLM benchmark set. Scripts live in `outputs/mlx_full_run/`.
+All numbers below are scored against `data/gold_v2_slm_eval_holdout.csv` (1,055 real transactions, merchant-disjoint from all training data) — the standard SLM/LLM benchmark set. Scoring/comparison scripts live in the tracked `benchmarks/` directory (moved 2026-08-23 from the gitignored `outputs/mlx_full_run/` for reproducibility — see `benchmarks/README.md`); large model artefacts (fine-tuned adapter weights, checkpoint scans) remain in `outputs/mlx_full_run/`, regenerable via the fine-tuning runbook.
 
 **Prompt bug found and fixed.** The labelling system prompt had silently grown to 2.39M characters: `load_example_notes()` in `src/gating_experiment.py` was including a `"LLM-consensus label, tier=..."` boilerplate string as if it were a human-authored disambiguation note (root cause: a bulk dictionary-wiring commit). Fixed by excluding that prefix (restores the genuine 375 notes) and added a hard guardrail — `load_example_notes()` now raises if the note count leaves the 300–600 band, so a future bulk-add can't silently re-inflate the prompt.
 
@@ -225,7 +225,7 @@ The Equifax dump's 189-day history makes the hypothesis testable now. This is pr
 - The repo is a git repository (since 2026-08-19). Commit after each substantive milestone; `.env` (API key) and `outputs/` are gitignored — verify with `git status` before any commit that adds new file types.
 - Run `pytest tests/` after **every** taxonomy or dictionary edit. These tests already caught three invalid leaf references, a duplicate `Stationery` mapping, and a comma inside a regex that broke CSV parsing.
 - Superseded work is in `archive/` with `_SUPERSEDED` / `_DISCARDED` suffixes. The AccountScore XML parser is discarded because the Equifax dump covers 99.997% of its references — don't resurrect it.
-- Scratch output goes in `outputs/` (gitignored).
+- Scratch output goes in `outputs/` (gitignored). Reusable benchmark/comparison scripts and their small text dependencies belong in tracked `benchmarks/`, not `outputs/` — anything needed to reproduce a quoted headline number must be in git.
 - UK English in all artifacts and docs.
 
 ## Suggested skills
