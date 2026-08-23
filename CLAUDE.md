@@ -59,7 +59,7 @@ Every transaction resolves at the highest tier that fires, and **records which t
 | Tier | Mechanism | Status |
 |---|---|---|
 | T1 | Direction-dependent overrides | in `sql/apply_crosswalk.sql` |
-| T2 | Compound rules (gig income) | in `sql/apply_crosswalk.sql` |
+| T2 | Compound rules (gig income; narrative-disambiguated merchant collisions) | in `sql/apply_crosswalk.sql` |
 | T3 | **Mechanism-override primaries** | in `sql/apply_crosswalk.sql` |
 | T4 | Merchant dictionary | `taxonomy/merchant_dictionary.csv` — wired in `sql/apply_crosswalk.sql` 2026-08-20 |
 | T5 | Deterministic regex rules | `taxonomy/rules/deterministic_rules.csv` — wired in `sql/apply_crosswalk.sql` 2026-08-20 (R13/rent disabled via an `enabled` column, not a string flag) |
@@ -67,6 +67,8 @@ Every transaction resolves at the highest tier that fires, and **records which t
 | T7 | `unclassified` | explicit, monitored |
 
 **T3 (mechanism override) was discovered by running the crosswalk on real data** and is easy to miss: 13 Equifax primaries (`Identified Salary`, `Refund`, `Benefits`, `Welfare`, `Pension Payout`, `Tax Refund`, `Cash Back`, `Cash Machine`, `Cash Deposit`, `Interest`, `Interests and Dividends`, `Balance Transfers`, `Adjustments`) determine the leaf **regardless of merchant**. Without it, `Identified Salary | General Groceries` wrongly resolves to `groceries`. 4.10% of volume.
+
+**The Tesco/Tesco Bank fix (2026-08-23) is the same class of bug as T3, one level down — a provider's own entity resolution, not ours, erases the disambiguating information.** Plaid's `merchant_name` field collapses "Tesco Bank" transactions to bare `Tesco`, identical to the supermarket's string, so the T4 dictionary's `tesco -> groceries` match (98.5% correct for that merchant string overall) silently mislabelled ~1,150 Tesco Bank direct-debit/card payments as groceries. Fixed with a narrative-content check (`description_raw` contains "tesco bank") that must fire **before** T4, since the merchant string alone can't disambiguate once Plaid has already erased the distinction — structurally the same shape as Marks & Spencer / M&S Bank, but that case is resolved on the Equifax side by Equifax's own vendor field keeping the two entities as different strings; Plaid does not extend it that courtesy. **Any future "provider entity collision" bug of this shape belongs in T2 (compound: merchant + narrative), not T5 — T5 rules run after the T4 dictionary and would never fire.**
 
 ### The rule that matters most
 

@@ -19529,6 +19529,13 @@ eqx_resolved AS (
       -- T2: compound rule - gig income
       WHEN r.pri='Identified Salary' AND r.sub IN ('Taxis','Delivery','Take Away') THEN 'salary_gig'
       WHEN r.pri='Identified Salary' AND r.sub IN ('Recruitment Services','Employment Agencies') THEN 'income_agency_work'
+      -- T2: narrative-disambiguated merchant collision -- Plaid's own merchant-
+      -- name resolution collapses "Tesco Bank" transactions down to bare "Tesco", the
+      -- same string the supermarket uses, so the T4 dictionary's tesco->groceries match
+      -- would otherwise silently mislabel these. Must fire before T4. financial_institution_
+      -- unspecified rather than a specific product (credit card/loan/savings) since the
+      -- narrative alone doesn't say which Tesco Bank product this is.
+      WHEN LOWER(TRIM(r.vendor))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\btesco bank\b') THEN 'financial_institution_unspecified'
       -- T3: MECHANISM-OVERRIDE primaries (mechanism determines leaf regardless of merchant)
       WHEN r.pri='Identified Salary' THEN 'salary'
       WHEN r.pri='Refund' THEN 'refund_received'
@@ -19571,6 +19578,7 @@ eqx_resolved AS (
       WHEN r.sub='Council' AND r.direction='credit' THEN 'T1_direction'
       WHEN r.pri='Identified Salary' AND r.sub IN ('Taxis','Delivery','Take Away') THEN 'T2_compound'
       WHEN r.pri='Identified Salary' AND r.sub IN ('Recruitment Services','Employment Agencies') THEN 'T2_compound'
+      WHEN LOWER(TRIM(r.vendor))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\btesco bank\b') THEN 'T2_compound_tesco_bank'
       WHEN r.pri IN ('Identified Salary','Refund','Benefits','Welfare','Pension Payout','Tax Refund',
         'Cash Back','Cash Machine','Cash Deposit','Interest','Interests and Dividends',
         'Balance Transfers','Adjustments') THEN 'T3_mechanism_override'
@@ -19616,6 +19624,9 @@ plaid_resolved AS (
     CASE
       -- T1: direction-dependent overrides
       WHEN r.cat='ENTERTAINMENT_CASINOS_AND_GAMBLING' AND r.direction='credit' THEN 'gambling_unspecified'
+      -- T2: narrative-disambiguated merchant collision -- see the eqx_resolved
+      -- CTE above for the full rationale; same collision on the Plaid side.
+      WHEN LOWER(TRIM(r.merchant_raw))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\btesco bank\b') THEN 'financial_institution_unspecified'
       -- T4: merchant dictionary (provider-independent, overrides both providers' own categories)
       WHEN d.leaf IS NOT NULL THEN d.leaf
       -- T5: deterministic rules
@@ -19642,6 +19653,7 @@ plaid_resolved AS (
     END AS leaf,
     CASE
       WHEN r.cat='ENTERTAINMENT_CASINOS_AND_GAMBLING' AND r.direction='credit' THEN 'T1_direction'
+      WHEN LOWER(TRIM(r.merchant_raw))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\btesco bank\b') THEN 'T2_compound_tesco_bank'
       WHEN d.leaf IS NOT NULL THEN 'T4_merchant_dictionary'
       WHEN REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '^(mr|mrs|miss|ms|dr)\\s+') THEN 'T5_rule_R01'
       WHEN REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '^[a-z]\\s+[a-z]{2,}$') THEN 'T5_rule_R02'
