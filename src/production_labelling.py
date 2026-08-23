@@ -4,6 +4,19 @@ Labels the unmatched Plaid merchant vocabulary with the context-enriched
 two-model pipeline and gates every string into a quality tier. Accepted
 labels become T4 lookup data; nothing enters the dictionary silently.
 
+**Option 1 refactor (2026-08-23):** the two-model pair is now Gemini 3.7
+Flash + Sonnet 5 (was Haiku + Sonnet), Opus 5 tiebreak unchanged. Confirmed by
+two independent benchmarks before this landed: the frontier-model comparison
+in CLAUDE.md section 6a (Gemini 3.7 Flash leads every model on
+gold_v2_slm_eval_holdout) and the gold-v4 production-population scoring
+(`data/gold_v4_scoring_report.md` -- the simulated Gemini+Sonnet/Opus-tiebreak
+consensus gate scores 89.9% leaf / 93.3% general at 96.4% acceptance on real
+unmatched-Plaid volume). Tranches 1-3 (`data/production_labels_tranche{1,2,3}.csv`,
+`data/production_review_tranche{1,2,3}_completed.xlsx`) were labelled under the
+old Haiku+Sonnet pair -- `apply_review()` still accepts their `haiku_leaf`/
+`haiku_correct` columns for backward compatibility so those workbooks stay
+re-appliable after a fresh `gate()`.
+
 Tiers (thresholds from measured calibration -- CLAUDE.md section 6):
     auto_accept        models agree AND sonnet confidence >= 0.9
     accepted           models agree AND sonnet confidence >= 0.7
@@ -12,7 +25,7 @@ Tiers (thresholds from measured calibration -- CLAUDE.md section 6):
 
 Usage:
     python src/production_labelling.py fetch [N]     # top-N unmatched strings + evidence
-    python src/production_labelling.py label [haiku|sonnet]
+    python src/production_labelling.py label [gemini|sonnet]
     python src/production_labelling.py tiebreak       # Opus over the needs_review queue
     python src/production_labelling.py gate           # -> outputs/production_labels.csv + stats
     python src/production_labelling.py review-sheet   # workbook for risk-boundary strings
@@ -22,7 +35,7 @@ Tranche runbook (run from the repo root, venv active, after `gcloud auth login`
 if BigQuery credentials have expired):
 
     python src/production_labelling.py fetch 20000    # re-selects top N; already-labelled strings resume for free
-    python src/production_labelling.py label haiku    # only labels new strings (resumable, checkpointed)
+    python src/production_labelling.py label gemini   # only labels new strings (resumable, checkpointed)
     python src/production_labelling.py label sonnet
     python src/production_labelling.py gate           # first gate: exposes the new needs_review queue
     python src/production_labelling.py tiebreak       # Opus labels ONLY current needs_review strings
@@ -46,14 +59,26 @@ load_dotenv()
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from gating_experiment import (  # noqa: E402
-    MODELS, ROOT, OUT_DIR, build_system_prompt, build_tool_schema,
+    ROOT, OUT_DIR, build_system_prompt, build_tool_schema,
     load_crosswalk, load_example_merchants, load_example_notes, build_notes_addendum,
 )
 from build_tail_eval import TAIL_ADDENDUM, POPULATION_QUERY, bq_json  # noqa: E402
 
 STRINGS_CSV = OUT_DIR / "production_strings.csv"
 EVIDENCE_JSON = OUT_DIR / "production_evidence.json"
-PREDICTIONS = {k: OUT_DIR / f"production_predictions_{k}.csv" for k in MODELS}
+
+# Production two-model pair (Option 1, 2026-08-23): Gemini 3.7 Flash + Sonnet 5,
+# replacing Haiku + Sonnet -- confirmed by the frontier-model benchmark
+# (CLAUDE.md section 6a) and by gold-v4 production-population scoring
+# (data/gold_v4_scoring_report.md). Deliberately NOT the same dict as gating_
+# experiment.MODELS: that dict is the frozen historical Haiku-vs-Sonnet gating
+# experiment record and must not be retargeted retroactively. "backend" picks
+# which API client run_labelling() dispatches to.
+PRODUCTION_MODELS = {
+    "gemini": {"backend": "gemini", "id": "gemini-3.7-flash", "extra": {}},
+    "sonnet": {"backend": "anthropic", "id": "claude-sonnet-5", "max_tokens": 16000, "extra": {}},
+}
+PREDICTIONS = {k: OUT_DIR / f"production_predictions_{k}.csv" for k in PRODUCTION_MODELS}
 OPUS_PREDICTIONS = OUT_DIR / "production_predictions_opus.csv"
 LABELS_CSV = OUT_DIR / "production_labels.csv"
 BATCH = 20
@@ -63,7 +88,7 @@ DEFAULT_N = 5000
 # majorities. Local config (not in gating MODELS -- the two-model experiments
 # stay two-model). Opus 5: no sampling params; thinking suppressed under
 # forced tool_choice, same as Sonnet 5.
-TIEBREAK_CFG = {"id": "claude-opus-5", "max_tokens": 16000, "extra": {}}
+TIEBREAK_CFG = {"backend": "anthropic", "id": "claude-opus-5", "max_tokens": 16000, "extra": {}}
 
 # strings already gold-labelled by human adjudication are excluded here --
 # their labels come from data/, not from this pipeline
@@ -123,13 +148,25 @@ def load_evidence():
     return ev
 
 
-def run_labelling(cfg, rows, out_path):
-    import anthropic
+def _match_result(res, batch, by_string, idx_key="index", merchant_key="merchant"):
+    """Shared index+echoed-merchant matching, used by both backends: trust the
+    echoed merchant string when it disagrees with the positional index (the
+    model reordered or dropped an item), fall back to position otherwise."""
+    idx = res.get(idx_key)
+    echoed = (res.get(merchant_key) or "").strip().lower()
+    if isinstance(idx, int) and 1 <= idx <= len(batch):
+        candidate = batch[idx - 1]["merchant"]
+        if candidate.strip().lower() == echoed or echoed not in by_string:
+            return candidate
+    if echoed in by_string:
+        return by_string[echoed]
+    return None
 
+
+def run_labelling(cfg, rows, out_path):
     _, _, leaves, gen_of, notes_of = load_crosswalk()
     system_prompt = (build_system_prompt(leaves, gen_of, notes_of, load_example_merchants())
                       + TAIL_ADDENDUM + build_notes_addendum(load_example_notes()))
-    tool = build_tool_schema(leaves)
     ev = load_evidence()
 
     # resumable: skip strings already predicted (rerun-safe after interruption)
@@ -140,7 +177,6 @@ def run_labelling(cfg, rows, out_path):
         print(f"Resuming: {len(predictions)} already labelled", file=sys.stderr)
     todo = [r for r in rows if r["merchant"] not in predictions]
 
-    client = anthropic.Anthropic()
     n_batches = (len(todo) + BATCH - 1) // BATCH
 
     def render(i, r):
@@ -168,35 +204,99 @@ def run_labelling(cfg, rows, out_path):
                 if m not in seen:
                     w.writerow({"merchant": m, "llm_leaf": p["leaf"], "llm_confidence": p["conf"]})
 
-    def classify_batch(batch, tag):
-        user_msg = "Classify each of these merchant strings using the evidence provided:\n\n" + \
-            "\n".join(render(j + 1, r) for j, r in enumerate(batch))
-        response = client.messages.create(
-            model=cfg["id"], max_tokens=cfg["max_tokens"],
-            system=[{"type": "text", "text": system_prompt, "cache_control": {"type": "ephemeral", "ttl": "1h"}}],
-            tools=[tool], tool_choice={"type": "tool", "name": "submit_classifications"},
-            messages=[{"role": "user", "content": user_msg}], **cfg["extra"],
-        )
-        if response.stop_reason == "max_tokens":
-            print(f"  WARNING: [{tag}] truncated", file=sys.stderr)
-        tool_use = next((b for b in response.content if b.type == "tool_use"), None)
-        if tool_use is None:
-            return {}
-        by_string = {r["merchant"].strip().lower(): r["merchant"] for r in batch}
-        got = {}
-        for res in tool_use.input.get("results", []):
-            idx = res.get("index")
-            echoed = (res.get("merchant") or "").strip().lower()
-            merchant = None
-            if isinstance(idx, int) and 1 <= idx <= len(batch):
-                candidate = batch[idx - 1]["merchant"]
-                if candidate.strip().lower() == echoed or echoed not in by_string:
-                    merchant = candidate
-            if merchant is None and echoed in by_string:
-                merchant = by_string[echoed]
-            if merchant is not None:
-                got[merchant] = {"leaf": res.get("detailed_category"), "conf": res.get("confidence")}
-        return got
+    if cfg["backend"] == "anthropic":
+        import anthropic
+
+        client = anthropic.Anthropic()
+        tool = build_tool_schema(leaves)
+
+        def classify_batch(batch, tag):
+            user_msg = "Classify each of these merchant strings using the evidence provided:\n\n" + \
+                "\n".join(render(j + 1, r) for j, r in enumerate(batch))
+            response = client.messages.create(
+                model=cfg["id"], max_tokens=cfg["max_tokens"],
+                system=[{"type": "text", "text": system_prompt,
+                         "cache_control": {"type": "ephemeral", "ttl": "1h"}}],
+                tools=[tool], tool_choice={"type": "tool", "name": "submit_classifications"},
+                messages=[{"role": "user", "content": user_msg}], **cfg["extra"],
+            )
+            if response.stop_reason == "max_tokens":
+                print(f"  WARNING: [{tag}] truncated", file=sys.stderr)
+            tool_use = next((b for b in response.content if b.type == "tool_use"), None)
+            if tool_use is None:
+                return {}
+            by_string = {r["merchant"].strip().lower(): r["merchant"] for r in batch}
+            got = {}
+            for res in tool_use.input.get("results", []):
+                merchant = _match_result(res, batch, by_string)
+                if merchant is not None:
+                    got[merchant] = {"leaf": res.get("detailed_category"), "conf": res.get("confidence")}
+            return got
+
+    elif cfg["backend"] == "gemini":
+        import os
+
+        from google import genai
+        from google.genai import types
+
+        # Explicit api_key + vertexai=False: Gemini 3.7 Flash is Developer-API-
+        # only in this project/region (see benchmarks/score_gemini37_finalprompt.py).
+        client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"], vertexai=False)
+        leaf_list = sorted(leaves)
+        # Gemini's response_schema rejects string enums above ~100-150 values
+        # (platform limit) -- numbered index + bounded integer, mapped back
+        # locally, same workaround as benchmarks/score_llm_taxonomy.py.
+        index_addendum = "\n\n## Category index (output this number, not the name)\n" + "\n".join(
+            f"{i + 1}. {leaf}" for i, leaf in enumerate(leaf_list))
+        gemini_system = system_prompt + index_addendum
+        schema = {
+            "type": "object",
+            "properties": {
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "index": {"type": "integer"},
+                            "merchant": {"type": "string"},
+                            "category_index": {"type": "integer", "minimum": 1, "maximum": len(leaf_list)},
+                            "confidence": {"type": "number"},
+                        },
+                        "required": ["index", "merchant", "category_index", "confidence"],
+                    },
+                }
+            },
+            "required": ["results"],
+        }
+
+        def classify_batch(batch, tag):
+            user_msg = "Classify each of these merchant strings using the evidence provided:\n\n" + \
+                "\n".join(render(j + 1, r) for j, r in enumerate(batch))
+            try:
+                response = client.models.generate_content(
+                    model=cfg["id"], contents=user_msg,
+                    config=types.GenerateContentConfig(
+                        system_instruction=gemini_system,
+                        response_mime_type="application/json", response_schema=schema, temperature=0.0,
+                    ),
+                )
+                data = json.loads(response.text)
+            except Exception as e:
+                print(f"  [{tag}] Gemini call/parse failed: {e}", file=sys.stderr)
+                return {}
+            by_string = {r["merchant"].strip().lower(): r["merchant"] for r in batch}
+            got = {}
+            for res in data.get("results", []):
+                cat_idx = res.get("category_index")
+                if not (isinstance(cat_idx, int) and 1 <= cat_idx <= len(leaf_list)):
+                    continue
+                merchant = _match_result(res, batch, by_string)
+                if merchant is not None:
+                    got[merchant] = {"leaf": leaf_list[cat_idx - 1], "conf": res.get("confidence")}
+            return got
+
+    else:
+        sys.exit(f"unknown backend {cfg['backend']!r}")
 
     for i in range(0, len(todo), BATCH):
         batch = todo[i:i + BATCH]
@@ -219,7 +319,7 @@ def run_labelling(cfg, rows, out_path):
 
 def label(model_key):
     rows = list(csv.DictReader(open(STRINGS_CSV)))
-    run_labelling(MODELS[model_key], rows, PREDICTIONS[model_key])
+    run_labelling(PRODUCTION_MODELS[model_key], rows, PREDICTIONS[model_key])
 
 
 def tiebreak():
@@ -247,7 +347,7 @@ def _risky(leaf):
 def gate():
     _, _, _, gen_of, _ = load_crosswalk()
     rows = list(csv.DictReader(open(STRINGS_CSV)))
-    preds = {k: {r["merchant"]: r for r in csv.DictReader(open(PREDICTIONS[k]))} for k in MODELS}
+    preds = {k: {r["merchant"]: r for r in csv.DictReader(open(PREDICTIONS[k]))} for k in PRODUCTION_MODELS}
 
     opus = {}
     if OPUS_PREDICTIONS.exists():
@@ -258,23 +358,23 @@ def gate():
     vol = {r["merchant"]: int(r["plaid_n"]) for r in rows}
     for r in rows:
         m = r["merchant"]
-        h, s = preds["haiku"].get(m, {}), preds["sonnet"].get(m, {})
-        hl, sl = h.get("llm_leaf", ""), s.get("llm_leaf", "")
+        g, s = preds["gemini"].get(m, {}), preds["sonnet"].get(m, {})
+        gl, sl = g.get("llm_leaf", ""), s.get("llm_leaf", "")
         sc = float(s["llm_confidence"]) if s.get("llm_confidence") else 0.0
-        agree = bool(hl) and hl == sl
-        if agree and hl == "unclassified_other":
+        agree = bool(gl) and gl == sl
+        if agree and gl == "unclassified_other":
             tier, leaf = "abstain_confirmed", "unclassified_other"
         elif agree and sc >= 0.9:
             tier, leaf = "auto_accept", sl
         elif agree and sc >= 0.7:
             tier, leaf = "accepted", sl
         else:
-            tier, leaf = "needs_review", sl or hl
+            tier, leaf = "needs_review", sl or gl
             # 2-of-3 majority with the tiebreaker model resolves the queue;
             # the tiebreaker must be IN the majority (it never rescues a
-            # low-confidence haiku+sonnet pair it disagrees with)
+            # low-confidence gemini+sonnet pair it disagrees with)
             ol = opus.get(m, {}).get("llm_leaf", "")
-            if ol and (ol == sl or ol == hl):
+            if ol and (ol == sl or ol == gl):
                 if ol == "unclassified_other":
                     tier, leaf = "abstain_confirmed", "unclassified_other"
                 else:
@@ -286,15 +386,15 @@ def gate():
                 # Risk-dimension divergence (gambling/debt/income/age) -> human,
                 # never a guess. Everything else -> abstain; the T6 crosswalk
                 # still categorises these at runtime, we just don't override it.
-                gens = {gen_of.get(x, "") for x in (hl, sl, ol)}
+                gens = {gen_of.get(x, "") for x in (gl, sl, ol)}
                 if len(gens) == 1 and "" not in gens:
                     tier, leaf = "accepted_general", sl
-                elif len({_risky(x) for x in (hl, sl, ol)}) > 1:
+                elif len({_risky(x) for x in (gl, sl, ol)}) > 1:
                     tier, leaf = "needs_review", sl
                 else:
                     tier, leaf = "abstain_residual", "unclassified_other"
         out.append({"merchant": m, "final_leaf": leaf, "tier": tier,
-                    "haiku_leaf": hl, "sonnet_leaf": sl, "sonnet_conf": sc,
+                    "gemini_leaf": gl, "sonnet_leaf": sl, "sonnet_conf": sc,
                     "opus_leaf": opus.get(m, {}).get("llm_leaf", ""),
                     "general_category": gen_of.get(leaf, ""), "plaid_n": vol[m]})
         stats.setdefault(tier, [0, 0])
@@ -317,8 +417,13 @@ def gate():
 
 
 REVIEW_XLSX = OUT_DIR / "production_review.xlsx"
-REVIEW_VERDICTS = ["sonnet_correct", "haiku_correct", "opus_correct", "override",
+REVIEW_VERDICTS = ["sonnet_correct", "gemini_correct", "opus_correct", "override",
                    "unclassifiable", "context_dependent", "unsure"]
+# Tranches 1-3 were labelled under the pre-refactor Haiku+Sonnet pair and used
+# "haiku_correct" -- apply_review() still accepts it so those archived
+# workbooks stay re-appliable; new review sheets only ever offer the
+# REVIEW_VERDICTS list above.
+LEGACY_VERDICTS = REVIEW_VERDICTS + ["haiku_correct"]
 
 
 def review_sheet():
@@ -353,7 +458,7 @@ def review_sheet():
     ws.title = "Review"
     headers = ["merchant", "plaid_n", "pct_credit", "median_amount",
                "plaid_native_categories", "top_raw_narratives",
-               "haiku_leaf", "sonnet_leaf", "opus_leaf",
+               "gemini_leaf", "sonnet_leaf", "opus_leaf",
                "verdict", "correct_leaf", "notes"]
     ws.append(headers)
     for r in rows:
@@ -361,7 +466,7 @@ def review_sheet():
         ws.append([r["merchant"], int(r["plaid_n"]),
                    e.get("pct_credit", ""), e.get("median_amount", ""),
                    e.get("cats", ""), e.get("descs", ""),
-                   r["haiku_leaf"], r["sonnet_leaf"], r["opus_leaf"],
+                   r["gemini_leaf"], r["sonnet_leaf"], r["opus_leaf"],
                    "", "", ""])
     n = len(rows)
     for cell in ws[1]:
@@ -423,7 +528,11 @@ def apply_review(path=None):
     print(f"Applying verdicts from {path}", file=sys.stderr)
     ws = load_workbook(path, data_only=True)["Review"]
     hdr = [c.value for c in ws[1]]
-    col = {n: hdr.index(n) for n in ("merchant", "haiku_leaf", "sonnet_leaf", "opus_leaf",
+    # Tranches 1-3 (pre-refactor) carry "haiku_leaf"/"haiku_correct"; tranche 4+
+    # carries "gemini_leaf"/"gemini_correct" (Option 1, 2026-08-23) -- accept
+    # whichever this workbook actually has so archived reviews stay re-appliable.
+    model1_col = "gemini_leaf" if "gemini_leaf" in hdr else "haiku_leaf"
+    col = {n: hdr.index(n) for n in ("merchant", model1_col, "sonnet_leaf", "opus_leaf",
                                      "verdict", "correct_leaf", "notes")}
     resolutions = {}
     for row in ws.iter_rows(min_row=2, values_only=True):
@@ -431,12 +540,14 @@ def apply_review(path=None):
         if m is None:
             continue
         v = (row[col["verdict"]] or "").strip()
-        if v and v not in REVIEW_VERDICTS:
-            sys.exit(f"Row '{m}': verdict '{v}' not in {REVIEW_VERDICTS}")
+        if v and v not in LEGACY_VERDICTS:
+            sys.exit(f"Row '{m}': verdict '{v}' not in {LEGACY_VERDICTS}")
         cl = row[col["correct_leaf"]]
         if cl and cl not in gen_of:
             sys.exit(f"Row '{m}': correct_leaf '{cl}' is not a taxonomy leaf")
-        if v in ("haiku_correct", "sonnet_correct", "opus_correct"):
+        if v in ("gemini_correct", "haiku_correct"):
+            resolutions[m] = (row[col[model1_col]], "human_reviewed")
+        elif v in ("sonnet_correct", "opus_correct"):
             resolutions[m] = (row[col[v.replace("_correct", "_leaf")]], "human_reviewed")
         elif v == "override":
             resolutions[m] = (cl, "human_reviewed")
@@ -480,8 +591,8 @@ if __name__ == "__main__":
     if args[0] == "fetch":
         fetch(int(args[1]) if len(args) > 1 else DEFAULT_N)
     elif args[0] == "label":
-        model_key = args[1] if len(args) > 1 else "haiku"
-        if model_key not in MODELS:
+        model_key = args[1] if len(args) > 1 else "gemini"
+        if model_key not in PRODUCTION_MODELS:
             sys.exit(f"Unknown model '{model_key}'")
         label(model_key)
     elif args[0] == "tiebreak":
