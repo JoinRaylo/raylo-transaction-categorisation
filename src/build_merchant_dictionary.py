@@ -110,8 +110,8 @@ D = [
 ("state pension","pension_received","high",""),
 ("child maintenance","income_other_unspecified","medium","direction-dependent: received or paid"),
 ("overpayments","income_other_unspecified","low","likely benefit overpayment recovery - ambiguous"),
-("hmrc","tax_payment","medium","direction-dependent: tax paid vs refund received"),
-("hm revenue and customs","tax_payment","medium","direction-dependent"),
+("hmrc","tax_payment","medium","debit default; T2 splits Child Benefit / tax-credit credits and SA refunds"),
+("hm revenue and customs","tax_payment","medium","debit default; T2 splits Child Benefit / tax-credit credits and SA refunds"),
 # ---- UTILITIES / TELCO
 ("british gas","energy","high",""),("utilita","energy","high",""),("ovo energy","energy","high",""),
 ("scottish power","energy","high",""),("octopus energy","energy","high",""),("e.on","energy","high",""),
@@ -183,7 +183,7 @@ D = [
 ("george at asda","clothing_general","high",""),
 ("jd sports","sportswear","high",""),("sports direct","sportswear","high",""),("nike","sportswear","high",""),
 ("boots","pharmacy","medium","pharmacy + beauty - genuine mixed basket"),
-("superdrug","pharmacy","medium","pharmacy + beauty"),("savers health","pharmacy","medium",""),
+("superdrug","pharmacy","medium","pharmacy + beauty"),("savers health","health_beauty_general","medium","beauty-led retail, not a chemist"),
 ("holland & barrett","supplements","high",""),("specsavers","optician","high",""),
 ("currys","computing_devices","high",""),("cex","computing_devices","high","secondhand electronics"),
 ("ikea","home_accessories","high",""),("dunelm","home_accessories","high",""),
@@ -359,6 +359,75 @@ for r in csv.DictReader(open(ROOT / "data" / "production_labels_tranche3.csv")):
         "source": f"production_tranche3_{r['tier']}", "review_status": "approved",
         "notes": f"LLM-consensus label, tier={r['tier']}, measured 82-91% accurate against the clean gold set"})
 print(f"production_tranche3 additions: {_prod_added}")
+
+# ---- 2026-08-24 gold v3/v4 T4 adds + retargets (applied last so they beat tranche-3) ----
+HUMAN_T4_FINAL = [
+    ("sony playstation", "gaming_console_pc", "high", "Plaid PSN string; playstation already mapped, this key is not"),
+    ("amazon prime", "streaming", "high", "Amazon Prime subscription; distinct from amazon marketplace"),
+    ("chaotic", "prize_competitions", "high", "Chaotic.co.uk competition tickets, not a restaurant"),
+    ("temu", "marketplace_general", "high", "temu.com; temu cd already mapped"),
+    ("taptap send", "transfer_international", "high", "remittance; longer UK-limited keys exist"),
+    ("ringgo", "car_parking", "high", "RingGo parking; ringgo parking already mapped"),
+    ("microsoft xbox", "gaming_console_pc", "high", "Plaid Xbox/Game Pass string"),
+    ("jd wetherspoon", "pub_bar", "high", "singular Wetherspoon; jd wetherspoons already mapped"),
+    ("b & q", "home_improvement", "high", "B&Q with spaces; b&q already mapped"),
+    ("home retail group", "catalogue_retail", "high", "Argos parent, shopping not store-card"),
+    ("disney+", "streaming", "high", "Disney Plus; disney plus already mapped"),
+    ("trainpal", "public_transport_rail_coach", "high", "rail tickets; trainpal cd already mapped"),
+    ("oodle car finance", "car_finance_repayment", "high", "car-finance DDR; must not fall to T6 mortgage"),
+    ("first central serv", "insurance_motor", "high", "1st Central motor insurance DD"),
+    ("t j morris ltd", "discount_store", "high", "Home Bargains operator"),
+    ("too good to go", "takeaway", "high", "surplus-meal app, same convention as Just Eat"),
+    ("first west yorkshire", "public_transport_rail_coach", "high", "First Bus"),
+    ("stageco", "public_transport_rail_coach", "medium", "Plaid truncation of Stagecoach"),
+    ("www.amazon.uk.co", "marketplace_amazon", "high", "Amazon retail card string"),
+    ("duelz", "gambling_casino", "high", "duelz.com casino; keep subtype not unspecified"),
+    ("ring basic plan", "online_services", "high", "Ring Protect-style subscription"),
+    ("domino's", "takeaway", "high", "Plaid apostrophe form; dominos pizza already mapped"),
+    ("zippa loans", "payday_loan", "high", "Skyline Direct high-cost short-term credit"),
+    ("gdk borough", "takeaway", "high", "German Doner Kebab Borough, not government"),
+    ("kiley", "transfer_p2p", "medium", "named person (Kiley Sillett); not an energy supplier"),
+    ("depop", "marketplace_general", "high", "Depop is a C2C marketplace, not Amazon; dictionary bug"),
+    ("lime", "bicycle", "high", "UK Lime is e-bikes/scooters, not taxis"),
+    ("tescophoneins.", "insurance_other", "high", "Plaid keeps the trailing period; T2 only fires when merchant is exactly tesco"),
+    ("off licence gs wi", "alcohol_beer_spirits", "high", "Plaid truncation of an off-licence"),
+    ("off licence gs wi", "alcohol_beer_spirits", "high", "Plaid truncation variant"),
+    ("goldwire conve", "convenience_store", "high", "Goldwire Convenience truncation"),
+    ("goldwire conve", "convenience_store", "high", "Goldwire Convenience truncation variant"),
+    ("cd ridgewood stores", "convenience_store", "high", "Ridgewood Stores CD truncation"),
+    ("cd ridgewood stores", "convenience_store", "high", "Ridgewood Stores truncation variant"),
+    ("stagecoach services", "public_transport_rail_coach", "high", "Stagecoach bus; stageco already mapped"),
+    ("morr wetherby", "groceries", "high", "Plaid Morrisons truncation; was pet_supplies"),
+    ("morr catcliffe", "groceries", "high", "Plaid Morrisons truncation; was pub_bar"),
+    ("prime video add-on", "streaming", "high", "Prime Video add-on; merchant is not amazon so T2 cannot fire"),
+    ("prime video rent buy", "streaming", "high", "Prime Video rental; merchant is not amazon"),
+    ("amazon prime video", "streaming", "high", "Amazon Prime Video as its own merchant string"),
+    ("prime video", "streaming", "high", "Prime Video merchant string"),
+]
+_by_m = {r["normalised_merchant"]: r for r in rows}
+_final_added = _final_updated = 0
+for m, leaf, conf, note in HUMAN_T4_FINAL:
+    if m in _by_m:
+        _by_m[m]["detailed_category"] = leaf
+        _by_m[m]["confidence"] = conf
+        _by_m[m]["source"] = "human_override_20260824"
+        _by_m[m]["review_status"] = "approved"
+        _by_m[m]["notes"] = note
+        _final_updated += 1
+    else:
+        rec = {"normalised_merchant": m, "detailed_category": leaf, "confidence": conf,
+               "source": "human_override_20260824", "review_status": "approved", "notes": note}
+        rows.append(rec)
+        _by_m[m] = rec
+        _final_added += 1
+_savers = 0
+for r in rows:
+    if r["normalised_merchant"].startswith("savers health") and r["detailed_category"] == "pharmacy":
+        r["detailed_category"] = "health_beauty_general"
+        r["source"] = "human_override_20260824"
+        r["notes"] = "Savers is beauty-led retail, not a chemist (gold_v2 convention)"
+        _savers += 1
+print(f"human_override_20260824: added {_final_added}, retargeted {_final_updated}, savers pharmacy->beauty {_savers}")
 
 # validate leaves exist in taxonomy
 tax={r['detailed_category'] for r in csv.DictReader(open(ROOT / "taxonomy" / "taxonomy.csv"))}

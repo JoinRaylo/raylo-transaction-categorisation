@@ -163,8 +163,8 @@ pension credit,benefits_state,high,llm_proposed,pending,
 state pension,pension_received,high,llm_proposed,pending,
 child maintenance,income_other_unspecified,medium,llm_proposed,pending,direction-dependent: received or paid
 overpayments,income_other_unspecified,low,llm_proposed,pending,likely benefit overpayment recovery - ambiguous
-hmrc,tax_payment,medium,llm_proposed,pending,direction-dependent: tax paid vs refund received
-hm revenue and customs,tax_payment,medium,llm_proposed,pending,direction-dependent
+hmrc,tax_payment,medium,llm_proposed,pending,debit default; T2 splits Child Benefit / tax-credit credits and SA refunds
+hm revenue and customs,tax_payment,medium,llm_proposed,pending,debit default; T2 splits Child Benefit / tax-credit credits and SA refunds
 british gas,energy,high,llm_proposed,pending,
 utilita,energy,high,llm_proposed,pending,
 ovo energy,energy,high,llm_proposed,pending,
@@ -236,7 +236,7 @@ loveholidays.com,holiday_package,high,llm_proposed,pending,
 netflix,streaming,high,llm_proposed,pending,video streaming subscription
 spotify,streaming,high,llm_proposed,pending,
 disney plus,streaming,high,llm_proposed,pending,
-amazon prime video,streaming,high,llm_proposed,pending,
+amazon prime video,streaming,high,human_override_20260824,approved,Amazon Prime Video as its own merchant string
 now tv,streaming,high,llm_proposed,pending,
 audible,streaming,high,llm_proposed,pending,
 prime,streaming,medium,llm_proposed,pending,Amazon Prime subscription - 161k txns
@@ -285,7 +285,7 @@ sports direct,sportswear,high,llm_proposed,pending,
 nike,sportswear,high,llm_proposed,pending,
 boots,pharmacy,medium,llm_proposed,pending,pharmacy + beauty - genuine mixed basket
 superdrug,pharmacy,medium,llm_proposed,pending,pharmacy + beauty
-savers health,pharmacy,medium,llm_proposed,pending,
+savers health,health_beauty_general,medium,llm_proposed,pending,"beauty-led retail, not a chemist"
 holland & barrett,supplements,high,llm_proposed,pending,
 specsavers,optician,high,llm_proposed,pending,
 currys,computing_devices,high,llm_proposed,pending,
@@ -355,7 +355,7 @@ taco bell,takeaway,high,gating_adjudication,approved,
 omaze,prize_competitions,high,gating_adjudication,approved,
 the entertainer,toys,high,gating_adjudication,approved,
 canva,software,high,gating_adjudication,approved,
-depop,marketplace_amazon,high,gating_adjudication,approved,
+depop,marketplace_general,high,human_override_20260824,approved,"Depop is a C2C marketplace, not Amazon; dictionary bug"
 beryl,bicycle,high,gating_adjudication,approved,
 euro car parts,spares_repairs,high,gating_adjudication,approved,
 parkdean resorts,holiday_uk,high,gating_adjudication,approved,
@@ -819,7 +819,7 @@ zurich assurance,insurance_life,medium,gold_v2_review,approved,Small recurring Z
 zwift,sports_participation,medium,gold_v2_review,approved,Final human adjudication: sports_participation. The charge is for participation in a virtual/physical sport rather than passive media. Luna votes: gym_fitness / sports_participation / gym_fitness.
 nugents newsagents,convenience_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 co op group food,groceries,medium,production_tranche3_auto_accept,approved,"LLM-consensus label, tier=auto_accept, measured 82-91% accurate against the clean gold set"
-lime,taxi_rideshare,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+lime,bicycle,high,human_override_20260824,approved,"UK Lime is e-bikes/scooters, not taxis"
 domino s pizza,takeaway,medium,production_tranche3_auto_accept,approved,"LLM-consensus label, tier=auto_accept, measured 82-91% accurate against the clean gold set"
 118 118 money,payday_loan,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 whsmith,books,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
@@ -899,7 +899,7 @@ doublebubblebingo,gambling_bingo,medium,production_tranche3_auto_accept,approved
 driving standards agency,driving_tuition,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 cd spar,groceries,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 dixy chicken,takeaway,medium,production_tranche3_auto_accept,approved,"LLM-consensus label, tier=auto_accept, measured 82-91% accurate against the clean gold set"
-savers health and beauty,pharmacy,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+savers health and beauty,health_beauty_general,medium,human_override_20260824,approved,"Savers is beauty-led retail, not a chemist (gold_v2 convention)"
 dazn,streaming,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 d meccabingo,gambling_bingo,medium,production_tranche3_auto_accept,approved,"LLM-consensus label, tier=auto_accept, measured 82-91% accurate against the clean gold set"
 sarah,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
@@ -1267,7 +1267,7 @@ cd reading transport limi,public_transport_rail_coach,medium,production_tranche3
 deichmann se,footwear,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 lyca,mobile_phone_contract,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 sainsburys s mkts,groceries,medium,production_tranche3_auto_accept,approved,"LLM-consensus label, tier=auto_accept, measured 82-91% accurate against the clean gold set"
-savers health & beauty cd,pharmacy,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+savers health & beauty cd,health_beauty_general,medium,human_override_20260824,approved,"Savers is beauty-led retail, not a chemist (gold_v2 convention)"
 lv life,insurance_life,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 rachel,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 s kiernan,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
@@ -3560,7 +3560,7 @@ debenhamspayplus,retail_finance_repayment,medium,production_tranche3_human_revie
 mufc ticketing,sports_tickets,medium,production_tranche3_auto_accept,approved,"LLM-consensus label, tier=auto_accept, measured 82-91% accurate against the clean gold set"
 fayley account,rent,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 market square stor,convenience_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
-savers health & beau,pharmacy,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+savers health & beau,health_beauty_general,medium,human_override_20260824,approved,"Savers is beauty-led retail, not a chemist (gold_v2 convention)"
 martha palmer mum,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 benham jl,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 snug hyde,pub_bar,medium,production_tranche3_human_reviewed,approved,"LLM-consensus label, tier=human_reviewed, measured 82-91% accurate against the clean gold set"
@@ -4129,7 +4129,7 @@ aberdeen arms hotel,accommodation,medium,production_tranche3_accepted,approved,"
 north yorkshire,council_tax,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 cd dunya foodstore,groceries,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 cashel coffee and dry goo,restaurant_cafe,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
-zippa loans,personal_loan_repayment,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+zippa loans,payday_loan,high,human_override_20260824,approved,Skyline Direct high-cost short-term credit
 c portland,pub_bar,medium,production_tranche3_human_reviewed,approved,"LLM-consensus label, tier=human_reviewed, measured 82-91% accurate against the clean gold set"
 maxol sstn glenabbey,fuel,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 mill hill wine & food ltd,alcohol_wine,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
@@ -5660,7 +5660,7 @@ deborah amaechi,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-c
 kennedy,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 davy hulme park golf,sports_participation,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 centerparcs,holiday_uk,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
-kiley,energy,medium,production_tranche3_human_reviewed,approved,"LLM-consensus label, tier=human_reviewed, measured 82-91% accurate against the clean gold set"
+kiley,transfer_p2p,medium,human_override_20260824,approved,named person (Kiley Sillett); not an energy supplier
 musgrave market place,groceries,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 katie mayo,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 spar abbots cross,groceries,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
@@ -7473,7 +7473,7 @@ red hot mamma,restaurant_cafe,medium,production_tranche3_accepted,approved,"LLM-
 mm fried chicken cd,takeaway,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 cheltenham borough counci,council_tax,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 d b woodland rent,rent,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
-savers health & begravesend,pharmacy,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+savers health & begravesend,health_beauty_general,medium,human_override_20260824,approved,"Savers is beauty-led retail, not a chemist (gold_v2 convention)"
 denmark convenience store,convenience_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 candy dk mini market,convenience_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 bowers convenience sto cd,convenience_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
@@ -7852,7 +7852,7 @@ bp blackford bridge se,fuel,medium,production_tranche3_accepted,approved,"LLM-co
 tracey griffiths,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 sian hill cousin,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 oswestry town council,government_services,medium,production_tranche3_human_reviewed,approved,"LLM-consensus label, tier=human_reviewed, measured 82-91% accurate against the clean gold set"
-savers health & bewelwyn,pharmacy,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+savers health & bewelwyn,health_beauty_general,medium,human_override_20260824,approved,"Savers is beauty-led retail, not a chemist (gold_v2 convention)"
 a sharkey,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 alzheimer-s,charitable_donation,medium,production_tranche3_auto_accept,approved,"LLM-consensus label, tier=auto_accept, measured 82-91% accurate against the clean gold set"
 biffa waste servic,waste_services,medium,production_tranche3_auto_accept,approved,"LLM-consensus label, tier=auto_accept, measured 82-91% accurate against the clean gold set"
@@ -9453,7 +9453,7 @@ amanda da silva,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-c
 innocent k,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 t okeefe,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 savers oadby,pharmacy,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
-savers health & belytham,pharmacy,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+savers health & belytham,health_beauty_general,medium,human_override_20260824,approved,"Savers is beauty-led retail, not a chemist (gold_v2 convention)"
 laura mcintyre friend,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 craig jones fridge freezer,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 totallywickd tw vaping,vaping,medium,production_tranche3_auto_accept,approved,"LLM-consensus label, tier=auto_accept, measured 82-91% accurate against the clean gold set"
@@ -10849,7 +10849,7 @@ royals restaurant,restaurant_cafe,medium,production_tranche3_accepted,approved,"
 bargain island ltd,discount_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 jewson ltd,home_improvement,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 cd the diamond restauran,restaurant_cafe,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
-savers health beau,pharmacy,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+savers health beau,health_beauty_general,medium,human_override_20260824,approved,"Savers is beauty-led retail, not a chemist (gold_v2 convention)"
 jubilee news,convenience_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 the hawthorne pub bootle,pub_bar,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 rhyse,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
@@ -11077,7 +11077,7 @@ the captains table,restaurant_cafe,medium,production_tranche3_accepted,approved,
 thomas wardman & lydia wardman,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 mounika rayarapu,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 khiara white,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
-morr wetherby,pet_supplies,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+morr wetherby,groceries,high,human_override_20260824,approved,Plaid Morrisons truncation; was pet_supplies
 m and j news ltd,convenience_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 adeyemi,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 muhammad usaamah,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
@@ -11408,7 +11408,7 @@ woodland trust,charitable_donation,medium,production_tranche3_accepted,approved,
 southglade convenience st,convenience_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 burnmoor filling station,fuel,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 wellington convenience st,convenience_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
-savers health & bel,pharmacy,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+savers health & bel,health_beauty_general,medium,human_override_20260824,approved,"Savers is beauty-led retail, not a chemist (gold_v2 convention)"
 double tee tools ltd,tools,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 wine,alcohol_wine,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 irishferriesuklim,ferry_rail_travel,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
@@ -11577,7 +11577,7 @@ bp st leanards service,fuel,medium,production_tranche3_accepted,approved,"LLM-co
 the patter bar,pub_bar,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 rase veterinary centre,veterinary,medium,production_tranche3_auto_accept,approved,"LLM-consensus label, tier=auto_accept, measured 82-91% accurate against the clean gold set"
 luton airport starbuck,restaurant_cafe,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
-savers health & betenby,pharmacy,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+savers health & betenby,health_beauty_general,medium,human_override_20260824,approved,"Savers is beauty-led retail, not a chemist (gold_v2 convention)"
 picnic cafe,restaurant_cafe,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 love ur dog,pet_supplies,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 rowner news,convenience_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
@@ -14268,7 +14268,7 @@ eric amoako fordah,transfer_p2p,medium,production_tranche3_accepted,approved,"LL
 warda mida,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 leah alner,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 cheryl bentley,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
-savers health & bealdershot,pharmacy,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+savers health & bealdershot,health_beauty_general,medium,human_override_20260824,approved,"Savers is beauty-led retail, not a chemist (gold_v2 convention)"
 charlotte childs,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 alfie harrison,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 kayleigh gilbey fine,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
@@ -16576,7 +16576,7 @@ pophamas bakery,restaurant_cafe,medium,production_tranche3_accepted,approved,"LL
 king of vape shepton,vaping,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 lovetakeaway ro,takeaway,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 callum prince,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
-savers health & behud,pharmacy,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+savers health & behud,health_beauty_general,medium,human_override_20260824,approved,"Savers is beauty-led retail, not a chemist (gold_v2 convention)"
 christine campbell,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 charlies newsagent,convenience_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 the viper room,night_club,medium,production_tranche3_human_reviewed,approved,"LLM-consensus label, tier=human_reviewed, measured 82-91% accurate against the clean gold set"
@@ -18526,7 +18526,7 @@ citadel barbershop,beauty_treatment,medium,production_tranche3_accepted,approved
 h j burns,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 celestino mendes,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 trinity sq car park up,car_parking,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
-gdk borough,government_services,medium,production_tranche3_human_reviewed,approved,"LLM-consensus label, tier=human_reviewed, measured 82-91% accurate against the clean gold set"
+gdk borough,takeaway,high,human_override_20260824,approved,"German Doner Kebab Borough, not government"
 tonys tower fish and c,takeaway,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 kings fish & chips,takeaway,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 cd cafe florya,restaurant_cafe,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
@@ -18594,7 +18594,7 @@ laura walton,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-cons
 newmarket pizza,takeaway,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 c esso worsley,fuel,medium,production_tranche3_auto_accept,approved,"LLM-consensus label, tier=auto_accept, measured 82-91% accurate against the clean gold set"
 cd roby news liv'pool,convenience_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
-morr catcliffe,pub_bar,medium,production_tranche3_human_reviewed,approved,"LLM-consensus label, tier=human_reviewed, measured 82-91% accurate against the clean gold set"
+morr catcliffe,groceries,high,human_override_20260824,approved,Plaid Morrisons truncation; was pub_bar
 julien,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 sun on time supermarke,groceries,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 jashandeep singh,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
@@ -18835,3 +18835,33 @@ james anderson,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-co
 apple taxi,taxi_rideshare,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 keziah abrahams,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 coventry city coun,council_tax,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
+sony playstation,gaming_console_pc,high,human_override_20260824,approved,"Plaid PSN string; playstation already mapped, this key is not"
+amazon prime,streaming,high,human_override_20260824,approved,Amazon Prime subscription; distinct from amazon marketplace
+chaotic,prize_competitions,high,human_override_20260824,approved,"Chaotic.co.uk competition tickets, not a restaurant"
+temu,marketplace_general,high,human_override_20260824,approved,temu.com; temu cd already mapped
+taptap send,transfer_international,high,human_override_20260824,approved,remittance; longer UK-limited keys exist
+ringgo,car_parking,high,human_override_20260824,approved,RingGo parking; ringgo parking already mapped
+microsoft xbox,gaming_console_pc,high,human_override_20260824,approved,Plaid Xbox/Game Pass string
+jd wetherspoon,pub_bar,high,human_override_20260824,approved,singular Wetherspoon; jd wetherspoons already mapped
+b & q,home_improvement,high,human_override_20260824,approved,B&Q with spaces; b&q already mapped
+home retail group,catalogue_retail,high,human_override_20260824,approved,"Argos parent, shopping not store-card"
+disney+,streaming,high,human_override_20260824,approved,Disney Plus; disney plus already mapped
+trainpal,public_transport_rail_coach,high,human_override_20260824,approved,rail tickets; trainpal cd already mapped
+oodle car finance,car_finance_repayment,high,human_override_20260824,approved,car-finance DDR; must not fall to T6 mortgage
+first central serv,insurance_motor,high,human_override_20260824,approved,1st Central motor insurance DD
+t j morris ltd,discount_store,high,human_override_20260824,approved,Home Bargains operator
+too good to go,takeaway,high,human_override_20260824,approved,"surplus-meal app, same convention as Just Eat"
+first west yorkshire,public_transport_rail_coach,high,human_override_20260824,approved,First Bus
+stageco,public_transport_rail_coach,medium,human_override_20260824,approved,Plaid truncation of Stagecoach
+www.amazon.uk.co,marketplace_amazon,high,human_override_20260824,approved,Amazon retail card string
+duelz,gambling_casino,high,human_override_20260824,approved,duelz.com casino; keep subtype not unspecified
+ring basic plan,online_services,high,human_override_20260824,approved,Ring Protect-style subscription
+domino's,takeaway,high,human_override_20260824,approved,Plaid apostrophe form; dominos pizza already mapped
+tescophoneins.,insurance_other,high,human_override_20260824,approved,Plaid keeps the trailing period; T2 only fires when merchant is exactly tesco
+off licence gs wi,alcohol_beer_spirits,high,human_override_20260824,approved,Plaid truncation variant
+goldwire conve,convenience_store,high,human_override_20260824,approved,Goldwire Convenience truncation variant
+cd ridgewood stores,convenience_store,high,human_override_20260824,approved,Ridgewood Stores truncation variant
+stagecoach services,public_transport_rail_coach,high,human_override_20260824,approved,Stagecoach bus; stageco already mapped
+prime video add-on,streaming,high,human_override_20260824,approved,Prime Video add-on; merchant is not amazon so T2 cannot fire
+prime video rent buy,streaming,high,human_override_20260824,approved,Prime Video rental; merchant is not amazon
+prime video,streaming,high,human_override_20260824,approved,Prime Video merchant string

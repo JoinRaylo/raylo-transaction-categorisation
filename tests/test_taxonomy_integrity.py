@@ -122,6 +122,7 @@ def test_tesco_t2_collisions_owned_by_generator():
         "T2_compound_tesco_bank",
         "T2_compound_tesco_petrol",
         "T2_compound_tesco_phoneins",
+        "T2_compound_tesco_cafe",
     )
     for marker in markers:
         assert marker in gen, f"{marker} missing from generate_crosswalk_sql.py"
@@ -134,10 +135,160 @@ def test_tesco_t2_collisions_owned_by_generator():
         leaf_case = block.split("END AS leaf")[0]
         t4 = leaf_case.find("WHEN d.leaf IS NOT NULL THEN d.leaf")
         assert t4 != -1, f"{block_name}: T4 dictionary WHEN missing"
-        for needle in (r"\btesco bank\b", r"petrol|\bpfs\b", "tescophoneins"):
+        for needle in (r"\btesco bank\b", r"petrol|\bpfs\b", "tescophoneins", r"caf[eé]"):
             pos = leaf_case.find(needle)
             assert pos != -1, f"{block_name}: {needle!r} missing from leaf CASE"
             assert pos < t4, f"{block_name}: {needle!r} must precede T4"
+
+
+def test_hmrc_t2_collisions_owned_by_generator():
+    """T4 maps hmrc / hm revenue and customs -> tax_payment. Child Benefit and
+    SA refund credits must be T2 (before T4); a T5 rule would never fire."""
+    sql = (ROOT / "sql" / "apply_crosswalk.sql").read_text()
+    gen = (ROOT / "src" / "generate_crosswalk_sql.py").read_text()
+    markers = (
+        "T2_compound_hmrc_child_benefit",
+        "T2_compound_hmrc_tax_credit",
+        "T2_compound_hmrc_sa_refund",
+    )
+    for marker in markers:
+        assert marker in gen, f"{marker} missing from generate_crosswalk_sql.py"
+        assert sql.count(marker) == 2, (
+            f"{marker} must appear on Equifax and Plaid tier CASE (got {sql.count(marker)})")
+    for block_name, block in (
+        ("eqx_resolved", sql.split("eqx_resolved AS (")[1].split("plaid_raw AS (")[0]),
+        ("plaid_resolved", sql.split("plaid_resolved AS (")[1].split("combined AS (")[0]),
+    ):
+        leaf_case = block.split("END AS leaf")[0]
+        t4 = leaf_case.find("WHEN d.leaf IS NOT NULL THEN d.leaf")
+        assert t4 != -1, f"{block_name}: T4 dictionary WHEN missing"
+        for needle in (r"child\s+benefits?", r"\bhmrc\s+sa\b", "hm revenue and customs"):
+            pos = leaf_case.find(needle)
+            assert pos != -1, f"{block_name}: {needle!r} missing from leaf CASE"
+            assert pos < t4, f"{block_name}: {needle!r} must precede T4"
+        assert "r.direction='credit'" in leaf_case, (
+            f"{block_name}: HMRC T2 must be credit-only so SA debits stay tax_payment")
+
+
+def test_hmrc_t2_eval_harness_matches_gold_examples():
+    """Eval waterfall must split the HMRC collision the same way as generated SQL."""
+    import sys
+    sys.path.insert(0, str(ROOT / "src"))
+    import final_evaluation as fe
+    fe.SUB_MAP, fe.PRI_MAP, fe.PLAID_MAP, _ = fe.load_crosswalk()
+    fe.DICTIONARY = fe.load_dictionary()
+    fe.RULES = fe.load_rules()
+
+    cases = [
+        ("HM Revenue and Customs", "credit",
+         "HMRC CHILD BENEFIT  KELLY00LAURA920227 BGC",
+         "benefits_state", "T2_compound_hmrc_child_benefit"),
+        ("HMRC", "credit", "HMRC WORK AND CHILD TC",
+         "benefits_state", "T2_compound_hmrc_tax_credit"),
+        ("HMRC", "credit", "HMRC SA  2377880224K00002 BGC",
+         "tax_refund", "T2_compound_hmrc_sa_refund"),
+        ("HMRC", "debit", "Hmrc Gov.uk Sa",
+         "tax_payment", "T4_dictionary"),
+        ("HM Revenue and Customs", "debit", "HMRC CHILD BENEFIT",
+         "tax_payment", "T4_dictionary"),
+        ("Child Benefits", "credit", "HMRC CHILD BENEFIT",
+         "benefits_state", "T4_dictionary"),
+        ("Child Benefits", "credit", "BANK GIRO CREDIT REF DWPCMSGB2012SCHEME",
+         "income_other_unspecified", "T2_compound_cms_not_child_benefit"),
+        ("Burton", "debit", "KFC - BURTON",
+         "takeaway", "T2_compound_kfc"),
+        ("Klarna", "debit", "KLARNA*KFC BARLOW MO LONDON GB",
+         "takeaway", "T2_compound_kfc"),
+        ("Welcome Break", "debit", "VISA Debit Transaction WELCOME BREAK KFC",
+         "takeaway", "T2_compound_kfc"),
+        ("KFC", "debit", "ZILCH * KFC BEACON",
+         "takeaway", "T2_compound_kfc"),
+        ("Klarna", "debit", "KLARNA*ASOS",
+         "bnpl", "T4_dictionary"),
+        ("Tesco", "debit", "Cash at Tesco Lodge Pk Exp",
+         "cash_withdrawal", "T2_compound_instore_atm"),
+        ("Sky Bet", "credit", "Visa credit Sky Betting Gaming",
+         "gambling_unspecified", "T1_direction_gambling_credit"),
+        ("Co-op", "debit", "CO-OP GROUP PETROLPOUNDS HILL",
+         "fuel", "T2_compound_grocer_petrol"),
+        ("Tesco", "debit", "TESCO CAFE LLANELLI",
+         "restaurant_cafe", "T2_compound_tesco_cafe"),
+        ("Vodafone", "debit", "DIRECT DEBIT PAYMENT TO VODAFONE LTDDEVICE REF 1003551045",
+         "mobile_handset", "T2_compound_vodafone_device"),
+        ("Amazon", "debit", "Prime Video*H73XV8  ON 31 OCT BCC PRIME VIDEO ADD-ON",
+         "streaming", "T2_compound_amazon_prime_video"),
+        ("Iceland", "credit", "5029 02OCT24 ICELAND FOODS FLINTSHIRE GB REFUND",
+         "refund_received", "T2_compound_refund"),
+        ("Depop", "debit", "DEPOP LONDON",
+         "marketplace_general", "T4_dictionary"),
+        ("Lime", "debit", "Lime",
+         "bicycle", "T4_dictionary"),
+        ("Tescophoneins.", "debit", "TESCOPHONEINS.",
+         "insurance_other", "T4_dictionary"),
+        ("Morr Paignton", "debit", "MORR PAIGNTON Morr Paignton",
+         "groceries", "T5_R21"),
+        ("Morrisons Petrol", "debit", "MORRISONS PETROL",
+         "fuel", "T4_dictionary"),
+    ]
+    for merchant, direction, desc, want_leaf, want_tier in cases:
+        leaf, tier = fe.our_leaf(
+            merchant, direction, desc, fe.plaid_native_leaf, "INCOME_SALARY", direction)
+        assert (leaf, tier) == (want_leaf, want_tier), (
+            f"{merchant!r} {direction} {desc!r}: got {(leaf, tier)}, want {(want_leaf, want_tier)}")
+
+
+def test_kfc_atm_t2_owned_by_generator():
+    """KFC-in-narrative and in-store ATM must precede T4 on both providers."""
+    sql = (ROOT / "sql" / "apply_crosswalk.sql").read_text()
+    gen = (ROOT / "src" / "generate_crosswalk_sql.py").read_text()
+    for marker in ("T2_compound_kfc", "T2_compound_grocer_petrol",
+                   "T1_direction_gambling_credit"):
+        assert marker in gen, f"{marker} missing from generator"
+        assert sql.count(marker) == 2, f"{marker} count={sql.count(marker)}, want 2"
+    assert "T2_compound_instore_atm" in gen
+    assert sql.count("T2_compound_instore_atm_deposit") == 2
+    assert sql.count("T2_compound_instore_atm") - sql.count("T2_compound_instore_atm_deposit") == 2
+    for block_name, block in (
+        ("eqx_resolved", sql.split("eqx_resolved AS (")[1].split("plaid_raw AS (")[0]),
+        ("plaid_resolved", sql.split("plaid_resolved AS (")[1].split("combined AS (")[0]),
+    ):
+        leaf_case = block.split("END AS leaf")[0]
+        t4 = leaf_case.find("WHEN d.leaf IS NOT NULL THEN d.leaf")
+        kfc = leaf_case.find(r"\bkfc\b")
+        atm = leaf_case.find(r"\batm\b")
+        assert kfc != -1 and kfc < t4, f"{block_name}: KFC T2 missing or after T4"
+        assert atm != -1 and atm < t4, f"{block_name}: ATM T2 missing or after T4"
+
+
+def test_t4_gold_v3v4_overrides_present():
+    rows = {r["normalised_merchant"]: r["detailed_category"]
+            for r in csv.DictReader(DICT.open())}
+    expect = {
+        "sony playstation": "gaming_console_pc",
+        "amazon prime": "streaming",
+        "zippa loans": "payday_loan",
+        "gdk borough": "takeaway",
+        "kiley": "transfer_p2p",
+        "savers health": "health_beauty_general",
+        "oodle car finance": "car_finance_repayment",
+        "duelz": "gambling_casino",
+        "domino's": "takeaway",
+        "depop": "marketplace_general",
+        "lime": "bicycle",
+        "tescophoneins.": "insurance_other",
+        "off licence gs wi": "alcohol_beer_spirits",
+        "goldwire conve": "convenience_store",
+        "cd ridgewood stores": "convenience_store",
+        "stagecoach services": "public_transport_rail_coach",
+        "morr wetherby": "groceries",
+        "morr catcliffe": "groceries",
+        "prime video": "streaming",
+    }
+    for m, leaf in expect.items():
+        assert rows.get(m) == leaf, f"{m}: got {rows.get(m)}, want {leaf}"
+    savers_pharm = [m for m, leaf in rows.items()
+                    if m.startswith("savers health") and leaf == "pharmacy"]
+    assert not savers_pharm, f"savers still pharmacy: {savers_pharm[:8]}"
 
 
 def test_payday_rule_no_dictionary_false_positives():
@@ -153,3 +304,23 @@ def test_payday_rule_no_dictionary_false_positives():
         if compiled.search(r["normalised_merchant"]) and r["detailed_category"] != "payday_loan":
             fps.append((r["normalised_merchant"], r["detailed_category"]))
     assert not fps, f"payday rule hits non-payday dictionary merchants: {fps}"
+
+
+def test_morr_t5_word_boundary_and_exclusions():
+    """R21 must catch Morr Paignton and not Morrisons / Morriston / Morrison supply."""
+    import re
+    rules = [r for r in csv.DictReader(RULES.open()) if r["rule_id"] == "R21"]
+    assert rules, "R21 Morrisons-truncation rule missing"
+    rule = rules[0]
+    assert rule["detailed_category"] == "groceries"
+    assert rule["direction"] == "debit"
+    assert rule["field"] == "merchant_name"
+    pat = re.compile(rule["pattern"], re.I)
+    excl = re.compile(rule["exclude_pattern"], re.I)
+    assert pat.search("morr paignton")
+    assert pat.search("morr")
+    assert not pat.search("morrisons")
+    assert not pat.search("morriston hospital")
+    assert not pat.search("morrison supply")
+    assert excl.search("morr petrol paignton")
+    assert not excl.search("morr paignton")
