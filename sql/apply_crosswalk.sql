@@ -19536,6 +19536,11 @@ eqx_resolved AS (
       -- unspecified rather than a specific product (credit card/loan/savings) since the
       -- narrative alone doesn't say which Tesco Bank product this is.
       WHEN LOWER(TRIM(r.vendor))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\btesco bank\b') THEN 'financial_institution_unspecified'
+      -- Same collision, two more Tesco sub-entities Plaid collapses to bare "tesco"
+      -- (found 2026-08-24 while checking whether the Tesco Bank fix generalises):
+      -- Tesco Petrol (1,769 txns) and Tesco Phone Insurance (272 txns).
+      WHEN LOWER(TRIM(r.vendor))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'petrol|\bpfs\b') THEN 'fuel'
+      WHEN LOWER(TRIM(r.vendor))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'tescophoneins') THEN 'insurance_other'
       -- T3: MECHANISM-OVERRIDE primaries (mechanism determines leaf regardless of merchant)
       WHEN r.pri='Identified Salary' THEN 'salary'
       WHEN r.pri='Refund' THEN 'refund_received'
@@ -19579,6 +19584,8 @@ eqx_resolved AS (
       WHEN r.pri='Identified Salary' AND r.sub IN ('Taxis','Delivery','Take Away') THEN 'T2_compound'
       WHEN r.pri='Identified Salary' AND r.sub IN ('Recruitment Services','Employment Agencies') THEN 'T2_compound'
       WHEN LOWER(TRIM(r.vendor))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\btesco bank\b') THEN 'T2_compound_tesco_bank'
+      WHEN LOWER(TRIM(r.vendor))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'petrol|\bpfs\b') THEN 'T2_compound_tesco_petrol'
+      WHEN LOWER(TRIM(r.vendor))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'tescophoneins') THEN 'T2_compound_tesco_phoneins'
       WHEN r.pri IN ('Identified Salary','Refund','Benefits','Welfare','Pension Payout','Tax Refund',
         'Cash Back','Cash Machine','Cash Deposit','Interest','Interests and Dividends',
         'Balance Transfers','Adjustments') THEN 'T3_mechanism_override'
@@ -19627,6 +19634,8 @@ plaid_resolved AS (
       -- T2: narrative-disambiguated merchant collision -- see the eqx_resolved
       -- CTE above for the full rationale; same collision on the Plaid side.
       WHEN LOWER(TRIM(r.merchant_raw))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\btesco bank\b') THEN 'financial_institution_unspecified'
+      WHEN LOWER(TRIM(r.merchant_raw))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'petrol|\bpfs\b') THEN 'fuel'
+      WHEN LOWER(TRIM(r.merchant_raw))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'tescophoneins') THEN 'insurance_other'
       -- T4: merchant dictionary (provider-independent, overrides both providers' own categories)
       WHEN d.leaf IS NOT NULL THEN d.leaf
       -- T5: deterministic rules
@@ -19654,6 +19663,8 @@ plaid_resolved AS (
     CASE
       WHEN r.cat='ENTERTAINMENT_CASINOS_AND_GAMBLING' AND r.direction='credit' THEN 'T1_direction'
       WHEN LOWER(TRIM(r.merchant_raw))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\btesco bank\b') THEN 'T2_compound_tesco_bank'
+      WHEN LOWER(TRIM(r.merchant_raw))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'petrol|\bpfs\b') THEN 'T2_compound_tesco_petrol'
+      WHEN LOWER(TRIM(r.merchant_raw))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'tescophoneins') THEN 'T2_compound_tesco_phoneins'
       WHEN d.leaf IS NOT NULL THEN 'T4_merchant_dictionary'
       WHEN REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '^(mr|mrs|miss|ms|dr)\\s+') THEN 'T5_rule_R01'
       WHEN REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '^[a-z]\\s+[a-z]{2,}$') THEN 'T5_rule_R02'
