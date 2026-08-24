@@ -66,6 +66,19 @@ from build_tail_eval import bq_json  # noqa: E402
 LABELS_SOURCE = ROOT / "data" / "production_labels_tranche3.csv"
 GOLD_V1_FILES = [ROOT / "data" / "gold_merchant_labels.csv", ROOT / "data" / "gold_tail_labels.csv"]
 GOLD_V2_FILES = [ROOT / "data" / "gold_transactions_v2.csv", ROOT / "data" / "gold_transactions_v2_batch2.csv"]
+# Training-only supplementary gold data (2026-08-24) -- deliberately NOT added to
+# GOLD_V2_FILES/load_tier_a(), which drives the merchant-level eval-holdout carve-
+# out written to SLM_EVAL_CSV (a data/ asset every model-comparison benchmark in
+# CLAUDE.md sec 6a is measured against). Mixing more merchants into that pool
+# would change the holdout's random split composition even at a fixed SEED, since
+# the shuffle now runs over a different merchant list -- silently breaking
+# comparability with every already-published number. These go straight to
+# training instead, same treatment as TOPUP_FILE below. gold_transactions_
+# risk_categories.csv is deliberately excluded here too -- it's reserved as a
+# clean eval set for exactly this retrain (see confusion_analysis.py), and
+# gold_transactions_v5_LOCKED.csv must never be touched by training OR scoring.
+ADDITIONAL_TRAIN_FILES = [ROOT / "data" / "gold_transactions_v3_volume.csv",
+                          ROOT / "data" / "gold_transactions_v4_slm_volume.csv"]
 TOPUP_FILE = ROOT / "data" / "tuning_leaf_topup.csv"
 TXNS_JSON = OUT_DIR / "tuning_txns.json"
 TRAIN_JSONL = OUT_DIR / "tuning_train.jsonl"
@@ -271,7 +284,21 @@ def build():
             topup_examples.append(to_example(r["merchant_raw"], r["description_raw"], abs(float(r["amount"])),
                                               r["direction"], r["gold_leaf"]))
 
-    train = train + tier_a_train_examples + topup_examples
+    # ---------- Additional training-only gold (v3/v4) -- never touches the holdout ----------
+    additional_examples = []
+    for f in ADDITIONAL_TRAIN_FILES:
+        if not f.exists():
+            continue
+        n_before = len(additional_examples)
+        for r in csv.DictReader(open(f)):
+            if _norm(r["merchant_raw"]) in holdout_merchants:
+                continue  # a v3/v4 merchant that happens to also be a v2 holdout merchant -- don't leak
+            additional_examples.append(to_example(r["merchant_raw"], r["description_raw"], abs(float(r["amount"])),
+                                                   r["direction"], r["gold_leaf"]))
+        print(f"Additional training-only gold: {f.name} contributed {len(additional_examples) - n_before} rows",
+              file=sys.stderr)
+
+    train = train + tier_a_train_examples + topup_examples + additional_examples
     rng.shuffle(train)
     rng.shuffle(val)
     if len(val) > MAX_VAL_ROWS:
@@ -294,6 +321,7 @@ def build():
           f"oversampled {OVERSAMPLE_FACTOR}x) + {len(holdout_rows)} txns held out for eval "
           f"({len(holdout_merchants)} merchants) -> {SLM_EVAL_CSV}", file=sys.stderr)
     print(f"Top-up: {len(topup_examples)} txns", file=sys.stderr)
+    print(f"Additional training-only gold (v3/v4): {len(additional_examples)} txns", file=sys.stderr)
     print(f"train: {len(train)} rows total", file=sys.stderr)
     print(f"val:   {len(val)} rows ({n_val} Tier B merchants)", file=sys.stderr)
     print(f"distinct target classes across all training sources: {len(target_counts)} of {len(leaves) + 1} possible "
