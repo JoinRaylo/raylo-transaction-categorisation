@@ -316,6 +316,18 @@ aviva li,insurance_life,high,llm_proposed,pending,
 aviva,insurance_general,high,llm_proposed,pending,
 sunlife,insurance_life,high,llm_proposed,pending,
 parent pay,school_fees,high,llm_proposed,pending,school payment platform
+rk winnerz,convenience_store,high,llm_proposed,pending,"human override 2026-08-24: convenience store, not gambling"
+expo international,groceries_specialist,high,llm_proposed,pending,Expo International supermarket; not generic expo
+expo international superm,groceries_specialist,high,llm_proposed,pending,Plaid truncation of Expo International supermarket
+accessorize,jewellery,high,llm_proposed,pending,gold_v2 holdout; T4 gap
+ai-acc.co.uk,online_services,high,llm_proposed,pending,gold_v2 holdout; T4 gap
+alton towers,days_out,high,llm_proposed,pending,gold_v2 holdout; T4 gap
+model management limited,income_agency_work,medium,llm_proposed,pending,gold_v2 holdout credit from a model agency; direction-blind T4
+fedex,delivery_courier,high,llm_proposed,pending,gold_v2 holdout; T4 gap
+which?,magazines,high,llm_proposed,pending,gold_v2 holdout; T4 gap
+amber pool & sports,sports_participation,high,llm_proposed,pending,gold_v2 holdout; T4 gap
+brokersure ltd,insurance_general,high,llm_proposed,pending,gold_v2 holdout; T4 gap
+hutchison 3g uk,mobile_phone_contract,high,llm_proposed,pending,Three / Hutchison; gold_v2 holdout; T4 gap
 e,unclassified_other,low,llm_proposed,pending,JUNK STRING 21k txns - truncated merchant name
 current,unclassified_other,low,llm_proposed,pending,JUNK STRING 21k txns
 debit finance,unclassified_other,low,llm_proposed,pending,DD collection agent - underlying purpose unknown
@@ -4965,7 +4977,6 @@ esso buckingham buckingham,fuel,medium,production_tranche3_auto_accept,approved,
 market hill convenience,convenience_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 taylor johnson,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 wardle news,convenience_store,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
-rk winnerz,gambling_unspecified,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 e a stevens gift,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 j denny,transfer_p2p,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"
 the abbey arms,pub_bar,medium,production_tranche3_accepted,approved,"LLM-consensus label, tier=accepted, measured 82-91% accurate against the clean gold set"

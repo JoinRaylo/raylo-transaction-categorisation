@@ -203,6 +203,27 @@ D = [
 ("aviva","insurance_general","high",""),("sunlife","insurance_life","high",""),
 # ---- EDUCATION
 ("parent pay","school_fees","high","school payment platform"),
+# ---- 2026-08-24 human T4 overrides ----
+# Winnerz: Carlos confirmed convenience store; overwrites tranche-3 gambling_unspecified.
+# The rest are gold_v2 holdout merchants that T1-T5 missed (classifier then
+# wrongly promoted them to gambling_unspecified). Exact merchant_raw keys.
+# Skipped: "expo" (too generic -- trade shows vs supermarket),
+# "genistar limited" (gold is unclassified_card_spend -- T4 must not encode unclassified).
+# Expo International: T4 is exact-match, so the LIKE "sup%" is two keys -- the
+# untruncated name plus the Plaid truncation already labelled in tranche 3
+# (38 txns, accepted_tiebreak, excluded from auto-merge). Bare "expo" stays out.
+("rk winnerz","convenience_store","high","human override 2026-08-24: convenience store, not gambling"),
+("expo international","groceries_specialist","high","Expo International supermarket; not generic expo"),
+("expo international superm","groceries_specialist","high","Plaid truncation of Expo International supermarket"),
+("accessorize","jewellery","high","gold_v2 holdout; T4 gap"),
+("ai-acc.co.uk","online_services","high","gold_v2 holdout; T4 gap"),
+("alton towers","days_out","high","gold_v2 holdout; T4 gap"),
+("model management limited","income_agency_work","medium","gold_v2 holdout credit from a model agency; direction-blind T4"),
+("fedex","delivery_courier","high","gold_v2 holdout; T4 gap"),
+("which?","magazines","high","gold_v2 holdout; T4 gap"),
+("amber pool & sports","sports_participation","high","gold_v2 holdout; T4 gap"),
+("brokersure ltd","insurance_general","high","gold_v2 holdout; T4 gap"),
+("hutchison 3g uk","mobile_phone_contract","high","Three / Hutchison; gold_v2 holdout; T4 gap"),
 # ---- JUNK / UNRESOLVABLE
 ("e","unclassified_other","low","JUNK STRING 21k txns - truncated merchant name"),
 ("current","unclassified_other","low","JUNK STRING 21k txns"),

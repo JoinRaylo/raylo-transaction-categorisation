@@ -642,6 +642,7 @@ dict_xw AS (SELECT * FROM UNNEST([STRUCT<merchant STRING, leaf STRING>
     ('ac taxi','taxi_rideshare'),
     ('acacia mini market','convenience_store'),
     ('acacia taxis limited','taxi_rideshare'),
+    ('accessorize','jewellery'),
     ('accrington low','fuel'),
     ('accrington low fuel','fuel'),
     ('ace abc','taxi_rideshare'),
@@ -780,6 +781,7 @@ dict_xw AS (SELECT * FROM UNNEST([STRUCT<merchant STRING, leaf STRING>
     ('ahmed shamim','transfer_p2p'),
     ('ahrefs','web_services'),
     ('ahtsham ahmed','transfer_p2p'),
+    ('ai-acc.co.uk','online_services'),
     ('aidan hughes','transfer_p2p'),
     ('aidan john mum.','transfer_p2p'),
     ('aidan olver','transfer_p2p'),
@@ -1019,6 +1021,7 @@ dict_xw AS (SELECT * FROM UNNEST([STRUCT<merchant STRING, leaf STRING>
     ('alpha taxis liverpool','taxi_rideshare'),
     ('als plaice','takeaway'),
     ('alton supermarket','groceries'),
+    ('alton towers','days_out'),
     ('alvin aurelian tshibangu wa','transfer_p2p'),
     ('alvin bruce','transfer_p2p'),
     ('alwan supermarket','groceries'),
@@ -1068,6 +1071,7 @@ dict_xw AS (SELECT * FROM UNNEST([STRUCT<merchant STRING, leaf STRING>
     ('amber bradley & jamie bowden','transfer_p2p'),
     ('amber fisher 5er','transfer_p2p'),
     ('amber malkin','transfer_p2p'),
+    ('amber pool & sports','sports_participation'),
     ('amber valley borough','council_tax'),
     ('amc leeds','cinema'),
     ('ameer shakur','transfer_p2p'),
@@ -2791,6 +2795,7 @@ dict_xw AS (SELECT * FROM UNNEST([STRUCT<merchant STRING, leaf STRING>
     ('brodie varty','transfer_p2p'),
     ('brodies bar and restau','restaurant_cafe'),
     ('brogan lynch','transfer_p2p'),
+    ('brokersure ltd','insurance_general'),
     ('bromford','rent'),
     ('bromley off license','alcohol_beer_spirits'),
     ('bromley ringo','car_parking'),
@@ -6616,6 +6621,8 @@ dict_xw AS (SELECT * FROM UNNEST([STRUCT<merchant STRING, leaf STRING>
     ('exotic tech cloud','vaping'),
     ('expa local supermarket','groceries'),
     ('expendeduria','tobacco'),
+    ('expo international','groceries_specialist'),
+    ('expo international superm','groceries_specialist'),
     ('express chemist','pharmacy'),
     ('express eyebrows','beauty_treatment'),
     ('express fish and chips','takeaway'),
@@ -6748,6 +6755,7 @@ dict_xw AS (SELECT * FROM UNNEST([STRUCT<merchant STRING, leaf STRING>
     ('feast fare','catering'),
     ('featherstone convenien','convenience_store'),
     ('featherstone convenience','convenience_store'),
+    ('fedex','delivery_courier'),
     ('feel good contacts','optician'),
     ('feelgoodcontacts','optician'),
     ('feenans keystore','convenience_store'),
@@ -8322,6 +8330,7 @@ dict_xw AS (SELECT * FROM UNNEST([STRUCT<merchant STRING, leaf STRING>
     ('husnain zul','transfer_p2p'),
     ('hussain taxi','taxi_rideshare'),
     ('hussle','gym_fitness'),
+    ('hutchison 3g uk','mobile_phone_contract'),
     ('hutte supermarket','groceries'),
     ('huws gray','home_improvement'),
     ('hvauk','personal_loan_repayment'),
@@ -11752,6 +11761,7 @@ dict_xw AS (SELECT * FROM UNNEST([STRUCT<merchant STRING, leaf STRING>
     ('mob zopa','personal_loan_repayment'),
     ('mobile radio cars','taxi_rideshare'),
     ('mod lyneham energise','energy'),
+    ('model management limited','income_agency_work'),
     ('modo liverpool','night_club'),
     ('moeez','transfer_p2p'),
     ('mohamed a haq','transfer_p2p'),
@@ -14572,7 +14582,7 @@ dict_xw AS (SELECT * FROM UNNEST([STRUCT<merchant STRING, leaf STRING>
     ('rizwandar','taxi_rideshare'),
     ('rjl\'s off licence','alcohol_beer_spirits'),
     ('rk convenience store','convenience_store'),
-    ('rk winnerz','gambling_unspecified'),
+    ('rk winnerz','convenience_store'),
     ('rms waste disposal','waste_services'),
     ('rmt','trade_union'),
     ('rnib','charitable_donation'),
@@ -18718,6 +18728,7 @@ dict_xw AS (SELECT * FROM UNNEST([STRUCT<merchant STRING, leaf STRING>
     ('wheelie','waste_services'),
     ('wheelie clean bins','waste_services'),
     ('whg limited','gambling_betting'),
+    ('which?','magazines'),
     ('whieldon\'s butchers','groceries_specialist'),
     ('whifflet stores','convenience_store'),
     ('whip it like','takeaway'),
@@ -19529,16 +19540,9 @@ eqx_resolved AS (
       -- T2: compound rule - gig income
       WHEN r.pri='Identified Salary' AND r.sub IN ('Taxis','Delivery','Take Away') THEN 'salary_gig'
       WHEN r.pri='Identified Salary' AND r.sub IN ('Recruitment Services','Employment Agencies') THEN 'income_agency_work'
-      -- T2: narrative-disambiguated merchant collision -- Plaid's own merchant-
-      -- name resolution collapses "Tesco Bank" transactions down to bare "Tesco", the
-      -- same string the supermarket uses, so the T4 dictionary's tesco->groceries match
-      -- would otherwise silently mislabel these. Must fire before T4. financial_institution_
-      -- unspecified rather than a specific product (credit card/loan/savings) since the
-      -- narrative alone doesn't say which Tesco Bank product this is.
+      -- T2: provider-entity collisions (Plaid collapses Tesco Bank / Petrol /
+      -- Phone Insurance onto bare "tesco"; T4 would otherwise label them groceries)
       WHEN LOWER(TRIM(r.vendor))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\btesco bank\b') THEN 'financial_institution_unspecified'
-      -- Same collision, two more Tesco sub-entities Plaid collapses to bare "tesco"
-      -- (found 2026-08-24 while checking whether the Tesco Bank fix generalises):
-      -- Tesco Petrol (1,769 txns) and Tesco Phone Insurance (272 txns).
       WHEN LOWER(TRIM(r.vendor))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'petrol|\bpfs\b') THEN 'fuel'
       WHEN LOWER(TRIM(r.vendor))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'tescophoneins') THEN 'insurance_other'
       -- T3: MECHANISM-OVERRIDE primaries (mechanism determines leaf regardless of merchant)
@@ -19568,11 +19572,14 @@ eqx_resolved AS (
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), CONCAT(r'\b(', 'child maintenance', r')\b')) AND r.direction = 'credit') THEN 'income_other_unspecified'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'credit') THEN 'income_other_unspecified'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'debit') THEN 'vehicle_purchase'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(payday(?:\\s*loans?)?|wonga|quick\\s?quid|lending\\s?stream|creditspring|credit\\s?spring|118\\s*(?:118\\s*)?money|cashfloat|quid\\s?market|morses\\s?club|moneyboat|tick\\s?tock\\s*loans?|sunny\\s+loans?|cash\\s?asap|united\\s?kash|fast\\s+loan)\\b') AND r.direction = 'debit') THEN 'payday_loan'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(car park|parking)\\b') AND r.direction = 'debit') THEN 'car_parking'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(vets?|veterinary)\\b') AND r.direction = 'debit') THEN 'veterinary'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(pharmacy|chemist)\\b') AND r.direction = 'debit') THEN 'pharmacy'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bcouncil tax\\b') AND r.direction = 'debit') THEN 'council_tax'
       WHEN ((REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\b(rent|landlord)\\b') AND NOT REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'rent\\s*/\\s*buy|video rent|rent.?a.?car')) AND r.direction = 'debit') THEN 'rent'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\b(payday(?:\\s*loans?)?|wonga|quick\\s?quid|lending\\s?stream|creditspring|credit\\s?spring|118\\s*(?:118\\s*)?money|cashfloat|quid\\s?market|morses\\s?club|moneyboat|tick\\s?tock\\s*loans?|sunny\\s+loans?|cash\\s?asap|united\\s?kash|fast\\s+loan)\\b') AND r.direction = 'debit') THEN 'payday_loan'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bexpo international\\s+sup') AND r.direction = 'debit') THEN 'groceries_specialist'
       -- T6: provider crosswalk fallback (sub = WHAT, primary = mechanism fallback)
       WHEN s.leaf IS NOT NULL THEN s.leaf
       WHEN p.leaf IS NOT NULL THEN p.leaf
@@ -19602,11 +19609,14 @@ eqx_resolved AS (
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), CONCAT(r'\b(', 'child maintenance', r')\b')) AND r.direction = 'credit') THEN 'T5_rule_R15'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'credit') THEN 'T5_rule_R16'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'debit') THEN 'T5_rule_R17'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(payday(?:\\s*loans?)?|wonga|quick\\s?quid|lending\\s?stream|creditspring|credit\\s?spring|118\\s*(?:118\\s*)?money|cashfloat|quid\\s?market|morses\\s?club|moneyboat|tick\\s?tock\\s*loans?|sunny\\s+loans?|cash\\s?asap|united\\s?kash|fast\\s+loan)\\b') AND r.direction = 'debit') THEN 'T5_rule_R18'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(car park|parking)\\b') AND r.direction = 'debit') THEN 'T5_rule_R09'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(vets?|veterinary)\\b') AND r.direction = 'debit') THEN 'T5_rule_R10'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.vendor)), '\\b(pharmacy|chemist)\\b') AND r.direction = 'debit') THEN 'T5_rule_R11'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bcouncil tax\\b') AND r.direction = 'debit') THEN 'T5_rule_R12'
       WHEN ((REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\b(rent|landlord)\\b') AND NOT REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'rent\\s*/\\s*buy|video rent|rent.?a.?car')) AND r.direction = 'debit') THEN 'T5_rule_R13'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\b(payday(?:\\s*loans?)?|wonga|quick\\s?quid|lending\\s?stream|creditspring|credit\\s?spring|118\\s*(?:118\\s*)?money|cashfloat|quid\\s?market|morses\\s?club|moneyboat|tick\\s?tock\\s*loans?|sunny\\s+loans?|cash\\s?asap|united\\s?kash|fast\\s+loan)\\b') AND r.direction = 'debit') THEN 'T5_rule_R19'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bexpo international\\s+sup') AND r.direction = 'debit') THEN 'T5_rule_R20'
       WHEN s.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
       WHEN p.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
       ELSE 'T7_unclassified'
@@ -19631,8 +19641,7 @@ plaid_resolved AS (
     CASE
       -- T1: direction-dependent overrides
       WHEN r.cat='ENTERTAINMENT_CASINOS_AND_GAMBLING' AND r.direction='credit' THEN 'gambling_unspecified'
-      -- T2: narrative-disambiguated merchant collision -- see the eqx_resolved
-      -- CTE above for the full rationale; same collision on the Plaid side.
+      -- T2: provider-entity collisions -- see eqx_resolved; same collision on Plaid
       WHEN LOWER(TRIM(r.merchant_raw))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\btesco bank\b') THEN 'financial_institution_unspecified'
       WHEN LOWER(TRIM(r.merchant_raw))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'petrol|\bpfs\b') THEN 'fuel'
       WHEN LOWER(TRIM(r.merchant_raw))='tesco' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'tescophoneins') THEN 'insurance_other'
@@ -19651,11 +19660,14 @@ plaid_resolved AS (
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), CONCAT(r'\b(', 'child maintenance', r')\b')) AND r.direction = 'credit') THEN 'income_other_unspecified'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'credit') THEN 'income_other_unspecified'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'debit') THEN 'vehicle_purchase'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(payday(?:\\s*loans?)?|wonga|quick\\s?quid|lending\\s?stream|creditspring|credit\\s?spring|118\\s*(?:118\\s*)?money|cashfloat|quid\\s?market|morses\\s?club|moneyboat|tick\\s?tock\\s*loans?|sunny\\s+loans?|cash\\s?asap|united\\s?kash|fast\\s+loan)\\b') AND r.direction = 'debit') THEN 'payday_loan'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(car park|parking)\\b') AND r.direction = 'debit') THEN 'car_parking'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(vets?|veterinary)\\b') AND r.direction = 'debit') THEN 'veterinary'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(pharmacy|chemist)\\b') AND r.direction = 'debit') THEN 'pharmacy'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bcouncil tax\\b') AND r.direction = 'debit') THEN 'council_tax'
       WHEN ((REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\b(rent|landlord)\\b') AND NOT REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'rent\\s*/\\s*buy|video rent|rent.?a.?car')) AND r.direction = 'debit') THEN 'rent'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\b(payday(?:\\s*loans?)?|wonga|quick\\s?quid|lending\\s?stream|creditspring|credit\\s?spring|118\\s*(?:118\\s*)?money|cashfloat|quid\\s?market|morses\\s?club|moneyboat|tick\\s?tock\\s*loans?|sunny\\s+loans?|cash\\s?asap|united\\s?kash|fast\\s+loan)\\b') AND r.direction = 'debit') THEN 'payday_loan'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bexpo international\\s+sup') AND r.direction = 'debit') THEN 'groceries_specialist'
       -- T6: provider crosswalk fallback
       WHEN x.leaf IS NOT NULL THEN x.leaf
       ELSE 'unclassified_other'
@@ -19678,11 +19690,14 @@ plaid_resolved AS (
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), CONCAT(r'\b(', 'child maintenance', r')\b')) AND r.direction = 'credit') THEN 'T5_rule_R15'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'credit') THEN 'T5_rule_R16'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), CONCAT(r'\b(', 'we buy any car', r')\b')) AND r.direction = 'debit') THEN 'T5_rule_R17'
+      WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(payday(?:\\s*loans?)?|wonga|quick\\s?quid|lending\\s?stream|creditspring|credit\\s?spring|118\\s*(?:118\\s*)?money|cashfloat|quid\\s?market|morses\\s?club|moneyboat|tick\\s?tock\\s*loans?|sunny\\s+loans?|cash\\s?asap|united\\s?kash|fast\\s+loan)\\b') AND r.direction = 'debit') THEN 'T5_rule_R18'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(car park|parking)\\b') AND r.direction = 'debit') THEN 'T5_rule_R09'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(vets?|veterinary)\\b') AND r.direction = 'debit') THEN 'T5_rule_R10'
       WHEN (REGEXP_CONTAINS(LOWER(TRIM(r.merchant_raw)), '\\b(pharmacy|chemist)\\b') AND r.direction = 'debit') THEN 'T5_rule_R11'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bcouncil tax\\b') AND r.direction = 'debit') THEN 'T5_rule_R12'
       WHEN ((REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\b(rent|landlord)\\b') AND NOT REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'rent\\s*/\\s*buy|video rent|rent.?a.?car')) AND r.direction = 'debit') THEN 'T5_rule_R13'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\b(payday(?:\\s*loans?)?|wonga|quick\\s?quid|lending\\s?stream|creditspring|credit\\s?spring|118\\s*(?:118\\s*)?money|cashfloat|quid\\s?market|morses\\s?club|moneyboat|tick\\s?tock\\s*loans?|sunny\\s+loans?|cash\\s?asap|united\\s?kash|fast\\s+loan)\\b') AND r.direction = 'debit') THEN 'T5_rule_R19'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bexpo international\\s+sup') AND r.direction = 'debit') THEN 'T5_rule_R20'
       WHEN x.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
       ELSE 'T7_unclassified'
     END AS resolution_tier

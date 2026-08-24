@@ -110,3 +110,46 @@ def test_gambling_subtypes_not_collapsed(leaves):
     Subtypes must remain distinct."""
     for leaf in ("gambling_betting", "gambling_casino", "gambling_bingo", "gambling_lottery"):
         assert leaf in leaves, f"{leaf} missing - gambling must not be aggregated"
+
+
+def test_tesco_t2_collisions_owned_by_generator():
+    """Hand-patched T2 Tesco collisions were dropped by generate_crosswalk_sql.py
+    on 2026-08-24. The generator is the source of truth; generated SQL must
+    carry all three on both providers, and they must precede T4."""
+    sql = (ROOT / "sql" / "apply_crosswalk.sql").read_text()
+    gen = (ROOT / "src" / "generate_crosswalk_sql.py").read_text()
+    markers = (
+        "T2_compound_tesco_bank",
+        "T2_compound_tesco_petrol",
+        "T2_compound_tesco_phoneins",
+    )
+    for marker in markers:
+        assert marker in gen, f"{marker} missing from generate_crosswalk_sql.py"
+        assert sql.count(marker) == 2, (
+            f"{marker} must appear on Equifax and Plaid tier CASE (got {sql.count(marker)})")
+    for block_name, block in (
+        ("eqx_resolved", sql.split("eqx_resolved AS (")[1].split("plaid_raw AS (")[0]),
+        ("plaid_resolved", sql.split("plaid_resolved AS (")[1].split("combined AS (")[0]),
+    ):
+        leaf_case = block.split("END AS leaf")[0]
+        t4 = leaf_case.find("WHEN d.leaf IS NOT NULL THEN d.leaf")
+        assert t4 != -1, f"{block_name}: T4 dictionary WHEN missing"
+        for needle in (r"\btesco bank\b", r"petrol|\bpfs\b", "tescophoneins"):
+            pos = leaf_case.find(needle)
+            assert pos != -1, f"{block_name}: {needle!r} missing from leaf CASE"
+            assert pos < t4, f"{block_name}: {needle!r} must precede T4"
+
+
+def test_payday_rule_no_dictionary_false_positives():
+    """R18/R19 must not fire on dictionary merchants that are not payday_loan.
+    loans2go is deliberately omitted from the pattern (T4 maps it to personal_loan)."""
+    import re
+    rules = [r for r in csv.DictReader(RULES.open()) if r["rule_id"] in {"R18", "R19"}]
+    assert rules, "R18/R19 payday rules missing"
+    pattern = rules[0]["pattern"]
+    compiled = re.compile(pattern, re.I)
+    fps = []
+    for r in csv.DictReader(DICT.open()):
+        if compiled.search(r["normalised_merchant"]) and r["detailed_category"] != "payday_loan":
+            fps.append((r["normalised_merchant"], r["detailed_category"]))
+    assert not fps, f"payday rule hits non-payday dictionary merchants: {fps}"

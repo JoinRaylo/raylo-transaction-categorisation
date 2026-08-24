@@ -63,6 +63,31 @@ EQX_DESC_EXPR = "LOWER(COALESCE(r.description_raw, ''))"
 PLAID_MERCHANT_EXPR = "LOWER(TRIM(r.merchant_raw))"
 PLAID_DESC_EXPR = "LOWER(COALESCE(r.description_raw, ''))"
 
+# T2 provider-entity collisions: Plaid (and occasionally Equifax) collapses two
+# legal entities onto the same merchant string, so T4's exact-key match cannot
+# disambiguate. Narrative check MUST fire before T4. Owned here -- not as a
+# hand-patch on apply_crosswalk.sql -- because regenerating this file dropped
+# the 2026-08-23 Tesco Bank fix (and the 2026-08-24 petrol / phone-insurance
+# extensions) on 2026-08-24.
+# (pattern, leaf, resolution_tier)
+T2_TESCO_COLLISIONS = [
+    (r"\btesco bank\b", "financial_institution_unspecified", "T2_compound_tesco_bank"),
+    (r"petrol|\bpfs\b", "fuel", "T2_compound_tesco_petrol"),
+    (r"tescophoneins", "insurance_other", "T2_compound_tesco_phoneins"),
+]
+
+
+def t2_tesco_leaf(merchant_expr, desc_expr):
+    return "\n".join(
+        f"      WHEN {merchant_expr}='tesco' AND REGEXP_CONTAINS({desc_expr}, r'{pat}') THEN '{leaf}'"
+        for pat, leaf, _tier in T2_TESCO_COLLISIONS)
+
+
+def t2_tesco_tier(merchant_expr, desc_expr):
+    return "\n".join(
+        f"      WHEN {merchant_expr}='tesco' AND REGEXP_CONTAINS({desc_expr}, r'{pat}') THEN '{tier}'"
+        for pat, _leaf, tier in T2_TESCO_COLLISIONS)
+
 sql = f"""
 -- ============ RAYLO UNIFIED TAXONOMY - crosswalk application (sample test) ============
 -- Precedence waterfall (CLAUDE.md section 4): T1 direction overrides -> T2 compound rules ->
@@ -106,6 +131,9 @@ eqx_resolved AS (
       -- T2: compound rule - gig income
       WHEN r.pri='Identified Salary' AND r.sub IN ('Taxis','Delivery','Take Away') THEN 'salary_gig'
       WHEN r.pri='Identified Salary' AND r.sub IN ('Recruitment Services','Employment Agencies') THEN 'income_agency_work'
+      -- T2: provider-entity collisions (Plaid collapses Tesco Bank / Petrol /
+      -- Phone Insurance onto bare "tesco"; T4 would otherwise label them groceries)
+{t2_tesco_leaf(EQX_MERCHANT_EXPR, EQX_DESC_EXPR)}
       -- T3: MECHANISM-OVERRIDE primaries (mechanism determines leaf regardless of merchant)
       WHEN r.pri='Identified Salary' THEN 'salary'
       WHEN r.pri='Refund' THEN 'refund_received'
@@ -132,6 +160,7 @@ eqx_resolved AS (
       WHEN r.sub='Council' AND r.direction='credit' THEN 'T1_direction'
       WHEN r.pri='Identified Salary' AND r.sub IN ('Taxis','Delivery','Take Away') THEN 'T2_compound'
       WHEN r.pri='Identified Salary' AND r.sub IN ('Recruitment Services','Employment Agencies') THEN 'T2_compound'
+{t2_tesco_tier(EQX_MERCHANT_EXPR, EQX_DESC_EXPR)}
       WHEN r.pri IN ('Identified Salary','Refund','Benefits','Welfare','Pension Payout','Tax Refund',
         'Cash Back','Cash Machine','Cash Deposit','Interest','Interests and Dividends',
         'Balance Transfers','Adjustments') THEN 'T3_mechanism_override'
@@ -161,6 +190,8 @@ plaid_resolved AS (
     CASE
       -- T1: direction-dependent overrides
       WHEN r.cat='ENTERTAINMENT_CASINOS_AND_GAMBLING' AND r.direction='credit' THEN 'gambling_unspecified'
+      -- T2: provider-entity collisions -- see eqx_resolved; same collision on Plaid
+{t2_tesco_leaf(PLAID_MERCHANT_EXPR, PLAID_DESC_EXPR)}
       -- T4: merchant dictionary (provider-independent, overrides both providers' own categories)
       WHEN d.leaf IS NOT NULL THEN d.leaf
       -- T5: deterministic rules
@@ -171,6 +202,7 @@ plaid_resolved AS (
     END AS leaf,
     CASE
       WHEN r.cat='ENTERTAINMENT_CASINOS_AND_GAMBLING' AND r.direction='credit' THEN 'T1_direction'
+{t2_tesco_tier(PLAID_MERCHANT_EXPR, PLAID_DESC_EXPR)}
       WHEN d.leaf IS NOT NULL THEN 'T4_merchant_dictionary'
 {rules_tier_case(PLAID_MERCHANT_EXPR, PLAID_DESC_EXPR)}
       WHEN x.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
