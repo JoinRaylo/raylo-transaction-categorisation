@@ -9,7 +9,7 @@ Fewp,"DIRECT DEBIT REVERSAL REF WY12FEWP-BRSK LTD, MANDATE NO 0075",-25,credit,p
 Pastdue,REVERSAL OF 12-08 PASTDUE CREDIT SOL,-45.93,credit,plaid,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,already_verified,production_tranche3_review,,,returned_payment,
 Spring,Returned direct debit CREDITSPRING 070806 13191414,-8.51,credit,plaid,TRANSFER_IN_OTHER,already_verified,production_tranche1_review,,,returned_payment,
 Unpaid Loan,UNPAID LOAN,7,debit,plaid,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,already_verified,production_tranche3_review,,,returned_payment,
-3s Retail LTD,3S RETAIL LTD,1.99,debit,plaid,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,already_verified,production_tranche2_review,,,retail_other,
+3s Retail LTD,3S RETAIL LTD,1.99,debit,plaid,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,already_verified,production_tranche2_review,,,convenience_store,3S Retail Ltd is a convenience food shop.
 Accessories Palace,ACCESSORIES PALACE QATAR AMOUNT IN QAR 25.00 ON 04 AUG VISA 4.782241 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.16 ,5.39,debit,plaid,TRAVEL_AND_TRANSPORTATION_FLIGHTS,already_verified,gold_tail_human_verified,,,retail_other,
 Berwick,Berwick - Retail,1.65,debit,plaid,ENTERTAINMENT_CASINOS_AND_GAMBLING,already_verified,production_tranche2_review,,,retail_other,
 Capital Carp,Capital Carp,12.16,debit,plaid,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,already_verified,production_tranche2_review,,,retail_other,
@@ -99,7 +99,7 @@ Ls Lea,"LS LEA & SANDEMAN (VIA APPLE PAY), ON 17-08-2025",16.95,debit,plaid,DINI
 Vine Trail Cave,VINE TRAIL        CAVE BRISTOL      VIA MOBILE - PYMT FP 11/06/25 10    13064613767659000N,1310.64,debit,plaid,TRAVEL_AND_TRANSPORTATION_OTHER_TRAVEL_AND_TRANSPORTATION,already_verified,production_tranche3_review,,,alcohol_wine,
 Acc-nwestmstgl,ACC-NWESTMSTGL    543699******8897  VIA MOBILE - PYMT FP 16/10/25 10    32074346309180000N,300,debit,plaid,TRANSFER_OUT_OTHER,already_verified,production_tranche3_review,,,credit_card_repayment,
 BIP,Bip,42.42,debit,plaid,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,already_verified,production_tranche1_review,,,credit_card_repayment,
-Byron,Byron Hara Credit Card,130,debit,plaid,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,already_verified,production_tranche1_review,,,credit_card_repayment,
+Byron,Byron Hara Credit Card,130,debit,plaid,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,already_verified,production_tranche1_review,,,transfer_p2p,
 Cr LTD Prescot Rd Ts3,CR LTD PRESCOT RD,200,debit,plaid,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,already_verified,production_tranche3_review,,,credit_card_repayment,
 Drctr,Payment to DRCTR 309950 54679462,25,debit,plaid,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,already_verified,production_tranche3_review,,,credit_card_repayment,
 Dundee Cc T,DUNDEE CC T/T Dundee Cc T/t,90,debit,plaid,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,already_verified,production_tranche3_review,,,council_tax,
@@ -263,7 +263,7 @@ AVG,AVG*AGAP1641395088 Avg *agp294263210,38.99,debit,plaid,GENERAL_MERCHANDISE_A
 Canva,CARD PAYMENT TO CANVA* 04548-37370800 ON 27-06-2025,13,debit,plaid,GENERAL_MERCHANDISE_OTHER_GENERAL_MERCHANDISE,already_verified,gold_head_adjudicated,,,software,
 Capdesk,CAPDESK,175.01,debit,plaid,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,already_verified,production_tranche3_review,,,software,
 Dropbox,Dropbox*SJNR14V25D IRELAND ON 05 SEP BDC,9.99,debit,plaid,GENERAL_SERVICES_OTHER_SERVICES,already_verified,gold_head_adjudicated,,,software,
-Google One,Visa purchase GOOGLE *Google One,1.59,debit,plaid,GENERAL_SERVICES_OTHER_SERVICES,already_verified,gold_tail_human_verified,,,software,
+Google One,Visa purchase GOOGLE *Google One,1.59,debit,plaid,GENERAL_SERVICES_OTHER_SERVICES,already_verified,gold_tail_human_verified,,,web_services,"Google One is cloud storage / web_services, not App Store software."
 Aquaedge Classic Machi,Aquaedge Classic Machi,50.04,debit,plaid,RENT_AND_UTILITIES_WATER,already_verified,production_tranche3_review,,,household_appliances,
 Arcade Club Bu,Zettle_*ARCADE CLUB BU Arcade Club Bu,2.4,debit,plaid,ENTERTAINMENT_CASINOS_AND_GAMBLING,already_verified,production_tranche3_review,,,entertainment_other,
 Bam Karaoke Box,Bam Karaoke Box,15.19,debit,plaid,TRANSFER_OUT_OTHER,already_verified,production_tranche2_review,,,entertainment_other,
@@ -279,7 +279,7 @@ Boxhall City,BOXHALL CITY Boxhall City,6.6,debit,plaid,ENTERTAINMENT_EVENTS_AND_
 Cd Brew,3193 05JUL25 CD   BREW 74           GLASGOW GB,9.1,debit,plaid,FOOD_RETAIL_LIQUOR_STORES,already_verified,production_tranche1_review,,,eating_out_other,
 Cooper's,Cooper's,9.5,debit,plaid,DINING_DINING,already_verified,production_tranche2_review,,,eating_out_other,
 Hackney Bridge,Hackney Bridge - SumUp,21.5,debit,plaid,TRANSFER_OUT_OTHER,already_verified,production_tranche3_review,,,eating_out_other,
-Morr Derby,MORR DERBY,8.99,debit,plaid,ENTERTAINMENT_EVENTS_AND_TICKETS,already_verified,production_tranche2_review,,,eating_out_other,
+Morr Derby,MORR DERBY,8.99,debit,plaid,ENTERTAINMENT_EVENTS_AND_TICKETS,already_verified,production_tranche2_review,,,groceries,Plaid Morr + town is Morrisons groceries.
 Nao Pool Club,NAO POOL CLUB SPAIN AMOUNT IN EUR 50.00 ON 06 AUG VISA 1.14713 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £1.30 ,44.89,debit,plaid,DINING_DINING,already_verified,production_tranche2_review,,,eating_out_other,
 Arees Barber Shop,AREES BARBER SHOP  ON 28 AUG CPM,14,debit,plaid,PERSONAL_CARE_HAIR_AND_BEAUTY,already_verified,gold_tail_human_verified,,,beauty_treatment,
 Bar Salon,BAR SALON,3.28,debit,plaid,PERSONAL_CARE_HAIR_AND_BEAUTY,already_verified,production_tranche3_review,,,beauty_treatment,
@@ -509,7 +509,7 @@ Pure Gym,PureGym PureGym Limited        Leeds         GBR,49.86,debit,equifax,Pe
 DVSA,DVSA,23.0,debit,equifax,Education and Learning | Driving Tuition,new,,driving_tuition,driving_tuition,driving_tuition,
 State Pension,YE797432A DWP  SP,1016.72,credit,equifax,,new,,pension_received,pension_received,pension_received,
 Child Benefits,HMRC CHILD BENEFIT,93.4,credit,equifax,,new,,benefits_state,benefits_state,benefits_state,
-Haven Holidays,SUMUP *RICHARD HAV  ON 28 JAN CLP SUMUP  *RICHARD HAVEN,13.0,debit,equifax,Flights and Holidays | Holidays UK,new,,holiday_uk,holiday_uk,unclassified_card_spend,SUMUP *RICHARD HAVEN is a personal SumUp seller account. Haven Holidays would not collect £13 that way.
+Haven Holidays,SUMUP *RICHARD HAV  ON 28 JAN CLP SUMUP  *RICHARD HAVEN,13.0,debit,equifax,Flights and Holidays | Holidays UK,new,,holiday_uk,holiday_uk,beauty_treatment,"SUMUP *RICHARD HAVEN is Richard Haven barber, not Haven Holidays."
 Clearpay,Clearpay,23.16,debit,equifax,Financial Services | BNPL,new,,bnpl,bnpl,bnpl,
 State Pension,Bank credit YM101624A DWP SP 607080 10025707,897.48,credit,equifax,,new,,pension_received,pension_received,pension_received,
 Marketplace,AMZNMktplace*RN2JJ AMZNMktplace*RN2JJ29O4,5.99,debit,equifax,Amazon All | Amazon,new,,marketplace_amazon,marketplace_amazon,marketplace_amazon,
@@ -676,7 +676,7 @@ Tesco Fuel,Tesco Petrol TESCO PFS 3766         ST AUSTELL    GBR,75.48,debit,equ
 Citylink,STGCOACH/CTYLINK  ON 28 JUL CLP,2.0,debit,equifax,Commuting and travel | Trains and Coaches,new,,public_transport_rail_coach,public_transport_rail_coach,public_transport_rail_coach,
 Just Eat,JUST EAT.CO.UK LIM                    REFERENCE: ************2024,242.68,credit,equifax,Identified Salary | Take Away,new,,takeaway,takeaway,salary_gig,Large credit from Just Eat with identified-salary native category is consistent with courier earnings.
 Hastings Direct,BC18019953 Hastings Insurance Services,166.04,debit,equifax,Insurance | Motor Insurance,new,,insurance_motor,insurance_motor,insurance_motor,
-Roadchef,VMS ROADCHEF WHSMISTAFFORD,27.08,debit,equifax,"Restaurants and takeaway | Restaurants, Cafes and Bistros",new,,restaurant_cafe,restaurant_cafe,restaurant_cafe,
+Roadchef,VMS ROADCHEF WHSMISTAFFORD,27.08,debit,equifax,"Restaurants and takeaway | Restaurants, Cafes and Bistros",new,,restaurant_cafe,restaurant_cafe,convenience_store,
 Aviva,263672/14/002 Aviva,20.0,debit,equifax,Insurance | General Insurance,new,,insurance_general,insurance_general,insurance_general,
 Overpayments,CENT REC GROUP DD INITIAL PAYMENT,19.75,debit,equifax,,new,,income_other_unspecified,loan_repayment_dd,debt_collection,Central Recovery Group initial payment is a debt-recovery payment.
 Trip.com,UBER *TRIP  ON 28 FEB BCC UBR* PENDING.UBER.COM,5.92,debit,equifax,Flights and Holidays | Holidays,new,,accommodation,taxi_rideshare,taxi_rideshare,Narrative explicitly identifies an Uber trip.
@@ -963,7 +963,7 @@ Clearpay,Clearpay,24.3,debit,plaid,LOAN_PAYMENTS_BNPL_AND_EWA,new,,bnpl,bnpl,bnp
 Zopa,Zopa C34939505,40,debit,plaid,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,new,,personal_loan_repayment,personal_loan_repayment,personal_loan_repayment,
 Revolut,To Emma Louise Barraclough - Sent from Revolut - SortCodeAccountNumber: 11116610927565,50,debit,plaid,TRANSFER_OUT_TRANSFER_OUT_FROM_APPS,new,,transfer_own_account,transfer_p2p,transfer_p2p,Revolut transfer to a named person.
 Specsavers,SPECSAVERS,75,debit,plaid,MEDICAL_DENTAL_AND_VISION,new,,optician,optician,optician,
-TK Maxx,TK MAXX TK Maxx,9.98,debit,plaid,GENERAL_MERCHANDISE_APPAREL_AND_ACCESSORIES,new,,department_store,clothing_general,department_store,TK Maxx is an off-price department store spanning clothing and homewares.
+TK Maxx,TK MAXX TK Maxx,9.98,debit,plaid,GENERAL_MERCHANDISE_APPAREL_AND_ACCESSORIES,new,,department_store,clothing_general,department_store,TK Maxx is an off-price department store.
 Corn Street Dental,CORN STREET DENTAL,49,debit,plaid,MEDICAL_DENTAL_AND_VISION,new,,dentist,dentist,dentist,
 Save The Pennies,SAVE THE PENNIES 779111-00114207,2.84,debit,plaid,TRANSFER_OUT_SAVINGS,new,,savings_transfer,savings_transfer,savings_transfer,
 Bavaria Motors,Bavaria motors LtdMA15 YYZ,694.76,debit,plaid,TRAVEL_AND_TRANSPORTATION_AUTOMOTIVE,new,,vehicle_servicing,vehicle_maintenance,vehicle_maintenance,Motor-business payment lacks enough detail to distinguish servicing from other maintenance.
@@ -1048,7 +1048,7 @@ YouLend,To YouLend Limited,25,debit,plaid,LOAN_PAYMENTS_CASH_ADVANCES,new,,payda
 Cd B&m,1203 28OCT25 CD   B&M 049 - ASTLE   PARK              WEST BROMWICH GB,20,debit,plaid,GENERAL_MERCHANDISE_DISCOUNT_STORES,new,,discount_store,discount_store,discount_store,
 HP,HPI INSTANT INK UK,2.78,debit,plaid,GOVERNMENTS_AND_NON_PROFIT_OTHER_GOVERNMENTS_AND_NON_PROFIT,new,,software,printing_supplies,printing_supplies,HP Instant Ink is an ink-supply subscription.
 British Gas,BRITISH GAS  850062672108010000 DDR,48.06,debit,plaid,RENT_AND_UTILITIES_GAS_AND_ELECTRICITY,new,,energy,energy,energy,
-Bandoo,CARD PAYMENT TO BANDOO*CK ON 13-08-2025,40.7,debit,plaid,TRANSFER_OUT_CHECKING,new,,unclassified_other,unclassified_other,unclassified_other,Bandoo CK could not be resolved reliably; possible debt-help references were too weak to use.
+Bandoo,CARD PAYMENT TO BANDOO*CK ON 13-08-2025,40.7,debit,plaid,TRANSFER_OUT_CHECKING,new,,unclassified_other,unclassified_other,health_beauty_general,Bandoo is ionic foot-detox retail; health_beauty_general.
 Coinbase,Bank credit Coinbase 2025-10-22,-724.82,credit,plaid,TRANSFER_IN_INVESTMENT_AND_RETIREMENT_FUNDS,new,,crypto,crypto,crypto,
 Garry Potter,Garry Potter,10,debit,plaid,TRANSFER_OUT_OTHER,new,,unclassified_other,transfer_p2p,transfer_p2p,Payment to a named individual.
 Cd B&m,3277 23SEP25 CD   B&M 553 -         BROMBOROUGH       BROMBOROUGH GB,18.66,debit,plaid,GENERAL_MERCHANDISE_DISCOUNT_STORES,new,,discount_store,discount_store,discount_store,
@@ -1300,7 +1300,7 @@ TV LICENSING,"TV LICENCE MBP
 TV LICENCE MBP - SortCodeAccountNumber: 60800930287634",34.9,debit,plaid,ENTERTAINMENT_OTHER_ENTERTAINMENT,new,,tv_licence,tv_licence,tv_licence,
 Mcparland Pharmacies,McParland Pharmacies,3,debit,plaid,MEDICAL_PHARMACIES_AND_SUPPLEMENTS,new,,pharmacy,pharmacy,pharmacy,
 Ladbrokes,Ladbrokes,10,debit,plaid,ENTERTAINMENT_CASINOS_AND_GAMBLING,new,,gambling_betting,gambling_betting,gambling_betting,
-Bandoo,Bandoo*CK,40.7,debit,plaid,TRANSFER_OUT_CHECKING,new,,unclassified_other,unclassified_other,retail_other,Bandoo CK could not be resolved reliably; possible debt-help references were too weak to use.
+Bandoo,Bandoo*CK,40.7,debit,plaid,TRANSFER_OUT_CHECKING,new,,unclassified_other,unclassified_other,health_beauty_general,Bandoo is ionic foot-detox retail; health_beauty_general.
 Bullsmoor Express,Bullsmoor Express  ON 20 JUL CPM BULLSMOOR EXPRESS,2.88,debit,plaid,TRAVEL_AND_TRANSPORTATION_OTHER_TRAVEL_AND_TRANSPORTATION,new,,convenience_store,convenience_store,convenience_store,
 Completesave,Visa purchase WWW.COMPLETESAVE.CO.UK 5869,18,debit,plaid,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,new,,savings_transfer,unclassified_other,memberships,Complete Savings is a paid cashback-membership service.
 National Health Service,Direct debit NHSBSA PPC 2 607080 10027823,11.45,debit,plaid,MEDICAL_OTHER_MEDICAL,new,,health_other,health_other,pharmacy,NHSBSA PPC is a prescription prepayment certificate.
@@ -1504,7 +1504,7 @@ Thames Water,THAMES WATER  900016764228 UNP,-70,credit,plaid,RENT_AND_UTILITIES_
 Revolut,To Roger Lyle - Sent from Revolut - SortCodeAccountNumber: 04000478692230,7,debit,plaid,TRANSFER_OUT_TRANSFER_OUT_FROM_APPS,new,,transfer_own_account,transfer_p2p,transfer_p2p,Revolut transfer to a named person.
 Revolut,JAY RAMGI         SENT FROM REVOLUT FP 20/08/25 1509  REV556989661414403,-12,credit,plaid,TRANSFER_IN_TRANSFER_IN_FROM_APPS,new,,transfer_own_account,transfer_p2p,transfer_p2p,Incoming Revolut transfer from a named person.
 One Stop,ONE STOP 2723  ON 09 SEP CPM One Stop,13,debit,plaid,GENERAL_MERCHANDISE_CONVENIENCE_STORES,new,,convenience_store,convenience_store,convenience_store,
-U.S. Post Office,POST OFFICE 343 BARLOW MOOR RO 23JUL 14.58 ATM,-95,credit,plaid,TRANSFER_IN_CHECKS_AND_ATM,new,,delivery_courier,cash_withdrawal,cash_withdrawal,Narrative explicitly identifies an ATM transaction at the Post Office; direction metadata is inconsistent.
+U.S. Post Office,POST OFFICE 343 BARLOW MOOR RO 23JUL 14.58 ATM,-95,credit,plaid,TRANSFER_IN_CHECKS_AND_ATM,new,,delivery_courier,cash_withdrawal,cash_deposit,Post Office ATM credit is a cash deposit (T2); direction credit.
 Credit,7474 02JUL25      PAYPAL *PAYPAL    CREDIT            35314369001 GB,100,debit,plaid,TRANSFER_OUT_TRANSFER_OUT_FROM_APPS,new,,payment_intermediary,payment_intermediary,revolving_credit_repayment,Narrative explicitly identifies PayPal Credit repayment; PayPal Credit is a revolving credit line.
 Klarna,"Card 76, Klarna*Tiktok Shop S",14.33,debit,plaid,LOAN_PAYMENTS_BNPL_AND_EWA,new,,bnpl,bnpl,bnpl,
 First Choice Off Lice,First Choice Off Licen,1.6,debit,plaid,INTEREST_PAYMENTS_INTEREST_CHARGED,new,,unclassified_other,alcohol_beer_spirits,alcohol_beer_spirits,Merchant is explicitly an off licence.

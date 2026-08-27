@@ -38,6 +38,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from eval_sets import refuse_confirmation_eval  # noqa: E402
 from gating_experiment import ROOT, OUT_DIR, load_crosswalk  # noqa: E402
 from ml_baseline import bq_client, GOLD_HEAD, GOLD_TAIL, EVAL_PARQUET  # noqa: E402
 
@@ -47,7 +48,17 @@ REPORT_MD = ROOT / "data" / "distillation_bakeoff_report.md"
 
 CAP_PER_MERCHANT = 150  # per-merchant cap so high-volume merchants don't dominate
 SEED = 42
-ACCEPTED_TIERS = {"auto_accept", "accepted", "accepted_tiebreak", "accepted_general", "human_reviewed"}
+ACCEPTED_TIERS = {"auto_accept", "accepted", "accepted_tiebreak", "accepted_general",
+                  "human_reviewed", "agent_consensus", "agent_tiebreak", "agent_review"}
+
+# Catch-all gambling leaves. If the classifier abstains (unclassified_other) but
+# gambling is actually in the running, serve gambling_unspecified rather than
+# silence. Specific subtypes are left alone — they must stay distinct in the
+# feature layer (lottery IV 0.0498 vs combined gambling_months 0.0053).
+GAMBLING_LEAVES = frozenset({
+    "gambling_betting", "gambling_casino", "gambling_bingo",
+    "gambling_lottery", "gambling_unspecified", "prize_competitions",
+})
 
 # Every closed production_labels_trancheN.csv snapshot in data/ -- always use
 # the LATEST tranche file (it's a full union, not incremental).
@@ -409,15 +420,31 @@ def featurise_for(bundle, df):
 
 def predict(bundle, df):
     X = featurise_for(bundle, df)
+    clf = bundle["clf"]
     if bundle["kind"] == "lgbm":
-        proba = bundle["clf"].predict_proba(X)
-        idx = proba.argmax(axis=1)
-        return bundle["classes"][idx], proba.max(axis=1)
+        proba = clf.predict_proba(X)
+        classes = np.asarray(bundle["classes"])
     else:
-        proba = bundle["clf"].predict_proba(X)
-        classes = bundle["clf"].classes_
-        idx = proba.argmax(axis=1)
-        return classes[idx], proba.max(axis=1)
+        proba = clf.predict_proba(X)
+        classes = np.asarray(clf.classes_)
+    idx = proba.argmax(axis=1)
+    pred = classes[idx]
+    conf = proba.max(axis=1)
+
+    gambling_col = np.array([c in GAMBLING_LEAVES for c in classes])
+    if gambling_col.any() and "unclassified_other" in classes:
+        unclass_i = int(np.flatnonzero(classes == "unclassified_other")[0])
+        runner = proba.copy()
+        runner[np.arange(len(pred)), idx] = -1.0
+        runner_idx = runner.argmax(axis=1)
+        gambling_mass = proba[:, gambling_col].sum(axis=1)
+        promote = (pred == "unclassified_other") & (
+            gambling_col[runner_idx] | (gambling_mass > proba[:, unclass_i])
+        )
+        if promote.any():
+            pred = pred.copy()
+            pred[promote] = "gambling_unspecified"
+    return pred, conf
 
 
 def evaluate():
@@ -453,6 +480,7 @@ def evaluate():
         lines.append(f"## {name}")
 
         def score(gold_path, label, group_col=None):
+            refuse_confirmation_eval(gold_path)
             gold = pd.read_csv(gold_path)
             gold["merchant"] = gold["merchant"].str.strip().str.lower()
             gold["pred"] = gold["merchant"].map(merchant_leaf)

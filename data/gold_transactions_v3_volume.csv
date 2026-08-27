@@ -179,7 +179,7 @@ stripe,From Stripe Payments UK Ltd,23.7,credit,equifax,Transfers / Other | Inter
 TFL,TFL TRAVEL CH     TFL.GOV.UK/CP,1.75,debit,equifax,Commuting and travel | Trains and Coaches,established,public_transport_rail_coach,TfL travel charge debit.
 Elderbridge,2732 13SEP24      ELDERBRIDGE 8     NEWPORT GB,10.76,debit,equifax,Financial Services | Personal Loans,no,debt_collection,"Elderbridge Ltd card debit £10.76; Target Group loan-servicer/collector on legacy books, not a high-street lender origination."
 Which?,W1016052041 Which?,10.99,debit,equifax,"Books, Newspapers and Magazines | Magazines",established,magazines,Which? subscription debit.
-Rebtel,Rebtel SWEDEN ON 21 JAN CPM,10.0,debit,equifax,Shopping (Discretionary) | Mobile Handsets and Accessories,established,software,"Rebtel international-calling debit; telecoms, closest leaf is mobile. Adversarial: Rebtel is a VoIP/calling app, not a UK mobile-network contract."
+Rebtel,Rebtel SWEDEN ON 21 JAN CPM,10.0,debit,equifax,Shopping (Discretionary) | Mobile Handsets and Accessories,established,mobile_phone_contract,Rebtel is international calling / VoIP.
 Hewlett Packard (HP),PAYPAL *HPINCUKLIM PAYPAL *HPINCUKLIMI,3.99,debit,equifax,Shopping (Discretionary) | Computer Peripherals and Accessories,yes,printing_supplies,PayPal *HP Instant Ink; underlying merchant is HP ink.
 adidas,ADIDASWWW.ADIDAS.C ADIDASWWW.ADIDAS.CO.UK,42.35,debit,equifax,Shopping (Fashion) | Sportswear,established,sportswear,adidas.co.uk debit.
 Tesco Fuel,6710 10NOV24 CD   TESCO PFS 4036    BROADSTAIRS GB,8.15,debit,equifax,Commuting and travel | Fuel,established,fuel,Tesco PFS (petrol filling station) debit.
@@ -191,7 +191,7 @@ Just Eat,Just Eat,18.58,debit,equifax,Restaurants and takeaway | Take Away,yes,t
 ASDA,ASDA SUPERSTORE CD 1134,57.57,debit,equifax,Shopping (Household Essentials) | General Groceries,yes,groceries,Asda supermarket debit.
 Costa,Contactless Payment COSTA COFFEE 43011762 GOOGLE 3899,6.5,debit,equifax,"Restaurants and takeaway | Restaurants, Cafes and Bistros",established,restaurant_cafe,Costa Coffee debit.
 Merkur Slots,MERKUR SLOTS  ON 03 NOV BCC,10.0,debit,equifax,Gambling and Betting | Poker and Casino Games,yes,gambling_casino,Merkur Slots debit.
-Post Office,Post Office 19NOV,680.0,credit,equifax,Transfers / Other | Delivery,yes,unclassified_other,Post Office £680 CREDIT with no cash-deposit/salary cue; do not guess.
+Post Office,Post Office 19NOV,680.0,credit,equifax,Transfers / Other | Delivery,yes,cash_deposit,Large Post Office credit with no postage/bill cue; treat as cash deposit.
 Hotel Chocolat,HOTEL CHOCOLAT,52.45,debit,equifax,"Restaurants and takeaway | Restaurants, Cafes and Bistros",established,confectionary,Hotel Chocolat debit; chocolate retail not a restaurant.
 Save the Pennies,SAVE THE PENNIES ************3360,2.31,debit,equifax,,established,savings_transfer,Save the Pennies round-up debit.
 William Hill,9756 14AUG24      WHO INTERNET      INTERNET GI,5.0,debit,equifax,Gambling and Betting | Betting,established,gambling_betting,William Hill (WHO Internet) stake debit.
@@ -240,7 +240,7 @@ LTT Vending,LTT Vending Ltd LTT VENDING LIMITED    LEEDS         GBR,1.0,debit,e
 Vodafone,"DIRECT DEBIT PAYMENT TO VODAFONE LTDDEVICE REF 1003551045, MANDATE NO 0059",21.0,debit,equifax,Utilities | Mobile Phone Contracts,established,mobile_handset,"Override prefill savings_transfer: Vodafone Ltd Device DD is the EVO handset loan, not savings."
 Ladbrokes,LC International L  ON 12 AUG BCC LC INTERNATIONAL LTD,7.6,debit,equifax,Gambling and Betting | Betting,established,gambling_betting,Ladbrokes stake debit.
 eBay,eBay O*22-12187-70 eBay O*22-12187-70566,32.99,debit,equifax,Shopping (Discretionary) | TV and Online Shopping,established,marketplace_general,eBay purchase debit.
-TK Maxx,Contactless Payment TK MAXX APPLEPAY 2568 2023-12-17,24.99,debit,equifax,Shopping (Fashion) | General Fashion,established,department_store,TK Maxx off-price department store debit.
+TK Maxx,Contactless Payment TK MAXX APPLEPAY 2568 2023-12-17,24.99,debit,equifax,Shopping (Fashion) | General Fashion,established,department_store,TK Maxx is an off-price department store.
 Zara,ZARA VIVO CLUJ C8 RON         199.90 VISAXR   5.74590 CD 1636 08SEP23,34.79,debit,equifax,Shopping (Fashion) | General Fashion,yes,clothing_general,"Zara Cluj (RON) converted debit; identifiable clothing merchant, not foreign_spend_unspecified."
 Deliveroo,DELIVEROO  ON 10 DEC CPM,18.78,debit,equifax,Restaurants and takeaway | Take Away,established,takeaway,Deliveroo debit.
 McDonalds,MCDONALDS,14.26,debit,equifax,Restaurants and takeaway | Take Away,yes,takeaway,McDonald's debit.
@@ -415,7 +415,7 @@ Zego,ZEGO UK Zego,5.0,debit,equifax,Insurance | Motor Insurance,yes,insurance_mo
 Toby Carvery,Toby Carvery CS*TOBYCARVERY         Hemel Hempste GBR,50.0,debit,equifax,"Restaurants and takeaway | Restaurants, Cafes and Bistros",established,restaurant_cafe,Toby Carvery restaurant.
 Clearpay,Clearpay,14.5,debit,equifax,Financial Services | BNPL,established,bnpl,Clearpay; no underlying shop.
 PayPal Credit,PAYPAL *PYPL PAYIN PAYPAL *PYPL PAYIN3,28.73,debit,equifax,Financial Services | BNPL,established,bnpl,PayPal Pay in 3 (PYPL PAYIN3) is BNPL.
-Sky,DGI SKY PROTECT  DVSU0000025 DDR Domestic & General,14.98,debit,equifax,"Utilities | Internet, TV and Phone",no,insurance_other,"DGI Sky Protect via Domestic & General is Sky equipment/device cover, not Sky TV."
+Sky,DGI SKY PROTECT  DVSU0000025 DDR Domestic & General,14.98,debit,equifax,"Utilities | Internet, TV and Phone",no,insurance_other,"Sky Protect / DGI is device cover (insurance_other), not multi-line general."
 Boylesports,Contactless Payment BOYLESPORTS 2024-12-08,2.0,debit,equifax,Gambling and Betting | Betting,yes,gambling_betting,Boylesports bookmaker.
 Ladbrokes,LC International L LC International Ltd,56.0,debit,equifax,Gambling and Betting | Betting,established,gambling_betting,LC International = Ladbrokes Coral betting.
 Matalan,"MATALAN STORE 260 (VIA APPLE PAY), ON 13-10-2024",76.0,debit,equifax,Shopping (Discretionary) | Department Stores,established,clothing_general,Matalan clothing retailer.
@@ -882,7 +882,7 @@ Monzo,Mr Brian Mccarthy Sent from Monzo,1,debit,plaid,TRANSFER_OUT_OTHER,no,tran
 Co-op,Co-op,10.75,debit,plaid,FOOD_RETAIL_GROCERIES,established,groceries,Co-op grocery debit.
 Exchanged To Btc,Exchanged to BTC,30,debit,plaid,TRANSFER_OUT_INVESTMENT_AND_RETIREMENT_FUNDS,established,crypto,Exchanged to BTC is a crypto purchase.
 Uber Eats,UBER   *EATS,14.53,debit,plaid,DINING_DINING,established,takeaway,Uber Eats.
-SKY,Direct debit DGI SKY PROTECT 600001 36318515,15,debit,plaid,INSURANCE_AND_TAX_INSURANCE,no,insurance_general,"SKY PROTECT is Sky's insurance add-on, not Sky TV (brief: use the narrative)."
+SKY,Direct debit DGI SKY PROTECT 600001 36318515,15,debit,plaid,INSURANCE_AND_TAX_INSURANCE,no,insurance_other,"Sky Protect / DGI is device cover (insurance_other), not multi-line general."
 Giffgaff,CARD PAYMENT TO GIFFGAFF ON 06-06-2025,10,debit,plaid,RENT_AND_UTILITIES_TELECOMMUNICATIONS,yes,mobile_phone_contract,giffgaff top-up/plan.
 Congleton Eats,CONGLETON EATS,35.85,debit,plaid,DINING_DINING,no,takeaway,Congleton Eats is a local takeaway-ordering platform.
 Just Eat,Just Eat          London,19.5,debit,plaid,DINING_DINING,yes,takeaway,Just Eat.
@@ -1003,7 +1003,7 @@ Asda,ASDA STORES,7.31,debit,plaid,FOOD_RETAIL_GROCERIES,yes,groceries,Asda Store
 Monica Sundar Pv,MONICA SUNDAR PV6089138910136265,60,debit,plaid,TRANSFER_OUT_OTHER,no,transfer_p2p,Debit to named person Monica Sundar.
 BP,BP RIVINGTON NORTH CD 2811,2,debit,plaid,TRAVEL_AND_TRANSPORTATION_OTHER_TRAVEL_AND_TRANSPORTATION,established,fuel,BP Rivington North forecourt.
 Apple,APPLE.COM/BILL,2.99,debit,plaid,GENERAL_MERCHANDISE_COMPUTERS_AND_ELECTRONICS,established,software,APPLE.COM/BILL.
-TK Maxx,TK MAXX,30.19,debit,plaid,GENERAL_MERCHANDISE_APPAREL_AND_ACCESSORIES,established,clothing_general,Override department_store: TK Maxx gold/dictionary leaf is clothing_general.
+TK Maxx,TK MAXX,30.19,debit,plaid,GENERAL_MERCHANDISE_APPAREL_AND_ACCESSORIES,established,department_store,TK Maxx is an off-price department store.
 Let Insurance Serv,LET INSURANCE SERV  SU6WMNFE2V DDR,17.29,debit,plaid,INSURANCE_AND_TAX_INSURANCE,no,insurance_home,"Let Insurance Services is landlord/let property insurance, closest to insurance_home not a generic other."
 Morrisons,Morrisons,15,debit,plaid,FOOD_RETAIL_GROCERIES,yes,groceries,Morrisons supermarket.
 Xero,XERO UK LTD       PQATABF8W0DPLBL8NU,44.4,debit,plaid,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,yes,software,Xero accounting software subscription.
@@ -1279,7 +1279,7 @@ Parichstudio,Etsy.com*ParichStu,37.65,debit,plaid,GENERAL_MERCHANDISE_APPAREL_AN
 Whatnot,WHATNOT IRELAND ON 06 OCT CPM,5.7,debit,plaid,GENERAL_MERCHANDISE_ONLINE_MARKETPLACES,established,marketplace_general,Whatnot livestream marketplace.
 Just Eat,Just Eat,24.18,debit,plaid,DINING_DINING,yes,takeaway,Just Eat.
 Crieff Highland Gathering,Crieff Highland Ga,5,debit,plaid,TRANSFER_OUT_OTHER,yes,days_out,Crieff Highland Gathering event.
-Christopher Clayton Leisure,Christopher Clayton Leisure,15,debit,plaid,ENTERTAINMENT_EVENTS_AND_TICKETS,no,unclassified_other,Christopher Clayton Leisure not uniquely a gym vs person vs leisure business.
+Christopher Clayton Leisure,Christopher Clayton Leisure,15,debit,plaid,ENTERTAINMENT_EVENTS_AND_TICKETS,no,unclassified_other,Cannot confirm a gym/leisure operator from public sources; leave unclassified.
 Barcl 24 Studio,BARCL-24STUDIO,71.45,debit,plaid,DINING_DINING,no,unclassified_other,BARCL-24STUDIO truncated; dining native but payee not uniquely identified.
 Clearpay,0959 14SEP25      CLEARPAY          CLEARPAY.CO.U GB,22.5,debit,plaid,LOAN_PAYMENTS_BNPL_AND_EWA,established,bnpl,Clearpay.
 Apple,APPLE.COM/BILL Apple App Store,4.99,debit,plaid,GENERAL_MERCHANDISE_COMPUTERS_AND_ELECTRONICS,established,software,Apple App Store.
@@ -1385,7 +1385,7 @@ Mrs S Hafiz,MRS S HAFIZ       MRS S HAFIZ       VIA MOBILE - PYMT FP 22/09/25 10
 KFC,KFC Anne Thomas,-10,credit,plaid,DINING_DINING,no,refund_received,KFC credit (Anne Thomas memo); retailer credit is a refund not takeaway spend.
 McDonald's,Visa purchase McDonalds 8260391 APPLEPAY 2818 2025-07-20,11.77,debit,plaid,DINING_DINING,yes,takeaway,McDonald's.
 SkyBet,Sky Bet,40,debit,plaid,ENTERTAINMENT_CASINOS_AND_GAMBLING,yes,gambling_betting,Sky Bet.
-Suzanne Draper Loan,Suzanne Draper    loan,50,debit,plaid,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,no,transfer_p2p,Named person Suzanne Draper with loan memo; informal P2P not a regulated personal loan.
+Suzanne Draper Loan,Suzanne Draper    loan,50,debit,plaid,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,no,loan_repayment_manual,Named person with loan memo; informal manual loan repayment.
 Jack Nye Barcodes,Jack Nye          Barcodes,99.99,debit,plaid,DINING_DINING,yes,transfer_p2p,Jack Nye with Barcodes memo; named person debit.
 Voxi,WWW.VOXI.CO.UK CD 1624,15,debit,plaid,RENT_AND_UTILITIES_TELECOMMUNICATIONS,established,mobile_phone_contract,VOXI.
 SkyBet,SKY BET CD 4563,5,debit,plaid,ENTERTAINMENT_CASINOS_AND_GAMBLING,yes,gambling_betting,Sky Bet.

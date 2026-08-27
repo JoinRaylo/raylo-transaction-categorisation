@@ -2,8 +2,10 @@
 
 Self-contained instructions for whichever agent/session runs this on the laptop. Uses **MLX** (Apple's ML framework) since it's the natural, GPU-accelerated choice for local fine-tuning on Apple Silicon — no need to replicate the earlier Vertex AI managed-tuning approach.
 
+> **2026-08-26:** `outputs/tuning_train.jsonl` was rebuilt from tranche 4 and is now **382,183** rows. The SLM / Gemma adapter has **not** been retrained on that file — the §6a numbers (50.0% leaf at ckpt 38000) are the earlier ~164k-row run. Do not assume a new adapter exists. Frozen tranche-3 jsonl: `outputs/tuning_train_v4.jsonl`.
+
 **Inputs already prepared in this repo — don't regenerate these, just use them:**
-- `outputs/tuning_train.jsonl` (164,445 rows) — chat-format, one `{"messages": [system, user, assistant]}` per line
+- `outputs/tuning_train.jsonl` (382,183 rows as of 26 Aug 2026; previously 164,445) — chat-format, one `{"messages": [system, user, assistant]}` per line
 - `outputs/tuning_val.jsonl` (5,000 rows) — same format, for training-time validation loss only
 - `outputs/tuning_system_prompt.txt` — the exact system prompt baked into every row; reuse byte-for-byte at inference time
 - `data/gold_v2_slm_eval_holdout.csv` (1,055 real transactions) — **do not touch during training.** This is the clean, zero-overlap eval set for scoring the finished model. Never fine-tune, validate, or early-stop on it.

@@ -1,0 +1,17 @@
+normalised_merchant,detailed_category,notes
+cox,transfer_p2p,Carlos B leftover: surname FPS (Sophie cox / rebecca cox)
+white lion,pub_bar,Carlos B leftover debit default; T2 hotel → accommodation
+lets win,prize_competitions,Carlos B leftover; Plaid rent category is wrong
+saga services,insurance_general,Carlos B leftover debit default
+cts,public_transport_rail_coach,Carlos B leftover CTS LOCAL; T2 NAPA auto parts → spares_repairs
+transferwise,money_transfer_service,Carlos B leftover Wise corp; T2 via mobile → transfer_p2p
+help to buy,personal_loan_repayment,Carlos B leftover Help to Buy equity-loan DD
+grosvenor casino,gambling_casino,Carlos B leftover debit; T2 credits → salary (before T1 gambling)
+the kingfisher,pub_bar,Carlos B leftover contactless default; T2 convenience/grocer → convenience_store
+cotswold outdoor,clothing_outdoor,Carlos B leftover debit; T2 payroll-shaped credits → salary
+council,government_services,Carlos B leftover municipal default; T2 council tax → council_tax
+off licence,alcohol_beer_spirits,Carlos B leftover; T5 also matches off licence in merchant/narrative
+liberty,department_store,Carlos B leftover www.liberty.co.uk; T2 gas/electric → energy
+virgin mobile,mobile_phone_contract,Carlos B leftover; T2 Virgin Money in narrative → credit_card_repayment
+the grove,pub_bar,Carlos B leftover local pub default; T2 Welwyn/Chandler → accommodation
+standing order,transfer_bank_unspecified,Carlos B leftover purpose-unknown SO; returned standing order is T2

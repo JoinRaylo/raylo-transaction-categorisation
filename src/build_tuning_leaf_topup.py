@@ -33,6 +33,7 @@ from gating_experiment import (MODELS, build_system_prompt, build_tool_schema,  
                                 load_example_merchants, load_example_notes, build_notes_addendum, load_crosswalk)
 from build_final_gold_v2 import TXN_ADDENDUM  # noqa: E402
 from build_final_gold_v2_batch2 import _leaf_equifax_queries  # noqa: E402
+from label_provenance import DICTIONARY_ELIGIBLE_TIERS  # noqa: E402
 
 SAMPLE_CSV = OUT_DIR / "tuning_topup_sample.csv"
 PREDICTIONS = {k: OUT_DIR / f"tuning_topup_predictions_{k}.csv" for k in MODELS}
@@ -53,7 +54,7 @@ def _target_leaves():
     from collections import Counter
     tier_a_counts = Counter(r["gold_leaf"] for r in tier_a)
 
-    GOOD_TIERS = {"auto_accept", "accepted", "human_reviewed"}
+    GOOD_TIERS = DICTIONARY_ELIGIBLE_TIERS
     prod = list(csv.DictReader(open(ROOT / "data" / "production_labels_tranche3.csv")))
     tier_b_counts = Counter(r["final_leaf"] for r in prod if r["tier"] in GOOD_TIERS)
 

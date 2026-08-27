@@ -1,0 +1,258 @@
+merchant,n_rows,old_leaf,new_leaf,verdict,suggested_leaf,reason
+2 rides,10,taxi_rideshare,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+2 rides whbu,10,taxi_rideshare,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+a.saily,10,unclassified_other,mobile_phone_contract,keep,,Saily travel eSIM; mobile_phone_contract per convention.
+apollo.io,10,unclassified_other,software,keep,,Apollo.io B2B sales CRM; software.
+argylesatellite.co,10,unclassified_other,taxi_rideshare,keep,,Argyle Satellite Taxis Wirral private hire.
+argylesatellite.co.uk,10,unclassified_other,taxi_rideshare,keep,,Argyle Satellite Taxis Wirral private hire.
+ashbourne management services ltd,10,unclassified_other,gym_fitness,keep,,Ashbourne collects gym/fitness-club Direct Debits.
+beatport llc.,10,unclassified_other,music_other,keep,,Beatport DJ/electronic download store; music_other not consumer streaming.
+bilal superstore cheadle,10,unclassified_other,groceries,keep,,Named Cheadle superstore; grocery retail.
+blink network b.v,10,unclassified_other,fuel,keep,,Blink EV charging billed as fuel per taxonomy convention.
+brandon street premier,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+c beenetwork.,10,unclassified_other,public_transport_rail_coach,keep,,Bee Network Greater Manchester public-transport charges.
+c premier,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+canvauk,10,unclassified_other,software,keep,,PAYPAL *CANVAUK is Canva; software.
+cd ridgewood stores,10,unclassified_other,convenience_store,keep,,Ridgewood Stores Ltd Uckfield convenience store; already dictionary convenience_store.
+cder group limited.,10,unclassified_other,debt_enforcement,keep,,CDER Group is a UK bailiff/enforcement agency.
+credit engine,10,unclassified_other,credit_reporting_service,keep,,Credit Engine is a paid TransUnion/Equifax score membership; credit_reporting_service.
+d lime,10,taxi_rideshare,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+dcbltd,10,unclassified_other,debt_enforcement,keep,,Direct Collection Bailiffs Ltd (High Court enforcement).
+dhadda premier,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+dike and son ltd,10,unclassified_other,groceries,keep,,Independent Stalbridge supermarket (Nisa partner); grocery card spend.
+dixon lane premier,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+dott scooter,10,taxi_rideshare,bicycle,keep,,Dott shared e-scooters; same micromobility leaf as Lime.
+dover street market,10,unclassified_other,clothing_general,keep,,Fashion retailer Dover Street Market; clothing_general.
+evyve services,10,unclassified_other,fuel,keep,,UK public EV rapid-charging network; fuel.
+fam premier ltd,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+fish's premier store,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+focusfinance.co.uk,10,unclassified_other,personal_loan_repayment,revert,,"All rows are £3.99 direct debits; matches FCA-warned Focus Finance magazine/subscription pattern, not a loan repayment."
+forfar premier,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+g.w.r.s.a. clu,10,unclassified_other,private_members_club,keep,,Great Western Railway Staff Association members' club; private_members_club.
+gdk winchester,10,unclassified_other,takeaway,keep,,GDK (German Doner Kebab) or named pizza/kebab delivery; not government.
+grandpierlimited,10,unclassified_other,days_out,keep,,Weston-super-Mare Grand Pier amusement; days_out.
+grant palmer ltd,10,unclassified_other,public_transport_rail_coach,keep,,Bedfordshire bus operator.
+greenbank service st,10,unclassified_other,fuel,keep,,Circle K petrol forecourt; amounts include tank-sized fills.
+highlevel inc.,10,unclassified_other,software,keep,,GoHighLevel CRM/marketing SaaS; software.
+holafly limited,10,unclassified_other,mobile_phone_contract,keep,,Holafly travel eSIM; mobile_phone_contract per convention.
+htcard.co.u,10,unclassified_other,memberships,keep,,Blue Light Card (WWW.BLUELIG HTCARD); dictionary already memberships.
+human forest,10,unclassified_other,bicycle,keep,,Forest/HumanForest London e-bike hire; bicycle.
+icarsltd,10,unclassified_other,taxi_rideshare,keep,,iCars Taxis Burton (www.icarsltd.com).
+indeed iei,10,unclassified_other,advertising_services,keep,,Indeed job-ad invoices; advertising_services.
+instantly,10,unclassified_other,software,keep,,Instantly.ai cold-email software; software.
+ipayimpact.co.,10,unclassified_other,education_general,keep,,iPayimpact school-payments portal; education_general not school_fees.
+ipayimpact.co.edinburgh,10,unclassified_other,education_general,keep,,iPayimpact school meals/trips portal; education_general not school_fees.
+kofcomps ltd,10,unclassified_other,prize_competitions,keep,,King of Comps paid prize-draw tickets; prize_competitions.
+lime,10,taxi_rideshare,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+linkside premier store,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+lovable,10,unclassified_other,web_services,keep,,Lovable.dev (Dover DE) AI app builder; web_services.
+mccoll s travel ltd,10,unclassified_other,public_transport_rail_coach,keep,,Dumbarton bus/coach operator (not McColl's newsagent).
+metric group ltd,10,unclassified_other,car_parking,keep,,UK pay-and-display parking terminals; contactless at the machine.
+midland bluebird ltd,10,unclassified_other,public_transport_rail_coach,keep,,McGill's Midland Bluebird bus operator.
+modular fs limited,10,unclassified_other,payment_intermediary,keep,,Modulr FS wallet top-up; payment_intermediary PSP leaf.
+morr barry,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr basingstoke,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr bathgate,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr boroughbridge,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr bradford enterpri,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr bristol hartcliff,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr dukinfield,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr erith,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr fakenham,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr haverfordwest,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr isle of wight lak,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr kirkby,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr knottingley,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr liskeard,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr middlesboroug,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr milton keynes wes,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr morecambe,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr neath,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr peterborough,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr rochdale,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr rotherham,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr scunthorpe,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr shrewsbury,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr sittingbourne,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr stevenston,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr worksop,10,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+nitromonthly,10,unclassified_other,online_services,keep,,DISCORD* NITROMONT is Discord Nitro; online_services.
+oposlimited,10,unclassified_other,debt_collection,keep,,Opos Limited collections agency; debt_collection not enforcement.
+orbit credit services,10,unclassified_other,debt_collection,keep,,Orbit Credit Services utility collections agency.
+pass gpa,10,unclassified_other,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+pass thx,10,unclassified_other,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+premier arlington,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier broad,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier cayton,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier dens road,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier dukinf,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier englefieldgr,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier express,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier garthdee cd,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier grays,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier linktown scoot,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier meadow head,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier tye stores,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier tywyn stortywyn,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier union street,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier west end sabertawe,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+psi services uk ltd,10,unclassified_other,education_general,keep,,PSI Services is the Life in the UK / SELT exam contractor; education_general.
+quay street premier,10,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+rebtelnetwo,10,unclassified_other,mobile_phone_contract,keep,,PAYPAL *REBTELNETW is Rebtel VoIP; mobile_phone_contract.
+ride dvsk,10,taxi_rideshare,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+ride jun,10,taxi_rideshare,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+rundle and co ltd,10,unclassified_other,debt_enforcement,keep,,Rundles certificated enforcement agents/bailiffs.
+select & save ltd,10,unclassified_other,groceries,keep,,Select & Save is a UK convenience symbol group; same groceries treatment as Spar/Nisa/Premier.
+south bank service,10,unclassified_other,fuel,keep,,Jet petrol filling station; amounts include tank-sized fills.
+surecredit.co.uk,10,unclassified_other,credit_reporting_service,keep,,Sure Credit paid credit-report subscription; credit_reporting_service.
+tauntonroadservices,10,unclassified_other,fuel,revert,,"TotalEnergies filling station, but every row is NYX tap of £1.50–£4 (shop/snack, not a tank); fuel would poison training."
+tenpinlimited,10,unclassified_other,days_out,keep,,Tenpin bowling/indoor entertainment chain; days_out.
+tjmorrisltd,10,unclassified_other,discount_store,keep,,T.J. Morris Limited is Home Bargains; discount_store.
+tony's food store chp,10,unclassified_other,groceries,keep,,Named food store; grocery-sized contactless amounts.
+urban jungle insurance,10,unclassified_other,insurance_general,keep,,Urban Jungle multi-line insurer; insurance_general.
+vir health ltd,10,unclassified_other,pharmacy,keep,,Vir Health Ltd is Numan (CQC online pharmacy/clinic); pharmacy.
+visioncraft ltd,10,unclassified_other,optician,keep,,Independent NHS optician Birmingham; optician.
+warner bros. studio,10,unclassified_other,days_out,keep,,Warner Bros. Studio Tour London attraction; days_out.
+wilkins & pye ltd,10,unclassified_other,pub_bar,keep,,CAMRA-listed Longton micropub; pub_bar.
+www.astria.ai,10,unclassified_other,software,keep,,Astria.ai is an AI image-generation SaaS; software.
+yollacalls,10,unclassified_other,software,keep,,Yolla OTT/VoIP calling app; software like Rebtel.
+yourbusinessnumber,10,unclassified_other,web_services,keep,,Virtual WhatsApp/phone numbers; web_services comms infra.
+zapmail,10,unclassified_other,email_services,keep,,Zapmail Google Workspace outreach mailboxes; email_services.
+zippa loans,10,personal_loan_repayment,payday_loan,keep,,Skyline Direct high-cost short-term credit; payday_loan not personal_loan.
+cd gdk,9,unclassified_other,takeaway,keep,,GDK (German Doner Kebab) or named pizza/kebab delivery; not government.
+frenk.io,9,unclassified_other,crypto,keep,,Frenk.io is a licensed crypto exchange (Bright Technologies).
+groobox.co.uk,9,unclassified_other,groceries,keep,,Groobarb veg-box delivery; meal-kit/veg-box convention is groceries.
+high street premier,9,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+lapitza.restajet,9,unclassified_other,takeaway,keep,,La Pitza on Restajet pizza/kebab takeaway.
+lifecafe at life time,9,unclassified_other,legal_services,keep,,"Narratives are Lifetime Legal Camberley wills (£7.99/£8.99), not a cafe."
+morr basing,9,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr berwick upon twee,9,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr bradford thornbu,9,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr bradford victoria,9,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr hartlepool,9,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr leeds,9,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr newcastle upon ty,9,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr stirling,9,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+premier oakley,9,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+riversidefm inc.,9,unclassified_other,software,keep,,Riverside.fm podcast/video SaaS; software.
+rundle & co ltd,9,unclassified_other,debt_enforcement,keep,,Rundles certificated enforcement agents/bailiffs.
+rvs hospital shops ca,9,unclassified_other,charity_shop,keep,,Royal Voluntary Service hospital shops; charity-run retail.
+sage uk ltd,9,unclassified_other,software,keep,,Sage accounting/payroll subscription; software.
+4 rides,8,taxi_rideshare,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+aspit direz. uscita,8,unclassified_other,tolls,keep,,Autostrade per l'Italia motorway exit toll.
+bon bon premier,8,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+darrens premier,8,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+excel food service ranas fish shop,8,unclassified_other,groceries_specialist,revert,,"Excel Food is a NE catering wholesaler; £128–£306 Faster Payments named with a fish shop is B2B/ambiguous, not a retail fishmonger."
+morr beccles,8,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr brampton,8,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr farnborough,8,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr high wycombe,8,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr hull,8,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr ilkeston,8,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr jarrow,8,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr strood,8,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr swinton,8,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+p.louise,8,unclassified_other,health_beauty_general,keep,,UK makeup brand P.Louise; health_beauty_general.
+premier greenfield sto,8,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+skedaddlegroup.co.uk,8,unclassified_other,pet_other,keep,,Skedaddle dog-park field hire (£10–£13); pet_other not the cycling brand.
+skin.club,8,unclassified_other,gambling_unspecified,keep,,CS2 paid case-opening/skin gambling; gambling_unspecified.
+winrz ltd,8,unclassified_other,prize_competitions,keep,,Winnrz shop-and-win prize-draw platform; prize_competitions.
+hawthorn premier,7,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+morr coventry binley,7,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr crewe,7,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr ellesmere,7,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr glasgow cambuslan,7,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr scarborough,7,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr stranraer,7,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr wetherby,7,pet_supplies,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+premier biggin,7,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier freche,7,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier heyside,7,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier northmuir,7,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+leslie premier,6,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+morr banchory,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr bideford,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr bolton atlas,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr bredbury,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr brough,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr consett,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr doncaster,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr eccles,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr fleet fleet,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr great harwood,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr hartlepool belle,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr heywood,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr horndean,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr kirkcaldy,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr middles borough,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr morpeth,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr newcastle under,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr paignton,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr plymstock,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr redcar,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr st andrews,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr tavistock,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr walsall wallows,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr yeovil,6,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+pass ryyr,6,unclassified_other,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+passe,6,unclassified_other,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+premier dunnikier,6,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier harboroug,6,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier heath road,6,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier union stre,6,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+s a premier cd,6,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+sutton stores premier exp,6,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+wdw world premier,6,unclassified_other,groceries,revert,,Merchant string collides Walt Disney World 'World Premiere' food court with a Premier grocer; would not bet groceries.
+c gdk,5,unclassified_other,takeaway,keep,,GDK (German Doner Kebab) or named pizza/kebab delivery; not government.
+gdk loughborough,5,unclassified_other,takeaway,keep,,GDK (German Doner Kebab) or named pizza/kebab delivery; not government.
+jeni and js premier,5,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+lime ride gafz,5,taxi_rideshare,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+morr belper,5,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr cromer,5,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr cwmbran,5,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr ellesmere port,5,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr halifax,5,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr lincoln,5,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr llanelli,5,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr redditch,5,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr warrington,5,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr wellingborough,5,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr weymouth,5,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr workington,5,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+pass gxw,5,unclassified_other,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+pass yyqc,5,unclassified_other,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+premier au,5,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier extra ltd,5,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier hems,5,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier oscar road,5,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+the saxon premier,5,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+cairnside premier,4,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+gdk borough,4,government_services,takeaway,keep,,GDK (German Doner Kebab) or named pizza/kebab delivery; not government.
+gdk canary wharf,4,unclassified_other,takeaway,keep,,GDK (German Doner Kebab) or named pizza/kebab delivery; not government.
+kanes premier,4,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+morr barrow in furness,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr blackpool,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr bolton dawes,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr borehamwood,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr cardiff tyglass,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr catcliffe,4,pub_bar,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr fort william,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr livingston,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr morton park,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr newport roger,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr norwich,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr totton,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr west kirby,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr whitefield,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr willenhall,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+morr wisbech,4,unclassified_other,groceries,keep,,Plaid MORR + UK town is Morrisons truncation; sampled narratives have no petrol/cafe.
+oulton road premier st,4,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+pass ran,4,unclassified_other,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+premier averyhill,4,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier high street,4,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier penn hill,4,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier store cd,4,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+premier woodgreen,4,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+ride 4 qmp,4,taxi_rideshare,bicycle,keep,,Lime/Dott/HumanForest ride or pass in the narrative; micromobility is bicycle not taxi.
+wayfairer premier,4,unclassified_other,groceries,keep,,Premier symbol-group grocer (not Inn/Vet); sampled contactless/store narratives.
+Focusfinance.co.uk,1,financial_services_other,personal_loan_repayment,revert,,Same £3.99 FOCUSFINANCE.CO.UK DD as the lowercase merchant; not a personal-loan repayment.

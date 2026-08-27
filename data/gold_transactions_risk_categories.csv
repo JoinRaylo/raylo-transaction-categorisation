@@ -410,26 +410,26 @@ Premfina,000253864 Premfina,526.58,debit,loan_repayment_other,loan_repayment_oth
 Premfina,000253864 Premfina,526.58,debit,loan_repayment_other,loan_repayment_other
 Premfina,000618808 Premfina,103.26,debit,loan_repayment_other,loan_repayment_other
 Premfina,000253864 Premfina,526.58,debit,loan_repayment_other,loan_repayment_other
-Creditspring,CREDITSPRING 2FD9GJK,28.0,debit,payday_loan,payday_loan
-Creditspring,Creditspring - SortCodeAccountNumber: 16222410135836,33.35,debit,payday_loan,payday_loan
-Creditspring,"DIRECT DEBIT PAYMENT TO CREDITSPRING REF BJF9FN3, MANDATE NO 0024",7.0,debit,payday_loan,payday_loan
-Creditspring,CREDITSPRING 3SETZA5,166.66,debit,payday_loan,payday_loan
-Creditspring,CREDITSPRING,28.0,debit,payday_loan,payday_loan
+Creditspring,CREDITSPRING 2FD9GJK,28.0,debit,personal_loan_repayment,personal_loan_repayment
+Creditspring,Creditspring - SortCodeAccountNumber: 16222410135836,33.35,debit,personal_loan_repayment,personal_loan_repayment
+Creditspring,"DIRECT DEBIT PAYMENT TO CREDITSPRING REF BJF9FN3, MANDATE NO 0024",7.0,debit,personal_loan_repayment,personal_loan_repayment
+Creditspring,CREDITSPRING 3SETZA5,166.66,debit,personal_loan_repayment,personal_loan_repayment
+Creditspring,CREDITSPRING,28.0,debit,personal_loan_repayment,personal_loan_repayment
 118 118 Money,4231 19JUN25      118 MONEY CREDIT  LONDON GB,110.0,debit,payday_loan,payday_loan
-Creditspring,CREDITSPRING,33.33,debit,payday_loan,payday_loan
+Creditspring,CREDITSPRING,33.33,debit,personal_loan_repayment,personal_loan_repayment
 Lending Stream,LENDING STREAM,24.06,debit,payday_loan,payday_loan
 Lending Stream,Lending Stream,96.45,debit,payday_loan,payday_loan
-Creditspring,To Creditspring - V6FZBSQ,33.33,debit,payday_loan,payday_loan
-Creditspring,CREDITSPRING,7.0,debit,payday_loan,payday_loan
+Creditspring,To Creditspring - V6FZBSQ,33.33,debit,personal_loan_repayment,personal_loan_repayment
+Creditspring,CREDITSPRING,7.0,debit,personal_loan_repayment,personal_loan_repayment
 118 118 Money,4231 24JUN25      118 MONEY CREDIT  LONDON GB,5.0,debit,payday_loan,payday_loan
-Creditspring,CREDITSPRING FMHP6VT,166.66,debit,payday_loan,payday_loan
-Creditspring,Creditspring,100.0,debit,payday_loan,payday_loan
+Creditspring,CREDITSPRING FMHP6VT,166.66,debit,personal_loan_repayment,personal_loan_repayment
+Creditspring,Creditspring,100.0,debit,personal_loan_repayment,personal_loan_repayment
 118 118 Money,118 MONEY LOAN  ON 29 JUL BCC,5340.28,debit,payday_loan,payday_loan
 118 118 Money,118 MONEY CREDIT,60.0,debit,payday_loan,payday_loan
 118 118 Money,"BILL PAYMENT VIA FASTER PAYMENT TO 118 118 MONEY REFERENCE XXXXXXXXXXXX8814 , MANDATE NO 14",7.0,debit,payday_loan,payday_loan
-Creditspring,Direct debit CREDITSPRING 162224 10135836,20.0,debit,payday_loan,payday_loan
-Creditspring,Creditspring - SortCodeAccountNumber: 16222410135836,20.0,debit,payday_loan,payday_loan
-Creditspring,CREDITSPRING,20.0,debit,payday_loan,payday_loan
+Creditspring,Direct debit CREDITSPRING 162224 10135836,20.0,debit,personal_loan_repayment,personal_loan_repayment
+Creditspring,Creditspring - SortCodeAccountNumber: 16222410135836,20.0,debit,personal_loan_repayment,personal_loan_repayment
+Creditspring,CREDITSPRING,20.0,debit,personal_loan_repayment,personal_loan_repayment
 Converters,Cash Converters,180.0,debit,pawnbroker,pawnbroker
 Converters,CASH CONVERTERS YORKSH CD 4104,79.5,debit,pawnbroker,pawnbroker
 Converters,CASH CONVERTERS,64.99,debit,pawnbroker,pawnbroker

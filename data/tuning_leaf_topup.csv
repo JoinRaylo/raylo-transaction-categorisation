@@ -123,3 +123,1306 @@ Cabot Financial,CABOT FINANCIAL E  CCMDD02894560/4 DDR Cabot Financial,21,debit,
 PRA Group,CARD PAYMENT TO PRA GROUP LTD ON 17-10-2025,10,debit,LOAN_PAYMENTS_OTHER,debt_collection,loan_repayment_other
 Link Financial,LINK FINANCIAL                        REFERENCE: 01LC 3588824,5,debit,LOAN_PAYMENTS_OTHER,debt_collection,loan_repayment_other
 Bizlend LTD,BIZLEND LTD GBP AC BIZLEND3421,214.92,debit,LOAN_PAYMENTS_CASH_ADVANCES,business_loan_repayment,cash_advance
+,Deirdre Devlin loan,-200,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_repayment_manual,cash_advance
+,MrQ.com                   VISAXR CD1957 2025-10-20,-450,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,gambling_casino,cash_advance
+,Loan,-3000,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_disbursement,cash_advance
+,"SINGH DN DAVE NEW FENCE 44170513593914000N DAVE NEW FENCE,44170513593914000N",-150,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,transfer_p2p,cash_advance
+,CASH IN P.O. AUG07146 ALLENDAL@11:27465942XXXXXX0778,-100,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,cash_deposit,cash_advance
+,Visa credit NEXT 0063 2025-08-31,-26,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,refund_received,cash_advance
+,DONE BROTHERS CASH DONE BROS CASH BET MODULO00P210Z2Z5VS,-111,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,gambling_betting,cash_advance
+,Bank credit Active Savings ISA Cash Hub,-805,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,savings_transfer,cash_advance
+,"CREATIVE ADVANCE CREATIVE ADVANCES 45023338978667000N CREATIVE ADVANCES,45023338978667000N",-1248.16,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_disbursement,cash_advance
+,CASH IN P.O. JUL14146 ALLENDAL@08:14465942XXXXXX0778,-70,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,cash_deposit,cash_advance
+,Visa credit NEXT 9172 2025-08-03,-26,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,refund_received,cash_advance
+,"ABLE LIFTS LIMITED ABLE LIFT ADVANCE 100000001579401520 ABLE LIFT ADVANCE,100000001579401520",-325,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_disbursement,cash_advance
+,MrQ.com                   VISAXR CD1612 2025-07-20,-220,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,gambling_casino,cash_advance
+YouLend,YOULEND  PWBX2RV DDR,12,debit,LOAN_PAYMENTS_CASH_ADVANCES,business_loan_repayment,cash_advance
+,Draper Cj MONEY,-30,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,transfer_p2p,cash_advance
+,CIMPEANU A        Loan,-100,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_repayment_manual,cash_advance
+,Fahad Syed Loan,-165,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_repayment_manual,cash_advance
+,MrQ.com                   VISAXR CD1612 2025-08-17,-200,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,gambling_casino,cash_advance
+,Albert Perry,-200,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,transfer_p2p,cash_advance
+,KAYUM/NOOCHOUY    LOAN,-50,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_repayment_manual,cash_advance
+,DONE BROTHERS CASH DONE BROS CASH BET MODULO00P210YHU8YP,-601.89,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,gambling_betting,cash_advance
+,"K DAVIES ALBERT     05JUL25 200000001585624158 ALBERT     05JUL25,200000001585624158",-5,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,transfer_p2p,cash_advance
+Zilch,4621 14JUL25      ZILCH *           TEMU.COM          LONDON GB         REFUND,-10.69,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,refund_received,cash_advance
+Zilch,Visa credit ZILCH WWW.RIVERISLAND.COM,-9.75,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,refund_received,cash_advance
+Zilch,ZILCH CASH CONVERT  ON 15 AUG BCC ZILCH CASH CONVERTERS,-36.43,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,refund_received,cash_advance
+Zilch,Visa credit ZILCH WWW.DUNELONDON.COM,-49.27,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,refund_received,cash_advance
+YouLend,Youlend Limited - YouLend Limited - SortCodeAccountNumber: 60838200021278,1120,debit,LOAN_PAYMENTS_CASH_ADVANCES,business_loan_repayment,cash_advance
+,374567206241003008 MUTUAL LOAN,-500,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_disbursement,cash_advance
+,"MBNA LOANS 100224386584 400000001588803607 100224386584,400000001588803607",-7000,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_disbursement,cash_advance
+,Bank credit MONTHLY ADVANCE LOANS LIMITED,-1000,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_disbursement,cash_advance
+,"D BIRD DAVE 200000001579499033 DAVE,200000001579499033",-30,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,transfer_p2p,cash_advance
+,CASH IN P.O. AUG15146 ALLENDAL@17:27465942XXXXXX4749,-10,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,cash_deposit,cash_advance
+,MILNER CL  Dave bill BGC,-101,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,transfer_p2p,cash_advance
+,M Chapman  dave BGC,-80,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,transfer_p2p,cash_advance
+,MrQ.com                   VISAXR CD1444 2025-06-14,-20,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,gambling_casino,cash_advance
+,FREETRICITY OPE LTFT advance,-14000,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_disbursement,cash_advance
+,"MANCHESTER CREDIT WITHDRAWAL 27/06/2 95ccc5f0aee747edb9 WITHDRAWAL 27/06/2,95ccc5f0aee747edb9",-166,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_disbursement,cash_advance
+,Hartley Loan Co HARTLEY,-500,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_disbursement,cash_advance
+,Bank credit EAST END FAIR FINANCE 608301 20156879,-564,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_disbursement,cash_advance
+,CASH IN P.O. JUL28146 ALLENDAL@12:21465942XXXXXX0778,-90,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,cash_deposit,cash_advance
+,MrQ.com                   VISAXR CD1612 2025-08-25,-50,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,gambling_casino,cash_advance
+,"MANCHESTER CREDIT WITHDRAWAL 15/09/2 cdf1a01b6c66462bbd WITHDRAWAL 15/09/2,cdf1a01b6c66462bbd",-150.29,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_disbursement,cash_advance
+,"Loan
+EndToEndID: FRI Loan",-20,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_repayment_manual,cash_advance
+,MILNER CL  Dave hos BGC,-60,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,transfer_p2p,cash_advance
+American Express,American Express  ON 08 AUG BCC,570,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,American Express  ON 11 JUL BDC,250,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS  3412-721170-62003 DDR American Express,100.06,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,9317 12AUG25      AMERICAN EXPRESS  LONDON GB,467.75,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS  3742-550038-43008 DDR American Express,18496.49,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,Visa purchase American Express 2025-09-14,30.17,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,American Express  ON 27 JUN BCC,100,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,American Express  ON 16 JUL BCC,300,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,CARD PAYMENT TO AMERICAN EXPRESS ON 18-08-2025,699.27,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,3205 09JUL25      AMERICAN EXPRESS  LONDON GB,200,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,PUTTSTINK         AMERICAN EXPRESS  VIA MOBILE - PYMT FP 30/08/25 10    27105522996002000R,70,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS  3412-786287-04009 DDR American Express,27.4,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,37428525984 American Express,428.84,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,"American Express, 37468056117",32.35,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS  3412-641143-41001 DDR American Express,9.81,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,6428 30JUN25      AMERICAN EXPRESS  LONDON GB,1000,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,6428 03SEP25      AMERICAN EXPRESS  LONDON GB,1000,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,American Express CD 0942,300,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,Visa purchase American Express 2025-10-05,52.32,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,CARD PAYMENT TO AMERICAN EXPRESS ON 16-09-2025,100,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,Visa purchase American Express 2025-08-17,36.02,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,7859 13AUG25      AMERICAN EXPRESS  LONDON GB,1044.81,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,6428 01JUL25      AMERICAN EXPRESS  LONDON GB,1000,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS 3412-775368-31003,237.38,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,6428 08AUG25      AMERICAN EXPRESS  LONDON GB,1000,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,"American Express, 37738441030",25,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,American Express CD 0468    25OCT25,650,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS 3412-688882-31009,215.4,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,CARD PAYMENT TO AMERICAN EXPRESS ON 10-07-2025,200,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,"American Express - Belgrave House, London",6171.34,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,34126446103 American Express,1179.14,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,CARD PAYMENT TO AMERICAN EXPRESS ON 06-08-2025,978.1,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,American Express CD 0468    31AUG25,100,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,"BILL PAYMENT VIA FASTER PAYMENT TO AMERICAN EXPRESS SERVICES EUROPE LIMITED REFERENCE 375143586051000 , MANDATE NO 394",76.38,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,9317 12SEP25      AMERICAN EXPRESS  LONDON GB,465.79,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,6428 06SEP25      AMERICAN EXPRESS  LONDON GB,858.48,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,9317 09JUN25      AMERICAN EXPRESS  LONDON GB,491.78,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS  3412-784400-22002 DDR American Express,36.49,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,6428 04JUL25      AMERICAN EXPRESS  LONDON GB,998.37,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,American Express  London,600,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,"American Express, 37468037343",30,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,PUTTSTINK         AMERICAN EXPRESS  VIA MOBILE - PYMT FP 07/09/25 10    62190218307189000R,50,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS 3412-632514-71001,40.4,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,American Express CD 0468,1106.44,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS 3412-675126-01009,174.12,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,"DIRECT DEBIT PAYMENT TO AMERICAN EXPRESS REF 3717-878347-93005, MANDATE NO 0004",7279.8,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS  3412-765964-21002 DDR American Express,25,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,American Express CD 3551,30.65,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,American Express CD 6042,590.41,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS 3412-633836-31001,25,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,6428 04AUG25      AMERICAN EXPRESS  LONDON GB,1000,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS 3412-650278-21005,106.2,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS  3746-065345-42008 DDR American Express,25,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,American Express  ON 04 OCT BCC,440,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS  3773-908943-21009 DDR American Express,288.86,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,37464974727 American Express,2862.74,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,6428 07AUG25      AMERICAN EXPRESS  LONDON GB,1000,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,American Express  ON 26 JUL BCC,322.08,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS  3412-637070-44006 DDR American Express,26.54,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,6428 03JUL25      AMERICAN EXPRESS  LONDON GB,1000,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,"DIRECT DEBIT PAYMENT TO AMERICAN EXPRESS REF 3766-832153-32007, MANDATE NO 0053",163.09,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,37178848959 American Express,2202.81,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS 3746-815207-31006,4.95,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,7859 16OCT25      AMERICAN EXPRESS  LONDON GB,1038.4,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,6926 30SEP25      AMERICAN EXPRESS  LONDON GB,206.25,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS  3412-701065-71000 DDR American Express,55.07,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,Visa purchase American Express 2025-07-27,17.79,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS 3760-150838-62007,263.87,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS  3773-909154-81006 DDR American Express,59.15,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS  3746-815030-72006 DDR American Express,412.59,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS  3717-871820-63001 DDR American Express,172.65,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+American Express,AMERICAN EXPRESS 3412-679481-11003,40.84,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,charge_card_repayment,charge_card_repayment
+Lowell Financial,LOWELL PORTFOLIO 1  00034861480104 DDR Lowell Group,5,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+,INT'L 0044426890  XPAY* LUMUS       WWW.XPAYCHECK,5,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,unclassified_other,financial_services_other
+Credit Engine,CREDIT ENGINE 4162,19.99,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,credit_reporting_service,financial_services_other
+Wise,Wise Payments Fee for 5212.21 GBP Moved To USD,18.25,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,money_transfer_fee,financial_services_other
+,INT'L 0069982355  XPAY* LUMUS       WWW.XPAYCHECK,5,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,unclassified_other,financial_services_other
+NewDay,NEWDAY LTD XXXXXXXXXXXX3825,6.32,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,credit_card_repayment,financial_services_other
+Lowell Financial,LOWELL PORTFOLIO I                    REFERENCE:   00037668875004,2.21,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+Lowell Financial,LOWELL PORTFOLIO 1 00023061947004,25,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+Lowell Financial,LOWELL PORTFOLIO I 00037752767604,10,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+Plum Fintech,"NDIDI LAURA OSAWAR PLUM FINTECH MODULO00P210XWPKM1 PLUM FINTECH,MODULO00P210XWPKM1",-15,credit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,savings_transfer,financial_services_other
+Experian,CARD PAYMENT TO EXPERIAN LTD ON 28-07-2025,14.99,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,credit_reporting_service,financial_services_other
+Lowell Financial,LOWELL PORTFOLIO I  00041422296804 DDR,10,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+Lowell Financial,LOWELL PORTFOLIO 1 00044128163104,10,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+Lowell Financial,LOWELL PORTFOLIO I  00035105131304 DDR,1,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+,S6X9LAXJ957CWT2XVI Xero,39.6,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,software,financial_services_other
+Lowell Financial,LOWELL PORTFOLIO 1 00045746516904,10,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+Lowell Group,00037703253704 Lowell Group,2,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+Fluid,FLUID  000001B1EZCEJNUH FT,36.2,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,credit_card_repayment,financial_services_other
+gohenry,GOHENRY  GOHENRY-46421508aw BGC,-5,credit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,prepaid_card,financial_services_other
+Beagle St,BEAGLE ST  1353790871 DDR,13.9,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,insurance_life,financial_services_other
+Plum Fintech,"OLAUNO ROBERTS PLUM FINTECH MODULO00P210YTXFFF PLUM FINTECH,MODULO00P210YTXFFF",-1.91,credit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,savings_transfer,financial_services_other
+Wise,Wise Payments Fee for 0.56 GBP Moved To USD,0.01,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,money_transfer_fee,financial_services_other
+Lowell Financial,LOWELL PORTFOLIO 1 00046777755304,25,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+Wise,Wise Payments Fee for 1410.52 EUR Sent HMRC Self Assessment Shipley,7.28,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,money_transfer_fee,financial_services_other
+Experian,EXPERIAN  ON 25 AUG CPM,14.99,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,credit_reporting_service,financial_services_other
+Help To Save,HELP TO SAVE      FP 26/08/25 30    58133136996210000N,2.5,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,savings_transfer,financial_services_other
+Plum Fintech,"SIAN-CLAIRE WILLIS PLUM FINTECH MODULO00P210WJ2TVQ PLUM FINTECH,MODULO00P210WJ2TVQ",-7.75,credit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,savings_transfer,financial_services_other
+Plum Fintech,"CHANEL RHIANNON SW PLUM FINTECH MODULO00P210WYVJBY 06JUL25 PLUM FINTECH,MODULO00P210WYVJBY",-10,credit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,savings_transfer,financial_services_other
+Virgin Money,VIRGIN MONEY CREDI 400000001606644518,75,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,credit_card_repayment,financial_services_other
+Lowell Financial,"DIRECT DEBIT PAYMENT TO LOWELL PORTFOLIO 1 REF 00019279282804, MANDATE NO 0088",20,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+Lowell Financial,LOWELL PORTFOLIO 1 00046154826504,50,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+,8030 24SEP25      MMBILL.COM        IRVINE US         USD          20.99VRATE       1.3420N-S TRN FEE   0.43,16.07,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,adult_entertainment,financial_services_other
+Lowell Financial,LOWELL PORTFOLIO 1  00021001749704 DDR,2,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+Lowell Financial,LOWELL PORTFOLIO I 00046006315904,10,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+gohenry,1742 21JUL25  D   GOHENRY MEMBERSHIPLYMINGTON GB,4.49,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,prepaid_card,financial_services_other
+Lowell Financial,LOWELL PORTFOLIO I 00040526105804,10,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+Fluid,To Shiqi Qian - Fluid focus - IBAN: GB46REVO00997044721195,100,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,transfer_p2p,financial_services_other
+Lowell Financial,Lowell Portfolio 1 - 00027239910604,5.97,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+Experian,EXPERIAN  ON 13 JUL BDC,14.99,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,credit_reporting_service,financial_services_other
+V12 Retail Finance,V12 RETAIL FINANCE 017729853,37.53,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,retail_finance_repayment,financial_services_other
+Lowell Financial,LOWELL PORTFOLIO 1 00009623757705,10,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+,INT'L 0061656464  XPAY* LUMUS       WWW.XPAYCHECK,5,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,unclassified_other,financial_services_other
+,INT'L 0015108047  XPAY* LUMUS       WWW.XPAYCHECK,5,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,unclassified_other,financial_services_other
+,INT'L 0030863316  XPAY* LUMUS       WWW.XPAYCHECK,5,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,unclassified_other,financial_services_other
+Wise,Wise Payments Fee for 30.27 GBP  Giftoz2292,0.1,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,money_transfer_fee,financial_services_other
+Lowell Financial,"DIRECT DEBIT PAYMENT TO LOWELL PORTFOLIO I REF 00040153689104, MANDATE NO 0067",5,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+Wise,Wise Payments Fee for 14.06 GBP  Bigmotion.ai,0.05,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,money_transfer_fee,financial_services_other
+Experian,CARD PAYMENT TO EXPERIAN LTD ON 19-07-2025,14.99,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,credit_reporting_service,financial_services_other
+Creation,CREATION.CO.UK  1014036562/0908004 DDR CREATION FINANCIAL SERVICES,67.03,debit,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,retail_finance_repayment,financial_services_other
+Wise,Wise Payments Fee for 2.90 GBP  Trifan Stelica,0.01,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,money_transfer_fee,financial_services_other
+Virgin Money,VIRGIN MONEY 00003337611III3059,152.43,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,financial_institution_unspecified,financial_services_other
+Virgin Money,Virgin Money                             VM00003987519,100,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,financial_institution_unspecified,financial_services_other
+,INT'L 0000480308  XPAY* LUMUS       WWW.XPAYCHECK,5,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,unclassified_other,financial_services_other
+Equifax,EQUIFAX LTD  ON 29 AUG BCC Equifax,14.95,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,credit_reporting_service,financial_services_other
+Lowell Financial,LOWELL PORTFOLIO 1  00045766028004 DDR,10,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,debt_collection,financial_services_other
+First Fz Ll,Electronic First Fz Ll,4.61,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,gaming_console_pc,financial_services_other
+V12 Retail Finance,Direct debit V12 RETAIL FINANCE 010531 46287787,48.34,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,retail_finance_repayment,financial_services_other
+gohenry,VISA DIRECT PAYMENT GoHenry ON 10 AUG CRE,-0.09,credit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,prepaid_card,financial_services_other
+gohenry,Visa purchase GoHenry Membership APPLEPAY 2984,5.99,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,prepaid_card,financial_services_other
+gohenry,GoHenry Membership  ON 16 JUL BCC GOHENRY MEMBERSHIP,4.49,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,prepaid_card,financial_services_other
+Luke Ridley,LUKE RIDLEY-MACNAMTAX               FP 17/07/25 30    05023314430169000N,150,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,transfer_p2p,financial_services_other
+Plum Fintech,"NDIDI LAURA OSAWAR PLUM FINTECH MODULO00P210XSBJ33 PLUM FINTECH,MODULO00P210XSBJ33",-30,credit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,savings_transfer,financial_services_other
+Plum Fintech,Tomas Mclaughlin  PLUM FINTECH,-150,credit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,savings_transfer,financial_services_other
+Experian,6495 28AUG25      EXPERIAN LTD      NOTTINGHAM GB,14.99,debit,GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_SERVICES,credit_reporting_service,financial_services_other
+,"GROSVENOR (VIA APPLE PAY), ON 05-09-2025",10,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_casino,gambling_unspecified
+,INT'L 0081680755  BETANO            WWW.BETANO.CO,10,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_betting,gambling_unspecified
+,STAFF102979B00AY0,3132.58,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,unclassified_other,gambling_unspecified
+,Visa credit VIDEOSLOTS,-30,credit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_casino,gambling_unspecified
+,INT'L 1700406610  TALKSPORTBET      GIBRALTAR,5,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_betting,gambling_unspecified
+,CARD PAYMENT TO LOTTOMART ON 12-10-2025,20,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_lottery,gambling_unspecified
+,MECCABINGO                VISAXR CD1957 2025-08-20,-200,credit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_bingo,gambling_unspecified
+C Action Centres,7859 12OCT25 C    ACTION CENTRES UK LTD               NORTHAMPTON GB,2,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,unclassified_other,gambling_unspecified
+Liverpool Hope Catering,LIVERPOOL HOPE CAT,5.25,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,catering,gambling_unspecified
+Planetsportbet,PLANETSPORTBET  ON 25 JUN BCC,10,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_betting,gambling_unspecified
+,To Colin Sheehan - Dweet - Week 13 and 14 - SortCodeAccountNumber: 60203247835036,847.3,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,transfer_p2p,gambling_unspecified
+,WWW.NCP.CO.UK  ON 18 JUL BCC,7.45,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,car_parking,gambling_unspecified
+,"N SMITH LOTTO      12JUL25 100000001584218177 LOTTO      12JUL25,100000001584218177",-20,credit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_lottery,gambling_unspecified
+Asg Atlantic Spins,ASG 666casino.com Asg Atlantic Spins,20,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_casino,gambling_unspecified
+Cd Mahmoodgha,0118 10SEP25 CD   MAHMOODGHA*       MAHMOODGHA        LEEDS GB,5,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,unclassified_other,gambling_unspecified
+,CARD PAYMENT TO LOTTOMART ON 03-09-2025,13.41,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_lottery,gambling_unspecified
+,INT'L 0040782513  JACKPOTJOY        WWW.JACKPOTJO,20,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_bingo,gambling_unspecified
+,CARD PAYMENT TO JACKPOTJOY ON 03-07-2025,25,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_bingo,gambling_unspecified
+,To Sky Betting and Gaming - IR1PANQJVJH1K412YJ - SortCodeAccountNumber: 04067800003555,9.14,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_betting,gambling_unspecified
+Lucus Live,Lucus Live,6,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,unclassified_other,gambling_unspecified
+JONS International Marketplace,INTL CARD WPGTID01 LC INTERNATIONAL L GIBRALTAR       GI ,5,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_betting,gambling_unspecified
+,LottoGo                   CD7019,-20,credit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_lottery,gambling_unspecified
+,4498 15AUG25      LIVESCORE BET     GIBRALTAR       GICREDIT,-50,credit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_betting,gambling_unspecified
+,WWW.NCP.CO.UK  ON 22 JUL BCC,14.85,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,car_parking,gambling_unspecified
+,VISA DIRECT PAYMENT www MONOPOLYCASINO GIBRALTAR ON 06 SEP CRE,-15.45,credit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_casino,gambling_unspecified
+All Star Prizes,2462 17SEP25  D   ALL STAR PRIZES   LTD               LEEDS GB,1,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,prize_competitions,gambling_unspecified
+,To Sky Betting and Gaming - 7SXJDA1DL5YZMD2ODD - SortCodeAccountNumber: 04067800003555,20,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_betting,gambling_unspecified
+,"RICHARD WHITE IRISH LOTTERY 00153425632JBJVZSX IRISH LOTTERY,00153425632JBJVZSX",-12,credit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_lottery,gambling_unspecified
+,ET5F8UUXWQMP5OZS5S,23.9,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,unclassified_other,gambling_unspecified
+Royal Amman,Royal Amman I,2.94,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,restaurant_cafe,gambling_unspecified
+,INT'L 1666751621  www.livescorebet.cGibraltar,15,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_betting,gambling_unspecified
+Sklep Spozywczy Marcus,Sklep Spozywczy Marcus,1.39,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,groceries_specialist,gambling_unspecified
+,INT'L 0087669828  livescorebet.com  Gibraltar,10,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_betting,gambling_unspecified
+,3827 27JUL25 C    WOOLTON VILLAGE   CLUB              LIVERPOOL GB,4.4,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,private_members_club,gambling_unspecified
+,INT'L 0074264016  livescorebet.com  Gibraltar,29,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_betting,gambling_unspecified
+Rushmoor Bc Rushmoor,Rushmoor Bc Rushmoor Council,197,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,council_tax,gambling_unspecified
+Quinnbet,Quinnbet GIBRALTAR ON 02 AUG BCC QUINNBET,100,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_betting,gambling_unspecified
+National Windscreens,NATIONAL WINDSCREE  ON 06 AUG CPM NATIONAL WINDSCREENS T,135,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,vehicle_maintenance,gambling_unspecified
+Tick Tock Loans,Tick Tock Loans,189.83,debit,DINING_DINING,payday_loan,payday_loan
+Moneyboat.co.uk,MONEYBOAT.CO.UK-12  ON 30 SEP BCC MONEYBOAT.CO.UK-120073,60.93,debit,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,payday_loan,payday_loan
+Keith,Keith Tawonga Madhara  / ref: Cobblers 9/8,63.25,debit,TRANSFER_OUT_OTHER,transfer_p2p,payday_loan
+Unitedkash,UNITEDKASH.COM,10,debit,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,payday_loan,payday_loan
+Cashasap.co.uk,cashasap.co.uk,63.25,debit,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,payday_loan,payday_loan
+Fast Loan Uk,Visa purchase FAST LOAN UK,73.4,debit,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,payday_loan,payday_loan
+United Kash Limite,UNITED KASH LIMITE,20,debit,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,payday_loan,payday_loan
+CashASAP,cashasap.co.uk Cashasap,135.28,debit,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,payday_loan,payday_loan
+Credit Spring,APAG8MD Credit Spring,50,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,payday_loan,payday_loan
+The Cash Shop,Visa purchase THE CASH SHOP APPLEPAY 3158,308.14,debit,TRANSFER_OUT_OTHER,payday_loan,payday_loan
+Ticktock Loans Cd,TICKTOCK LOANS CD 7271,105.64,debit,DINING_DINING,payday_loan,payday_loan
+,Keith Tawonga Madhara  / ref: Cobblers 12/8,57.5,debit,TRANSFER_OUT_OTHER,transfer_p2p,payday_loan
+,Keith Tawonga Madhara  / ref: Cobblers 19/8,57.5,debit,TRANSFER_OUT_OTHER,transfer_p2p,payday_loan
+,9836 28JUL25  D   LOQBOX SAVE       BRISTOL GB,20,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,savings_transfer,revolving_credit_repayment
+Westmfp,NEWPAY            63OBSSM08HTNLOCEI2WSS6G6K           TPP NATIONAL WESTMFP 15/07/25 10    47205924738431000N,10.79,debit,TRANSFER_OUT_OTHER,revolving_credit_repayment,revolving_credit_repayment
+,BILLS to Revolving Line Account,34,debit,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,revolving_credit_repayment,revolving_credit_repayment
+,"LOQBOX SAVE (VIA APPLE PAY), ON 01-07-2025",20,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,savings_transfer,revolving_credit_repayment
+,Loqbox Save            0203 633 1005   GB,100,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,savings_transfer,revolving_credit_repayment
+,CARD PAYMENT TO LOQBOX SAVE ON 28-08-2025,20,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,savings_transfer,revolving_credit_repayment
+Loqbox Grow Cd,LOQBOX GROW CD 5913,15.98,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,revolving_credit_repayment,revolving_credit_repayment
+,"LOQBOX GROW (VIA APPLE PAY), ON 04-07-2025",11.96,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,revolving_credit_repayment,revolving_credit_repayment
+,LOQBOX TRUSTEE    UNLOCK            FP 23/09/25 1648  TRN422359444378963,-500,credit,TRANSFER_IN_OTHER,savings_transfer,revolving_credit_repayment
+,FASTER PAYMENTS RECEIPT REF.UNLOCK FROM LOQBOX TRUSTEE,-450,credit,TRANSFER_IN_OTHER,savings_transfer,revolving_credit_repayment
+,"LOQBOX TRUSTEE UNLOCK TRN220372743022125 UNLOCK,TRN220372743022125",-30,credit,TRANSFER_IN_OTHER,savings_transfer,revolving_credit_repayment
+,"LOQBOX TRUSTEE UNLOCK TRN198169893891037 UNLOCK,TRN198169893891037",-370,credit,TRANSFER_IN_OTHER,savings_transfer,revolving_credit_repayment
+,CARD PAYMENT TO LOQBOX SAVE ON 30-07-2025,20,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,savings_transfer,revolving_credit_repayment
+,"LOQBOX TRUSTEE UNLOCK TRN935774385956879 UNLOCK,TRN935774385956879",-270,credit,TRANSFER_IN_OTHER,savings_transfer,revolving_credit_repayment
+,Loqbox Save LOQBOX,60,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,savings_transfer,revolving_credit_repayment
+,CARD PAYMENT TO LOQBOX SAVE ON 31-07-2025,50,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,savings_transfer,revolving_credit_repayment
+,CARD PAYMENT TO LOQBOX SAVE ON 28-09-2025,20,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,savings_transfer,revolving_credit_repayment
+,CARD PAYMENT TO LOQBOX GROW ON 01-08-2025,34.95,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,revolving_credit_repayment,revolving_credit_repayment
+,CARD PAYMENT TO LOQBOX GROW ON 01-10-2025,24.95,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,revolving_credit_repayment,revolving_credit_repayment
+,0390 01JUL25  D   LOQBOX SAVE       BRISTOL GB,30,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,savings_transfer,revolving_credit_repayment
+,Loqbox Grow            Bristol         GB,11.96,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,revolving_credit_repayment,revolving_credit_repayment
+,Loqbox Grow            0203 633 1005   GB,14.95,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,revolving_credit_repayment,revolving_credit_repayment
+,"LOQBOX GROW (VIA APPLE PAY), ON 01-10-2025",12.5,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,revolving_credit_repayment,revolving_credit_repayment
+,"LOQBOX TRUSTEE UNLOCK TRN103345035407513 UNLOCK,TRN103345035407513",-220,credit,TRANSFER_IN_OTHER,savings_transfer,revolving_credit_repayment
+,CARD PAYMENT TO LOQBOX GROW ON 01-07-2025,11.96,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,revolving_credit_repayment,revolving_credit_repayment
+,Unlock LOQBOX Trustee,-100,credit,INCOME_SALARY,savings_transfer,revolving_credit_repayment
+,"PARKERS    16AUG25 SARAHJESSICA BINGO RP4659980075017400 SARAHJESSICA BINGO,RP4659980075017400",-25,credit,TRANSFER_IN_OTHER,gambling_bingo,gambling_bingo
+,VISA DIRECT PAYMENT SunBingo ON 15 AUG CRE,-30,credit,INCOME_SALARY,gambling_bingo,gambling_bingo
+,3348 08AUG25      MECCABINGO        MAIDENHEAD      GBCREDIT,-50,credit,INCOME_SALARY,gambling_bingo,gambling_bingo
+Mirror Bingo,MIRROR BINGO,10,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_bingo,gambling_bingo
+,VISA DIRECT PAYMENT SunBingo ON 03 JUL CRE,-320,credit,INCOME_SALARY,gambling_bingo,gambling_bingo
+,MECCABINGO                VISAXR CD1957 2025-09-23,-170,credit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_bingo,gambling_bingo
+,INT'L 0022155945  Bingo Winner      LAS VEGAS,18,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_bingo,gambling_bingo
+,VISA DIRECT PAYMENT MECCABINGO ON 07 SEP CRE,-30,credit,TRANSFER_IN_OTHER,gambling_bingo,gambling_bingo
+,PAYMENT FROM HEART BINGO ON 2025-08-12,-260,credit,INCOME_SALARY,gambling_bingo,gambling_bingo
+,VISA DIRECT PAYMENT heartbingo GIBRALTAR ON 26 JUL CRE,-80,credit,TRANSFER_IN_OTHER,gambling_bingo,gambling_bingo
+,VISA DIRECT PAYMENT MECCABINGO ON 05 SEP CRE,-5,credit,TRANSFER_IN_OTHER,gambling_bingo,gambling_bingo
+,KITTYBINGO                VISAXR CD8402 2025-09-04,-20,credit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_bingo,gambling_bingo
+,VISA DIRECT PAYMENT Heart Bingo GIBRALTAR ON 29 JUL CRE,-150,credit,INCOME_SALARY,gambling_bingo,gambling_bingo
+,VISA DIRECT PAYMENT SunBingo ON 11 JUL CRE,-50,credit,INCOME_SALARY,gambling_bingo,gambling_bingo
+Club,CLUB 2000 BINGO,6,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_bingo,gambling_bingo
+Playbingoplus,Visa purchase PLAYBINGOPLUS,5,debit,TRANSFER_OUT_OTHER,gambling_bingo,gambling_bingo
+,VISA DIRECT PAYMENT SunBingo ON 23 AUG CRE,-6.1,credit,INCOME_SALARY,gambling_bingo,gambling_bingo
+,MECCABINGO                CD1957,-50,credit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_bingo,gambling_bingo
+,VISA DIRECT PAYMENT Heart Bingo GIBRALTAR ON 05 AUG CRE,-220,credit,INCOME_SALARY,gambling_bingo,gambling_bingo
+,VISA DIRECT PAYMENT MECCABINGO ON 26 SEP CRE,-20,credit,TRANSFER_IN_OTHER,gambling_bingo,gambling_bingo
+,VISA DIRECT PAYMENT butlersbingo.com ON 04 AUG CRE,-13.11,credit,TRANSFER_IN_OTHER,gambling_bingo,gambling_bingo
+,Www Doublebubblebingo Com,-10,credit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_bingo,gambling_bingo
+,PAYMENT FROM HEARTBINGO ON 2025-08-02,-50,credit,INCOME_SALARY,gambling_bingo,gambling_bingo
+Great Yarmouth Bingo,Contactless Payment GREAT YARMOUTH BINGO APPLEPAY 0502,87,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_bingo,gambling_bingo
+North Parade Bingo Clu,NORTH PARADE BINGO  ON 08 AUG CLP NORTH PARADE BINGO CLU,34.48,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_bingo,gambling_bingo
+,PAYMENT FROM HEART BINGO ON 2025-08-15,-170,credit,INCOME_SALARY,gambling_bingo,gambling_bingo
+Wowcher,WOWCHER BINGO     GUERNSEY,10,debit,GENERAL_MERCHANDISE_ONLINE_MARKETPLACES,gambling_bingo,gambling_bingo
+,PAYMENT FROM MECCABINGO ON 2025-08-22,-100,credit,TRANSFER_IN_OTHER,gambling_bingo,gambling_bingo
+Club Bingo,CLUB 3000 BINGO - BLAC Club Bingo,44,debit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_bingo,gambling_bingo
+,Visa credit SunBingo,-60,credit,INCOME_SALARY,gambling_bingo,gambling_bingo
+,"J HARRIS   23AUG25 BINGO J HARRIS 600000001616751517 BINGO J HARRIS,600000001616751517",-10,credit,ENTERTAINMENT_CASINOS_AND_GAMBLING,gambling_bingo,gambling_bingo
+,VISA DIRECT PAYMENT Heart Bingo GIBRALTAR ON 18 AUG CRE,-60,credit,TRANSFER_IN_OTHER,gambling_bingo,gambling_bingo
+C Bingol Kebab & Pizza,1758 20JUL25 C    BINGOL KEBAB &    PIZZA             STEVENAGE GB,13.1,debit,DINING_DINING,takeaway,gambling_bingo
+,VISA DIRECT PAYMENT heartbingo GIBRALTAR ON 09 AUG CRE,-10,credit,TRANSFER_IN_OTHER,gambling_bingo,gambling_bingo
+,VISA DIRECT PAYMENT Heart Bingo GIBRALTAR ON 24 JUL CRE,-190,credit,INCOME_SALARY,gambling_bingo,gambling_bingo
+,PAYMENT FROM HEARTBINGO ON 2025-07-29,-140,credit,INCOME_SALARY,gambling_bingo,gambling_bingo
+Lowell On,"LOWELL (VIA GOOGLE PAY), ON 04-08-2025",10,debit,TRANSFER_OUT_OTHER,debt_collection,debt_collection
+Trace Debt Recovery Ec,TRACE DEBT RECOVER,40,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,debt_collection,debt_collection
+Debt,Debt Support Service,183,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,debt_management_plan,debt_collection
+Oriel Collections,ORIEL COLLECTIONS A04600703,14.26,debit,GENERAL_MERCHANDISE_APPAREL_AND_ACCESSORIES,debt_collection,debt_collection
+Debt Recovery Plus Lim,DEBT RECOVERY PLUS  ON 18 AUG BCC DEBT RECOVERY PLUS LIM,25,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,debt_collection,debt_collection
+Debt & Revenue Service,DEBT & REVENUE SER,27,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,debt_collection,debt_collection
+Cabot,CABOT,1,debit,TRANSFER_OUT_OTHER,debt_collection,debt_collection
+Credit Solutions ,PASTDUE CREDIT SOL  18168374 FT Pastdue Credit Solutions,10,debit,LOAN_PAYMENTS_OTHER,debt_collection,debt_collection
+Dbc Collection,DBC COLLECTION ACC 000000000002002683,24.95,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,debt_collection,debt_collection
+Tmlegalltd,TMLEGALLTD MWZTVCE,50,debit,TRANSFER_OUT_OTHER,debt_collection,debt_collection
+Moorcroft,MOORCROFT,1,debit,TRANSFER_OUT_OTHER,debt_collection,debt_collection
+Ccscollect,WWW.CCSCOLLECT.CO.  ON 29 SEP BCC WWW.CCSCOLLECT.CO.UK,411.98,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,debt_collection,debt_collection
+Intrum Uk Limited,Intrum Uk Limited,20,debit,LOAN_PAYMENTS_OTHER,debt_collection,debt_collection
+Tm Legal,Tm Legal,75,debit,GENERAL_SERVICES_CONSULTING_AND_LEGAL_SERVICES,debt_collection,debt_collection
+Moorcroft Group Plc,MOORCROFT GROUP  ON 13 SEP BCC MOORCROFT GROUP PLC,10,debit,INSURANCE_AND_TAX_INSURANCE,debt_collection,debt_collection
+Lowell,LOWELL,30,debit,TRANSFER_OUT_OTHER,debt_collection,debt_collection
+Intrum Uk Ecom,Visa purchase INTRUM UK ECOM,2,debit,LOAN_PAYMENTS_OTHER,debt_collection,debt_collection
+Overdales Legal Lt,OVERDALES LEGAL LT,2.5,debit,LOAN_PAYMENTS_OTHER,debt_collection,debt_collection
+Arc Europe  Debt Collection,ARC EUROPE LTD,25,debit,LOAN_PAYMENTS_OTHER,debt_collection,debt_collection
+Moorcroft Debtrecoveryt Amcrftgrp,006458844414 Moorcroft Debtrecoveryt/amcrftgrp,14,debit,INSURANCE_AND_TAX_INSURANCE,debt_collection,debt_collection
+Cabot Fin Europe,Cabot Fin Europe - SortCodeAccountNumber: 60000140490335,5,debit,TRANSFER_OUT_OTHER,debt_collection,debt_collection
+Reliable Collectns,RELIABLE COLLECTNS  249885N0039212 DDR,5,debit,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,debt_collection,debt_collection
+Ardentcredit,DEBT & REVENUE SERVICE Ardentcredit,42.6,debit,LOAN_PAYMENTS_OTHER,debt_collection,debt_collection
+Lantern Debt Recov,LANTERN DEBT RECOV,1,debit,LOAN_PAYMENTS_OTHER,debt_collection,debt_collection
+Lowell Solicitors,UK Account - 284054418 Lowell Solicitors - SortCodeAccountNumber: 60000139543749,2,debit,TRANSFER_OUT_OTHER,debt_collection,debt_collection
+Ardentcredit.co.uk,ARDENTCREDIT.CO.UK  ON 27 JUN BCC,70.67,debit,LOAN_PAYMENTS_OTHER,debt_collection,debt_collection
+Debt Recovery Plusltd,2650 01OCT25      DEBT RECOVERY PLUSLTD               LONDON GB,20,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,debt_collection,debt_collection
+Pauline Ryan Nan,Pauline Ryan      Nan - Lowell,160,debit,TRANSFER_OUT_OTHER,debt_collection,debt_collection
+Overdales Legal,002800001299412103 Overdales Legal,10,debit,LOAN_PAYMENTS_OTHER,debt_collection,debt_collection
+NCO Europe Debt Collection,NCO EUROPE LTD,5,debit,LOAN_PAYMENTS_OTHER,debt_collection,debt_collection
+Debt Recovery,Trace Debt Recovery Ec,40,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,debt_collection,debt_collection
+Overdales Legal Limited,OVERDALES LEGAL LI,8,debit,LOAN_PAYMENTS_OTHER,debt_collection,debt_collection
+Overdales Legal Li,OVERDALES LEGAL LI,30,debit,LOAN_PAYMENTS_OTHER,debt_collection,debt_collection
+Recovery,"TRACE DEBT RECOVERY EC - BARRATT HOUSE  SUITE S2, NORTHAMPTON",20,debit,RENT_AND_UTILITIES_RENT,debt_collection,debt_collection
+Intrum Uk Lat,INTRUM UK LAT1460681,25,debit,LOAN_PAYMENTS_OTHER,debt_collection,debt_collection
+Intrum Uk Cs,INTRUM UK  CS/9836157 DDR,5,debit,LOAN_PAYMENTS_OTHER,debt_collection,debt_collection
+Debt Collection Se,DEBT COLLECTION SE,5,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,debt_collection,debt_collection
+Onecall Debt Recov,ONECALL DEBT RECOV OCDJ00159,9.09,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,debt_collection,debt_collection
+,Cash Advance,7,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+YouLend,"BILL PAYMENT VIA FASTER PAYMENT TO YOULEND LIMITED REFERENCE 60254289 COLLINS , MANDATE NO 22",3,debit,LOAN_PAYMENTS_CASH_ADVANCES,cash_advance,cash_advance
+YouLend,To Youlend - 6SMED87,13.22,debit,LOAN_PAYMENTS_CASH_ADVANCES,cash_advance,cash_advance
+YouLend,To YouLend Limited,25,debit,LOAN_PAYMENTS_CASH_ADVANCES,cash_advance,cash_advance
+YouLend,United Kingdom Account - 60113273 Youlend Limited - SortCodeAccountNumber: 60838200021278,50,debit,LOAN_PAYMENTS_CASH_ADVANCES,cash_advance,cash_advance
+YouLend,YOULEND            / ref: XC9KGB4,93.79,debit,LOAN_PAYMENTS_CASH_ADVANCES,cash_advance,cash_advance
+YouLend,Youlend - SortCodeAccountNumber: 16222410135836,77.79,debit,LOAN_PAYMENTS_CASH_ADVANCES,cash_advance,cash_advance
+YouLend,Youlend Limited 60228238,1120,debit,LOAN_PAYMENTS_CASH_ADVANCES,cash_advance,cash_advance
+YouLend,Youlend Limited 60278642,80,debit,LOAN_PAYMENTS_CASH_ADVANCES,cash_advance,cash_advance
+YouLend,YOULEND LTD 500000001639829606,100,debit,LOAN_PAYMENTS_CASH_ADVANCES,cash_advance,cash_advance
+Curve,CRV*Curve subscrip  ON 22 JUL BCC CRV*CURVE SUBSCRIPTION,9.99,debit,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,financial_services_other,financial_services_other
+Curve,CRV*Curve subscripCRV*,17.99,debit,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,ELFIN MARKET,172.57,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,Elfin Market      BMG99G5P,20,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,Elfin Market      PRQ0008P3BN12SE,4,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,Elfin Market      PRQ0008T0S2N85J,30,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,ELFIN MARKET  ELFIN-MTFBX3ZI7 DDR,0.43,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,ELFIN MARKET  PRQ00096AG0AK29 FT,2080.94,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,Elfin Market - SortCodeAccountNumber: 16222410135836,29.85,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,Elfin Market - SortCodeAccountNumber: 30406500009222,52.15,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,ELFIN MARKET HNV3XZF,66.42,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,Elfin Market PRQ0008F1ZM8ANT,57.45,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,Elfin Market PRQ00091M0G1Z60,175,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,Elfin Market PRQ00095ST47JT0,50,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,Elfin Market PRQ01K45FK775S883G,165.06,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,Elfin Market PRQ01K4CTC9PQZ4V74,75,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+Elfin Market,Elfin Market PRQ01K79HTXA9ZPGK6,161.5,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,financial_services_other,financial_services_other
+,Cash Advance,11,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,11.85,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,15,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,25,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,26.35,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,27,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,28.8,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,35,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,35.3,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,45,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,47.5,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,49.1,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,50.5,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,53.5,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,55.7,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,60.5,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,62.04,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,65,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,66.4,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,70,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,77.3,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,79.05,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,90,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,100,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,110,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,130,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,170,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,200,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,240,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,300,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,Cash Advance,330,credit,TRANSFER_IN_CHECKS_AND_ATM,cash_advance,cash_advance
+,CASH FEE,15.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH ADVANCE FEE,3.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,UNARRANGED OVERDRAFT CHARGES 14JAN23-15FEB23,15.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16MAR23-14APR23,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 15APR23-15MAY23,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,"Cash Transaction Fee, 29 MAR000000050.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,PAID REFERRAL FEE 30MAY A/C 49040138,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16DEC22-13JAN23,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 14JAN23-15FEB23,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16FEB23-15MAR23,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16MAR23-14APR23,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,BALANCE TRANSFER REQUEST 5677,1500.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,UNARRANGED OVERDRAFT CHARGES 16JUL22-15AUG22,25.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16AUG22-15SEP22,15.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16SEP22-14OCT22,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 15OCT22-15NOV22,25.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16DEC22-13JAN23,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,PAID REFERRAL FEE 03FEB A/C 17698138,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE,2.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, GBP5 MAY000000050.00 05 MAY000000050.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,3.1,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,PAID REFERRAL FEE 03JAN A/C 85819980,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,"Cash Transaction Fee, 20 DEC000000051.90",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 30 DEC000000051.90",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, GBP9 JAN000000051.90 09 JAN000000051.90",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 10 FEB000000051.90",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 29 MAY000000040.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 24408% FROM 04 Jun, (2.4616% On Purchases Shown On Last Statement) CASH INTEREST CHARGE",5.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 24408% FROM 02 Jul, (2.4616% On Purchases Shown On Last Statement) CASH INTEREST CHARGE",0.8,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 24408% FROM 02 Aug, (2.4616% On Purchases Shown On Last Statement) CASH INTEREST CHARGE",0.01,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 23 DEC000000050.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 0961,2.91,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 22 JUN000000005.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 18 NOV000000458.00",13.69,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH ADVANCE FEE,5.98,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH ADVANCE FEE,4.49,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 12 JUN000000040.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, GBP8 JUN000000010.00 08 JUN000000010.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,UNARRANGED OVERDRAFT CHARGES 16NOV22-15DEC22,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 15APR23-15MAY23,15.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,PAID REFERRAL FEE 31OCT A/C 10366633,40.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE,1.94,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,BALANCE TRANSFER REQUEST 5677,800.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,BALANCE TRANSFER,2157.34,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,Sent from Monzo Bba Ovdrft,150.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE,25.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 2.2025% CASH INTEREST CHARGE",15.47,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 31 DEC000000100.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,0.25,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,1.37,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,0.3,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,0.01,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 10 FEB000000020.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,0.69,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,0.06,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,6.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,0.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Card Balance Transfer Fee CARD BALANCE TRANSFER FEE,280.67,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,Card Balance Transfer CARD BALANCE TRANSFER,8910.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,"Cash Transaction Fee, 25 SEP000000010.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,PAID REFERRAL FEE 01MAY A/C 19329638,60.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE 9540,15.09,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2918,4.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2918,0.9,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,3.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,1.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,19.02,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,7.92,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,7.82,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,9.81,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,4.36,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,7.86,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,PAID REFERRAL FEE 01SEP A/C 00620701,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE,5.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,2.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,1.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,10.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,12.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,4.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 18 FEB000000030.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,9.14,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,3.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2380,0.4,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2380,7.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2380,2.4,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2380,0.88,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2380,0.89,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2380,1.7,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2380,0.9,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2380,3.9,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,6.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH ADVANCE FEE,4.07,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,7.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,7.98,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 21 JUN000000260.57",7.79,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2802,1.2,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2802,1.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2380,1.67,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2380,2.1,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2380,1.2,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2380,2.7,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,UNARRANGED OVERDRAFT CHARGES 15FEB25-14MAR25,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 15MAR25-15APR25,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,"Cash Transaction Fee, 24 JUL000000523.49",15.65,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 18491% FROM 11 Sep, (1.87% On Purchases Shown On Last Statement) CASH INTEREST CHARGE",15.94,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 9708,32.32,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 9708,6.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 9708,7.56,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,1.64,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 30 MAR000000040.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,1.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 19 MAY000000042.15",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 11 OCT000000099.07",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,3.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,UNARRANGED OVERDRAFT CHARGES 16MAY24-14JUN24,15.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16JUL24-15AUG24,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16AUG24-13SEP24,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 14SEP24-15OCT24,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16MAY24-14JUN24,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,PAID REFERRAL FEE 01NOV A/C 83737340,40.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16FEB24-15MAR24,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 15JUN24-15JUL24,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH ADVANCE FEE,6.58,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,BALANCE TRANSFER REQUEST 5301,3857.39,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,BALANCE TRANSFER FEE 5301,115.34,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,CASH ADVANCE FEE,3.89,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 0130,1.2,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 0130,2.4,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 0130,6.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 0130,3.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, GBP3 APR000000053.62 03 APR000000053.62",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 23 APR000000087.10",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH ADVANCE FEE,74.37,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,UNARRANGED OVERDRAFT CHARGES 16DEC23-15JAN24,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE 9540,5.12,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2918,2.7,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2918,2.4,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,BBA ovdrft Bba Ovdrft,120.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,"Cash Transaction Fee, 24 APR000000300.00",8.97,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,4.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, GBP7 JUL000000020.00 07 JUL000000020.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,3.19,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,1.66,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,7.59,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 1267,3.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 13 SEP000000010.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 1.8483% CASH INTEREST CHARGE",0.01,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 7647,1.56,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 7647,0.15,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 7647,1.26,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,0.3,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 7647,7.26,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 7647,7.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 7647,0.9,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 7647,7.56,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,1.07,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 29 JUL000000030.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,2.07,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,PAID REFERRAL FEE 15NOV A/C 00172186,60.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,PAID REFERRAL FEE 31JAN A/C 76090906,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16OCT24-15NOV24,30.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,PAID REFERRAL FEE 04OCT A/C 25963139,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE,3.06,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,7.8,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,UNARRANGED OVERDRAFT CHARGES 16MAY24-14JUN24,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16OCT24-15NOV24,15.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16NOV24-13DEC24,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 14DEC24-15JAN25,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16JAN25-14FEB25,15.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,BALANCE TRANSFER REQUEST 6278,3000.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,PAID REFERRAL FEE 28MAR A/C 61132837,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE 1765,9.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 1765,3.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 1765,4.8,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,28.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 1.8483% CASH INTEREST CHARGE",0.38,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,UNARRANGED OVERDRAFT CHARGES 14DEC24-15JAN25,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE 9776,1.55,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 9776,0.9,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 9776,0.35,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 9776,0.6,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 9776,1.8,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 9776,0.3,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 8575,3.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,UNARRANGED OVERDRAFT CHARGES 15FEB25-14MAR25,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,BBA OVDRFT  ************3230 STO,155.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,BBA OVDRFT  ************3230 FT,25600.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,BALANCE TRANSFER REQUEST 2800,200.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,BALANCE TRANSFER REQUEST 2800,445.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,CASH FEE 9938,4.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 9938,0.3,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,7.91,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,7.88,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 6287,3.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 13 OCT000000050.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 2.2025% CASH INTEREST CHARGE",12.35,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 2.2025% CASH INTEREST CHARGE",15.05,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,UNARRANGED OVERDRAFT CHARGES 16JAN24-15FEB24,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16FEB24-15MAR24,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16APR24-15MAY24,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE 1692,1.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 1692,20.73,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 1692,10.76,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 1692,4.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 1692,2.18,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, GBP1 NOV000000010.00 01 NOV000000010.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,2.88,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,2.08,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,0.84,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,3.63,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,48.29,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,UNARRANGED OVERDRAFT CHARGES 16JUN23-14JUL23,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,PAID REFERRAL FEE 04JUL A/C 64853500,40.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 15JUN24-15JUL24,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16AUG24-13SEP24,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 15MAR25-15APR25,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH ADVANCE FEE,78.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,PAID REFERRAL FEE 28JUN A/C 36178225,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH ADVANCE FEE,6.03,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 8498,1.8,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 8498,0.3,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 8498,0.6,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,BALANCE TRANSFER FEE 5301,62.15,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,BALANCE TRANSFER REQUEST 5301,2078.57,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,CASH FEE 5997,7.55,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 5997,0.66,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 5997,6.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 5997,6.3,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 5997,2.46,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,PAID REFERRAL FEE 01MAR A/C 11616199,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,"Cash Transaction Fee, 14 JUL000000100.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 18 APR000000030.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 8036,1.24,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,22.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 30 JAN000000021.75",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,1.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,0.02,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 2955,0.3,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,BALANCE TRANSFER REQUEST 3699,440.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,BALANCE TRANSFER REQUEST 3699,300.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,CASH FEE 3699,1.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 3699,3.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 3699,6.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,BALANCE TRANSFER FEE 3699,34.8,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,BALANCE TRANSFER FEE 3699,84.1,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,BALANCE TRANSFER BT000199 3699,1200.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,BALANCE TRANSFER BT000199 3699,2900.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,CASH ADVANCE FEE,3.16,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 8000,7.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH ADVANCE FEE,7.48,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,BALANCE TRANSFER REQUEST 7496,6520.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,CASH FEE 5609,7.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 5609,15.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,PAID REFERRAL FEE 03JAN A/C 78046785,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE,1.39,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,BBA OVDRFT  ************9666 STO,1374.28,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE,3.05,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,8.09,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 27 NOV000000045.22",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,PAID REFERRAL FEE 02AUG A/C 32076827,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,PAID REFERRAL FEE 30AUG A/C 32076827,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,"Interest On Your Cash Balance, INTEREST 2.5866% CASH INTEREST CHARGE",1.25,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 2.5866% CASH INTEREST CHARGE",0.01,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,1.86,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,UNARRANGED OVERDRAFT CHARGES 16MAR24-15APR24,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16JUL24-15AUG24,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,Card Balance Transfer CARD BALANCE TRANSFER,100.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,"Cash Transaction Fee, 30 DEC000000100.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 10 MAY000000097.87",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 23 MAY000000038.92",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 23 MAY000000020.10",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, GBP7 JUN000000049.07 07 JUN000000049.07",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,13.07,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,12.06,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,8.83,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,10.59,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,9.41,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,9.56,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,9.59,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,10.65,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,10.9,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,9.77,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,10.12,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,1.75,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,1.25,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,BALANCE TRANSFER REQUEST 9219,1200.21,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,Card Balance Transfer Fee CARD BALANCE TRANSFER FEE,3.4,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,CASH FEE 5819,0.3,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,7.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,16.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,PAID REFERRAL FEE 04OCT A/C 14757117,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,PAID REFERRAL FEE 03JAN A/C 14757117,60.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,BALANCE TRANSFER,1296.94,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,UNARRANGED OVERDRAFT CHARGES 16APR24-15MAY24,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16JUL24-15AUG24,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,PAID REFERRAL FEE 30MAY A/C 64853500,60.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE,17.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,57.5,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,0.91,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,PAID REFERRAL FEE 02MAY A/C 47823852,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,BALANCE TRANSFER FEE 3054,27.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,BALANCE TRANSFER BT000203 3054,900.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,CASH ADVANCE FEE,8.97,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 20 OCT000000010.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 2.5866% CASH INTEREST CHARGE",1.35,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 2.5866% CASH INTEREST CHARGE",4.17,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,0.65,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,0.66,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,13.26,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,13.14,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,8.9,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,8.75,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,5.92,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,5.9,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,8.44,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,3.03,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,10.02,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,7.07,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,12.89,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,9.84,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,3.75,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,11.62,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE                              ,9.94,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,1.77,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,PAID REFERRAL FEE 01MAR A/C 75176521,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,BALANCE TRANSFER BT000208 6761,7332.33,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,BALANCE TRANSFER FEE 6761,285.96,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,BALANCE TRANSFER BT000208 6761,4000.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,BALANCE TRANSFER FEE 6761,156.0,debit,Balance Transfers | Bank Transfer,balance_transfer,balance_transfer
+,CASH FEE 7530,3.0,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 7530,2.4,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 7530,2.7,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,2.55,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 23 MAR000000020.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,8.2,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,6.15,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,PAID REFERRAL FEE 04OCT A/C 77470702,20.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE 7647,4.26,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 7647,0.66,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,UNARRANGED OVERDRAFT CHARGES 16APR24-15MAY24,5.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE 2380,1.66,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 9346,0.66,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,UNARRANGED OVERDRAFT CHARGES 16NOV24-13DEC24,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 14DEC24-15JAN25,15.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,UNARRANGED OVERDRAFT CHARGES 16JAN25-14FEB25,10.0,debit,Bank Charges and Returns | Unarranged Overdraft,overdraft_unarranged,overdraft_unarranged
+,CASH FEE 4621,2.4,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,0.75,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,1.47,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, GBP3 MAR000000030.00 03 MAR000000030.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE 6059,27.75,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, GBP6 MAY000000025.00 06 MAY000000025.00",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Cash Transaction Fee, 31 MAY000000014.90",2.99,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,Interest On Your Cash Balance CASH INTEREST CHARGE,0.17,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 0.0% CASH INTEREST CHARGE",0.27,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 0.0% CASH INTEREST CHARGE",0.6,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,"Interest On Your Cash Balance, INTEREST 0.0% CASH INTEREST CHARGE",6.74,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,CASH FEE,3.65,debit,Bank Charges and Returns | Cash Advance Fees,cash_advance_fee,cash_advance_fee
+,GC C1             GROWTHNETWRK-WNFE8,2088.12,credit,INCOME_SALARY,salary,salary
+,TEYA SOLUTIONS LTD5017080TEYA250710 FP 10/07/25 0730  MODULO00P210X0YMHV,106.64,credit,INCOME_SALARY,salary,salary
+,Issiah Sutherland  D T Minott BGC,4.00,credit,INCOME_SALARY,transfer_p2p,salary
+,JP049191D DWP PIP 00669144,558.40,credit,INCOME_SALARY,benefits_state,salary
+,K NAILEN 600000001619116784,60.00,credit,INCOME_SALARY,transfer_p2p,salary
+,L SAUNDERS 26OCT25 110209 13700762,5.00,credit,INCOME_SALARY,transfer_p2p,salary
+,556120 12SEP 1040,330.00,credit,INCOME_SALARY,unclassified_transfer,salary
+,WILDE.S SOLICITORSLANG ESTATE       FP 11/08/25 1303  59130306342405000NLANG ESTATE,5007.94,credit,INCOME_SALARY,income_other_unspecified,salary
+,ADYEN N.V.         / ref: FAIRE NN67JRZHHAJN,84.58,credit,INCOME_SALARY,income_other_unspecified,salary
+,"JASON POWER MRS JOAN POWER P7QWSHUZS9QTQLUL9Y 02AUG25 MRS JOAN POWER,P7QWSHUZS9QTQLUL9Y",10.00,credit,INCOME_SALARY,transfer_p2p,salary
+,"O SULLIVAN M NAILS      06SEP25 RP4679963541377800 NAILS      06SEP25,RP4679963541377800",10.00,credit,INCOME_SALARY,transfer_p2p,salary
+,"ANTHONY MULLAN THE WIFE YBBPI0028513630983 THE WIFE,YBBPI0028513630983",100.00,credit,INCOME_SALARY,transfer_p2p,salary
+,M HASAN           HASAN             FP 17/07/25 0119  600000001595516496,4000.00,credit,INCOME_SALARY,transfer_p2p,salary
+,BREAK,1131.27,credit,INCOME_SALARY,unclassified_transfer,salary
+,0629 SDP PLUMBING LTD,3600.00,credit,INCOME_SALARY,unclassified_transfer,salary
+,"N NIKPOUR-VALISEH 400000001609197673 400000001609197673,",400.00,credit,INCOME_SALARY,transfer_p2p,salary
+,"BALA E WORK       06SEP25 19160245384140000N WORK       06SEP25,19160245384140000N",250.00,credit,INCOME_SALARY,transfer_p2p,salary
+,ADYEN N.V.         / ref: FAIRE CSWSVR6QM5L3,15.12,credit,INCOME_SALARY,income_other_unspecified,salary
+,"OWEN-JONES XBOX GAMES 726465219541509001 XBOX GAMES,726465219541509001",30.00,credit,INCOME_SALARY,transfer_p2p,salary
+,"L RAVENSCROFT SHOP       21SEP25 400000001637873514 SHOP       21SEP25,400000001637873514",25.00,credit,INCOME_SALARY,transfer_p2p,salary
+,LE SHUTTLE 1991 E/tunnel Internet,44.00,credit,INCOME_SALARY,refund_received,salary
+,S MCDONALD        FP 14/08/25 1942  300000001615377607,15.00,credit,INCOME_SALARY,transfer_p2p,salary
+,JT190141B DWP CA 00529164,83.30,credit,INCOME_SALARY,benefits_state,salary
+,"N HARRIES COUNCIL TAX 200000001622317136 COUNCIL TAX,200000001622317136",20.00,credit,INCOME_SALARY,transfer_p2p,salary
+,BLUNDELLS OF LIVER 03585692,328.58,credit,INCOME_SALARY,unclassified_transfer,salary
+,"C CARDOSO DA COSTA 300000001639798883 300000001639798883,",50.00,credit,INCOME_SALARY,transfer_p2p,salary
+,H JENKINS 309259 27138263,1.00,credit,INCOME_SALARY,transfer_p2p,salary
+,PH365609B DWP CA  000000003327191342 BGC,83.30,credit,INCOME_SALARY,benefits_state,salary
+,B VARRIER 110702 13329168,10.00,credit,INCOME_SALARY,transfer_p2p,salary
+,Payment from Fourth Wave Wine Partners Uk Ltd - TOWN-LG210825/ROC/PI5460216,1603.13,credit,INCOME_SALARY,salary,salary
+,YZ512344A DWP DLA 02218651,29.20,credit,INCOME_SALARY,benefits_state,salary
+,SG128915D DWP CA 02200842,83.30,credit,INCOME_SALARY,benefits_state,salary
+,WOLVERHAMPTON WALL  WN25SV5721 BGC,125.00,credit,INCOME_SALARY,unclassified_transfer,salary
+,MV- 02876943 -1108,1386.32,credit,INCOME_SALARY,unclassified_transfer,salary
+,JR198598C DWP CA 00515542,83.30,credit,INCOME_SALARY,benefits_state,salary
+, MULLER P,30.00,credit,INCOME_SALARY,transfer_p2p,salary
+,Square T3ZKXGCVR86WB8P,90.95,credit,INCOME_SALARY,income_other_unspecified,salary
+,Zeynep Cidil 1CMYK3L3J74AATW,205.60,credit,INCOME_SALARY,transfer_p2p,salary
+,AIR CORE LTD SW   SALARY            FP 26/06/25 1505  MF00012712C20BB400,2320.84,credit,INCOME_SALARY,salary,salary
+,"MISS NICOLA MARIE THEBENLLECH 00151254632BBLKXVJ THEBENLLECH,00151254632BBLKXVJ",416.00,credit,INCOME_SALARY,transfer_p2p,salary
+,PECKHAM,630.00,credit,INCOME_SALARY,unclassified_transfer,salary
+,"RENAYA RENIESS WAL ME 000000FT252094875V ME,000000FT252094875V",5.00,credit,INCOME_SALARY,transfer_p2p,salary
+,RED ARROW DISTRIBU33 - Red Arrow Dis,304.00,credit,INCOME_SALARY,salary,salary
+,Bank credit SKILL ON NET LTD 2025-06-16,100.00,credit,INCOME_SALARY,income_other_unspecified,salary
+,ABDIRAZAK AHMED   STARLIN           FP 05/08/25 2123  MY08V7D7DW1K52OD1X,190.00,credit,INCOME_SALARY,transfer_p2p,salary
+,209467 53090612  MOBILE-CHANNEL FT,64.00,credit,INCOME_SALARY,unclassified_transfer,salary
+,Bank credit Liam Brown 2025-10-09,15.00,credit,INCOME_SALARY,transfer_p2p,salary
+,Ek159215/pp United Legal Servi,300.00,credit,INCOME_SALARY,income_other_unspecified,salary
+,SH036536A DWP CA,333.20,credit,INCOME_SALARY,benefits_state,salary
+,Bank credit BLADES RESTAURANTS 403518 65247950 2025-10-22,346.73,credit,INCOME_SALARY,salary,salary
+,STRIPE PAYMENTS UKSHOPIFY           FP 23/07/25 0904  XP0966329154574003,1294.62,credit,INCOME_SALARY,income_other_unspecified,salary
+,T ALLEN    06SEP25 777118 36648660,1.19,credit,INCOME_SALARY,transfer_p2p,salary
+,CARMS CC PAYROLL 01600564,1299.20,credit,INCOME_SALARY,salary,salary
+,ABDULLAHI ISMAIL  NATWEST ACC       FP 09/07/25 0004  HUBXCEEA1129956062,100.00,credit,INCOME_SALARY,transfer_p2p,salary
+,JL528662C SSA CA 04787372,83.30,credit,INCOME_SALARY,benefits_state,salary
+,KATRINA RATHMILL MR GREGORY S TOMLI PUEPE64YSATQ5RD9AH,30.00,credit,INCOME_SALARY,transfer_p2p,salary
+,"SHARIF MRU BROTHER 29103104484316000N BROTHER,29103104484316000N",600.00,credit,INCOME_SALARY,transfer_p2p,salary
+,"ENAGH CONST LTD  B ENAGH CONSTRUCTION MF00152712BE594E00 ENAGH CONSTRUCTION,MF00152712BE594E00",628.00,credit,INCOME_SALARY,salary,salary
+,PAYMENT FROM ELECTRAWORKS LTD ON 2025-08-14,101.45,credit,INCOME_SALARY,gambling_unspecified,salary
+,From A/C 14761882 BURGAR S          Via Mobile Xfer,20.00,credit,INCOME_SALARY,transfer_p2p,salary
+,"BANK GIRO CREDIT REF G4S PENSION SCHEME, GP4940843",102.39,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,"M ABDULWASEA MA 600000001602914868 MA,600000001602914868",20.00,credit,INCOME_GOVERNMENT_INCOME,transfer_p2p,benefits_state
+,PIC PENSION 02630861,280.16,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,WILTS PENSIONS 01978650,14.83,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,Wg541220a Dwp Dla Department for Work and Pensions,558.40,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,"Meskiene L Arui, dzoniui",30.00,credit,INCOME_GOVERNMENT_INCOME,transfer_p2p,benefits_state
+,Pw330719d Ssa Pip Department for Work and Pensions,558.40,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,RM-STAT PENSION 02943277,703.35,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,NEST PENSION CLAIM 03529127,1876.60,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,Pj426518c Dwp Ca Department for Work and Pensions,83.30,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,"E SILLAH EBRIMA     24AUG25 200000001613297926 EBRIMA     24AUG25,200000001613297926",60.00,credit,INCOME_GOVERNMENT_INCOME,transfer_p2p,benefits_state
+,Nest Pension Claim,1724.84,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,S LAFEUILLEE 777754 87185568,5.00,credit,INCOME_GOVERNMENT_INCOME,transfer_p2p,benefits_state
+,"K GURUNG AMMA 100000001594385024 AMMA,100000001594385024",650.00,credit,INCOME_GOVERNMENT_INCOME,transfer_p2p,benefits_state
+,NEST PENSION CLAIM 01740977,31.80,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,TYNE&WEAR PENSION 01956893,1460.14,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,RM-STAT PENSION  RMM1219539 BGC,110.28,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,MET POLICE PENSION,1794.15,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,TYNE&WEAR PENSION 01514090,3.60,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,Pg852364a Sss Scp Social Security Scotland,325.80,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,Je594973b Dwp Pip Department for Work and Pensions,412.40,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,TYNE&WEAR PENSION 02363486,87.33,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,Jr601810c Dwp Pip Department for Work and Pensions,412.40,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,"BANK GIRO CREDIT REF RM-STAT PENSION, RMM1209898",1365.07,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,Jn775590c Sss Adp Social Security Scotland,295.60,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,Jz328896a Dwp Ca Department for Work and Pensions,333.20,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,"SHANE LAFEUILLEE SHANE LAFEUILLEE PP1L9A07YVZOJGUILT SHANE LAFEUILLEE,PP1L9A07YVZOJGUILT",3.00,credit,INCOME_GOVERNMENT_INCOME,transfer_p2p,benefits_state
+,"E SILLAH EBRIMA 300000001610050270 EBRIMA,300000001610050270",230.00,credit,INCOME_GOVERNMENT_INCOME,transfer_p2p,benefits_state
+,Jr210052a Sss Adp Social Security Scotland,441.60,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,BAE SYSTEM PENSION 15871041,224.09,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,RM-STAT PENSION 06411810,620.68,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,Jz090187d Dwp Pip Department for Work and Pensions,603.80,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,DVLA-XUI5231                          REFERENCE: 000000000069251815,16.62,credit,INCOME_GOVERNMENT_INCOME,tax_refund,benefits_state
+,Pb866296a Ssa Pip Department for Work and Pensions,558.40,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,"E SILLAH EBRIMA 200000001607307997 EBRIMA,200000001607307997",60.00,credit,INCOME_GOVERNMENT_INCOME,transfer_p2p,benefits_state
+,DAY L             PENSION           FP 18/06/25 0952  RP4679960527063600,30.00,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,TYNE&WEAR PENSION 01955052,87.33,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,"ELLIE SHARMA ELLIE SHARMA 98018050946659382 ELLIE SHARMA,98018050946659382",500.00,credit,INCOME_GOVERNMENT_INCOME,transfer_p2p,benefits_state
+,Emma O'toole  pension BGC,220.00,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,Jx335152a Sss Adp Social Security Scotland,558.40,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,Jx174856a Sss Adp Social Security Scotland,412.40,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,Jt975196a Dwp Pip Department for Work and Pensions,749.80,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,Jt553052a Dwp Pip Department for Work and Pensions,441.60,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,"BILL PAYMENT FROM MR JORDAN ALAN HARRY VINTEN, REFERENCE CHILD SUPPORT",30.00,credit,INCOME_GOVERNMENT_INCOME,income_other_unspecified,benefits_state
+,LBHOUNSLOW PENSION,654.30,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,"E SILLAH EBRIMA 600000001644439218 EBRIMA,600000001644439218",40.00,credit,INCOME_GOVERNMENT_INCOME,transfer_p2p,benefits_state
+,Eui Premium Trust Elephant,370.04,debit,INCOME_GOVERNMENT_INCOME,insurance_motor,benefits_state
+,PIC PENSION 05463158,280.16,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,Jn517448a Dwp Ca Department for Work and Pensions,83.30,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,PENSION STO  PENSION STO ,150.00,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,Jm396966c Dwp Ca Department for Work and Pensions,2164.40,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,"SHANE LAFEUILLEE SHANE LAFEUILLEE PF8X4PIDQ4II7OPKYV SHANE LAFEUILLEE,PF8X4PIDQ4II7OPKYV",161.00,credit,INCOME_GOVERNMENT_INCOME,transfer_p2p,benefits_state
+,DAY L             PENSION           FP 02/08/25 1129  RP4679967991922300,10.00,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,RBS DFC FASTER PAYJL661647D SSA SFCSFP 13/08/25 1450  12145034657480000NJL661647D SSA SFCS,552.00,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,WE123088B SSA  PC 01549413,101.77,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,Jt737473b Dwp Pip Department for Work and Pensions,295.60,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,LBHOUNSLOW PAYSRV,3077.13,credit,INCOME_GOVERNMENT_INCOME,salary,benefits_state
+,Bank credit LBH PENSION FUND 602210 72433426,561.47,credit,INCOME_GOVERNMENT_INCOME,pension_received,benefits_state
+,"ELLIE SHARMA ELLIE SHARMA 11889134352384406 ELLIE SHARMA,11889134352384406",500.00,credit,INCOME_GOVERNMENT_INCOME,transfer_p2p,benefits_state
+,Jw779243d Sss Scp Social Security Scotland,325.80,credit,INCOME_GOVERNMENT_INCOME,benefits_state,benefits_state
+,CASHBACK 80391042,13.06,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,VISA DIRECT PAYMENT Barclays Cashback ON 21 JUL CRE,13.35,credit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,cashback,refund_received
+,RRG DENTON  CASHBACK BGC,4000.00,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,CASHBACK 80445142,7.02,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,CASHBACK 80304711,1.40,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,HASHTING UK LTD BAKERS CASHBACK REV555534375334187,3.50,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,TopCashback       TCB30111195BGC,6.26,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,3961 14JUL25      W.G. GRACE        BRISTOL GB        CASH BACK    20.00,28.14,debit,FOOD_RETAIL_GROCERIES,cash_withdrawal,refund_received
+,CASHBACK 80224297,5.98,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,"1 DIRECT DEBIT PAYMENT AT 3,00% CASHBACK",0.98,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,9458 18JUN25      LOCAL SHOPPER LTD LONDON GB         CASH BACK    40.00,50.18,debit,GENERAL_MERCHANDISE_CONVENIENCE_STORES,cash_withdrawal,refund_received
+,CRD29VM CASHBACK,2.85,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,CASHBACK 80164093,0.99,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,"TOPCASHBACK TCB30338517BGC HUBX488073557FDF4D TCB30338517BGC,HUBX488073557FDF4D",13.26,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,CASHBACK 80134505,0.57,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,CASHBACK 80267118,0.49,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,CASHBACK 80341712,8.00,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,VISA DIRECT PAYMENT Barclays Cashback ON 15 JUL CRE,0.97,credit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,cashback,refund_received
+,"TOPCASHBACK TCB30140914BGC HUBX854E8D2D5B9D32 TCB30140914BGC,HUBX854E8D2D5B9D32",80.13,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,VISA DIRECT PAYMENT Barclays Cashback ON 29 AUG CRE,1.00,credit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,cashback,refund_received
+,A SCANLON         CASHBACK          FP 20/06/25 2204  500000001580767624,10.00,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,HALIFAX CASHBACK XXXXXXXXXXXX9864,62.22,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,credit_card_repayment,refund_received
+,CASHBACK 80442680,0.60,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,TopCashback       TCB29846792BGC,20.67,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,THE VOGUE CENTRE LHD17KDU CASHBACK  FP 11/08/25 1606  00157435632BBMFDGV,1000.00,credit,INCOME_SALARY,cashback,refund_received
+,CASHBACK 80159336,0.90,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,CASHBACK 80357856,0.75,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,9458 18JUL25      LOCAL SHOPPER LTD LONDON GB         CASH BACK    70.00,92.14,debit,GENERAL_MERCHANDISE_CONVENIENCE_STORES,cash_withdrawal,refund_received
+,6461 27SEP25      PENNYWISE STORES  LTD               ATHERTN/TYLDE GB  CASH BACK    20.00,25.00,debit,TRANSFER_OUT_OTHER,cash_withdrawal,refund_received
+,GRAINCONNNE 180639  OVERPAYMENT BGC,2.91,credit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,refund_received,refund_received
+,HALIFAX CASHBACK C 600000001619186690,28.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,credit_card_repayment,refund_received
+,CASHBACK 80438780,8.73,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,Manoj Moka Cash back,200.00,debit,TRANSFER_OUT_OTHER,transfer_p2p,refund_received
+,CASHBACK 80465576,0.83,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,CASHBACK 80223641,9.24,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,7101 05SEP25      SPAR              UTTOXETER GB      CASH BACK    40.00,43.50,debit,TRANSFER_OUT_OTHER,cash_withdrawal,refund_received
+,CASHBACK 80445464,5.72,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,HALIFAX CASHBACK C 300000001593330858,30.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,credit_card_repayment,refund_received
+,CASHBACK 80227940,4.00,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,5470 11JUL25      PPOINT_*65656     THANDIS           HOUGHTON-LE-S GB  CASH BACK     5.00,8.35,debit,TRANSFER_OUT_CHECKS_AND_ATM,cash_withdrawal,refund_received
+,CASHBACK 80377837,0.52,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,CASHBACK 80414111,1.29,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,1006 04JUN25      CLEARYS LIMITED   HINDLE            HINDLEY GB        CASH BACK    10.00,12.89,debit,FOOD_RETAIL_GROCERIES,cash_withdrawal,refund_received
+,CASHBACK 80336794,1.16,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,CASHBACK 80379726,2.44,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,CASHBACK 80181301,1.79,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,Topcashback TCB29811789BGC,4.85,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,A SCANLON         CASHBACK          FP 17/06/25 0858  300000001581997524,10.00,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,CASHBACK 80058142,5.06,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,FBS Accounting Ser                       TAX REBATE 24/25,2967.76,credit,TAX_REFUND_TAX_REFUND,tax_refund,refund_received
+,LLOYDS CASHBACK XXXXXXXXXXXX4643,40.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,credit_card_repayment,refund_received
+,CASHBACK 80279877,1.85,credit,LOAN_DISBURSEMENTS_OTHER,cashback,refund_received
+,2936 06JUL25      PADDA RETAIL      LIMITED           MANSFIELD GB      CASH BACK    40.00,40.30,debit,GENERAL_MERCHANDISE_OTHER_GENERAL_MERCHANDISE,cash_withdrawal,refund_received
+,A SCANLON         CASHBACK          FP 28/08/25 1627  600000001619236935,250.00,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,TopCashback  TCB29143816BGC BGC,32.46,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,4307 06AUG25      NATWEST CASHBACK  CASHBACK GB       CREDIT,0.05,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,cashback,refund_received
+,TopCashback  TCB29629669BGC BGC,153.00,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,LLOYDS CASHBACK XXXXXXXXXXXX4539,1036.88,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,credit_card_repayment,refund_received
+,A SCANLON         CASHBACK          FP 27/06/25 1940  300000001588170027,50.00,credit,TRANSFER_IN_OTHER,cashback,refund_received
+,VISA DIRECT PAYMENT Barclays Cashback ON 05 AUG CRE,5.54,credit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,cashback,refund_received
+,Intelling: Upgrade,10.00,credit,LOAN_DISBURSEMENTS_OTHER,refund_received,loan_disbursement
+,Evergreen Finance London Limited MONEYBOAT 1214264,500.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,"WAGESTREAM FINANCE SAVINGS WITHDRAWAL MODULO00P210XJRKZP SAVINGS WITHDRAWAL,MODULO00P210XJRKZP",40.00,credit,LOAN_DISBURSEMENTS_OTHER,savings_transfer,loan_disbursement
+,"L CHAISTY CURRY MONEY 400000001628271489 CURRY MONEY,400000001628271489",115.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,"PHILLIP THOMPSON CLEO PRENTICE PMO7B6RPK9P8FI2A8D CLEO PRENTICE,PMO7B6RPK9P8FI2A8D",30.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,"K SOUNDS GROUP LIM LOAN de1e4af3af2942e79a LOAN,de1e4af3af2942e79a",22.64,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,"M MEHMOOD LOAN 200000001596042697 LOAN,200000001596042697",20.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,"MANCHESTER CREDIT 90451 0da60a5ca0234aea95 90451,0da60a5ca0234aea95",25.60,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,Payment from Deborah Kelledy - Loan kindle book,5.99,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,Bank credit D Bright,7.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,"PHILLIP THOMPSON CLEO PRENTICE P91J6NKSP21XVBVIPO CLEO PRENTICE,P91J6NKSP21XVBVIPO",10.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,"INCLUSIVE FINANCE CREDITSPRING ADVAN REV544719023763492 CREDITSPRING ADVAN,REV544719023763492",1000.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,INCLUSIVE FINANCE CREDITSPRING SETTLFP 04/08/25 1422  REV543137613783932,17.81,credit,LOAN_DISBURSEMENTS_PERSONAL,loan_disbursement,loan_disbursement
+Kashif M Loan,KASHIF M  Loan return BGC,210.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,"EVERGREEN FINANCE MONEYBOAT 1145362 MODULO00P210WXNGQR MONEYBOAT 1145362,MODULO00P210WXNGQR",1000.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,Kamelia Blagoeva M  loan for rent BGC,500.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,"WAGESTREAM FINANCE SAVINGS WITHDRAWAL MODULO00P210Y0MGBN SAVINGS WITHDRAWAL,MODULO00P210Y0MGBN",10.00,credit,LOAN_DISBURSEMENTS_OTHER,savings_transfer,loan_disbursement
+,PARALLEL PARTNERSHADVANCE           FP 04/09/25 2214  P5HRFYBYHBQAZMZUOQ,150.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,CREDIT FROM CLEARPAY ON 09-08-2025,6.03,credit,LOAN_DISBURSEMENTS_BNPL_AND_EWA,refund_received,loan_disbursement
+,"DREW STEPHENS FINANCES 71682612632685978 FINANCES,71682612632685978",150.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,"ULTIMATE FINANCE L CM25100621502218 304065     40 15OCT25 16:15 CM25100621502218,304065     40",42000.00,credit,LOAN_DISBURSEMENTS_BNPL_AND_EWA,loan_disbursement,loan_disbursement
+,"TABEO FO ADVANCES P172237 731852220713299XNC 401160     40 23SEP25 17:02 P172237,731852220713299XNC",3063.60,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,"K SOUNDS GROUP LIM LOAN ebd2fda277044e0da1 LOAN,ebd2fda277044e0da1",166.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,Power NI,10.00,credit,LOAN_DISBURSEMENTS_OTHER,refund_received,loan_disbursement
+,PARALLEL PARTNERSHADVANCE           FP 01/08/25 1443  PITEH89Z50ZJBE87VB,100.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,CLEARPAY  ON 26 AUG BCC Clearpay,8.78,credit,LOAN_DISBURSEMENTS_OTHER,refund_received,loan_disbursement
+,KIYEMBA J  LOAN FT,860.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,"SALAD FINANCE LIMI SALAD MONEY 303b1675e2d249aa90 SALAD MONEY,303b1675e2d249aa90",1232.14,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,Payment from Innocent Enweazu - Loan,4489.23,credit,LOAN_DISBURSEMENTS_MORTGAGE_AND_AUTO,transfer_p2p,loan_disbursement
+,"C ALCOCK LEND       03AUG25 600000001605615127 LEND       03AUG25,600000001605615127",30.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,Visa credit CLEARPAY 5241,3.79,credit,LOAN_DISBURSEMENTS_OTHER,refund_received,loan_disbursement
+,"ULTIMATE FINANCE L CM25100621782096 304065     40 20OCT25 14:11 CM25100621782096,304065     40",117000.00,credit,LOAN_DISBURSEMENTS_BNPL_AND_EWA,loan_disbursement,loan_disbursement
+,"SARAH HAYHURST LEND PH3OE7LZO7JT48LLM0 LEND,PH3OE7LZO7JT48LLM0",20.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,K Kyriacou  LOAN BGC,100.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,SARAH WRIGHT BANK OF SCOT 2 250819104154632672,2.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,WAGESTREAM FINANCESAVINGS WITHDRAWALFP 31/07/25 1007  MODULO00P210XFYWZM,20.00,credit,LOAN_DISBURSEMENTS_OTHER,savings_transfer,loan_disbursement
+,Lending Stream  PAYMENT2766080 BGC,300.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,"BIBI A OVERDRAFT RP4679963175981400 OVERDRAFT,RP4679963175981400",120.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,Lucy Allan lend,20.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,"S WILSON LEND 100000001604492131 LEND,100000001604492131",20.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,"AMELIA KUNZI LENDING MONEY PM81Z60ND3WYK4HQT6 24AUG25 LENDING MONEY,PM81Z60ND3WYK4HQT6",4.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,T CHAMBERLAIN     LOAN              FP 07/07/25 1334  200000001586510245,10.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,VAN BEEK PS  LEND FT,50.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,WOOLDRIDGE DM  MONEY BORROWED BGC,30.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,CLEARPAY CD 5288,2.30,credit,LOAN_DISBURSEMENTS_BNPL_AND_EWA,refund_received,loan_disbursement
+,OODLE CAR FINANCE  220929181746390-02 UNP,223.72,credit,LOAN_DISBURSEMENTS_OTHER,returned_payment,loan_disbursement
+,M Rashed          Loan repayment,1100.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,TRANSFER FROM LOAN,4.92,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,NatWest Boxed loan  Loan Disbursement BGC,15000.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,"J GOODALL LOAN 200000001580135766 LOAN,200000001580135766",1500.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,PAYMENT2718292 Lending Stream,150.00,credit,LOAN_DISBURSEMENTS_PERSONAL,loan_disbursement,loan_disbursement
+,"C YOUNG LOAN       06JUL25 300000001593388950 LOAN       06JUL25,300000001593388950",70.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,PIERCE KA         Loan              VIA MOBILE - PYMT,20.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,"SHAFER A M LEND 051199858421207001 LEND,051199858421207001",20.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,"OPTIMUM KEY PROPER CLEARPAY   14SEP25 000000000073771199 CLEARPAY   14SEP25,000000000073771199",30.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,H KHUHENDRANATH   LOAN REPAYMENT    FP 22/07/25 2223  400000001603706871,8.00,credit,LOAN_DISBURSEMENTS_OTHER,transfer_p2p,loan_disbursement
+,25klarna11,5.91,credit,LOAN_DISBURSEMENTS_BNPL_AND_EWA,refund_received,loan_disbursement
+,"ULTIMATE FINANCE L CM25100620050297 304065     40 23SEP25 14:15 CM25100620050297,304065     40",31000.00,credit,LOAN_DISBURSEMENTS_BNPL_AND_EWA,loan_disbursement,loan_disbursement
+,CASHBACK 80389410,0.30,credit,LOAN_DISBURSEMENTS_OTHER,cashback,loan_disbursement
+,"ULTIMATE FINANCE L CM25100621991632 304065     40 23OCT25 14:11 CM25100621991632,304065     40",77900.00,credit,LOAN_DISBURSEMENTS_BNPL_AND_EWA,loan_disbursement,loan_disbursement
+Reston Waste Manag,RESTON WASTE MANAG 200000001583043346 602426     10 01JUL25 12:11,1824.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Waste Investig Ations,Waste Investigations ,150.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Eurotool Hire,EUROTOOL HIRE WEB,54.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,tools,utility_other
+Ea Waste,EA WASTE CARRIERS  ON 01 SEP BDC,125.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Aaa Waste Solution,AAA Waste Solution7 ross ct. tilli,150.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+,POOLSCHOOLS VC LTD,34.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,sports_participation,utility_other
+,6437 16OCT25 CD   WH SMITH ROYAL    INFIRMA           EDINBURGH GB,9.26,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,stationery,utility_other
+,STOCKPORT MBC 01      5000317630,175.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,council_tax,utility_other
+The Waste Team,To The Waste Team - 35564 - SortCodeAccountNumber: 40331901566431,400.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Georgia Bro,GEORGIA BRO* GEORG,4.90,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,retail_other,utility_other
+Fraser Waste Managemen,Fraser Waste Managemen,36.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Midlands Hgv Servi,MIDLANDS HGV SERVI 300000001618736418 MORRISON002 602209     10 21AUG25 09:07,240.90,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,vehicle_servicing,utility_other
+Camden Fringe LTD,Camden Fringe Ltd,34.05,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,theatre,utility_other
+Green Garden Waste,GREEN GARDEN WASTE,50.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Cd Zettle,1052 15AUG25 CD   ZETTLE_*W S WASTE MANA              POOLE GB,1.50,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Hotpodg,HOTPODGATESHEAD   BEDLINGTON,60.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,gym_fitness,utility_other
+Scott Fawcett Waste,Scott Fawcett Waste,200.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Orange Botosani,ORANGE BOTOSANI,15.80,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,mobile_phone_contract,utility_other
+Pmpc Waste Removal,PMPC WASTE REMOVAL,90.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Vdp-easyjet Luton,VDP-EASYJET LUTON,116.98,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,flights,utility_other
+,"STANDING ORDER VIA FASTER PAYMENT TO LBG WASTE MANGEM REFERENCE CASEYBAKER BINS , MANDATE NO 0129",23.83,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Molehill Waste Clearance Limited,United Kingdom Account - 3937 Molehill Waste Clearance limited - SortCodeAccountNumber: 60243719636075,260.40,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+,6437 24OCT25 CD   WH SMITH ROYAL    INFIRMA           EDINBURGH GB,5.37,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,stationery,utility_other
+,To Jake Simpkin - Waste removal - SortCodeAccountNumber: 07024627778057,1000.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+,Direct Debit - First Payment OOODLES LTD 070806 10648375,59.99,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,retail_other,utility_other
+,TM LEGAL  ON 01 AUG CPM,25.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,debt_collection,utility_other
+Centrica,CARD PAYMENT TO CENTRICA HIVE LTD ON 16-09-2025,3.99,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,energy,utility_other
+,Direct Debit - First Payment OURTAAP 162224 10135836,24.99,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,utility_other,utility_other
+Rapid Waste Remova,RAPID WASTE REMOVA  39 BRIAR HILL FT,160.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+,6437 22AUG25 CD   WH SMITH ROYAL    INFIRMA           EDINBURGH GB,5.28,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,stationery,utility_other
+,To Tm Legal Services - TMLS-887632-2,30.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,debt_collection,utility_other
+Annys,PENDING ANNYS,8.38,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,retail_other,utility_other
+Dial-a-bin Refuse,Dial-a-bin Refuse Coll,250.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+,6437 21AUG25 CD   WH SMITH ROYAL    INFIRMA           EDINBURGH GB,8.50,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,stationery,utility_other
+Bobby J Caiger,BOBBY J CAIGER 500000001627722238 RUBBISH DISPOSAL 110852     10 11SEP25 16:17,120.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+M & M Waste Solution,M & M Waste Solution,330.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Eurotradezone LTD,Eurotradezone Ltd,70.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,retail_other,utility_other
+Monster Clearance Waste,Monster clearance Waste 44 Stratford,100.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Le Pisani Seaton Resta,LE PISANI SEATON R,9.60,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,restaurant_cafe,utility_other
+,LET YOUR ROOMS LTD 500000001641345382,150.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,estate_agent,utility_other
+Waste Investigatio,WASTE INVESTIGATIO,150.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+,To Tm Legal Services - TMLS-817918-1,30.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,debt_collection,utility_other
+,Ssreso LTD 312,24.58,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,retail_other,utility_other
+Aaa Waste Solution Maggie.,AAA Waste SolutionMaggie. Ross Court,100.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+A Star Waste Management,A Star Waste Management Limited Off balance,1000.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Lee Sanitation LTD,LEE SANITATION LTD  ON 02 SEP BDC,77.33,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,home_repair,utility_other
+Hippo Waste,Hippo Waste,189.99,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Rm Waste Clearance,RM WASTE CLEARANCE  INV 1945 FT,440.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Sulzer Pumps,SULZER PUMPS WASTE  40163 BBP,8305.92,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Drm Botosani 2 C1,DRM BOTOSANI 2 C1,9.93,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,mobile_phone_contract,utility_other
+Fswaste.co.uk,FSWASTE.CO.UK,86.40,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Evergreen Waste Servic,Evergreen Waste Servic,290.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Jlc Waste Management LTD,Metro Bank account - Chiswick riv Jlc Waste Management Ltd - SortCodeAccountNumber: 23058038525808,360.00,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,waste_services,utility_other
+Ultralight Outdoor,0303 16AUG25      ULTRALIGHT OUTDOORBILLINGHAM GB,69.99,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,clothing_outdoor,utility_other
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TES33R212T SANTANDER REFERENCE 212TES33R212T,30.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,"TRADING 212 UK LIM 39131724 D2997ZKXFX61 39131724,D2997ZKXFX61",253.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,To Trading 212 - 212TE3QPJ212T - SortCodeAccountNumber: 60000148805769,50.00,debit,TRANSFER_OUT_OTHER,investment_trading,investment_trading
+,CARD PAYMENT TO WWW.ETORO.COM ON 03-09-2025,100.00,debit,TRANSFER_OUT_OTHER,investment_trading,investment_trading
+,"TRADING 212 UK LIM 38974683 DD2CF0MLL01J 38974683,DD2CF0MLL01J",400.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,"TRADING 212 UK LIM 38207688 D61MD8XHRTK5 38207688,D61MD8XHRTK5",604.55,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TDYOTD212T SANTANDER REFERENCE 212TDYOTD212T,140.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TEX4HO212T SANTANDER REFERENCE 212TEX4HO212T,30.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,TRADING 212 UK LIM36038474          FP 12/08/25 1709  DHL9SWL9J79P      36038474,4.95,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,"TRADING 212 UK LIM 21280754 DXV88NQTL642 21280754,DXV88NQTL642",108.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,TRADING 212 UK LIM37664824          FP 10/09/25 1020  DX45BKMM600N      37664824,400.00,credit,INCOME_SALARY,investment_trading,investment_trading
+,To Trading 212 - 212TEAJ65212T - SortCodeAccountNumber: 60000148805769,10.00,debit,TRANSFER_OUT_OTHER,investment_trading,investment_trading
+,To Trading 212 - 212TE5UEJ212T - SortCodeAccountNumber: 60000148805769,7800.00,debit,TRANSFER_OUT_OTHER,investment_trading,investment_trading
+,Trading 212 UK Lim35228970,387.47,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,"TRADING 212 UK LIM 38974683 F3B2ZBYB5VT5 38974683,F3B2ZBYB5VT5",300.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,"TRADING 212 UK LIM 38974683 DCDYCL0WYX1X 38974683,DCDYCL0WYX1X",400.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,INT'L 0019498757  Trading212 .      London            USD 14.87 @ 1.3579 Visa Rate,10.95,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TDCJ37212T SANTANDER REFERENCE 212TDCJ37212T,20.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,FASTER PAYMENTS RECEIPT REF.35159326 FROM TRADING 212 UK LIMITED,70.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,"TRADING 212 UK LIM 39125586   13SEP25 DYRQWQ1MDWG0 39125586   13SEP25,DYRQWQ1MDWG0",20.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,Payment from Trading 212 Uk Limited - 40767910,100.00,credit,INCOME_SALARY,investment_trading,investment_trading
+,To Trading 212 - 212TE2VT0212T - SortCodeAccountNumber: 60000148805769,250.00,debit,TRANSFER_OUT_OTHER,investment_trading,investment_trading
+,Trading 212 Uk Limited 3258819,14.23,credit,INCOME_SALARY,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TDEYKB212T SANTANDER REFERENCE 212TDEYKB212T,30.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,Trading 212 Uk Limited 3258820,900.00,credit,INCOME_SALARY,investment_trading,investment_trading
+,TRADING 212 UK LIM38667828          FP 26/09/25 1835  F4JB6GPC9GS7      38667828,300.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE TRADING212 SANTANDER REFERENCE 212TF0FST212T,300.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,CREDIT FROM TRADING 212 ON 13-08-2025,50.00,credit,TRANSFER_IN_CHECKS_AND_ATM,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TCQT54212T SANTANDER REFERENCE 212TCQT54212T,105.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,CARD PAYMENT TO ETORO ON 05-09-2025,200.00,debit,TRANSFER_OUT_OTHER,investment_trading,investment_trading
+,Trading 212 UK Lim  34769226 BGC,5061.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TDZZUP212T SANTANDER REFERENCE 212TDZZUP212T,30.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TEOH12212T SANTANDER REFERENCE 212TEOH12212T,30.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,Trading 212 Uk Limited 38489381,92.85,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TE50MH212T SANTANDER REFERENCE 212TE50MH212T,400.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TDE76G212T SANTANDER REFERENCE 212TDE76G212T,20.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,CARD PAYMENT TO WWW.ETORO.COM ON 17-10-2025,100.00,debit,TRANSFER_OUT_OTHER,investment_trading,investment_trading
+,Bank credit FREETRADE LIMITED 609242 71003722,176.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TE286J212T SANTANDER REFERENCE 212TE286J212T,600.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,"TRADING 212 UK LIM 39125586   14SEP25 DZ82PT4CTB1Y 39125586   14SEP25,DZ82PT4CTB1Y",30.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,Trading 212 Uk Limited 34486358,51.88,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,"TRADING 212 UK LIM 38974683 DQ244WCMQJH1 38974683,DQ244WCMQJH1",200.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,Trading 212,20.80,credit,TRANSFER_IN_INVESTMENT_AND_RETIREMENT_FUNDS,investment_trading,investment_trading
+,Trading 212 Uk Limited 2306912,0.30,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,Trading 212 UK Lim36792106,59.93,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TCPG91212T SANTANDER REFERENCE 212TCPG91212T,600.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TDQY0E212T SANTANDER REFERENCE 212TDQY0E212T,1000.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,"TRADING 212 UK LIM 38974683 DGY97WM92Z3J 38974683,DGY97WM92Z3J",200.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,"TRADING 212 UK LIM 39690408 D0PBPV5ZXFCR 39690408,D0PBPV5ZXFCR",100.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TDJH44212T SANTANDER REFERENCE 212TDJH44212T,600.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,TRADING 212 UK LIM30941209          FP 17/09/25 0206  F0FP3BV9VJKF      30941209,110.19,credit,INCOME_SALARY,investment_trading,investment_trading
+,"TRADING 212 UK LIM 33350001   17AUG25 DKRTGV2K5S2M 33350001   17AUG25,DKRTGV2K5S2M",40.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,TRADING212 .,100.00,credit,TRANSFER_IN_INVESTMENT_AND_RETIREMENT_FUNDS,investment_trading,investment_trading
+,"TRADING 212 UK LIM 38974683 DDP88BZ3Y2DR 38974683,DDP88BZ3Y2DR",200.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,Payment from Trading 212 Uk Limited - 41559911,10.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,"TRADING 212 UK LIM 38974683 F153S6FXFN1R 38974683,F153S6FXFN1R",200.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,Bank credit FREETRADE LIMITED 609242 71003722 2025-09-28,0.05,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TCC4GO212T SANTANDER REFERENCE 212TCC4GO212T,1720.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,THIRD PARTY PAYMENT MADE VIA FASTER PAYMENT TO TRADING 212 REFERENCE 212TD4BG9212T SANTANDER REFERENCE 212TD4BG9212T,80.00,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,investment_trading,investment_trading
+,"TRADING 212 UK LIM 38974683 DMM8PF5T1XWK 38974683,DMM8PF5T1XWK",340.00,credit,TRANSFER_IN_OTHER,investment_trading,investment_trading
+,3574 12AUG25      123TEMPLATES      LONDON GB         EUR         115.82VRATE       1.1527N-S TRN FEE   2.76,103.23,debit,BANK_FEES_OTHER_BANK_FEES,web_services,account_charge
+,Tide fee for the transaction of £89.88 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+S Innovator Bilisim,S/INNOVATOR BILISI TURKEY AMOUNT IN EUR 45.00 ON 15 SEP VISA 1.15393 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £1.17 S/INNOVATOR BILISIM,40.17,debit,BANK_FEES_OTHER_BANK_FEES,web_services,account_charge
+Autentik Palma,AUTENTIK PALMA SPAIN AMOUNT IN EUR 16.85 ON 11 JUL VISA 1.15795 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.44 ,14.99,debit,BANK_FEES_OTHER_BANK_FEES,restaurant_cafe,account_charge
+,UNPAID TRANSAC FEE01AUG A/C 00644196,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+,Tide fee for the transaction of £683.80 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,UNPAID TRANSAC FEE01AUG A/C 74567780,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+,UNPAID TRANSAC FEE14AUG A/C 72509430,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+,Tide fee for the transaction of £21.50 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,PHZ BALTONA C99 POLAND AMOUNT IN PLN 44.15 ON 06 JUL VISA 4.90064 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.27 ,9.28,debit,BANK_FEES_OTHER_BANK_FEES,airport_spend,account_charge
+,7531 25JUL25      IMGFLUX           HULL GB           EUR         115.14VRATE       1.1497N-S TRN FEE   2.75,102.89,debit,BANK_FEES_OTHER_BANK_FEES,online_services,account_charge
+,3574 13AUG25      ESKILLHUB         443301220324 GB   EUR          34.70VRATE       1.1543N-S TRN FEE   0.83,30.89,debit,BANK_FEES_ATM,education_general,account_charge
+,4572 05OCT25 CD   OLYMPIC CATERING  ATHENS GR         EUR          11.20VRATE       1.1451N-S TRN FEE   0.27,10.05,debit,BANK_FEES_ATM,restaurant_cafe,account_charge
+,NON-GBP TRANS FEE 2.75% CD 9118,1.71,debit,BANK_FEES_FOREIGN_TRANSACTION_FEES,money_transfer_fee,account_charge
+,Tide fee for the transaction of £299.80 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,TOTAL CHARGES     TO 31AUG2025,0.85,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,SERVICE CHARGES REF : 461121734,8.50,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,SERVICE CHARGES REF : 461508618,26.55,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,UNPAID TRANSAC FEE14AUG A/C 54390362,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+,Service Charges Ref:708406075,21.17,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,Nafees Carrington Bradford,11.00,debit,BANK_FEES_OTHER_BANK_FEES,transfer_p2p,account_charge
+,UNPAID TRANSAC FEE12AUG A/C 66722896,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+,Tide fee for the transaction of £20.80 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,Tide fee for the transaction of £3.04 amount,0.08,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,"Notemachine ATM - Notemachine, BD6 3DQ (includes fee of GBP 1.00)",31.00,debit,BANK_FEES_ATM,cash_withdrawal,account_charge
+,UNPAID TRANSAC FEE14JUL A/C 54390362,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+,0665 18AUG25      FLOXYHEALTH       PRAGUE CZ         EUR          11.58VRATE       1.1568N-S TRN FEE   0.28,10.29,debit,BANK_FEES_OTHER_BANK_FEES,health_other,account_charge
+,UNPAID TRANSAC FEE14AUG A/C 00185466,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+,7060 01AUG25 CD   EGY NILE 1        HURGHADA 2 EG     EGP        2600.00VRATE      63.8820N-S TRN FEE   1.08,41.78,debit,BANK_FEES_OTHER_BANK_FEES,restaurant_cafe,account_charge
+,"WLT 54, Unhyytexw2L, USD -54.02, Rate 0.748, Fee 0.00, Sterling Amount -40.41",40.41,debit,BANK_FEES_OTHER_BANK_FEES,money_transfer_fee,account_charge
+,UNPAID TRANSAC FEE05JUN A/C 19657285,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+,UNPAID TRANSAC FEE05JUN A/C 24166537,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+,Tide fee for the transaction of £178.81 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,7531 25JUL25      IMGFLUX           HULL GB           EUR         126.36VRATE       1.1487N-S TRN FEE   3.03,113.03,debit,BANK_FEES_OTHER_BANK_FEES,online_services,account_charge
+,Tide fee for the transaction of £329.93 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,UNPAID TRANSAC FEE10JUL A/C 60157550,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+Zen Internet Limit,ZEN INTERNET LIMIT 200000001592053234,50.00,debit,BANK_FEES_OTHER_BANK_FEES,broadband_tv_phone,account_charge
+,Tide fee for the transaction of £88.07 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,UNPAID TRANSAC FEE24JUL A/C 32999801,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+,Tide fee for the transaction of £93.99 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,Tide fee for the transaction of £133.84 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,7531 04JUL25      BPLTD BALANCE     TOPUP             LONDON GB         EUR          23.22VRATE       1.1546N-S TRN FEE   0.55,20.66,debit,BANK_FEES_OTHER_BANK_FEES,prepaid_card,account_charge
+,3169 08JUL25  D   HIBOCHAT          KWUN TONG HK      USD           4.99VRATE       1.3559N-S TRN FEE   0.10,3.78,debit,BANK_FEES_OTHER_BANK_FEES,online_services,account_charge
+,Tide fee for the transaction of £135.33 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,Jameson D W Reservation Fee,260.00,debit,BANK_FEES_OTHER_BANK_FEES,transfer_p2p,account_charge
+,TRAVL PCK FEE  Ref 7202284119 PDP,14.50,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,9891 13OCT25      INPICS            PRAGUE CZ         EUR         103.46VRATE       1.1459N-S TRN FEE   2.48,92.76,debit,BANK_FEES_OTHER_BANK_FEES,photography_services,account_charge
+,Tide fee for the transaction of £241.98 amount,6.48,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,UNPAID TRANSAC FEE06JUN A/C 20242468,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+,UNPAID TRANSAC FEE07AUG A/C 10720841,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+,7531 28AUG25      DIGITAIN ADV      LONDON GB         EUR          46.42VRATE       1.1561N-S TRN FEE   1.10,41.25,debit,BANK_FEES_OTHER_BANK_FEES,gambling_unspecified,account_charge
+,PLUM  545847J-PLUM FEE DDR,2.99,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,NON-GBP TRANS FEE 2.75% CD 3317    05OCT25,0.59,debit,BANK_FEES_FOREIGN_TRANSACTION_FEES,money_transfer_fee,account_charge
+,UNPAID TRANSAC FEE01AUG A/C 29256313,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+,ATAC TAP&GO ITALY AMOUNT IN EUR 1.50 ON 20 JUN VISA 1.16625 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.04 ,1.33,debit,BANK_FEES_ATM,public_transport_rail_coach,account_charge
+,9891 22SEP25      OPTTRX*117050569  SOFIA BG          EUR          14.92VRATE       1.1450N-S TRN FEE   0.36,13.39,debit,BANK_FEES_OTHER_BANK_FEES,unclassified_other,account_charge
+,7531 07JUL25      BPLTD BALANCE     TOPUP             LONDON GB         EUR          46.45VRATE       1.1574N-S TRN FEE   1.10,41.23,debit,BANK_FEES_OTHER_BANK_FEES,prepaid_card,account_charge
+,8410 01OCT25 C    11 ALIVE NEWS SHOPATLANTA US        USD          19.60VRATE       1.3433N-S TRN FEE   0.40,14.99,debit,BANK_FEES_OTHER_BANK_FEES,convenience_store,account_charge
+,5581 16JUL25 CD   DUBLIN PORT TUNNELDUBLIN IE         EUR          12.00VRATE       1.1494N-S TRN FEE   0.28,10.72,debit,BANK_FEES_OTHER_BANK_FEES,tolls,account_charge
+,UNPAID TRANSAC FEE25JUL A/C 80837484,1.55,debit,BANK_FEES_OTHER_BANK_FEES,returned_payment,account_charge
+,Payment from Big Bus Company Lt - PAYROLL POSTING,290.54,credit,INCOME_SALARY,salary,salary
+,"WINCANTON PAYROLL 171154 000000039860441701 171154,000000039860441701",1893.57,credit,INCOME_SALARY,salary,salary
+,JK HEALTHCARE LIMI MANOR BARN PAYROLL 36023230311585000N,3212.39,credit,INCOME_SALARY,salary,salary
+,BREAKTHROUGH U.K.  Salary July BGC,2344.94,credit,INCOME_SALARY,salary,salary
+,"JOSEPH EATON TRADI SALARY-AUG25 990a0c7c488949b1a0 SALARY-AUG25,990a0c7c488949b1a0",500.00,credit,INCOME_SALARY,salary,salary
+,WEB SUR LTD F  NICKY SALARY FT,3765.27,credit,INCOME_SALARY,salary,salary
+,JOHN MACKLE (MOY) SALARY            FP 26/06/25 0236  02023111280273000JSALARY,285.39,credit,INCOME_SALARY,salary,salary
+,"V&H LIMITED SALARY 00156648632BDBYRXZ SALARY,00156648632BDBYRXZ",576.51,credit,INCOME_SALARY,salary,salary
+,NEXUS PACKAGING LT NEXPACK SALARY 35023053901974000R,110.00,credit,INCOME_SALARY,salary,salary
+,KARIM A M         SALARY NO         FP 24/06/25 0032  RP4659982866854500,500.00,credit,INCOME_SALARY,transfer_p2p,salary
+,Bank credit SATCO UKT PAYROLL 600173 00178093 2025-09-25,2880.05,credit,INCOME_SALARY,salary,salary
+,NEXUS PACKAGING LT NEXPACK SALARY 04023053909163000R,2685.44,credit,INCOME_SALARY,salary,salary
+,CARETECH-PAYROLL,2868.10,credit,INCOME_SALARY,salary,salary
+,"JOSEPH EATON TRADI SALARY-AUG25 c54a3855e9a744a8bf SALARY-AUG25,c54a3855e9a744a8bf",2450.00,credit,INCOME_SALARY,salary,salary
+,SWS-1 LIMITED SW SALARY MF00072D52EB244A00,490.51,credit,INCOME_SALARY,salary,salary
+,"MR RAVITHAS SALARY     31AUG25 077844057441828001 SALARY     31AUG25,077844057441828001",1973.51,credit,INCOME_SALARY,salary,salary
+,Bank credit PAYROLL,797.87,credit,INCOME_SALARY,salary,salary
+,MADDOCKS SPORTS & PAYROLL           FP 03/09/25 0849  00152889632BSFFTYM,97.68,credit,INCOME_SALARY,salary,salary
+,AIR CORE LTD SW   SALARY            FP 30/07/25 0339  MF00012D52F1DFC800,7150.00,credit,INCOME_SALARY,salary,salary
+,"CITIZENS ADVICE MI SALARY 37093739083800000N SALARY,37093739083800000N",2147.68,credit,INCOME_SALARY,salary,salary
+,"BLACKTAX RADIO TAX PAYROLL 75 YBIBB0311007484205 PAYROLL 75,YBIBB0311007484205",142.50,credit,INCOME_SALARY,salary,salary
+,"DUCK AND DRY LONDO SALARY 56b18cc1cef744fea1 SALARY,56b18cc1cef744fea1",2569.04,credit,INCOME_SALARY,salary,salary
+,"JOSEPH EATON TRADI SALARY-JUL25 bace0310755d4d86a1 25AUG25 SALARY-JUL25,bace0310755d4d86a1",116.00,credit,INCOME_SALARY,salary,salary
+,"APPLICA R LTD  FMQ SALARY 29072025 MF00282D52F6862000 SALARY 29072025,MF00282D52F6862000",3173.64,credit,INCOME_SALARY,salary,salary
+,"T & H FACILITIES M SALARY 04023740730508000N SALARY,04023740730508000N",1694.86,credit,INCOME_SALARY,salary,salary
+,PARASOL LIMITED   SALARY            FP 12/09/25 0918  55091826865080000RSALARY,8419.97,credit,INCOME_SALARY,salary,salary
+,Homeoffice/payroll The Home Office,1378.76,credit,INCOME_SALARY,salary,salary
+,Houseminder Limited Week 18 - Payroll,449.10,credit,INCOME_SALARY,salary,salary
+,"MR SWEETS LTD SWEET EMP SALARY 10023144159535000N SWEET EMP SALARY,10023144159535000N",151.00,credit,INCOME_SALARY,salary,salary
+,ROTHESAY 0  PAYROLL BGC,486.62,credit,INCOME_SALARY,salary,salary
+,"V&H LIMITED SALARY 00156648632BDCMSMK SALARY,00156648632BDCMSMK",509.38,credit,INCOME_SALARY,salary,salary
+,FREYR INVESTMENT M  CF SALARY SEP25 BGC,4341.00,credit,INCOME_SALARY,salary,salary
+,HOMEOFFICE/PAYROLL 10704615,1816.34,credit,INCOME_SALARY,salary,salary
+,"V&H LIMITED SALARY 00156648632BDDPGZF SALARY,00156648632BDDPGZF",419.49,credit,INCOME_SALARY,salary,salary
+, REFORM PAYROLL LIMITED,322.48,credit,INCOME_SALARY,salary,salary
+,"BANK GIRO CREDIT REF COMMUNITY INCLUSIV, MONTHLY SALARY",1489.59,credit,INCOME_SALARY,salary,salary
+,FASTER PAYMENTS RECEIPT REF.PAYROLL MONTH 4 FROM FARM HOUSE COOKED MEATS LIMITED,1431.42,credit,INCOME_SALARY,salary,salary
+,"LIMA HOMECARE LIMI SALARY 32023348230095000N SALARY,32023348230095000N",441.90,credit,INCOME_SALARY,salary,salary
+,A&U DENTAL SURGERIA-STAFF PAYROLL   FP 20/06/25 0350  00150484632BBNHJFT,1841.25,credit,INCOME_SALARY,salary,salary
+,"BJSR LIMITED BJSR PAYROLL MODULO00P210X9DJX6 BJSR PAYROLL,MODULO00P210X9DJX6",933.84,credit,INCOME_SALARY,salary,salary
+,ROOFOODS LIMITED  FP 06/07/25 1739  XP4576604309002608,93.01,credit,INCOME_SALARY,salary_gig,salary_gig
+,"ROOFOODS LIMITED XP1976139678961100 09AUG25 XP1976139678961100,09AUG25",107.35,credit,INCOME_SALARY,salary_gig,salary_gig
+,"ROOFOODS LIMITED XP8620319512342400 XP8620319512342400,",91.97,credit,INCOME_SALARY,salary_gig,salary_gig
+,"ROOFOODS LIMITED XP7855822996134874 XP7855822996134874,",211.06,credit,INCOME_SALARY,salary_gig,salary_gig
+,"ROOFOODS LIMITED XP7152027090608708 XP7152027090608708,",142.74,credit,INCOME_SALARY,salary_gig,salary_gig
+,"ROOFOODS LIMITED XP8622203602201298 XP8622203602201298,",341.70,credit,INCOME_SALARY,salary_gig,salary_gig
+,"ROOFOODS LIMITED XP2997445452421237 XP2997445452421237,",119.98,credit,INCOME_SALARY,salary_gig,salary_gig
+,"ROOFOODS LIMITED XP6703194320010024 14SEP25 XP6703194320010024,14SEP25",40.67,credit,INCOME_SALARY,salary_gig,salary_gig
+,"ROOFOODS LIMITED XP3363306368949862 XP3363306368949862,",20.18,credit,INCOME_SALARY,salary_gig,salary_gig
+,"ROOFOODS LIMITED XP8440890090851221 XP8440890090851221,",40.92,credit,INCOME_SALARY,salary_gig,salary_gig
+,"ROOFOODS LIMITED XP1186346037604958 XP1186346037604958,",23.43,credit,INCOME_SALARY,salary_gig,salary_gig
+,"ROOFOODS LIMITED XP0967423631400020 XP0967423631400020,",434.37,credit,INCOME_SALARY,salary_gig,salary_gig
+,"STUART DELIVERY LT 4723 088889133115101XFU 4723,088889133115101XFU",18.18,credit,GENERAL_SERVICES_OTHER_SERVICES,salary_gig,salary_gig
+,Stuart Delivery Ltd                      2312,79.28,credit,INCOME_SALARY,salary_gig,salary_gig
+,Stuart Delivery Ltd                      1718,52.05,credit,INCOME_SALARY,salary_gig,salary_gig
+,Stuart Delivery Ltd                      7376,71.44,credit,INCOME_SALARY,salary_gig,salary_gig
+,Stuart Delivery Ltd                      1527,47.66,credit,INCOME_SALARY,salary_gig,salary_gig
+,Stuart Delivery Ltd                      4002,38.47,credit,INCOME_SALARY,salary_gig,salary_gig
+,Stuart Delivery Ltd                      9690,66.61,credit,INCOME_SALARY,salary_gig,salary_gig
+,Stuart Delivery Ltd                      7032,44.77,credit,INCOME_SALARY,salary_gig,salary_gig
+,Stuart Delivery Ltd                      9025,32.88,credit,INCOME_SALARY,salary_gig,salary_gig
+,Stuart Delivery Ltd                      4632,143.50,credit,INCOME_SALARY,salary_gig,salary_gig
+,Stuart Delivery Ltd                      8231,108.31,credit,INCOME_SALARY,salary_gig,salary_gig
+,Stuart Delivery Ltd                      1456,78.39,credit,INCOME_SALARY,salary_gig,salary_gig
+,"RBT NOTION LABS INC. - Mastercard, Rebate",10.00,credit,LOAN_DISBURSEMENTS_OTHER,refund_received,refund_received
+,"STABLE VEHICLE MF25HYA REBATE BX2507014665603300 200000     40 02JUL25 03:21 MF25HYA REBATE,BX2507014665603300",1360.44,credit,INCOME_SALARY,refund_received,refund_received
+,"BANK GIRO CREDIT REF DOLBY MEDICAL HOME, VIVISOL REBATE",33.36,credit,INCOME_SALARY,refund_received,refund_received
+,"Payment from Schneefangsysteme Rees Gmbh + Co.kg - Customer 13922 Invoice 2542136 485,00 Creditnote 2542475 575,24",90.24,credit,INCOME_SALARY,income_other_unspecified,refund_received
+,Payment from Schneefangsysteme Rees Gmbh + Co. Kg - Creditnote 2542475 05.08.25.Customer 13922,575.24,credit,INCOME_SALARY,income_other_unspecified,refund_received
+,EDF eng rebate,8.70,credit,INCOME_SALARY,refund_received,refund_received
+,Evergreen Finance London Limited         MONEYBOAT 1185167,500.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,Lending Stream  PAYMENT2785965 BGC,200.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,LENDING STREAM    PAYMENT2772933    FP 21/09/25 1220  MODULO00P210YKJCF2,150.00,credit,TRANSFER_IN_OTHER,loan_disbursement,loan_disbursement
+,Lending Stream  PAYMENT2708059 BGC,200.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,"LENDING STREAM PAYMENT2681439 MODULO00P210WPUV9T PAYMENT2681439,MODULO00P210WPUV9T",100.00,credit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,loan_disbursement,loan_disbursement
+,EVERGREEN FINANCE MONEYBOAT 1182076 FP 21/08/25 1815  MODULO00P210XXRX2C,450.00,credit,TRANSFER_IN_OTHER,loan_disbursement,loan_disbursement
+,INCLUSIVE FINANCE CREDITSPRING ADVANFP 15/09/25 0755  REV579193270792582,300.00,credit,LOAN_DISBURSEMENTS_PERSONAL,loan_disbursement,loan_disbursement
+,"SALAD FINANCE LIMI SALAD MONEY 573ad5ff10e3434cab SALAD MONEY,573ad5ff10e3434cab",1000.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,LENDING STREAM PAYMENT2804334 MODULO00P210Z9VKFB,1440.00,credit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,loan_disbursement,loan_disbursement
+,Evergreen Finance London Limited         MONEYBOAT 1203682,200.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,EVERGREEN FINANCE MONEYBOAT 1159036 FP 22/07/25 0930  MODULO00P210X944B0,500.00,credit,TRANSFER_IN_OTHER,loan_disbursement,loan_disbursement
+,"INCLUSIVE FINANCE CREDITSPRING ADVAN REV538095398311653 CREDITSPRING ADVAN,REV538095398311653",600.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,Evergreen Finance MONEYBOAT 1185281,300.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,LENDING STREAM    PAYMENT2705304    FP 16/07/25 1929  MODULO00P210X5EGKP,800.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,"LENDING STREAM PAYMENT2670670 MODULO00P210WG3P33 PAYMENT2670670,MODULO00P210WG3P33",100.00,credit,INCOME_SALARY,loan_disbursement,loan_disbursement
+,Lending Stream    PAYMENT2709227,380.00,credit,LOAN_DISBURSEMENTS_PERSONAL,loan_disbursement,loan_disbursement
+,FASTER PAYMENTS RECEIPT REF.PAYMENT2806441 FROM LENDING STREAM,100.00,credit,TRANSFER_IN_OTHER,loan_disbursement,loan_disbursement
+,Lending Stream                           PAYMENT2730108,200.00,credit,LOAN_DISBURSEMENTS_PERSONAL,loan_disbursement,loan_disbursement
+,"INCLUSIVE FINANCE CREDITSPRING ADVAN REV528038136416290 CREDITSPRING ADVAN,REV528038136416290",600.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,Evergreen Finance  MONEYBOAT 1144622 BGC,600.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,Evergreen Finance London Limited MONEYBOAT 1184514,650.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,Nefirst Credit Union Loan Disbursement,102.87,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,"INCLUSIVE FINANCE CREDITSPRING ADVAN REV588944120513775 CREDITSPRING ADVAN,REV588944120513775",200.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,EVERGREEN FINANCE MONEYBOAT 1149506 FP 10/07/25 1445  MODULO00P210X1664T,200.00,credit,TRANSFER_IN_OTHER,loan_disbursement,loan_disbursement
+,"INCLUSIVE FINANCE CREDITSPRING ADVAN REV490444480580494 CREDITSPRING ADVAN,REV490444480580494",200.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,SALAD FINANCE LIMISALAD MONEY       FP 04/08/25 1715  279622C075B741B8AF,2000.00,credit,TRANSFER_IN_OTHER,loan_disbursement,loan_disbursement
+,SALAD FINANCE LIMISALAD MONEY       FP 06/07/25 2130  1AC22F6CCC514E098D,2000.00,credit,TRANSFER_IN_OTHER,loan_disbursement,loan_disbursement
+,Evergreen Finance MONEYBOAT 1195020,300.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,"INCLUSIVE FINANCE CREDITSPRING ADVAN REV568921029482308 CREDITSPRING ADVAN,REV568921029482308",500.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,EVERGREEN FINANCE MONEYBOAT 1186130 FP 26/08/25 1200  MODULO00P210Y0TVJN,200.00,credit,TRANSFER_IN_OTHER,loan_disbursement,loan_disbursement
+,"SALAD FINANCE LIMI SALAD MONEY 91bcfda33b364fb9a3 14SEP25 SALAD MONEY,91bcfda33b364fb9a3",2000.00,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_disbursement,loan_disbursement
+,"INCLUSIVE FINANCE CREDITSPRING ADVAN REV541222731849918 02AUG25 CREDITSPRING ADVAN,REV541222731849918",300.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,SALAD FINANCE LIMISalad Money,2000.00,credit,LOAN_DISBURSEMENTS_PERSONAL,loan_disbursement,loan_disbursement
+,INCLUSIVE FINANCE LIMITED                Creditspring advan,1000.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,"SALAD FINANCE LIMI SALAD MONEY 369ae0d52b63419489 SALAD MONEY,369ae0d52b63419489",597.34,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,Salad Finance Limited Salad Money,500.00,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,loan_disbursement
+,SALAD FINANCE LIMISALAD MONEY       FP 07/07/25 1830  6751A97BE53E46F6BD,500.00,credit,TRANSFER_IN_OTHER,loan_disbursement,loan_disbursement
+,Natwest Boxed Loans Loan Disbursement,15000.00,credit,LOAN_DISBURSEMENTS_CASH_ADVANCES,loan_disbursement,loan_disbursement
+Homebox,Homebox - SortCodeAccountNumber: 04007257061173,179.96,debit,GENERAL_SERVICES_OTHER_SERVICES,utility_other,utility_other
+Leep Networks Leep,Leep Networks Leep Utilities,162.82,debit,RENT_AND_UTILITIES_GAS_AND_ELECTRICITY,utility_other,utility_other
+Leep Networks,"DIRECT DEBIT PAYMENT TO LEEP NETWORKS REF A-34DDC5D1-004, MANDATE NO 0082",76.51,debit,LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT,utility_other,utility_other
+Glide Student & Reside,GLIDE STUDENT & RE  ON 12 JUL BCC GLIDE STUDENT & RESIDE,25.00,debit,RENT_AND_UTILITIES_RENT,utility_other,utility_other
+,Tide fee for the transaction of £20.20 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,Tide fee for the transaction of £15.20 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,Tide fee for the transaction of £1320.20 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,SERVICE CHARGES REF : 462483501,8.50,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,Tide fee for the transaction of £1080.20 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,Tide fee for the transaction of £206.85 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,Tide fee for the transaction of £1045.90 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,Tide fee for the transaction of £10.20 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,Tide fee for the transaction of £2638.19 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,Tide fee for the transaction of £91.48 amount,2.45,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,Tide fee for the transaction of £245.92 amount,0.20,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,SERVICE CHARGES REF : 462708045,10.50,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,TOTAL CHARGES     TO 16JUL2025,13.25,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,SERVICE CHARGES REF : 464443649,8.50,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,SERVICE CHARGES REF : 456927142,8.50,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,SERVICE CHARGES REF : 461483219,8.50,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,TOTAL CHARGES     TO 29AUG2025,1.39,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,SERVICE CHARGES REF : 461459188,8.50,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,SERVICE CHARGES REF : 460377435,9.70,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,SERVICE CHARGES REF : 464942042,8.50,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,TOTAL CHARGES     TO 30AUG2025,10.00,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,SERVICE CHARGES REF : 456302346,8.50,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,TOTAL CHARGES     TO 29AUG2025      FOR ACCOUNT       404420 53663833,61.25,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,TOTAL CHARGES     TO 22JUL2025,8.00,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,TOTAL CHARGES     TO 09SEP2025,8.09,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,TOTAL CHARGES     TO 14JUL2025,8.00,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,SERVICE CHARGES REF : 463691842,9.94,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,TOTAL CHARGES     TO 04JUN2025,8.00,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,SERVICE CHARGES REF : 461307271,8.50,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge
+,SERVICE CHARGES REF : 459235701,8.50,debit,BANK_FEES_OTHER_BANK_FEES,account_charge,account_charge

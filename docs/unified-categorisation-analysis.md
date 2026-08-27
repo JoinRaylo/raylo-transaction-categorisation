@@ -2,6 +2,8 @@
 
 Analysis of Raylo's three open-banking transaction sources, and a recommended design for one taxonomy applied across all of them.
 
+> Early design analysis (pre-waterfall, pre-tranche-4). Live research status: [`CLAUDE.md`](../CLAUDE.md). Stakeholder progress: [`docs/project-summary.md`](project-summary.md).
+
 ---
 
 ## 1. Source structure: two providers, and one of them has a redundant landing path

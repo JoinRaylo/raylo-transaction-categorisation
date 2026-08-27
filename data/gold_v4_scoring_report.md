@@ -6,6 +6,10 @@ human-reviewed) with the finalized standard prompt (84,348 chars: taxonomy +
 loan-keyword bugfix + full 375 worked examples). Harness: `src/score_gold_v4.py`
 (same batch-of-25, forced-structured-output design as the v2-holdout benchmark).
 
+The 18,825-entry dictionary and 40.4% T4-covered share below are **as of this
+scoring**. Live T4 is 91,173 keys as of 26 Aug 2026 (Plaid T4 52.1% of all rows);
+this report was not re-run.
+
 Two population cuts matter:
 
 - **ALL 900 rows** — the whole unmatched-Plaid population.

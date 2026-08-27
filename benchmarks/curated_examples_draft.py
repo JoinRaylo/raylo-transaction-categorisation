@@ -52,7 +52,7 @@ CURATED = [
     ("marketplace_general", "vinted / ebay", "Secondhand marketplaces; Equifax tags vinted as fashion, which is its dictionary convention, not the correct leaf."),
     ("memberships", "complete savings / completesave", "A paid cashback-membership service, not a savings pot despite the name."),
     ("online_services", "iduk.co.uk", "Identity UK, an identity-protection subscription, not a hidden-shop payment rail."),
-    ("payday_loan", "creditspring / 118 money / lending stream", "High-cost short-term lenders."),
+    ("payday_loan", "118 money / lending stream", "High-cost short-term lenders."),
     ("payday_loan", "the cash shop", "97% Payday Loans in evidence -- overrides a plausible-sounding pawnbroker guess."),
     ("payment_intermediary", "cd megapos", "Mega POS Ltd is an EPOS software/hardware provider (Blackburn, UK) -- a payment-processing company, not a retail purchase."),
     ("pension_contribution", "royal london pensions", "A debit to a pension provider is a contribution, not pension income -- direction disambiguates."),

@@ -1,0 +1,23 @@
+normalised_merchant,detailed_category,notes
+admiral,insurance_general,Carlos 2026-08-26 debit default; T2 casino → gambling_casino
+plum fintech,savings_transfer,Carlos 2026-08-26 debit pots; T2 modulo credits → transfer_p2p
+youlend,business_loan_repayment,Carlos 2026-08-26 debit MCA repayments; T2 credits → loan_disbursement
+kwiff,gambling_betting,Carlos 2026-08-26; T1 remaps gambling credits
+fluid,credit_card_repayment,Carlos 2026-08-26 debit card settlement; T2 Fluid focus / named To → transfer_p2p
+ocado,groceries,Carlos 2026-08-26 debit grocery; T2 OCADO CENTRAL SERV credit → salary
+national trust,memberships,Carlos 2026-08-26 debit default
+royal london,insurance_life,Carlos 2026-08-26; exact royal london pensions stays pension_contribution
+classic plus,transfer_own_account,Carlos 2026-08-26 TSB Classic Plus pots
+close brothers,car_finance_repayment,Carlos 2026-08-26 CLOSEBROSMOTFIN motor finance not personal loan
+aspire,prize_competitions,Carlos 2026-08-26 Aspire Competitions
+peacock,clothing_womens,Carlos 2026-08-26 Peacocks stores; Plaid TV category is wrong
+avon,health_beauty_general,Carlos 2026-08-26 debit purchases; T2 named-person credits → income_other_unspecified
+fife council,council_tax,Carlos 2026-08-26 debit; T2 BGC/salary credits → salary
+sodexo,catering,Carlos 2026-08-26 debit canteen; T2 healthcare/payroll credits → salary
+finance coll,personal_loan_repayment,Carlos 2026-08-26 DFC collections
+nuffield health,gym_fitness,Carlos 2026-08-26 debit gym; T2 hospital/clinic → hospital
+prudential,pension_contribution,Carlos 2026-08-26 debit; T2 annuity/BGC credits → pension_received
+bupa,insurance_health,Carlos 2026-08-26 debit premiums
+k sounds group lim,car_finance_repayment,Carlos 2026-08-26 vehicle finance
+places for people,rent,Carlos 2026-08-26 HA rent; T2 leisure/nyx → gym_fitness; places for people leisure already T4 gym
+ask italian,restaurant_cafe,Carlos 2026-08-26 debit dining; T2 Azzurri/payroll credits → salary

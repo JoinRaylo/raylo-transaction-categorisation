@@ -1,4 +1,13 @@
-"""Gold set v5 -- the LOCKED test set (agreed with Carlos 2026-08-23).
+"""RETIRED as confirmation gold (2026-08-26).
+
+v5 was novel at construction, then tranche 4 and the 91k dictionary covered
+hundreds of its merchants. Rows stay in `data/gold_transactions_v5_LOCKED.csv`
+as reviewed labels. Do not score it. The replacement locked set is v6
+(`src/build_gold_v6_locked.py`).
+
+---
+
+Gold set v5 -- the LOCKED test set (agreed with Carlos 2026-08-23).
 
 ## Why this exists
 

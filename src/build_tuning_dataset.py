@@ -6,46 +6,33 @@ the tiered-trust discussion with Carlos).
 Philosophy (agreed 2026-08-21, keep this in sync with any future changes):
   1. Trust labels by how they were made, not treat everything as equally
      true. Three tiers, in trust order:
-       Tier A: gold_transactions_v2/v3 -- real transactions, individually
-               human-reviewed from scratch. Small, zero-noise, and the ONLY
-               source that teaches transaction-level discrimination (same
-               merchant, different correct answer by context -- e.g.
-               Admiral Insurance vs Admiral Casino).
-       Tier B: production_labels_tranche3's auto_accept/accepted/
-               human_reviewed tiers -- measured 82-91% accurate against the
-               clean gold set. Bulk volume/breadth.
+       Tier A: data/gold_transactions.csv (unified v2+v3+v4) rows with
+               role=train — real transactions, human-reviewed. role=iter_eval
+               is the frozen merchant-disjoint holdout (never trained on).
+       Tier B: production_labels_tranche4's dictionary-eligible tiers
+               (auto_accept / accepted / human_reviewed / agent_consensus /
+               agent_tiebreak / agent_review). Tranche 4 is a full union of
+               tranches 1-4, not incremental. Bulk volume/breadth.
+               `human_reviewed` is Carlos only; agent_* are weak supervision.
        Excluded: accepted_tiebreak (measured 66.9% -- the largest tier, but
                too weak to trust) and accepted_general (33.3%, n=3).
-       Never: context_dependent, needs_review (no real per-merchant answer
-               exists), abstain_* (mapped to the real unclassified_other
-               class, not dropped).
-  2. Split by MERCHANT, not by row, for the Tier A held-out eval slice --
-     some merchants train the model, a disjoint set evaluates it. A
-     merchant with genuinely conflicting labels across gold_v2/v3 (proven
-     context-dependent -- e.g. revolut, monzo) is always kept in TRAINING,
-     never held out: that's exactly the signal worth teaching, and there's
-     no single "correct answer" to score a held-out prediction against
-     anyway.
-  3. Any merchant in Tier A entirely supersedes Tier B for that merchant
-     (Tier A is higher-trust) -- Tier B's own copy is dropped, not merged.
-  4. One source of truth: this script reads gold_transactions_v2*.csv
-     directly, the same files final_evaluation.py and build_gold_v3_volume.py
-     score against. No second, drifting copy of "what's correct."
-  5. Known-ambiguous (conflicting) Tier A merchants are oversampled in
-     training rather than left to be diluted across ~300k mostly-
-     unambiguous rows.
-
-Known gap (documented, not hidden): 65 of 275 leaves still have under 5
-combined examples after a targeted top-up (data/tuning_leaf_topup.csv) --
-mostly genuine data rarity (no real transactions exist at all for that
-category), not a sourcing failure. The model will be weak on these; that's
-an acceptable, disclosed limitation given how rare they are in real
-traffic too, not something to paper over with synthetic examples.
+       Never: context_dependent, needs_review (no real answer exists),
+               abstain_* (mapped to unclassified_other, not dropped).
+  2. Split by MERCHANT. The iter_eval merchant list is FROZEN in
+     data/gold_v2_slm_eval_holdout.csv — this script must not reshuffle it.
+     Conflicting merchants (same name, different gold_leaf) stay in TRAINING.
+  3. Any merchant in Tier A entirely supersedes Tier B for that merchant.
+  4. One source of truth for transaction gold: gold_transactions.csv.
+     gold_transactions_v2*.csv / v3 / v4 remain provenance snapshots.
+  5. Conflicting Tier A merchants are oversampled in training.
+  6. gold_transactions_risk_categories.csv, gold_transactions_v5_LOCKED.csv
+     (retired confirmation gold — keep in git, do not train or score), and
+     gold_transactions_v6_LOCKED.csv (new locked set, same rule) are never
+     training or scoring inputs.
 
 Usage:
     python src/build_tuning_dataset.py fetch [cap_per_merchant]
     python src/build_tuning_dataset.py build   # -> outputs/tuning_{train,val}.jsonl
-                                                # + data/gold_v2_slm_eval_holdout.csv
     python src/build_tuning_dataset.py upload gs://BUCKET/PATH
 """
 import csv
@@ -62,24 +49,30 @@ load_dotenv()
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from gating_experiment import ROOT, OUT_DIR, load_crosswalk  # noqa: E402
 from build_tail_eval import bq_json  # noqa: E402
+from label_provenance import DICTIONARY_ELIGIBLE_TIERS  # noqa: E402
 
-LABELS_SOURCE = ROOT / "data" / "production_labels_tranche3.csv"
+LABELS_SOURCE = ROOT / "data" / "production_labels_tranche4.csv"
+GOLD_TXN_FILE = ROOT / "data" / "gold_transactions.csv"
 GOLD_V1_FILES = [ROOT / "data" / "gold_merchant_labels.csv", ROOT / "data" / "gold_tail_labels.csv"]
-GOLD_V2_FILES = [ROOT / "data" / "gold_transactions_v2.csv", ROOT / "data" / "gold_transactions_v2_batch2.csv"]
-# Training-only supplementary gold data (2026-08-24) -- deliberately NOT added to
-# GOLD_V2_FILES/load_tier_a(), which drives the merchant-level eval-holdout carve-
-# out written to SLM_EVAL_CSV (a data/ asset every model-comparison benchmark in
-# CLAUDE.md sec 6a is measured against). Mixing more merchants into that pool
-# would change the holdout's random split composition even at a fixed SEED, since
-# the shuffle now runs over a different merchant list -- silently breaking
-# comparability with every already-published number. These go straight to
-# training instead, same treatment as TOPUP_FILE below. gold_transactions_
-# risk_categories.csv is deliberately excluded here too -- it's reserved as a
-# clean eval set for exactly this retrain (see confusion_analysis.py), and
-# gold_transactions_v5_LOCKED.csv must never be touched by training OR scoring.
-ADDITIONAL_TRAIN_FILES = [ROOT / "data" / "gold_transactions_v3_volume.csv",
-                          ROOT / "data" / "gold_transactions_v4_slm_volume.csv"]
 TOPUP_FILE = ROOT / "data" / "tuning_leaf_topup.csv"
+# Unweighted SGD ignores classes with tens of rows against 166k. Repeat
+# starved-leaf top-up examples until each has at least this many effective
+# training rows. Do not oversample leaves that already have hundreds of
+# unique examples (bingo, debt_collection).
+STARVED_TOPUP_LEAVES = {
+    "cash_advance", "charge_card_repayment", "financial_services_other",
+    "overdraft_unarranged", "balance_transfer",
+}
+MIN_STARVED_EFFECTIVE = 200
+# v5b mixed T6 residual into SGD and knocked thin risk leaves (car_lease →
+# carwash). Keep those residual labels; repeat *other* names in the same
+# leaves until this many clean-merchant rows exist. Never cycle merchants
+# that appear on the risk-gold file (that would inflate the bar by leakage).
+RISK_GOLD = ROOT / "data" / "gold_transactions_risk_categories.csv"
+RISK_GUARD_LEAVES = {
+    "car_lease", "debt_management_plan", "revolving_credit_repayment",
+}
+MIN_RISK_GUARD_CLEAN = 250
 TXNS_JSON = OUT_DIR / "tuning_txns.json"
 TRAIN_JSONL = OUT_DIR / "tuning_train.jsonl"
 VAL_JSONL = OUT_DIR / "tuning_val.jsonl"
@@ -87,7 +80,6 @@ SLM_EVAL_CSV = ROOT / "data" / "gold_v2_slm_eval_holdout.csv"
 SPLIT_MANIFEST = OUT_DIR / "tuning_gold_v2_split_manifest.csv"
 SEED = 42
 VAL_FRACTION = 0.15
-EVAL_HOLDOUT_FRACTION = 0.4  # Tier A is only ~1.5% of total training rows, so favouring eval size here is cheap
 OVERSAMPLE_FACTOR = 3  # how many times a conflicting (context-dependent) Tier A merchant's rows are repeated
 DEFAULT_CAP = 10
 # Agent Platform hard limit (undocumented in the bundled skill reference,
@@ -95,7 +87,7 @@ DEFAULT_CAP = 10
 # rows are rejected outright at job-start, regardless of train set size.
 MAX_VAL_ROWS = 5000
 
-ALLOWED_TIERS = {"auto_accept", "accepted", "human_reviewed"}
+ALLOWED_TIERS = DICTIONARY_ELIGIBLE_TIERS
 ABSTAIN_TIERS = {"abstain_confirmed", "abstain_residual", "abstain_human"}
 
 SYSTEM_PROMPT_PATH = OUT_DIR / "tuning_system_prompt.txt"
@@ -106,16 +98,18 @@ def _norm(s):
 
 
 def load_tier_a():
-    """merchant -> set of gold_leaf values seen (>1 means genuinely conflicting,
-    i.e. proven context-dependent) + the full row list for building examples."""
-    rows = []
-    for f in GOLD_V2_FILES:
-        if f.exists():
-            rows.extend(csv.DictReader(open(f)))
+    """All unified gold rows, keyed by normalised merchant."""
+    if not GOLD_TXN_FILE.exists():
+        sys.exit(f"Missing {GOLD_TXN_FILE} — run src/build_gold_transactions_unified.py")
     by_merchant = defaultdict(list)
-    for r in rows:
+    for r in csv.DictReader(open(GOLD_TXN_FILE)):
         by_merchant[_norm(r["merchant_raw"])].append(r)
     return by_merchant
+
+
+def frozen_holdout_merchants():
+    """Merchant set from the published holdout file — never reshuffled."""
+    return {_norm(r["merchant_raw"]) for r in csv.DictReader(open(SLM_EVAL_CSV))}
 
 
 def build_system_prompt(leaves):
@@ -230,45 +224,34 @@ def build():
         return to_example(t["merchant"], t["description"], t["amount"], direction, t["target"])
 
     train, val = [], []
+    tier_a_preview = load_tier_a()
     for t in txns:
+        if t["merchant"] in tier_a_preview:
+            continue  # Tier A supersedes Tier B for overlapping merchants
         (val if t["merchant"] in val_merchants else train).append(tier_b_example(t))
-    tier_b_target_counts = Counter(t["target"] for t in txns)
+    tier_b_target_counts = Counter(t["target"] for t in txns if t["merchant"] not in tier_a_preview)
 
-    # ---------- Tier A: gold_transactions_v2/v3, merchant-level eval holdout ----------
+    # ---------- Tier A: unified gold. Holdout merchants frozen from SLM_EVAL_CSV ----------
     tier_a = load_tier_a()
+    holdout_merchants = frozen_holdout_merchants()
     conflicting = {m for m, rows in tier_a.items() if len({r["gold_leaf"] for r in rows}) > 1}
-    non_conflicting = [m for m in tier_a if m not in conflicting]
-    rng.shuffle(non_conflicting)
-    n_holdout = int(len(non_conflicting) * EVAL_HOLDOUT_FRACTION)
-    holdout_merchants = set(non_conflicting[:n_holdout])
-    # conflicting merchants are NEVER held out -- that's exactly the signal worth training on,
-    # and there's no single "correct answer" to score a held-out prediction against anyway
 
     tier_a_train_examples = []
-    holdout_rows = []
+    n_iter_eval_rows = 0
     for m, rows in tier_a.items():
         if m in holdout_merchants:
-            holdout_rows.extend(rows)
+            n_iter_eval_rows += len(rows)
             continue
+        train_rows = [r for r in rows if r.get("role") != "iter_eval"]
         reps = OVERSAMPLE_FACTOR if m in conflicting else 1
-        for r in rows:
+        for r in train_rows:
             # Plaid's raw amount is signed (negative = credit) -- the system prompt promises
             # "amount (absolute value, GBP)" and direction carries the sign meaning separately.
-            # 127/1500 Tier A rows had a negative amount before this fix (found 2026-08-21
-            # while adapting the classifier retrain -- caught before it reached the SLM's
-            # eval scoring, but it WAS already in a prior tuning_train.jsonl build).
             ex = to_example(r["merchant_raw"], r["description_raw"], abs(float(r["amount"])),
                              r["direction"], r["gold_leaf"])
             tier_a_train_examples.extend([ex] * reps)
 
-    with open(SLM_EVAL_CSV, "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=["merchant_raw", "description_raw", "amount", "direction", "gold_leaf"])
-        w.writeheader()
-        for r in holdout_rows:
-            row = {k: r[k] for k in w.fieldnames}
-            row["amount"] = abs(float(r["amount"]))
-            w.writerow(row)
-
+    # Do not rewrite SLM_EVAL_CSV — that file is the frozen published holdout.
     with open(SPLIT_MANIFEST, "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["merchant", "split", "conflicting"])
@@ -277,28 +260,76 @@ def build():
 
     # ---------- Top-up: thin-leaf targeted sourcing, all goes to training ----------
     topup_examples = []
+    starved_topup = {leaf: [] for leaf in STARVED_TOPUP_LEAVES}
     if TOPUP_FILE.exists():
         for r in csv.DictReader(open(TOPUP_FILE)):
-            if _norm(r["merchant_raw"]) in holdout_merchants:
-                continue  # defensive -- shouldn't happen, topup targeted different merchants entirely
-            topup_examples.append(to_example(r["merchant_raw"], r["description_raw"], abs(float(r["amount"])),
-                                              r["direction"], r["gold_leaf"]))
+            # Starved risk leaves are often a single live merchant (American Express
+            # is the UK charge-card population AND a v2 holdout merchant). Dropping
+            # those top-up rows would leave the class empty; keep them. Other
+            # top-up rows still skip holdout merchants.
+            if (_norm(r["merchant_raw"]) in holdout_merchants
+                    and r["gold_leaf"] not in STARVED_TOPUP_LEAVES):
+                continue
+            ex = to_example(r["merchant_raw"], r["description_raw"], abs(float(r["amount"])),
+                            r["direction"], r["gold_leaf"])
+            topup_examples.append(ex)
+            if r["gold_leaf"] in starved_topup:
+                starved_topup[r["gold_leaf"]].append(ex)
 
-    # ---------- Additional training-only gold (v3/v4) -- never touches the holdout ----------
-    additional_examples = []
-    for f in ADDITIONAL_TRAIN_FILES:
-        if not f.exists():
+    train = train + tier_a_train_examples + topup_examples
+
+    def _leaf_of(ex):
+        return next(m["content"] for m in ex["messages"] if m["role"] == "assistant")
+
+    def _merchant_of(ex):
+        user = next(m["content"] for m in ex["messages"] if m["role"] == "user")
+        for part in user.split("\n"):
+            if part.startswith("merchant: "):
+                return _norm(part[len("merchant: "):])
+        return ""
+
+    leaf_counts = Counter(_leaf_of(ex) for ex in train)
+    starved_extra = []
+    for leaf in STARVED_TOPUP_LEAVES:
+        have = leaf_counts.get(leaf, 0)
+        pool = starved_topup.get(leaf) or []
+        if have >= MIN_STARVED_EFFECTIVE or not pool:
+            print(f"Starved oversample {leaf}: {have} already "
+                  f"{'>=' if have >= MIN_STARVED_EFFECTIVE else '(no top-up pool)'} "
+                  f"{MIN_STARVED_EFFECTIVE}", file=sys.stderr)
             continue
-        n_before = len(additional_examples)
-        for r in csv.DictReader(open(f)):
-            if _norm(r["merchant_raw"]) in holdout_merchants:
-                continue  # a v3/v4 merchant that happens to also be a v2 holdout merchant -- don't leak
-            additional_examples.append(to_example(r["merchant_raw"], r["description_raw"], abs(float(r["amount"])),
-                                                   r["direction"], r["gold_leaf"]))
-        print(f"Additional training-only gold: {f.name} contributed {len(additional_examples) - n_before} rows",
+        need = MIN_STARVED_EFFECTIVE - have
+        # Literal copies of the same example dicts (no description jitter).
+        starved_extra.extend(pool[i % len(pool)] for i in range(need))
+        print(f"Starved oversample {leaf}: {have} unique-in-train -> "
+              f"{have + need} effective ({len(pool)} distinct top-up rows cycled)",
               file=sys.stderr)
+    train = train + starved_extra
 
-    train = train + tier_a_train_examples + topup_examples + additional_examples
+    risk_merchants = set()
+    if RISK_GOLD.exists():
+        for r in csv.DictReader(open(RISK_GOLD)):
+            m = _norm(r.get("merchant_raw") or "")
+            if m:
+                risk_merchants.add(m)
+    blocked = risk_merchants | holdout_merchants | {""}
+    guard_extra = []
+    for leaf in sorted(RISK_GUARD_LEAVES):
+        pool = [ex for ex in train
+                if _leaf_of(ex) == leaf and _merchant_of(ex) not in blocked]
+        have_clean = len(pool)
+        if have_clean >= MIN_RISK_GUARD_CLEAN or not pool:
+            print(f"Risk-guard oversample {leaf}: {have_clean} clean-merchant "
+                  f"rows already {'>=' if have_clean >= MIN_RISK_GUARD_CLEAN else '(empty pool)'} "
+                  f"{MIN_RISK_GUARD_CLEAN}", file=sys.stderr)
+            continue
+        need = MIN_RISK_GUARD_CLEAN - have_clean
+        guard_extra.extend(pool[i % len(pool)] for i in range(need))
+        print(f"Risk-guard oversample {leaf}: {have_clean} clean-merchant rows -> "
+              f"{have_clean + need} effective ({len({_merchant_of(ex) for ex in pool})} "
+              f"merchants; risk-gold/holdout names excluded)", file=sys.stderr)
+    train = train + guard_extra
+
     rng.shuffle(train)
     rng.shuffle(val)
     if len(val) > MAX_VAL_ROWS:
@@ -316,12 +347,13 @@ def build():
                    + ([r["gold_leaf"] for r in csv.DictReader(open(TOPUP_FILE))] if TOPUP_FILE.exists() else []))
     target_counts = Counter(all_targets)
     print(f"Tier B: {len(txns)} txns ({len(tier_b_target_counts)} classes)", file=sys.stderr)
-    print(f"Tier A: {sum(len(r) for m,r in tier_a.items() if m not in holdout_merchants)} txns train "
-          f"({len(tier_a) - len(holdout_merchants)} merchants, {len(conflicting)} conflicting "
-          f"oversampled {OVERSAMPLE_FACTOR}x) + {len(holdout_rows)} txns held out for eval "
-          f"({len(holdout_merchants)} merchants) -> {SLM_EVAL_CSV}", file=sys.stderr)
-    print(f"Top-up: {len(topup_examples)} txns", file=sys.stderr)
-    print(f"Additional training-only gold (v3/v4): {len(additional_examples)} txns", file=sys.stderr)
+    print(f"Tier A: {len(tier_a_train_examples)} examples after oversample "
+          f"({len(tier_a) - len(holdout_merchants)} train merchants, {len(conflicting)} conflicting "
+          f"oversampled {OVERSAMPLE_FACTOR}x); {n_iter_eval_rows} unified rows on frozen holdout "
+          f"merchants ({len(holdout_merchants)}) — {SLM_EVAL_CSV} not rewritten", file=sys.stderr)
+    print(f"Top-up: {len(topup_examples)} txns "
+          f"(+{len(starved_extra)} starved-leaf oversample copies "
+          f"+{len(guard_extra)} risk-guard oversample copies)", file=sys.stderr)
     print(f"train: {len(train)} rows total", file=sys.stderr)
     print(f"val:   {len(val)} rows ({n_val} Tier B merchants)", file=sys.stderr)
     print(f"distinct target classes across all training sources: {len(target_counts)} of {len(leaves) + 1} possible "

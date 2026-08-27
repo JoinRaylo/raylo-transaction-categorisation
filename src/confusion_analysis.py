@@ -19,6 +19,8 @@ import pathlib
 import sys
 from collections import Counter, defaultdict
 
+from eval_sets import refuse_confirmation_eval
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 TAXONOMY_CSV = ROOT / "taxonomy" / "taxonomy.csv"
 
@@ -74,6 +76,7 @@ def analyse(rows, gen_of, risk_leaves):
 
 
 def report(path, min_risk_accuracy):
+    refuse_confirmation_eval(path)
     rows = list(csv.DictReader(open(path)))
     if not rows or "gold_leaf" not in rows[0] or "pred_leaf" not in rows[0]:
         sys.exit(f"{path}: expected columns gold_leaf, pred_leaf")

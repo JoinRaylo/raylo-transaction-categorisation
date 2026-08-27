@@ -149,16 +149,29 @@ def load_example_notes():
     assignment: 'AFSL is Admiral Financial Services Ltd unsecured personal loans' teaches
     the model HOW to resolve an opaque string, which a bare example-merchant list can't.
 
-    Excludes the generic 'LLM-consensus label, tier=...' boilerplate that
-    build_merchant_dictionary.py's tranche-3 T4 wiring (commit f0f7eb4, 2026-08-21)
-    attached to 18,019 entries -- that's tier provenance, not disambiguation
-    reasoning, and indiscriminately including it bloated this from 375 to 18,394
-    notes (2.36M chars), discovered when a full assembled prompt print came out at
-    2.39M characters instead of the expected ~30KB."""
+    Excludes bulk provenance parked in `notes`: the generic 'LLM-consensus
+    label, tier=...' boilerplate (tranche-3 wiring, 375 -> 18,394 notes) and
+    later T4 ingest strings ('Tranche-4 label', 'Luna A + parent review',
+    'Carlos review 2026-08-26', …). Those are not disambiguation reasoning."""
+    # Bulk T4 wiring after 21 Aug also parked provenance in `notes`
+    # ("Luna A + parent review", "Carlos review 2026-08-26", …). Those are
+    # not worked disambiguation examples; including them blew the 300–600
+    # guardrail (1,026 notes). Same class of bug as the LLM-consensus prefix.
+    bulk_prefixes = (
+        "LLM-consensus label, tier=",
+        "Tranche-4 label",
+        "Luna A + parent",
+        "Luna B + parent",
+        "n=10-49",
+        "both Luna agents",
+        "Carlos review 2026-08-26",
+        "parent override",
+        "gold_v2 holdout; T4 gap",
+    )
     out = []
     for r in csv.DictReader(open(ROOT / "taxonomy" / "merchant_dictionary.csv")):
         note = r["notes"].strip() if r["notes"] else ""
-        if note and not note.startswith("LLM-consensus label, tier="):
+        if note and not any(note.startswith(p) for p in bulk_prefixes):
             out.append((r["normalised_merchant"], r["detailed_category"], note))
     # Guardrail against a repeat of the 375 -> 18,394 regression above: this
     # count should grow slowly with deliberate curation, not explode from a

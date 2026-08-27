@@ -35,3 +35,11 @@ regenerable from the local Mac fine-tuning runbook (`docs/`), not source data.
 For the current gold-v4 production-population scorer, see `src/score_gold_v4.py`
 (kept in `src/` since it scores against a tracked `data/` gold set, not a
 one-off `outputs/` benchmark).
+
+Classifier v4 vs v5 (logreg + SGD hinge) is `src/compare_classifier_versions.py`,
+scored on `data/gold_v2_slm_eval_holdout.csv` and
+`data/gold_transactions_risk_categories.csv`. Write-up:
+`data/classifier_v5_retrain_report.md`. Those 2026-08-26 numbers supersede the
+32.0% TF-IDF row in the §6a league table (that row is the 21 Aug dump).
+`score_qwen_eval.py` refuses locked confirmation sets (v5 retired; v6 at
+go/no-go) via `eval_sets.refuse_confirmation_eval()`.

@@ -1,0 +1,253 @@
+merchant,n_rows,old_dist,new_leaf,reason,example_description
+2 rides,10,taxi_rideshare:10,bicycle,Lime e-bike/e-scooter ride or pass (not taxi),Lime*2 Rides W2l2
+2 rides whbu,10,taxi_rideshare:10,bicycle,Lime e-bike/e-scooter ride or pass (not taxi),LIME*2 RIDES WHBU
+a.saily,10,unclassified_other:10,mobile_phone_contract,Saily (Nord Security) is a prepaid travel eSIM data app; Apple Pay USD amounts match international eSIM top-ups,a.saily A.Saily
+apollo.io,10,unclassified_other:10,software,Apollo.io is a well-known B2B sales CRM/prospecting SaaS (pro app; USD charges on the sample),APOLLO.IO Apollo.Io
+argylesatellite.co,10,unclassified_other:10,taxi_rideshare,argylesatellite.co.uk is Argyle Satellite Taxis Wirral private hire,ARGYLESATELLITE.CO  ON 08 JUL CPM ARGYLESATELLITE.CO.UK
+argylesatellite.co.uk,10,unclassified_other:10,taxi_rideshare,argylesatellite.co.uk is Argyle Satellite Taxis (Wirral private hire),Visa purchase ARGYLESATELLITE.CO.UK APPLEPAY 1178
+ashbourne management services ltd,10,unclassified_other:10,gym_fitness,Ashbourne Management Services collects Direct Debits for independent gym and fitness-club memberships (ashbourne-memberships.com).,GREE2269K Ashbourne Management Services LTD
+beatport llc.,10,unclassified_other:10,music_other,Beatport is the well-known DJ/electronic music download store (not Spotify-style consumer streaming).,BEATPORT LLC. Beatport Llc.
+bilal superstore cheadle,10,unclassified_other:10,groceries,Named superstore in Cheadle; supermarket/grocery retail is unambiguous,Bilal Superstore C
+blink network b.v,10,unclassified_other:10,fuel,Blink Network B.V. bills UK EV charging sessions; production labels ChargePoint/Instavolt/BP Pulse/Electroverse as fuel.,Blink Network B.V
+brandon street premier,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Brandon Street Premie Brandon Street Premier
+c beenetwork.,10,unclassified_other:10,public_transport_rail_coach,Bee Network Greater Manchester COM/CHARGES; sibling beenetwork is public_transport_rail_coach,4399 14JUL25 C    BEENETWORK.       COM/CHARGES       0161 244 1000 GB
+c premier,10,unclassified_other:10,groceries,Premier symbol-group grocer (taxonomy: Spar/Nisa/Londis/Premier → groceries),9489 26JUN25 C    PREMIER           SOUTHEND ON S GB
+canvauk,10,unclassified_other:10,software,PAYPAL *CANVAUK is Canva UK; sibling canva is software,CARD PAYMENT TO PAYPAL *CANVAUK ON 08-07-2025
+cd ridgewood stores,10,unclassified_other:10,convenience_store,Ridgewood Stores Ltd Uckfield is a convenience store,8213 04SEP25 CD   RIDGEWOOD STORES  LTD               UCKFIELD GB
+cder group limited.,10,unclassified_other:10,debt_enforcement,CDER Group is a UK bailiff/enforcement agency (council tax,2706 15JUL25      CDER GROUP        LIMITED.          INTERNET GB
+credit engine,10,unclassified_other:10,credit_reporting_service,Credit Engine (Credit Technologies) paid TransUnion/Equifax score membership,CREDIT ENGINE  ON 24 SEP BCC
+d lime,10,taxi_rideshare:10,bicycle,Lime e-bike/e-scooter ride or pass (not taxi),4228 26AUG25  D   LIME*RIDE X4UJ    LONDON GB
+dcbltd,10,unclassified_other:10,debt_enforcement,WWW.DCBLTD.COM is Direct Collection Bailiffs Ltd (High Court enforcement); already mapped dcbl in the dictionary,Visa purchase WWW.DCBLTD.COM
+dhadda premier,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,DHADDA PREMIER
+dike and son ltd,10,unclassified_other:10,groceries,Award-winning independent supermarket in Stalbridge (Nisa partner); description is a card spend there,6296 13SEP25 C    DIKE AND SON LTD  STALBRIDGE GB
+dixon lane premier,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,DIXON LANE PREMIER
+dott scooter,10,taxi_rideshare:10,bicycle,Dott shared e-scooters (same micromobility leaf as Lime),"DOTT SCOOTER RIDE (VIA APPLE PAY), ON 10-07-2025"
+dover street market,10,unclassified_other:10,clothing_general,Dover Street Market is a well-known fashion retailer,Dover Street Market
+evyve services,10,unclassified_other:10,fuel,evyve is a UK public EV rapid-charging network; BP Pulse is already fuel in the dictionary,EVYVE SERVICES
+fam premier ltd,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,FAM PREMIER LTD  ON 16 JUL CPM
+fish's premier store,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Fish's Premier Store
+forfar premier,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Forfar Premier
+g.w.r.s.a. clu,10,unclassified_other:10,private_members_club,G.W.R.S.A. is the Great Western Railway Staff Association social club (members' bar); SumUp tap at the club.,SumUp  *G.W.R.S.A.
+gdk winchester,10,unclassified_other:10,takeaway,German Doner Kebab,GDK WINCHESTER
+grandpierlimited,10,unclassified_other:10,days_out,Grand Pier Limited operates Weston-super-Mare Grand Pier indoor amusement park,NYX*GrandPierLimit  ON 28 JUN CLP NYX*GRANDPIERLIMITED
+grant palmer ltd,10,unclassified_other:10,public_transport_rail_coach,Grant Palmer Ltd is the Bedfordshire independent bus operator (grantpalmer.com).,GRANT PALMER LTD
+greenbank service st,10,unclassified_other:10,fuel,Greenbank Service Station is a Circle K petrol forecourt,Greenbank Service St
+highlevel inc.,10,unclassified_other:10,software,GoHighLevel/HighLevel Inc is a well-known CRM/marketing SaaS subscription.,HIGHLEVEL INC. Highlevel Inc.
+holafly limited,10,unclassified_other:10,mobile_phone_contract,Holafly sells prepaid travel eSIM mobile-data plans (Dublin card descriptor),1820 06SEP25  D   HOLAFLY LIMITED   DUBLIN IE
+htcard.co.u,10,unclassified_other:10,memberships,WWW.BLUELIG HTCARD.CO.U Cossington is Blue Light Card Ltd (discount membership card for NHS/frontline workers).,3697 13SEP25      WWW.BLUELIG       HTCARD.CO.U       COSSINGTON GB
+human forest,10,unclassified_other:10,bicycle,HumanForest / Forest London e-bike hire,Human Forest
+icarsltd,10,unclassified_other:10,taxi_rideshare,Descriptor is www.icarsltd.com — iCars Taxis Burton (SIC taxi operation),www.icarsltd.com
+indeed iei,10,unclassified_other:10,advertising_services,Indeed IEI job-ad invoices; sibling online job ads indeed is advertising_services,Indeed Iei25-01133839
+instantly,10,unclassified_other:10,software,"Instantly.ai cold-email / sales software, not a generic merchant",Instantly
+ipayimpact.co.,10,unclassified_other:10,education_general,iPayimpact is the Capita/council school-payments portal used for meals,VMS*iPayimpact.co.
+ipayimpact.co.edinburgh,10,unclassified_other:10,education_general,iPayimpact is the school meals/trips/uniform payment app; ipayimpact.co.uk already human-reviewed as school_fees.,VMS*iPayimpact.co.Edinburgh
+kofcomps ltd,10,unclassified_other:10,prize_competitions,Kofcomps Ltd trades as King of Comps (kingofcomps.co.uk) — paid prize-draw tickets with a free postal route,KOFCOMPS LTD
+lime,10,taxi_rideshare:10,bicycle,Lime e-bike/e-scooter ride or pass (not taxi),Visa purchase LIME*PASS R5QS APPLEPAY 1283 2025-07-20
+linkside premier store,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Linkside Premier S
+lovable,10,unclassified_other:10,web_services,"Lovable.dev (Dover DE) — AI app builder / developer tool, not a restaurant","LOVABLE - 1111b South Governors Avenue, DOVER"
+mccoll s travel ltd,10,unclassified_other:10,public_transport_rail_coach,McColl's Travel Ltd is the Dumbarton family bus and coach operator (mccolls.org.uk).,McColl s Travel Lt
+metric group ltd,10,unclassified_other:10,car_parking,Metric Group Ltd makes UK pay-and-display parking terminals; contactless Metric Group Ltd is parking at the machine.,Contactless Payment METRIC GROUP LTD
+midland bluebird ltd,10,unclassified_other:10,public_transport_rail_coach,McGill's Midland Bluebird is a well-known central Scotland bus operator (Falkirk/Stirling/Edinburgh),Midland Bluebird L
+modular fs limited,10,unclassified_other:10,payment_intermediary,Modulr FS wallet top-up; UK payment-processing platform (same leaf as other wallet/PSP top-ups).,Modulr FS account - Wallet Top Up Modular FS Limited - SortCodeAccountNumber: 04008506211208
+morr barry,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR BARRY
+morr basingstoke,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,Visa purchase MORR BASINGSTOKE
+morr bathgate,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,Morr Bathgate
+morr boroughbridge,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR BOROUGHBRIDGE
+morr bradford enterpri,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,Morr Bradford Enterpri
+morr bristol hartcliff,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR BRISTOL HARTC
+morr dukinfield,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR DUKINFIELD  ON 24 AUG BCC
+morr erith,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR ERITH
+morr fakenham,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR FAKENHAM  ON 14 SEP CPM
+morr haverfordwest,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,CRV*MORR HAVERFORD
+morr isle of wight lak,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,Contactless Payment MORR ISLE OF WIGHT LAK APPLEPAY 4981
+morr kirkby,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR KIRKBY
+morr knottingley,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR KNOTTINGLEY
+morr liskeard,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR LISKEARD
+morr middlesboroug,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR MIDDLESBOROUGMIDDLESBOROUG
+morr milton keynes wes,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR MILTON KEYNES  ON 16 AUG CPM MORR MILTON KEYNES WES
+morr morecambe,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR MORECAMBE CD 0089
+morr neath,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR NEATH
+morr peterborough,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR PETERBOROUGH
+morr rochdale,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR ROCHDALE  ON 25 JUL BCC
+morr rotherham,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,"MORR ROTHERHAM BRAMLEY - MOORHEAD WAY, ROTHERHAM"
+morr scunthorpe,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR SCUNTHORPE Morr Scunthorpe
+morr shrewsbury,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR SHREWSBURY
+morr sittingbourne,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR SITTINGBOURNE  ON 02 SEP BCC
+morr stevenston,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR STEVENSTON CD 3244
+morr worksop,10,unclassified_other:10,groceries,Plaid truncates MORRISONS to Morr + town,MORR WORKSOP  ON 15 AUG CPM
+nitromonthly,10,unclassified_other:10,online_services,DISCORD* NITROMONT is Discord Nitro; sibling discord is online_services,DISCORD* NITROMONT
+oposlimited,10,unclassified_other:10,debt_collection,www.oposlimited.com is Opos Limited,WWW.OPOSLIMITED.CO
+orbit credit services,10,unclassified_other:10,debt_collection,Orbit Credit Services (formerly Orbit Debt Collections) is the UK utility collections agency; SIC 82911 collection agencies.,ORBIT CREDIT SERVI  ON 02 OCT BCC ORBIT CREDIT SERVICES
+pass gpa,10,unclassified_other:10,bicycle,Lime e-bike/e-scooter ride or pass (not taxi),LIME*PASS GPA3
+pass thx,10,unclassified_other:10,bicycle,Lime e-bike/e-scooter ride or pass (not taxi),LIME*PASS THX7
+premier arlington,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,PREMIER ARLINGTON  ON 02 AUG CPM
+premier broad,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,"PREMIER BROADFIELD (VIA APPLE PAY), ON 15-07-2025"
+premier cayton,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Cayton
+premier dens road,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Contactless Payment PREMIER DENS ROAD
+premier dukinf,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Dukinf
+premier englefieldgr,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,2155 11SEP25 CD   PREMIER ENGLEFIELDGR                EGHAM GB
+premier express,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Express
+premier garthdee cd,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Garthdee CD 1276
+premier grays,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,PREMIER           GRAYS
+premier linktown scoot,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Linktown Scoot
+premier meadow head,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,PREMIER MEADOW HEA
+premier tye stores,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,"PREMIER TYE STORES (VIA GOOGLE PAY), ON 03-08-2025"
+premier tywyn stortywyn,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Tywyn StorTywyn
+premier union street,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Union Stre
+premier west end sabertawe,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier West End SAbertawe
+psi services uk ltd,10,unclassified_other:10,education_general,PSI Services (UK) Ltd is the Home Office exam contractor for Life in the UK and SELT tests.,PSI SERVICES  UK
+quay street premier,10,unclassified_other:10,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Quay Street Premier
+rebtelnetwo,10,unclassified_other:10,mobile_phone_contract,PAYPAL *REBTELNETW is Rebtel VoIP; sibling Rebtel is mobile_phone_contract,PAYPAL *REBTELNETW
+ride dvsk,10,taxi_rideshare:10,bicycle,Lime e-bike/e-scooter ride or pass (not taxi),Lime*ride Dvsk
+ride jun,10,taxi_rideshare:10,bicycle,"Lime*auth; Lime ride authorisation, not taxi",Lime*auth Jun6
+rundle and co ltd,10,unclassified_other:10,debt_enforcement,Rundles (Rundle & Co) are certificated enforcement agents/bailiffs for council tax and similar debts,RUNDLE AND CO LTD
+select & save ltd,10,unclassified_other:10,groceries,Select & Save is a UK convenience symbol group (same treatment as Spar/Nisa/Premier/Londis),Ppoint_*select & Save Ltd
+south bank service,10,unclassified_other:10,fuel,South Bank Services is the Jet petrol filling station on Ferriby Road,SOUTH BANK SERVICE
+surecredit.co.uk,10,unclassified_other:10,credit_reporting_service,Sure Credit is a paid TransUnion credit-report/education subscription (credit broker not a lender) like Clearscore,PYD*surecredit.co.  ON 30 AUG BCC PYD*SURECREDIT.CO.UK
+tenpinlimited,10,unclassified_other:10,days_out,Tenpin Limited is the UK bowling/indoor entertainment chain (Cranfield HQ); family leisure day out.,Nyx*tenpinlimited
+tjmorrisltd,10,unclassified_other:10,discount_store,T.J. Morris Limited is Home Bargains; dictionary already maps home bargains to discount_store.,Tjmorrisltd
+tony's food store chp,10,unclassified_other:10,groceries,Descriptor is a named food store; grocery retail is unambiguous.,Tony's Food Store Chp
+urban jungle insurance,10,unclassified_other:10,insurance_general,Urban Jungle is a UK insurer (home contents plus travel/motor); description is an insurance premium so general not a single line,0340 02SEP25      URBAN JUNGLE      INSURANCE         LONDON GB
+vir health ltd,10,unclassified_other:10,pharmacy,Vir Health Limited is the CQC-registered legal entity behind Numan (online pharmacy/men's health prescriptions).,Vir Health Ltd
+visioncraft ltd,10,unclassified_other:10,optician,Visioncraft is an independent NHS optician in Birmingham (visioncraft.co.uk),VISIONCRAFT LTD
+warner bros. studio,10,unclassified_other:10,days_out,Warner Bros. Studio Tour London (Making of Harry Potter) attraction tickets,WARNERBROS STUDIOS  ON 07 OCT CLP Warner Bros. Studio
+wilkins & pye ltd,10,unclassified_other:10,pub_bar,Wilkins & Pye is a CAMRA-listed micropub in Longton (SIC 56302 public houses and bars).,WILKINS & PYE LTD  ON 26 JUL CPM
+www.astria.ai,10,unclassified_other:10,software,Astria.ai is an AI software product,www.astria.ai
+yollacalls,10,unclassified_other:10,software,"Yolla is an OTT/VoIP international calling app (yollacalls.com), same class as Rebtel; not a UK mobile-network contract",www.yollacalls.com
+yourbusinessnumber,10,unclassified_other:10,web_services,"YourBusinessNumber sells virtual WhatsApp/phone numbers, not email; web_services (comms infra) fits better than email_services",Yourbusinessnumber
+zapmail,10,unclassified_other:10,email_services,Zapmail is mailbox/email infrastructure (Google Workspace outreach mailboxes), Zapmail
+zippa loans,10,personal_loan_repayment:10,payday_loan,"Skyline Direct high-cost short-term credit, not a personal loan",Zippa Loans
+cd gdk,9,unclassified_other:9,takeaway,German Doner Kebab,2595 01AUG25 CD   GDK CHELMSFORD    CHELMSFORD CM GB
+frenk.io,9,unclassified_other:9,crypto,frenk.io is a licensed cryptocurrency exchange (Bright Technologies).,frenk.io
+groobox.co.uk,9,unclassified_other:9,groceries,Groobox is Groobarb's Wild Farm fruit-and-veg box delivery (meal-kit/veg-box convention = groceries),GROOBOX.CO.UK
+high street premier,9,unclassified_other:9,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Contactless Payment High Street Premier APPLEPAY 6150
+lapitza.restajet,9,unclassified_other:9,takeaway,Lapitza / La Pitza on Restajet is a Rotherham pizza/kebab takeaway with delivery.,Lapitza.restajet.com
+lifecafe at life time,9,unclassified_other:9,legal_services,"Narrative is Lifetime Legal (wills), not a cafe",LIFETIME LEGAL    CAMBERLEY
+morr basing,9,unclassified_other:9,groceries,Plaid truncates MORRISONS to Morr + town,Morr Basingstoke
+morr berwick upon twee,9,unclassified_other:9,groceries,Plaid truncates MORRISONS to Morr + town,MORR BERWICK UPON
+morr bradford thornbu,9,unclassified_other:9,groceries,Plaid truncates MORRISONS to Morr + town,MORR BRADFORD -THO
+morr bradford victoria,9,unclassified_other:9,groceries,Plaid truncates MORRISONS to Morr + town,MORR BRADFORD VICT
+morr hartlepool,9,unclassified_other:9,groceries,Plaid truncates MORRISONS to Morr + town,Contactless Payment MORR HARTLEPOOL
+morr leeds,9,unclassified_other:9,groceries,Plaid truncates MORRISONS to Morr + town,Morr Leeds Yeadon
+morr newcastle upon ty,9,unclassified_other:9,groceries,Plaid truncates MORRISONS to Morr + town,Morr Newcastle Upon Ty
+morr stirling,9,unclassified_other:9,groceries,Plaid truncates MORRISONS to Morr + town,MORR STIRLING
+premier oakley,9,unclassified_other:9,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,PREMIER OAKLEY
+riversidefm inc.,9,unclassified_other:9,software,Riverside.fm (RiversideFM Inc) is podcast/video recording SaaS.,"Riversidefm, Inc."
+rundle & co ltd,9,unclassified_other:9,debt_enforcement,Rundle & Co Ltd (Rundles) are certificated enforcement agents collecting council tax and other debts,RUNDLE & CO LTD PI7071954116569567
+rvs hospital shops ca,9,unclassified_other:9,charity_shop,Royal Voluntary Service hospital shops: charity-run retail (snacks/gifts) with profits reinvested in the charity/NHS,Rvs Hospital Shops Ca
+sage uk ltd,9,unclassified_other:9,software,Sage UK Ltd Direct Debits are Sage accounting and payroll software subscriptions.,SAGE UK LTD GE62XYB
+4 rides,8,taxi_rideshare:8,bicycle,Lime e-bike/e-scooter ride or pass (not taxi),Lime*4 Rides 4t6o
+aspit direz. uscita,8,unclassified_other:8,tolls,ASPIT DIREZ. USCITA is Autostrade per l'Italia motorway exit toll,ASPIT DIREZ. USCIT
+bon bon premier,8,unclassified_other:8,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Bon Bon Premier
+darrens premier,8,unclassified_other:8,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Contactless Payment DARRENS PREMIER APPLEPAY 6969
+morr beccles,8,unclassified_other:8,groceries,Plaid truncates MORRISONS to Morr + town,MORR BECCLES  ON 27 AUG CPM
+morr brampton,8,unclassified_other:8,groceries,Plaid truncates MORRISONS to Morr + town,MORR BRAMPTON
+morr farnborough,8,unclassified_other:8,groceries,Plaid truncates MORRISONS to Morr + town,MORR FARNBOROUGH S
+morr high wycombe,8,unclassified_other:8,groceries,Plaid truncates MORRISONS to Morr + town,MORR HIGH WYCOMBE HIGH WYCOMBE
+morr hull,8,unclassified_other:8,groceries,Plaid truncates MORRISONS to Morr + town,MORR HULL
+morr ilkeston,8,unclassified_other:8,groceries,Plaid truncates MORRISONS to Morr + town,MORR ILKESTON Morr Ilkeston
+morr jarrow,8,unclassified_other:8,groceries,Plaid truncates MORRISONS to Morr + town,MORR JARROW  ON 25 JUL CPM
+morr strood,8,unclassified_other:8,groceries,Plaid truncates MORRISONS to Morr + town,Contactless Payment MORR STROOD
+morr swinton,8,unclassified_other:8,groceries,Plaid truncates MORRISONS to Morr + town,MORR SWINTON  ON 02 SEP CLP
+p.louise,8,unclassified_other:8,health_beauty_general,P.Louise is a well-known UK makeup/cosmetics brand (plouise.co.uk),P.LOUISE  ON 14 SEP BCC
+premier greenfield sto,8,unclassified_other:8,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Greenfield Sto
+skedaddlegroup.co.uk,8,unclassified_other:8,pet_other,skedaddlegroup.co.uk is Skedaddle dog park (paid off-leash field hire) not the cycling-holiday brand,SKEDADDLEGROUP.CO.
+skin.club,8,unclassified_other:8,gambling_unspecified,Skin.Club is a CS2/CS:GO paid case-opening/skin-gambling site (chance mechanics; not a sportsbook or casino table).,skin.club
+winrz ltd,8,unclassified_other:8,prize_competitions,Winnrz Ltd (winnrz.com) is a shop-and-win prize-draw platform; ticket-style Vnd refs on the sample,Winrz Ltd Vnd158002C122Vnd
+hawthorn premier,7,unclassified_other:7,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,HAWTHORN PREMIER
+morr coventry binley,7,unclassified_other:7,groceries,Plaid truncates MORRISONS to Morr + town,Morr Coventry Binley
+morr crewe,7,unclassified_other:7,groceries,Plaid truncates MORRISONS to Morr + town,MORR CREWE
+morr ellesmere,7,unclassified_other:7,groceries,Plaid truncates MORRISONS to Morr + town,Morr Ellesmere Port
+morr glasgow cambuslan,7,unclassified_other:7,groceries,Plaid truncates MORRISONS to Morr + town,Morr Glasgow Cambuslan
+morr scarborough,7,unclassified_other:7,groceries,Plaid truncates MORRISONS to Morr + town,MORR SCARBOROUGH  ON 21 AUG CLP
+morr stranraer,7,unclassified_other:7,groceries,Plaid truncates MORRISONS to Morr + town,Morr Stranraer
+morr wetherby,7,pet_supplies:7,groceries,Plaid truncates MORRISONS to Morr + town; Wetherby Morrisons,MORR WETHERBY
+premier biggin,7,unclassified_other:7,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,PREMIER BIGGIN
+premier freche,7,unclassified_other:7,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,PREMIER FRECHEVILLSHEFFIELD S12
+premier heyside,7,unclassified_other:7,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,5566 23JUL25 C    PREMIER HEYSIDE   LTD               OLDHAM GB
+premier northmuir,7,unclassified_other:7,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Northmuir
+leslie premier,6,unclassified_other:6,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Contactless Payment LESLIE PREMIER
+morr banchory,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR BANCHORY CD 3675
+morr bideford,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR BIDEFORD     BIDEFORD
+morr bolton atlas,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR BOLTON ATLAS
+morr bredbury,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR BREDBURY
+morr brough,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR BROUGH  ON 09 SEP BCC
+morr consett,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR CONSETT  ON 27 AUG CLP
+morr doncaster,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR DONCASTER
+morr eccles,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR ECCLES  ON 16 AUG CPM
+morr fleet fleet,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR FLEET        FLEET
+morr great harwood,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR GREAT HARWOOD
+morr hartlepool belle,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR HARTLEPOOL BE
+morr heywood,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,Morr Heywood
+morr horndean,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,Morr Horndean
+morr kirkcaldy,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR KIRKCALDY
+morr middles borough,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,Morr Middlesborough
+morr morpeth,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR MORPETH
+morr newcastle under,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,Morr Newcastle Under L
+morr paignton,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR PAIGNTON Morr Paignton
+morr plymstock,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR PLYMSTOCK  ON 22 AUG CLP
+morr redcar,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR REDCAR  ON 06 SEP CPM
+morr st andrews,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR ST ANDREWS
+morr tavistock,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,Morr Tavistock
+morr walsall wallows,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR WALSALL WALLO
+morr yeovil,6,unclassified_other:6,groceries,Plaid truncates MORRISONS to Morr + town,MORR YEOVIL  ON 24 JUL CLP
+pass ryyr,6,unclassified_other:6,bicycle,Lime e-bike/e-scooter ride or pass (not taxi),LIME*PASS RYYR
+passe,6,unclassified_other:6,bicycle,Lime e-bike/e-scooter ride or pass (not taxi),Lime*passe Td3x
+premier dunnikier,6,unclassified_other:6,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,PREMIER DUNNIKIER
+premier harboroug,6,unclassified_other:6,groceries,Premier symbol-group grocer (taxonomy: Spar/Nisa/Londis/Premier → groceries),PPOINT_*PREMIER HA
+premier heath road,6,unclassified_other:6,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Contactless Payment PREMIER HEATH ROAD APPLEPAY 9691
+premier union stre,6,unclassified_other:6,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Union Stre
+s a premier cd,6,unclassified_other:6,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,S A PREMIER CD 5694
+sutton stores premier exp,6,unclassified_other:6,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,SUTTON STORES PREM
+c gdk,5,unclassified_other:5,takeaway,German Doner Kebab,5550 18JUL25 C    GDK NEWCASTLE     NEWCASTLE UPO GB
+gdk loughborough,5,unclassified_other:5,takeaway,German Doner Kebab,Contactless Payment GDK LOUGHBOROUGH APPLEPAY 0632
+jeni and js premier,5,unclassified_other:5,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,JENI AND JS PREMIE
+lime ride gafz,5,taxi_rideshare:5,bicycle,"PAYPAL *LIME RIDE is Lime micromobility, not taxi_rideshare",PAYPAL *LIME RIDE
+morr belper,5,unclassified_other:5,groceries,Plaid truncates MORRISONS to Morr + town,Morr Belper
+morr cromer,5,unclassified_other:5,groceries,Plaid truncates MORRISONS to Morr + town,Contactless Payment MORR CROMER
+morr cwmbran,5,unclassified_other:5,groceries,Plaid truncates MORRISONS to Morr + town,Morr Cwmbran
+morr ellesmere port,5,unclassified_other:5,groceries,Plaid truncates MORRISONS to Morr + town,MORR ELLESMERE POR
+morr halifax,5,unclassified_other:5,groceries,Plaid truncates MORRISONS to Morr + town,MORR HALIFAX
+morr lincoln,5,unclassified_other:5,groceries,Plaid truncates MORRISONS to Morr + town,MORR LINCOLN  ON 07 AUG CLP
+morr llanelli,5,unclassified_other:5,groceries,Plaid truncates MORRISONS to Morr + town,MORR LLANELLI
+morr redditch,5,unclassified_other:5,groceries,Plaid truncates MORRISONS to Morr + town,MORR REDDITCH
+morr warrington,5,unclassified_other:5,groceries,Plaid truncates MORRISONS to Morr + town,MORR WARRINGTON
+morr wellingborough,5,unclassified_other:5,groceries,Plaid truncates MORRISONS to Morr + town,MORR WELLINGBOROUG  ON 11 SEP CPM MORR WELLINGBOROUGH
+morr weymouth,5,unclassified_other:5,groceries,Plaid truncates MORRISONS to Morr + town,MORR WEYMOUTH
+morr workington,5,unclassified_other:5,groceries,Plaid truncates MORRISONS to Morr + town,MORR WORKINGTON
+pass gxw,5,unclassified_other:5,bicycle,Lime e-bike/e-scooter ride or pass (not taxi),Lime*pass Gxw7
+pass yyqc,5,unclassified_other:5,bicycle,Lime e-bike/e-scooter ride or pass (not taxi),LIME*PASS YYQC
+premier au,5,unclassified_other:5,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,PREMIER AUCHTERDERRAN CD 3577
+premier extra ltd,5,unclassified_other:5,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,PREMIER EXTRA LTD
+premier hems,5,unclassified_other:5,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Hemsworth
+premier oscar road,5,unclassified_other:5,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Oscar Road
+the saxon premier,5,unclassified_other:5,groceries,Premier symbol-group grocer (taxonomy: Spar/Nisa/Londis/Premier → groceries),THE SAXON PREMIER
+cairnside premier,4,unclassified_other:4,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Cairnside Premier
+gdk borough,4,government_services:4,takeaway,German Doner Kebab,GDK BOROUGH           Gdk Borough
+gdk canary wharf,4,unclassified_other:4,takeaway,German Doner Kebab,GDK CANARY WHARF  ON 18 AUG CPM
+kanes premier,4,unclassified_other:4,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,KANES PREMIER
+morr barrow in furness,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,MORR BARROW IN FUR
+morr blackpool,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,MORR BLACKPOOL  ON 13 SEP CPM
+morr bolton dawes,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,MORR BOLTON DAWES BOLTON
+morr borehamwood,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,Morr Borehamwood
+morr cardiff tyglass,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,MORR CARDIFF TYGLA
+morr catcliffe,4,pub_bar:4,groceries,Plaid truncates MORRISONS to Morr + town; Catcliffe Morrisons,MORR CATCLIFFE Morr Catcliffe
+morr fort william,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,MORR FORT WILLIAM
+morr livingston,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,MORR LIVINGSTON
+morr morton park,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,MORR MORTON PARK  DARLINGTON
+morr newport roger,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,MORR NEWPORT ROGERNEWPORT
+morr norwich,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,MORR NORWICH  ON 16 OCT CPM
+morr totton,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,MORR TOTTON
+morr west kirby,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,MORR WEST KIRBY   WEST KIRBY
+morr whitefield,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,MORR WHITEFIELD  ON 19 AUG CPM
+morr willenhall,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,MORR WILLENHALL CD 4290
+morr wisbech,4,unclassified_other:4,groceries,Plaid truncates MORRISONS to Morr + town,MORR WISBECH  ON 26 JUN CLP
+oulton road premier st,4,unclassified_other:4,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Oulton Road Premie  ON 28 SEP CPM OULTON ROAD PREMIER ST
+pass ran,4,unclassified_other:4,bicycle,Lime e-bike/e-scooter ride or pass (not taxi),LIME*PASS RAN3
+premier averyhill,4,unclassified_other:4,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Averyhill
+premier high street,4,unclassified_other:4,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Contactless Payment PREMIER HIGH STREET APPLEPAY 6150 2025-08-10
+premier penn hill,4,unclassified_other:4,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Penn Hill
+premier store cd,4,unclassified_other:4,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Store CD 2682
+premier woodgreen,4,unclassified_other:4,groceries,Premier symbol-group convenience/grocery shop (not Inn/Vet/Sports/bus/Easy Save); contactless/store narrative,Premier Woodgreen
+ride 4 qmp,4,taxi_rideshare:4,bicycle,Lime e-bike/e-scooter ride or pass (not taxi),Lime*ride 4qmp
+wayfairer premier,4,unclassified_other:4,groceries,Premier symbol-group grocer (taxonomy: Spar/Nisa/Londis/Premier → groceries),Wayfairer Premier

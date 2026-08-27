@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import csv
 import pathlib
+from label_provenance import DICTIONARY_ELIGIBLE_TIERS
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 # (merchant, leaf, confidence, note)
 D = [
@@ -60,7 +62,8 @@ D = [
 ("that prize guy","prize_competitions","high","prize competition - gambling-adjacent"),
 # ---- BNPL / CREDIT
 ("clearpay","bnpl","high",""),("zilch","bnpl","high",""),("klarna","bnpl","high",""),
-("laybuy","bnpl","high",""),("monzo flex","bnpl","high",""),("paypal credit","bnpl","high",""),
+("laybuy","bnpl","high",""),("monzo flex","bnpl","high",""),
+("paypal credit","revolving_credit_repayment","high","revolving line, not Klarna-style BNPL"),
 ("capital one","credit_card_repayment","high",""),("barclaycard","credit_card_repayment","high",""),
 ("vanquis bank","credit_card_repayment","high","subprime card - Plaid mislabels as personal loan"),
 ("aqua","credit_card_repayment","high","NewDay subprime card"),
@@ -74,7 +77,7 @@ D = [
 ("jd williams","catalogue_retail","high","catalogue with embedded credit"),
 ("next directory","catalogue_retail","high","catalogue with embedded credit"),
 ("zopa","personal_loan_repayment","high",""),("lendable","personal_loan_repayment","high",""),
-("creditspring","payday_loan","high","subscription lending - high cost"),
+("creditspring","personal_loan_repayment","high","credit-builder / subscription lender, not payday"),
 ("118 money","payday_loan","high","high-cost lender"),
 ("lending stream","payday_loan","high","high-cost short-term lender"),
 ("lowell financial","debt_collection","high",""),
@@ -106,6 +109,7 @@ D = [
 ("carers allowance","benefits_state","high",""),("personal independence payment","benefits_state","high",""),
 ("employment and support allowance","benefits_state","high",""),
 ("disability living allowance","benefits_state","high",""),("child tax credit","benefits_state","high",""),
+("work and child tax credit","benefits_state","high","HMRC combined WTC/CTC; Plaid merchant string"),
 ("housing benefits","benefits_state","high",""),("pension credit","benefits_state","high",""),
 ("state pension","pension_received","high",""),
 ("child maintenance","income_other_unspecified","medium","direction-dependent: received or paid"),
@@ -136,6 +140,8 @@ D = [
 ("lothian buses","public_transport_rail_coach","high",""),("go south coast","public_transport_rail_coach","high",""),
 ("citylink","public_transport_rail_coach","medium","Scottish Citylink coaches; may collide with defunct courier"),
 ("uber","taxi_rideshare","high","rides - distinct from uber eats"),("bolt","taxi_rideshare","high",""),
+("voi","bicycle","high","Voi UK e-scooter/e-bike hire; same leaf as Lime"),
+("voi uk","bicycle","high","Plaid merchant string for Voi"),
 ("shell","fuel","high",""),("bp","fuel","high",""),("esso","fuel","high",""),("texaco","fuel","high",""),
 ("motor fuel group","fuel","high",""),("applegreen","fuel","high",""),
 ("tesco fuel","fuel","high",""),("asda (petrol)","fuel","high",""),
@@ -155,6 +161,12 @@ D = [
 ("amazon prime video","streaming","high",""),("now tv","streaming","high",""),
 ("audible","streaming","high",""),("prime","streaming","medium","Amazon Prime subscription - 161k txns"),
 ("apple app store","software","high",""),("google play","software","high",""),
+("google one","web_services","high","Google One cloud storage, not App Store software"),
+("rebtel","mobile_phone_contract","high","international calling / VoIP, not a software store"),
+("bandoo","health_beauty_general","high","Bandoo ionic foot-detox retail"),
+("3s retail ltd","convenience_store","high","SIC 47110 food/drink/tobacco shop"),
+("ingle store","convenience_store","high","Ingle Store convenience; Plaid sometimes collapses onto Apple Store"),
+("morr derby","groceries","high","Plaid Morrisons truncation"),
 ("microsoft","software","high","Plaid mislabels as computing hardware"),
 ("mircosoft","software","high","misspelling in source data"),
 ("adobe","software","high",""),("google","software","medium","ambiguous - could be Play/Workspace/Ads"),
@@ -179,7 +191,7 @@ D = [
 ("boohoo","clothing_general","high",""),("new look","clothing_general","high",""),
 ("river island","clothing_general","high",""),("matalan","clothing_general","high",""),
 ("burton","clothing_general","high",""),("next","clothing_general","high",""),
-("tk maxx","clothing_general","high",""),("pretty little things","clothing_general","high",""),
+("tk maxx","department_store","high","TK Maxx is off-price department, not clothing-only"),("pretty little things","clothing_general","high",""),
 ("george at asda","clothing_general","high",""),
 ("jd sports","sportswear","high",""),("sports direct","sportswear","high",""),("nike","sportswear","high",""),
 ("boots","pharmacy","medium","pharmacy + beauty - genuine mixed basket"),
@@ -262,8 +274,17 @@ CONTEXT_DEPENDENT = [
 seen=set(); rows=[]
 for m,leaf,conf,note in D:
     if m in seen: print("DUPLICATE:",m); continue
-    seen.add(m); rows.append({"normalised_merchant":m,"detailed_category":leaf,
-        "confidence":conf,"source":"llm_proposed","review_status":"pending","notes":note})
+    seen.add(m)
+    # Original seed was written as pending and never flipped after gating
+    # green-lit T4. Tesco/Asda/etc. are the curated dictionary, not drafts.
+    # Leave genuine NEEDS REVIEW / unclassified_* as pending so T4 skips them.
+    note_u = (note or "").upper()
+    if leaf.startswith("unclassified") or "NEEDS REVIEW" in note_u:
+        status = "pending"
+    else:
+        status = "approved"
+    rows.append({"normalised_merchant":m,"detailed_category":leaf,
+        "confidence":conf,"source":"llm_proposed","review_status":status,"notes":note})
 
 for m,leaf,conf,note in CONTEXT_DEPENDENT:
     if m in seen: print("DUPLICATE:",m); continue
@@ -341,10 +362,11 @@ print(f"gold_v2_review additions: {_gv2_added}")
 # crosswalk -- this closes that gap. Same tiered-trust filter already validated
 # against the clean gold set (auto_accept/accepted/human_reviewed measured at
 # 82-91% accuracy; accepted_tiebreak at 66.9% and accepted_general at 33.3% are
-# excluded as too weak). Tier A (gold_transactions_v2/v3) supersedes: any merchant
+# excluded as too weak). Agent_* tiers from tranche 4 are the same weak-supervision
+# ingest, not human review. Tier A (gold_transactions_v2/v3) supersedes: any merchant
 # already resolved there is skipped here, both because Tier A is higher-trust and
 # to avoid re-introducing the exact circularity the gold-set leakage audit found.
-_PROD_GOOD_TIERS = {"auto_accept", "accepted", "human_reviewed"}
+_PROD_GOOD_TIERS = DICTIONARY_ELIGIBLE_TIERS
 _prod_added = 0
 for r in csv.DictReader(open(ROOT / "data" / "production_labels_tranche3.csv")):
     m = r["merchant"].strip().lower()
@@ -403,6 +425,16 @@ HUMAN_T4_FINAL = [
     ("prime video rent buy", "streaming", "high", "Prime Video rental; merchant is not amazon"),
     ("amazon prime video", "streaming", "high", "Amazon Prime Video as its own merchant string"),
     ("prime video", "streaming", "high", "Prime Video merchant string"),
+    ("creditspring", "personal_loan_repayment", "high", "credit-builder / subscription lender, not payday"),
+    ("tk maxx", "department_store", "high", "off-price department store"),
+    ("google one", "web_services", "high", "Google One cloud storage"),
+    ("voi", "bicycle", "high", "Voi micromobility"),
+    ("voi uk", "bicycle", "high", "Voi micromobility"),
+    ("rebtel", "mobile_phone_contract", "high", "Rebtel calling app"),
+    ("bandoo", "health_beauty_general", "high", "Bandoo foot-detox retail"),
+    ("3s retail ltd", "convenience_store", "high", "3S Retail convenience"),
+    ("ingle store", "convenience_store", "high", "Ingle Store convenience"),
+    ("morr derby", "groceries", "high", "Plaid Morrisons truncation"),
 ]
 _by_m = {r["normalised_merchant"]: r for r in rows}
 _final_added = _final_updated = 0
@@ -428,6 +460,263 @@ for r in rows:
         r["notes"] = "Savers is beauty-led retail, not a chemist (gold_v2 convention)"
         _savers += 1
 print(f"human_override_20260824: added {_final_added}, retargeted {_final_updated}, savers pharmacy->beauty {_savers}")
+
+# ---- tranche 4 (Gemini+Sonnet gate + agent/Carlos review, 2026-08-25) ----
+# Dictionary-eligible tiers only. context_dependent, needs_review, abstain, and
+# t2_candidate collisions are not ingested. unclassified_* is not a T4 mapping
+# (it would freeze a string as unknown and block T5/T6). Eligible-tier retargets
+# beat tranche-3 and the 2026-08-24 list for the same string.
+# `human_reviewed` is Carlos only; agent_* are weak supervision.
+_T4_LABELS = ROOT / "data" / "production_labels_tranche4.csv"
+_T4_SKIP_LEAVES = {
+    "unclassified_other", "unclassified_card_spend", "unclassified_transfer",
+    "unclassified_recurring",
+}
+_PAYDAY_FP = _re_gv2.compile(
+    r"\b(payday(?:\s*loans?)?|wonga|quick\s?quid|lending\s?stream|118\s*(?:118\s*)?money|"
+    r"cashfloat|quid\s?market|morses\s?club|moneyboat|tick\s?tock\s*loans?|"
+    r"sunny\s+loans?|cash\s?asap|fast\s+loan)\b",
+    _re_gv2.I,
+)
+_t4_added = _t4_updated = _t4_skipped_unclass = _t4_skipped_t2 = 0
+if _T4_LABELS.exists():
+    _by_norm = {r["normalised_merchant"]: r for r in rows}
+    for r in csv.DictReader(open(_T4_LABELS)):
+        m = r["merchant"].strip().lower()
+        if r["tier"] not in _PROD_GOOD_TIERS or m in _by_merchant:
+            continue
+        if str(r.get("t2_candidate", "")).lower() in {"yes", "y", "true"}:
+            _t4_skipped_t2 += 1
+            continue
+        leaf = r["final_leaf"]
+        if leaf in _T4_SKIP_LEAVES:
+            _t4_skipped_unclass += 1
+            continue
+        # Personal-name collisions with payday tokens (e.g. "joe wheeler wonga")
+        # stay out of T4; R18/R19 would otherwise fail the dict FP test.
+        if leaf != "payday_loan" and _PAYDAY_FP.search(m):
+            continue
+        if r["tier"] in _PROD_GOOD_TIERS and m in _by_norm:
+            if _by_norm[m]["detailed_category"] != leaf:
+                _by_norm[m]["detailed_category"] = leaf
+                _by_norm[m]["source"] = f"production_tranche4_{r['tier']}"
+                _by_norm[m]["notes"] = (
+                    f"Tranche-4 label, tier={r['tier']}, source={r.get('resolution_source','')}"
+                )
+                _t4_updated += 1
+            continue
+        if m in seen:
+            continue
+        seen.add(m)
+        _t4_added += 1
+        rec = {"normalised_merchant": m, "detailed_category": leaf, "confidence": "medium",
+               "source": f"production_tranche4_{r['tier']}", "review_status": "approved",
+               "notes": f"LLM-consensus label, tier={r['tier']}, tranche=4"}
+        rows.append(rec)
+        _by_norm[m] = rec
+print(f"production_tranche4: added {_t4_added}, retargeted {_t4_updated}, "
+      f"skipped_unclassified {_t4_skipped_unclass}, skipped_t2 {_t4_skipped_t2}")
+
+# T2 collision keys and amount-only same-narrative splits must not sit in T4
+# (T2 fires first, but unmatched narratives would still take the wrong T4 leaf).
+# gamesys operation is the documented single-leaf exception (unspecified, not casino).
+_T2_DICT_ALLOW = {"gamesys operation"}
+_T2_BLOCK = {
+    r["merchant"].strip().lower()
+    for r in csv.DictReader(open(ROOT / "taxonomy" / "rules" / "t2_entity_collisions.csv"))
+} - _T2_DICT_ALLOW
+_T2_BLOCK |= {"the drayton court", "fountain hotel", "cd glasgow"}
+_n_drop = len(rows)
+rows = [r for r in rows if r["normalised_merchant"] not in _T2_BLOCK]
+print(f"t2_collision_dict_drop: {_n_drop - len(rows)}")
+_n_pd = len(rows)
+rows = [r for r in rows if r["detailed_category"] == "payday_loan"
+        or not _PAYDAY_FP.search(r["normalised_merchant"])]
+print(f"payday_token_non_payday_drop: {_n_pd - len(rows)}")
+
+# Carlos 2026-08-26 residual/T6 review — last so tranche-4 labels cannot overwrite.
+HUMAN_T4_20260826 = [
+    ("travelodge", "accommodation", "high", "hotel chain"),
+    ("holiday inn", "accommodation", "high", "hotel chain; holiday inn express already mapped"),
+    ("audleys wood", "accommodation", "high", "Audleys Wood Hotel"),
+    ("admireme", "adult_entertainment", "high", ""),
+    ("admire me", "adult_entertainment", "high", ""),
+    ("streamray", "adult_entertainment", "high", ""),
+    ("my nametags", "baby_products", "high", ""),
+    ("beds.co.uk", "bedding", "high", "beds co uk already mapped"),
+    ("amazon kindle", "books", "high", "Kindle content, not marketplace"),
+    ("plusnet", "broadband_tv_phone", "high", ""),
+    ("wework", "business_services", "high", "wework uk already mapped"),
+    ("park resorts", "holiday_uk", "high", "UK holiday park, not camping_holiday"),
+    ("europcar", "car_hire", "high", ""),
+    ("hertz", "car_hire", "high", ""),
+    ("lex autolease", "car_lease", "high", ""),
+    ("batleys", "cash_and_carry", "high", ""),
+    ("aramark", "catering", "high", ""),
+    ("wex europe", "business_services", "high", "WEX Europe Services fleet/admin; was fuel"),
+    ("wex europe services", "business_services", "high", ""),
+    ("wex europe services (uk) limited", "business_services", "high", ""),
+    ("wex europe services limited", "business_services", "high", ""),
+    ("abercrombie & fitch", "clothing_general", "high", ""),
+    ("abercrombie and fitch", "clothing_general", "high", ""),
+    ("checkmyfile", "credit_reporting_service", "high", ""),
+    ("check my file", "credit_reporting_service", "high", ""),
+    ("pra group", "debt_collection", "high", ""),
+    ("moneyplus group", "debt_management_plan", "high", ""),
+    ("packlink", "delivery_courier", "high", ""),
+    ("tsb returns", "delivery_courier", "medium", "Carlos residual review"),
+    ("debenhams", "department_store", "high", ""),
+    ("home super store", "groceries", "high", "Carlos residual review"),
+    ("fancy dress shop", "fancy_dress", "high", ""),
+    ("emirates", "flights", "high", ""),
+    ("wizz air", "flights", "high", ""),
+    ("vueling", "flights", "high", ""),
+    ("ajet", "flights", "high", ""),
+    ("shoe zone", "footwear", "high", ""),
+    ("travelex", "foreign_currency", "high", ""),
+    ("co-op funeralcare", "funeral", "high", ""),
+    ("coop funeralcare", "funeral", "high", ""),
+    ("santeda international limited", "gambling_casino", "high", ""),
+    ("tree2mydoor", "garden", "high", ""),
+    ("tree 2 my door", "garden", "high", ""),
+    ("supervalu", "groceries", "high", ""),
+    ("coop", "groceries", "high", "Plaid often drops the hyphen; co-op already mapped"),
+    ("david lloyd", "gym_fitness", "high", ""),
+    ("cult beauty", "health_beauty_general", "high", ""),
+    ("nicholl fuel oil", "heating_oil", "high", ""),
+    ("on the beach", "holiday_package", "high", ""),
+    ("virgin holidays", "holiday_package", "high", ""),
+    ("preply", "home_learning", "high", ""),
+    ("the best connection", "income_agency_work", "high", ""),
+    ("domestic & general", "insurance_general", "high", "appliance-care insurer"),
+    ("domestic and general", "insurance_general", "high", ""),
+    ("scottish widows", "insurance_general", "high", ""),
+    ("the insurance emporium", "insurance_other", "high", ""),
+    ("pet plan", "insurance_pet", "high", ""),
+    ("nutmeg", "investment_general", "high", ""),
+    ("scottish friendly", "investment_general", "high", ""),
+    ("plus500", "investment_trading", "high", ""),
+    ("ajjb law", "debt_collection", "high", "debt solicitor, not generic legal_services"),
+    ("lights4fun", "lighting", "high", ""),
+    ("festive lights", "lighting", "high", ""),
+    ("fatsoma", "live_music", "high", ""),
+    ("e2save", "mobile_handset", "high", ""),
+    ("one money mail", "money_transfer_service", "high", ""),
+    ("optimum credit", "mortgage", "high", ""),
+    ("pepper money", "mortgage", "high", ""),
+    ("office furniture", "office_equipment", "medium", "generic string; Carlos residual review"),
+    ("lenstore", "optician", "high", ""),
+    ("loans2go", "payday_loan", "high", "HCSTC; was personal_loan_repayment"),
+    ("loans 2 go", "payday_loan", "high", ""),
+    ("republic of cats", "pet_supplies", "high", ""),
+    ("xtra dog", "pet_supplies", "high", ""),
+    ("jollyes", "pet_supplies", "high", ""),
+    ("conservative party", "political_donation", "high", ""),
+    ("labour party", "political_donation", "high", ""),
+    ("greater anglia", "public_transport_rail_coach", "high", ""),
+    ("lavazza", "restaurant_cafe", "high", "cafe/coffee; lavazza professional stays vending"),
+    ("tgi fridays", "restaurant_cafe", "high", ""),
+    ("tgi friday's", "restaurant_cafe", "high", ""),
+    ("brewers fayre", "restaurant_cafe", "high", ""),
+    ("birkbeck college", "school_fees", "high", ""),
+    ("american golf", "sports_equipment", "high", ""),
+    ("fordhouses cricket and social club", "private_members_club", "high", ""),
+    ("adidas", "sportswear", "high", ""),
+    ("national education first", "education_general", "high", "not student_loan"),
+    ("life extension", "supplements", "high", ""),
+    ("robert dyas", "tools", "high", ""),
+    ("copart", "vehicle_purchase", "high", ""),
+    ("united utilities water", "water", "high", "united utilities already mapped"),
+    ("spotless water", "water", "high", ""),
+    ("utility warehouse", "utility_other", "high", "multi-utility bundle, not energy"),
+    ("happy tails vets", "veterinary", "high", ""),
+    ("go groopie", "vouchers", "high", ""),
+    ("d ag communications", "gambling_unspecified", "high", "holdout gold correction; not broadband"),
+]
+_by26 = {r["normalised_merchant"]: r for r in rows}
+_h26_add = _h26_upd = 0
+for m, leaf, conf, note in HUMAN_T4_20260826:
+    if m in _by26:
+        _by26[m]["detailed_category"] = leaf
+        _by26[m]["confidence"] = conf
+        _by26[m]["source"] = "human_override_20260826"
+        _by26[m]["review_status"] = "approved"
+        _by26[m]["notes"] = note
+        _h26_upd += 1
+    else:
+        rec = {"normalised_merchant": m, "detailed_category": leaf, "confidence": conf,
+               "source": "human_override_20260826", "review_status": "approved", "notes": note}
+        rows.append(rec)
+        _by26[m] = rec
+        _h26_add += 1
+print(f"human_override_20260826: added {_h26_add}, retargeted {_h26_upd}")
+
+# High-volume Plaid T4 misses, Luna A/B then parent review.
+# Withheld: data/t4_residual_human_review.csv
+_RESIDUAL_ADD_FILES = [
+    (ROOT / "data" / "t4_residual_dictionary_additions.csv", "human_override_20260826_residual"),
+    (ROOT / "data" / "t4_residual_dictionary_additions_10_49.csv", "human_override_20260826_residual_10_49"),
+    (ROOT / "data" / "t4_carlos_review_applied_20260826.csv", "human_override_20260826_carlos_review"),
+    (ROOT / "data" / "t4_carlos_review_applied_20260826_debit.csv", "human_override_20260826_carlos_debit"),
+    (ROOT / "data" / "t4_carlos_review_applied_20260826_b_leftovers.csv", "human_override_20260826_carlos_b"),
+    (ROOT / "data" / "t4_trading212.csv", "human_override_20260827_trading212"),
+]
+_by_res = {r["normalised_merchant"]: r for r in rows}
+for _path, _src in _RESIDUAL_ADD_FILES:
+    if not _path.exists():
+        continue
+    _res_add = _res_upd = 0
+    for r in csv.DictReader(open(_path)):
+        m = r["normalised_merchant"].strip().lower()
+        leaf = r["detailed_category"].strip()
+        note = (r.get("notes") or "residual alias").strip()
+        if m in _by_res:
+            _by_res[m]["detailed_category"] = leaf
+            _by_res[m]["confidence"] = "high"
+            _by_res[m]["source"] = _src
+            _by_res[m]["review_status"] = "approved"
+            _by_res[m]["notes"] = note
+            _res_upd += 1
+        else:
+            rec = {"normalised_merchant": m, "detailed_category": leaf, "confidence": "high",
+                   "source": _src, "review_status": "approved", "notes": note}
+            rows.append(rec)
+            _by_res[m] = rec
+            _res_add += 1
+    print(f"{_src}: added {_res_add}, retargeted {_res_upd}")
+
+# PayPal Credit is a revolving facility (Carlos 2026-08-27). Last so residual
+# aliases cannot put it back on bnpl. Pay in 3/4 stay bnpl via T2 / paypal pay in 4.
+_pc = _by_res.get("paypal credit")
+if _pc:
+    _pc["detailed_category"] = "revolving_credit_repayment"
+    _pc["confidence"] = "high"
+    _pc["source"] = "human_override_20260827_paypal_credit"
+    _pc["review_status"] = "approved"
+    _pc["notes"] = "revolving line, not Klarna-style BNPL"
+    print("human_override_20260827_paypal_credit: retargeted paypal credit")
+
+# Tokens that must not be T4: narrative T2/T5 only.
+_BARE_TOKEN_DROP = {
+    "now",
+    "mercedes-benz", "plus", "gem", "home", "city", "orbit", "spring", "wood j",
+}
+_n_bare = len(rows)
+rows = [r for r in rows if r["normalised_merchant"] not in _BARE_TOKEN_DROP]
+print(f"bare_token_drop: {_n_bare - len(rows)}")
+
+# T4 matching excludes pending and unclassified_* (same rule as load_t4_dictionary).
+_n_t4 = len(rows)
+rows = [r for r in rows
+        if r.get("review_status") == "approved"
+        and not r["detailed_category"].startswith("unclassified")]
+print(f"pending_or_unclassified_drop: {_n_t4 - len(rows)}")
+
+# Last-wins on normalised_merchant (HUMAN_T4_FINAL listed a few keys twice).
+_dedup = {}
+for r in rows:
+    _dedup[r["normalised_merchant"]] = r
+rows = list(_dedup.values())
 
 # validate leaves exist in taxonomy
 tax={r['detailed_category'] for r in csv.DictReader(open(ROOT / "taxonomy" / "taxonomy.csv"))}

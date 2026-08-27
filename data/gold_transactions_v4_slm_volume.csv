@@ -201,7 +201,7 @@ Essentialphoto,SP ESSENTIALPHOTO CD 3551,535.96,debit,camera_photography
 Cd Argos Ur,7547 19JUL25 CD   ARGOS URMSTON     URMSTON GB,12.0,debit,catalogue_retail
 S Harris-day,S HARRIS-DAY 308459 70297160,8.0,debit,transfer_p2p
 Cd Metrolink Tvm,8864 22SEP25 CD   METROLINK TVM     03000 035035 GB,3.8,debit,public_transport_rail_coach
-Coles,COLES 4461 AUSTRALIA AMOUNT IN AUD 8.60 ON 27 SEP VISA 2.034998 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.13 ,4.36,debit,foreign_spend_unspecified
+Coles,COLES 4461 AUSTRALIA AMOUNT IN AUD 8.60 ON 27 SEP VISA 2.034998 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.13 ,4.36,debit,groceries
 Meli Art Coffee & Pastries, Meli Art Coffee & Pastries,3.5,debit,restaurant_cafe
 Parkview Pharmacy,PARKVIEW PHARMACY,2.99,debit,pharmacy
 Cheshire Mortgage,CHESHIRE MORTGAGE,442.0,debit,mortgage
@@ -309,7 +309,7 @@ F Mart Mini LLC,Contactless Payment F MART MINI LLC APPLEPAY 6024,21.18,debit,co
 Apple,Visa purchase APPLE.COM/BILL,3.99,debit,software
 Apple,Visa purchase APPLE.COM/BILL,10.99,debit,software
 Greenford Grocers LTD, Greenford Grocers Ltd,10.33,debit,groceries
-Christopher Clayton Leisure,Christopher Clayton Leisure,10.0,debit,gym_fitness
+Christopher Clayton Leisure,Christopher Clayton Leisure,10.0,debit,unclassified_other
 Joint Utilities,JOINT UTILITIES,14.54,debit,utility_other
 Washington Tax,Washington Tax,5.0,debit,unclassified_other
 Streetshirts,SP STREETSHIRTS,15.98,debit,clothing_general
@@ -322,7 +322,7 @@ Kulture,5831 20SEP25 CD   SUMUP  *KULTURE   EVENTS            IPSWICH GB,10.0,de
 Current,202686 80699039  OPTIONAL FT Barclays current account,10.0,debit,transfer_own_account
 Milkbotretailcepro,Nyx*milkbotretailcepro,1.5,debit,groceries_specialist
 Halton Village Stores,Halton Village Stores,3.5,debit,convenience_store
-Gcc Fin Serv Ecomm,GCC FIN SERV ECOMM,57.0,debit,unclassified_other
+Gcc Fin Serv Ecomm,GCC FIN SERV ECOMM,57.0,debit,government_services
 Twinlakespark,TWINLAKESPARK.COM 01664567777,53.35,debit,days_out
 Cd Savers Health & Beauty,5103 30AUG25 CD   SAVERS HEALTH &   BEAUTY            LOUGHBOROUGH GB,29.12,debit,health_beauty_general
 Trainline,PAYPAL *TRAINLINE 35314369001,21.4,debit,public_transport_rail_coach
@@ -435,7 +435,7 @@ Yasir Hussain,YASIR HUSSAIN 100000001618543182,600.0,debit,transfer_p2p
 East Lindsey Dist Ips,East Lindsey Dist -Ips,3.0,debit,car_parking
 Amazon,AMZNMktplace*R74DD,19.99,debit,marketplace_amazon
 Spotify *,PAYPAL *SPOTIFY*P3,19.99,debit,streaming
-Apple Store,"INGLE STORE (VIA APPLE PAY), ON 27-08-2025",4.34,debit,unclassified_card_spend
+Apple Store,"INGLE STORE (VIA APPLE PAY), ON 27-08-2025",4.34,debit,convenience_store
 Lilly Quinsey,LILLY QUINSEY 400000001583170415,10.0,debit,transfer_p2p
 Phillippa,Phillippa Purcell,3.0,debit,transfer_p2p
 Mrs N T Legge,mrs n t legge                            a,40.0,debit,transfer_p2p
@@ -450,7 +450,7 @@ Manorfarmfruits,WWW.MANORFARMFRUIT,21.15,debit,groceries_specialist
 YouTube,GOOGLE *YouTube   g.co/helppay#,3.99,debit,streaming
 Apple,4127 25SEP25      APPLE.COM/BILL    08001076285 IE,9.99,debit,software
 Ishaq Mohammed,United Kingdom Account - From I Mohammed ishaq mohammed - SortCodeAccountNumber: 04007590999754,115.0,debit,transfer_p2p
-Voi,Voi Uk,2.34,debit,transport_other
+Voi,Voi Uk,2.34,debit,bicycle
 Amazon,Amazon,26.17,debit,marketplace_amazon
 Win Bet Online LTD,WIN BET ONLINE LTD BULGARIA AMOUNT IN BGN 50.00 ON 01 JUL VISA 2.267867 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE £0.66 ,22.71,debit,gambling_betting
 Alfie Work,Alfie             Work,10.0,debit,transfer_p2p
@@ -552,7 +552,7 @@ The Blue Corn Bakery,The Blue Corn Bake,11.0,debit,restaurant_cafe
 Costa Coffee,COSTA COFFEE 43010,3.99,debit,restaurant_cafe
 LC International,CARD PAYMENT TO LC INTERNATIONAL LTD ON 18-09-2025,10.0,debit,gambling_betting
 Ring Basic Plan,RING BASIC PLAN,4.99,debit,online_services
-Google One,Google One,1.59,debit,software
+Google One,Google One,1.59,debit,web_services
 Leader Chicken Marti,Leader Chicken (marti,6.0,debit,takeaway
 Amazon,Amazon,59.95,debit,marketplace_amazon
 Dcvendingltd,Nyx*dcvendingltd,1.9,debit,confectionary

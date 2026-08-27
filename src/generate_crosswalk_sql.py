@@ -17,12 +17,51 @@ for r in rows:
     for p in [x.strip() for x in r['plaid_source'].split(';') if x.strip()]:
         plaid_map[p] = r['detailed_category']
 
-dict_map = {r['normalised_merchant']: r['detailed_category']
-            for r in csv.DictReader(open(_ROOT / "taxonomy" / "merchant_dictionary.csv"))}
+def is_t4_eligible_row(r):
+    """T4 matching: approved, classifiable leaves only.
+
+    `review_status=pending` on the original seed dictionary used to include Tesco
+    (stale flag). The builder now marks those approved. Remaining pending and
+    every unclassified_* leaf must not become a deterministic T4 label.
+    """
+    leaf = r.get("detailed_category") or ""
+    if leaf.startswith("unclassified"):
+        return False
+    if r.get("review_status", "approved") != "approved":
+        return False
+    return True
+
+
+def load_t4_dictionary(path=None):
+    path = path or (_ROOT / "taxonomy" / "merchant_dictionary.csv")
+    return {r["normalised_merchant"]: r["detailed_category"]
+            for r in csv.DictReader(open(path)) if is_t4_eligible_row(r)}
+
+
+dict_map = load_t4_dictionary()
+
+# Scratch table for T4 joins. The inline UNNEST of ~91k merchants exceeds
+# BigQuery's 1 MB unresolved GoogleSQL limit. Load with
+# `python src/load_t4_dictionary_bq.py`.
+BQ_DICT_TABLE = "`raylo-production.credit_risk_research.merchant_dictionary_t4`"
+
+
+def dict_xw_sql():
+    return f"""dict_xw AS (
+  SELECT normalised_merchant AS merchant, detailed_category AS leaf
+  FROM {BQ_DICT_TABLE}
+  WHERE review_status = 'approved'
+    AND NOT STARTS_WITH(detailed_category, 'unclassified')
+)"""
 
 _rules_raw = list(csv.DictReader(open(_ROOT / "taxonomy" / "rules" / "deterministic_rules.csv")))
 rules = sorted((r for r in _rules_raw if r['enabled'].strip().lower() == 'true'),
                key=lambda r: (int(r['priority']), r['rule_id']))
+
+# Same-string Plaid truncations: merchant exact-key + narrative regex, before T4.
+# Owned as a CSV so a 41-row human-review pack does not bloat the hardcoded Tesco/HMRC lists.
+T2_COLLISION_ROWS = list(csv.DictReader(
+    open(_ROOT / "taxonomy" / "rules" / "t2_entity_collisions.csv")))
 
 def esc(s): return s.replace("\\", "\\\\").replace("'", "\\'")
 def vals(d): return ",\n".join(f"    ('{esc(k)}','{v}')" for k, v in sorted(d.items()))
@@ -134,8 +173,83 @@ T2_ATM_MERCHANTS = (
 T2_ATM_DEBIT_PAT = r"\batm\b|\blnk\b|cash\s+at\b|cash\s+withdrawal"
 T2_ATM_CREDIT_PAT = r"\batm\b|cash\s+deposit"
 
-T2_GROCER_PETROL_MERCHANTS = ("co-op", "sainsbury's", "asda")
+T2_GROCER_PETROL_MERCHANTS = ("co-op", "sainsbury's", "asda", "morr", "cd morr")
 T2_GROCER_PETROL_PAT = r"petrol|\bpfs\b|\bfuel\b"
+T2_MORR_MERCHANTS = ("morr", "cd morr")
+T2_MORR_CAFE_PAT = r"caf[eé]"
+
+# Carlos 2026-08-26 debit-default pack: T4 holds the debit leaf; these fire
+# before T4. Lives in Python (not t2_entity_collisions.csv) so `paypal` /
+# `admiral` are not T2-blocked out of the dictionary.
+# (merchant, pattern, leaf, direction, tier_id)
+T2_CARLOS_PACK = [
+    ("admiral", r"casino", "gambling_casino", "any", "admiral_casino"),
+    ("places for people", r"leisure|nyx|\bleis\b", "gym_fitness", "any",
+     "places_for_people_leisure"),
+    ("nuffield health", r"hospital|clinic|infirmar", "hospital", "any",
+     "nuffield_hospital"),
+    ("ocado", r"central\s+serv|ocado\s+central", "salary", "credit",
+     "ocado_salary"),
+    ("sodexo", r"healthcare|salary|payroll|wages", "salary", "credit",
+     "sodexo_salary"),
+    ("ask italian", r"azzurri|salary|payroll|wages|\bbgc\b", "salary", "credit",
+     "ask_italian_salary"),
+    ("fife council", r"bgc|salary|payroll|wages|faster\s+payment|\bfps\b",
+     "salary", "credit", "fife_council_salary"),
+    ("plum fintech", r"modulo", "transfer_p2p", "credit", "plum_fintech_p2p"),
+    ("avon", r"[a-z]{3,}\s+[a-z]{3,}", "income_other_unspecified", "credit",
+     "avon_rep"),
+    ("prudential", r"annuity|pension|payout|\bbgc\b", "pension_received",
+     "credit", "prudential_payout"),
+    ("fluid", r"fluid\s+focus|\bto\s+[a-z]+\s+[a-z]+", "transfer_p2p", "any",
+     "fluid_p2p"),
+    ("now", r"\bentertai\b", "streaming", "debit", "now_entertai"),
+    ("now", r"paypal", "streaming", "debit", "now_paypal"),
+    ("paypal", r"\*now\b", "streaming", "debit", "paypal_now"),
+    ("paypal", r"payin\s*3|pay\s*in\s*[34]|\bpayin3\b|pypl\s*payin", "bnpl",
+     "debit", "paypal_payin3"),
+    ("paypal credit", r"payin\s*3|pay\s*in\s*[34]|\bpayin3\b|pypl\s*payin",
+     "bnpl", "debit", "paypal_credit_payin3"),
+    ("paypal", r"\*paypal\s*cre|\bpaypal\s*credit\b",
+     "revolving_credit_repayment", "debit", "paypal_credit_line"),
+    # B leftover pack (Carlos 2026-08-26): T4 debit default where listed;
+    # otherwise narrative-only (no T4 on the bare token).
+    ("white lion", r"\bhotel\b", "accommodation", "any", "white_lion_hotel"),
+    ("cts", r"napa|auto\s+parts|spares", "spares_repairs", "debit", "cts_napa"),
+    ("transferwise", r"via\s+mobile", "transfer_p2p", "any", "transferwise_p2p"),
+    ("mercedes-benz", r"mbfin|financial", "car_finance_repayment", "debit",
+     "mercedes_finance"),
+    ("mercedes-benz", r"\bof\s+", "salary", "credit", "mercedes_salary"),
+    ("mercedes-benz", r"\bof\s+|servic|\bmot\b", "vehicle_servicing", "debit",
+     "mercedes_dealer"),
+    ("the kingfisher", r"convenience|grocer|\bstore\b", "convenience_store",
+     "debit", "kingfisher_convenience"),
+    ("gem", r"gem1|\bcasino\b", "gambling_casino", "debit", "gem_casino"),
+    ("gem", r"via\s+mobile", "transfer_p2p", "debit", "gem_p2p"),
+    ("cotswold outdoor", r"\d{6,}|salary|payroll|wages", "salary", "credit",
+     "cotswold_salary"),
+    ("wood j", r"hsm|\bholiday\b", "holiday_package", "debit", "wood_j_hsm"),
+    ("council", r"council\s+tax", "council_tax", "debit", "council_tax_narrative"),
+    ("city", r"city\s+airport|london\s+city", "airport_spend", "debit",
+     "city_airport"),
+    ("city", r"city\s+council", "government_services", "debit", "city_council"),
+    ("home", r"etsy\.com|homemadebouti", "gifts_flowers", "debit", "home_etsy"),
+    ("home", r"247\s+home\s+rescue|home\s+rescue", "home_repair", "debit",
+     "home_rescue"),
+    ("home", r"online\s+home\s+shop", "home_accessories", "debit",
+     "home_shop"),
+    ("home", r"home\s+glasgow|\bglasgow\b", "mortgage", "debit", "home_glasgow"),
+    ("orbit", r"credit\s+services", "debt_collection", "debit", "orbit_credit"),
+    ("orbit", r"allpay|south\s+ho|housing|\brent\b", "rent", "debit",
+     "orbit_rent"),
+    ("plus", r"plus500", "investment_trading", "any", "plus500"),
+    ("plus", r"direct\s+debit\s+plus|plus\s*finance|plus\s*loan",
+     "personal_loan_repayment", "debit", "plus_finance"),
+    ("liberty", r"\bgas\b|electric|energy", "energy", "debit", "liberty_energy"),
+    ("virgin mobile", r"virgin\s+money", "credit_card_repayment", "debit",
+     "virgin_money_on_mobile"),
+    ("the grove", r"welwyn|chandler", "accommodation", "debit", "grove_hotel"),
+]
 
 T2_KFC_PAT = r"\bkfc\b"
 
@@ -173,6 +287,38 @@ def t2_grocer_petrol_tier(merchant_expr, desc_expr):
             f"THEN 'T2_compound_grocer_petrol'")
 
 
+def t2_morr_cafe_leaf(merchant_expr, desc_expr):
+    pred = _in_merchants(merchant_expr, T2_MORR_MERCHANTS)
+    return (f"      WHEN {pred} AND REGEXP_CONTAINS({desc_expr}, r'{T2_MORR_CAFE_PAT}') "
+            f"THEN 'restaurant_cafe'")
+
+
+def t2_morr_cafe_tier(merchant_expr, desc_expr):
+    pred = _in_merchants(merchant_expr, T2_MORR_MERCHANTS)
+    return (f"      WHEN {pred} AND REGEXP_CONTAINS({desc_expr}, r'{T2_MORR_CAFE_PAT}') "
+            f"THEN 'T2_compound_morr_cafe'")
+
+
+def _t2_carlos_when(merchant_expr, desc_expr, merch, pat, then_value, direction):
+    pat_sql = pat.replace("\\", "\\\\").replace("'", "\\'")
+    dir_clause = "" if direction == "any" else f" AND r.direction='{direction}'"
+    return (f"      WHEN {merchant_expr}='{esc(merch)}'{dir_clause} "
+            f"AND REGEXP_CONTAINS({desc_expr}, r'{pat_sql}') THEN '{then_value}'")
+
+
+def t2_carlos_pack_leaf(merchant_expr, desc_expr):
+    return "\n".join(
+        _t2_carlos_when(merchant_expr, desc_expr, merch, pat, leaf, direction)
+        for merch, pat, leaf, direction, _tier in T2_CARLOS_PACK)
+
+
+def t2_carlos_pack_tier(merchant_expr, desc_expr):
+    return "\n".join(
+        _t2_carlos_when(merchant_expr, desc_expr, merch, pat,
+                        f"T2_compound_{tier}", direction)
+        for merch, pat, _leaf, direction, tier in T2_CARLOS_PACK)
+
+
 def t2_kfc_leaf(merchant_expr, desc_expr):
     hit = (f"(REGEXP_CONTAINS({merchant_expr}, r'{T2_KFC_PAT}') OR "
            f"REGEXP_CONTAINS({desc_expr}, r'{T2_KFC_PAT}'))")
@@ -196,6 +342,10 @@ def t2_misc_leaf(merchant_expr, desc_expr):
         f"      WHEN {merchant_expr}='vodafone' AND r.direction='debit' AND REGEXP_CONTAINS({desc_expr}, r'device') THEN 'mobile_handset'",
         f"      WHEN {merchant_expr}='amazon' AND r.direction='debit' AND REGEXP_CONTAINS({desc_expr}, r'prime\\s*video') THEN 'streaming'",
         f"      WHEN {merchant_expr}='bolt' AND REGEXP_CONTAINS({desc_expr}, r'stackblitz') THEN 'software'",
+        f"      WHEN {merchant_expr}='haven holidays' AND REGEXP_CONTAINS({desc_expr}, r'richard\\s+haven') THEN 'beauty_treatment'",
+        f"      WHEN {merchant_expr}='apple store' AND REGEXP_CONTAINS({desc_expr}, r'ingle\\s+store') THEN 'convenience_store'",
+        f"      WHEN r.direction='credit' AND (REGEXP_CONTAINS({merchant_expr}, r'amazon\\s+uk\\s+services') OR REGEXP_CONTAINS({desc_expr}, r'amazon\\s+uk\\s+services')) THEN 'salary'",
+        f"      WHEN {merchant_expr}='grosvenor casino' AND r.direction='credit' AND NOT REGEXP_CONTAINS({desc_expr}, r'returned|refund(ed)?|reversal of') THEN 'salary'",
     ))
 
 
@@ -210,7 +360,31 @@ def t2_misc_tier(merchant_expr, desc_expr):
         f"      WHEN {merchant_expr}='vodafone' AND r.direction='debit' AND REGEXP_CONTAINS({desc_expr}, r'device') THEN 'T2_compound_vodafone_device'",
         f"      WHEN {merchant_expr}='amazon' AND r.direction='debit' AND REGEXP_CONTAINS({desc_expr}, r'prime\\s*video') THEN 'T2_compound_amazon_prime_video'",
         f"      WHEN {merchant_expr}='bolt' AND REGEXP_CONTAINS({desc_expr}, r'stackblitz') THEN 'T2_compound_bolt_stackblitz'",
+        f"      WHEN {merchant_expr}='haven holidays' AND REGEXP_CONTAINS({desc_expr}, r'richard\\s+haven') THEN 'T2_compound_richard_haven'",
+        f"      WHEN {merchant_expr}='apple store' AND REGEXP_CONTAINS({desc_expr}, r'ingle\\s+store') THEN 'T2_compound_ingle_store'",
+        f"      WHEN r.direction='credit' AND (REGEXP_CONTAINS({merchant_expr}, r'amazon\\s+uk\\s+services') OR REGEXP_CONTAINS({desc_expr}, r'amazon\\s+uk\\s+services')) THEN 'T2_compound_amazon_uk_services_salary'",
+        f"      WHEN {merchant_expr}='grosvenor casino' AND r.direction='credit' AND NOT REGEXP_CONTAINS({desc_expr}, r'returned|refund(ed)?|reversal of') THEN 'T2_compound_grosvenor_salary'",
     ))
+
+
+def _t2_collision_when(row, merchant_expr, desc_expr, then_value):
+    merch = esc(row["merchant"])
+    pat = row["pattern"].replace("'", "\\'")
+    dir_clause = "" if row["direction"] == "any" else f" AND r.direction='{row['direction']}'"
+    return (f"      WHEN {merchant_expr}='{merch}'{dir_clause} "
+            f"AND REGEXP_CONTAINS({desc_expr}, r'{pat}') THEN '{then_value}'")
+
+
+def t2_collision_csv_leaf(merchant_expr, desc_expr):
+    return "\n".join(
+        _t2_collision_when(r, merchant_expr, desc_expr, r["detailed_category"])
+        for r in T2_COLLISION_ROWS)
+
+
+def t2_collision_csv_tier(merchant_expr, desc_expr):
+    return "\n".join(
+        _t2_collision_when(r, merchant_expr, desc_expr, f"T2_compound_{r['rule_id']}")
+        for r in T2_COLLISION_ROWS)
 
 
 def t1_gambling_credit_leaf():
@@ -226,16 +400,42 @@ def t1_gambling_credit_tier():
 def t2_refund_leaf(desc_expr):
     # After T1 gambling so bookmaker credits stay gambling_unspecified even
     # when the narrative says REFUND. Before T4 so Iceland/Amazon/Tesco
-    # credits with \brefund\b are not labelled as spend.
+    # credits with refund / refunded are not labelled as spend.
     inner = ", ".join(f"'{x}'" for x in GAMBLING_SUBTYPE_LEAVES)
-    return (f"      WHEN r.direction='credit' AND REGEXP_CONTAINS({desc_expr}, r'\\brefund\\b') "
+    return (f"      WHEN r.direction='credit' AND REGEXP_CONTAINS({desc_expr}, r'\\brefund(ed)?\\b') "
             f"AND (d.leaf IS NULL OR d.leaf NOT IN ({inner})) THEN 'refund_received'")
 
 
 def t2_refund_tier(desc_expr):
     inner = ", ".join(f"'{x}'" for x in GAMBLING_SUBTYPE_LEAVES)
-    return (f"      WHEN r.direction='credit' AND REGEXP_CONTAINS({desc_expr}, r'\\brefund\\b') "
+    return (f"      WHEN r.direction='credit' AND REGEXP_CONTAINS({desc_expr}, r'\\brefund(ed)?\\b') "
             f"AND (d.leaf IS NULL OR d.leaf NOT IN ({inner})) THEN 'T2_compound_refund'")
+
+
+def t2_returned_leaf(desc_expr):
+    # Mechanism: a bounced DD / reversal is not a spend at that merchant.
+    # Must precede T4 (same shape as refund) — T5 would lose to the dictionary.
+    return (f"      WHEN r.direction='credit' AND REGEXP_CONTAINS({desc_expr}, "
+            f"r'returned\\s+(direct\\s+debit|standing\\s+order)|direct\\s+debit\\s+reversal|\\breversal of\\b') "
+            f"THEN 'returned_payment'")
+
+
+def t2_returned_tier(desc_expr):
+    return (f"      WHEN r.direction='credit' AND REGEXP_CONTAINS({desc_expr}, "
+            f"r'returned\\s+(direct\\s+debit|standing\\s+order)|direct\\s+debit\\s+reversal|\\breversal of\\b') "
+            f"THEN 'T2_compound_returned_payment'")
+
+
+def t2_youlend_credit_leaf(merchant_expr):
+    # After refund/returned so bounced YouLend DDs stay returned_payment.
+    # Remaining credits are MCA disbursements (T4 debit is repayment).
+    return (f"      WHEN {merchant_expr}='youlend' AND r.direction='credit' "
+            f"THEN 'loan_disbursement'")
+
+
+def t2_youlend_credit_tier(merchant_expr):
+    return (f"      WHEN {merchant_expr}='youlend' AND r.direction='credit' "
+            f"THEN 'T2_compound_youlend_disbursement'")
 
 
 def t2_entity_collision_leaf(merchant_expr, desc_expr):
@@ -251,10 +451,13 @@ def t2_entity_collision_leaf(merchant_expr, desc_expr):
         tesco_bank_phone,
         t2_atm_leaf(merchant_expr, desc_expr),
         tesco_petrol,
+        t2_morr_cafe_leaf(merchant_expr, desc_expr),
         t2_grocer_petrol_leaf(merchant_expr, desc_expr),
         t2_hmrc_leaf(merchant_expr, desc_expr),
         t2_kfc_leaf(merchant_expr, desc_expr),
         t2_misc_leaf(merchant_expr, desc_expr),
+        t2_carlos_pack_leaf(merchant_expr, desc_expr),
+        t2_collision_csv_leaf(merchant_expr, desc_expr),
     ))
 
 
@@ -269,10 +472,13 @@ def t2_entity_collision_tier(merchant_expr, desc_expr):
         tesco_bank_phone,
         t2_atm_tier(merchant_expr, desc_expr),
         tesco_petrol,
+        t2_morr_cafe_tier(merchant_expr, desc_expr),
         t2_grocer_petrol_tier(merchant_expr, desc_expr),
         t2_hmrc_tier(merchant_expr, desc_expr),
         t2_kfc_tier(merchant_expr, desc_expr),
         t2_misc_tier(merchant_expr, desc_expr),
+        t2_carlos_pack_tier(merchant_expr, desc_expr),
+        t2_collision_csv_tier(merchant_expr, desc_expr),
     ))
 
 
@@ -298,6 +504,8 @@ def match_t2(merchant, direction, description):
         for pat, leaf, tier in T2_TESCO_COLLISIONS:
             if "petrol" in pat and re.search(pat, desc, flags=re.IGNORECASE):
                 return leaf, tier
+    if m in T2_MORR_MERCHANTS and re.search(T2_MORR_CAFE_PAT, desc, flags=re.IGNORECASE):
+        return "restaurant_cafe", "T2_compound_morr_cafe"
     if m in T2_GROCER_PETROL_MERCHANTS and re.search(T2_GROCER_PETROL_PAT, desc, flags=re.IGNORECASE):
         return "fuel", "T2_compound_grocer_petrol"
     if m in T2_HMRC_MERCHANTS and direction == "credit":
@@ -328,6 +536,31 @@ def match_t2(merchant, direction, description):
         return "streaming", "T2_compound_amazon_prime_video"
     if m == "bolt" and re.search(r"stackblitz", desc, flags=re.IGNORECASE):
         return "software", "T2_compound_bolt_stackblitz"
+    if m == "haven holidays" and re.search(r"richard\s+haven", desc, flags=re.IGNORECASE):
+        return "beauty_treatment", "T2_compound_richard_haven"
+    if m == "apple store" and re.search(r"ingle\s+store", desc, flags=re.IGNORECASE):
+        return "convenience_store", "T2_compound_ingle_store"
+    if direction == "credit" and (
+            re.search(r"amazon\s+uk\s+services", m, flags=re.IGNORECASE)
+            or re.search(r"amazon\s+uk\s+services", desc, flags=re.IGNORECASE)):
+        return "salary", "T2_compound_amazon_uk_services_salary"
+    if m == "grosvenor casino" and direction == "credit" and not re.search(
+            r"returned|refund(ed)?|reversal of", desc, flags=re.IGNORECASE):
+        return "salary", "T2_compound_grosvenor_salary"
+    for merch, pat, leaf, dirn, tier in T2_CARLOS_PACK:
+        if m != merch:
+            continue
+        if dirn != "any" and direction != dirn:
+            continue
+        if re.search(pat, desc, flags=re.IGNORECASE):
+            return leaf, f"T2_compound_{tier}"
+    for row in T2_COLLISION_ROWS:
+        if m != row["merchant"]:
+            continue
+        if row["direction"] != "any" and direction != row["direction"]:
+            continue
+        if re.search(row["pattern"], desc, flags=re.IGNORECASE):
+            return row["detailed_category"], f"T2_compound_{row['rule_id']}"
     return None
 
 def generate():
@@ -336,6 +569,10 @@ def generate():
 -- Precedence waterfall (CLAUDE.md section 4): T1 direction overrides -> T2 compound rules ->
 -- T3 mechanism-override primaries -> T4 merchant dictionary -> T5 deterministic rules ->
 -- T6 provider crosswalk (fallback) -> T7 unclassified.
+-- T4 dictionary is a table join, not an inline UNNEST (91k rows / ~4 MB
+-- exceeded BigQuery's 1 MB query-length limit). Load with:
+--   python src/load_t4_dictionary_bq.py
+-- Table: raylo-production.credit_risk_research.merchant_dictionary_t4
 WITH sub_xw AS (SELECT * FROM UNNEST([STRUCT<eqx_sub STRING, leaf STRING>
 {vals(sub_map)}
 ])),
@@ -345,9 +582,7 @@ pri_xw AS (SELECT * FROM UNNEST([STRUCT<eqx_pri STRING, leaf STRING>
 plaid_xw AS (SELECT * FROM UNNEST([STRUCT<plaid_cat STRING, leaf STRING>
 {vals(plaid_map)}
 ])),
-dict_xw AS (SELECT * FROM UNNEST([STRUCT<merchant STRING, leaf STRING>
-{vals(dict_map)}
-])),
+{dict_xw_sql()},
 leaf_meta AS (SELECT * FROM UNNEST([STRUCT<leaf STRING, general_category STRING, necessity STRING,
   cash_flow_type STRING, is_debt_related BOOL, is_priority_debt BOOL, is_age_restricted BOOL, risk_flag STRING>
 {metavals()}
@@ -394,6 +629,8 @@ eqx_resolved AS (
       -- gambling category, so salary-mislabeled Sky Bet credits used to lose to T4.
 {t1_gambling_credit_leaf()}
 {t2_refund_leaf(EQX_DESC_EXPR)}
+{t2_returned_leaf(EQX_DESC_EXPR)}
+{t2_youlend_credit_leaf(EQX_MERCHANT_EXPR)}
       -- T4: merchant dictionary (provider-independent, overrides both providers' own categories)
       WHEN d.leaf IS NOT NULL THEN d.leaf
       -- T5: deterministic rules
@@ -414,6 +651,8 @@ eqx_resolved AS (
         'Balance Transfers','Adjustments') THEN 'T3_mechanism_override'
 {t1_gambling_credit_tier()}
 {t2_refund_tier(EQX_DESC_EXPR)}
+{t2_returned_tier(EQX_DESC_EXPR)}
+{t2_youlend_credit_tier(EQX_MERCHANT_EXPR)}
       WHEN d.leaf IS NOT NULL THEN 'T4_merchant_dictionary'
 {rules_tier_case(EQX_MERCHANT_EXPR, EQX_DESC_EXPR)}
       WHEN s.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
@@ -444,6 +683,8 @@ plaid_resolved AS (
 {t2_entity_collision_leaf(PLAID_MERCHANT_EXPR, PLAID_DESC_EXPR)}
 {t1_gambling_credit_leaf()}
 {t2_refund_leaf(PLAID_DESC_EXPR)}
+{t2_returned_leaf(PLAID_DESC_EXPR)}
+{t2_youlend_credit_leaf(PLAID_MERCHANT_EXPR)}
       -- T4: merchant dictionary (provider-independent, overrides both providers' own categories)
       WHEN d.leaf IS NOT NULL THEN d.leaf
       -- T5: deterministic rules
@@ -457,6 +698,8 @@ plaid_resolved AS (
 {t2_entity_collision_tier(PLAID_MERCHANT_EXPR, PLAID_DESC_EXPR)}
 {t1_gambling_credit_tier()}
 {t2_refund_tier(PLAID_DESC_EXPR)}
+{t2_returned_tier(PLAID_DESC_EXPR)}
+{t2_youlend_credit_tier(PLAID_MERCHANT_EXPR)}
       WHEN d.leaf IS NOT NULL THEN 'T4_merchant_dictionary'
 {rules_tier_case(PLAID_MERCHANT_EXPR, PLAID_DESC_EXPR)}
       WHEN x.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
@@ -485,7 +728,8 @@ GROUP BY 1,2 ORDER BY 1, n DESC
     (_ROOT / "sql" / "apply_crosswalk.sql").write_text(sql)
     print("SQL generated:", len(sql), "chars")
     print("mapping rows: sub", len(sub_map), "| primary", len(pri_map), "| plaid", len(plaid_map),
-          "| dictionary", len(dict_map), "| rules (enabled)", len(rules), "| meta", len(meta))
+          "| dictionary", len(dict_map), "| rules (enabled)", len(rules),
+          "| t2 collisions", len(T2_COLLISION_ROWS), "| meta", len(meta))
     return sql
 
 

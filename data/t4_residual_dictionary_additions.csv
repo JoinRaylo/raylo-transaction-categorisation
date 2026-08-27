@@ -1,0 +1,299 @@
+normalised_merchant,detailed_category,n,n_debit,n_credit,notes
+icelandair,groceries,10390,9542,848,parent override of agent skip/mismatch
+tesco petrol,fuel,8617,8591,26,both Luna agents; parent review
+trainline,public_transport_rail_coach,7445,7139,306,both Luna agents; parent review
+tiktok shop,marketplace_general,4994,4897,97,both Luna agents; parent review
+three uk,mobile_phone_contract,4854,4523,331,both Luna agents; parent review
+costa coffee,restaurant_cafe,4565,4550,15,parent override of agent skip/mismatch
+zable,credit_card_repayment,4537,4537,0,both Luna agents; parent review
+ee,mobile_phone_contract,4526,4362,164,both Luna agents; parent review
+jackpotjoy,gambling_bingo,4026,4026,0,parent override of agent skip/mismatch
+utilita energy,energy,3392,3391,1,both Luna agents; parent review
+giffgaff,mobile_phone_contract,3165,3095,70,both Luna agents; parent review
+paypal pay in 4,bnpl,2789,2789,0,both Luna agents; parent review
+asda petrol,fuel,2722,2702,20,both Luna agents; parent review
+wise,money_transfer_service,2275,2163,112,parent override of agent skip/mismatch
+sky betting and gaming,gambling_betting,2260,2260,0,parent override of agent skip/mismatch
+cardtronics,cash_withdrawal,2094,2094,0,both Luna agents; parent review
+e.on uk,energy,2010,1948,62,both Luna agents; parent review
+heart bingo,gambling_bingo,2005,2005,0,both Luna agents; parent review
+zable cards,credit_card_repayment,1802,1802,0,both Luna agents; parent review
+midnite,gambling_betting,1744,1744,0,parent override of agent skip/mismatch
+sainsbury's petrol station,fuel,1690,1690,0,both Luna agents; parent review
+hastings insurance,insurance_motor,1673,1553,120,both Luna agents; parent review
+southern co-op,groceries,1524,1520,4,both Luna agents; parent review
+vue,cinema,1471,1408,63,both Luna agents; parent review
+zable card zable,credit_card_repayment,1395,1395,0,both Luna agents; parent review
+veezu,taxi_rideshare,1339,1337,2,both Luna agents; parent review
+lottoland,gambling_lottery,1311,1278,33,parent override of agent skip/mismatch
+best one,convenience_store,1186,1186,0,parent override of agent skip/mismatch
+puregym,gym_fitness,1043,993,50,both Luna agents; parent review
+smyths,toys,1011,993,18,both Luna agents; parent review
+cabot financial,debt_collection,1003,1000,3,parent override of agent skip/mismatch
+creation.co.uk,retail_finance_repayment,997,965,32,both Luna agents; parent review
+moorcroft group,debt_collection,987,986,1,both Luna agents; parent review
+cd b&m,discount_store,943,939,4,both Luna agents; parent review
+snappy,groceries,941,941,0,both Luna agents; parent review
+whatnot,marketplace_general,918,918,0,both Luna agents; parent review
+tenpin,entertainment_other,885,882,3,parent override of agent skip/mismatch
+roblox,gaming_online,876,876,0,both Luna agents; parent review
+ad free for primevideo,streaming,859,848,11,both Luna agents; parent review
+edf uk card payments,energy,837,837,0,both Luna agents; parent review
+lemonade finance (lemfi),money_transfer_service,803,803,0,both Luna agents; parent review
+snap finance,retail_finance_repayment,786,762,24,both Luna agents; parent review
+youtube,streaming,768,768,0,both Luna agents; parent review
+edf energy,energy,767,719,48,both Luna agents; parent review
+nando's,restaurant_cafe,715,595,120,parent override of agent skip/mismatch
+translink,public_transport_rail_coach,698,697,1,both Luna agents; parent review
+pokerstars,gambling_casino,666,615,51,both Luna agents; parent review
+openai,web_services,638,638,0,both Luna agents; parent review
+aaa membership,breakdown_cover,632,624,8,both Luna agents; parent review
+creation,retail_finance_repayment,628,628,0,both Luna agents; parent review
+bpo collections,debt_collection,624,624,0,both Luna agents; parent review
+experian,credit_reporting_service,616,603,13,both Luna agents; parent review
+link financial,debt_collection,608,603,5,both Luna agents; parent review
+barclays savings,savings_transfer,607,607,0,both Luna agents; parent review
+betmgm,gambling_betting,603,603,0,both Luna agents; parent review
+justpark,car_parking,575,555,20,both Luna agents; parent review
+ovoenergy,energy,564,564,0,both Luna agents; parent review
+animal health care,veterinary,556,534,22,both Luna agents; parent review
+exchanged to btc,crypto,552,552,0,both Luna agents; parent review
+yorkshire water,water,547,518,29,Luna A + parent review
+premier inn,accommodation,535,515,20,Luna A + parent review
+patreon,online_services,535,535,0,Luna A + parent review
+ee device,mobile_handset,525,516,9,Luna A + parent review
+john lewis & partners,department_store,524,462,62,Luna A + parent review
+freeprints,printing_services,500,492,8,Luna A + parent review
+j d sports,sportswear,500,473,27,Luna A + parent review
+broadway casino,gambling_casino,497,497,0,Luna A + parent review
+talktalk telecom,broadband_tv_phone,496,486,10,Luna A + parent review
+clover casino,gambling_casino,489,489,0,Luna A + parent review
+smarty co uk,mobile_phone_contract,466,466,0,Luna A + parent review
+booker,cash_and_carry,465,422,43,Luna A + parent review
+meccabingo,gambling_bingo,464,464,0,Luna A + parent review
+cd boots,pharmacy,451,449,2,Luna A + parent review
+the gym,gym_fitness,450,427,23,Luna A + parent review
+moneybarn,car_finance_repayment,441,441,0,Luna A + parent review
+overdales,debt_collection,423,423,0,Luna A + parent review
+salad money,personal_loan_repayment,413,413,0,Luna A + parent review
+selfridges,department_store,383,378,5,Luna A + parent review
+shop direct,catalogue_retail,381,363,18,Luna A + parent review
+jet2.com,flights,379,364,15,Luna A + parent review
+quidmarket,payday_loan,378,378,0,Luna A + parent review
+itvx,streaming,369,369,0,Luna A + parent review
+volkswagen financial services,car_finance_repayment,359,359,0,Luna A + parent review
+worldremit,money_transfer_service,354,350,4,Luna A + parent review
+lowell group,debt_collection,353,353,0,Luna A + parent review
+scottishpower,energy,351,325,26,Luna A + parent review
+waterstones,books,351,342,9,Luna A + parent review
+scotrail,public_transport_rail_coach,351,351,0,Luna A + parent review
+sky tv,broadband_tv_phone,350,350,0,Luna A + parent review
+petplan,insurance_pet,347,331,16,Luna A + parent review
+lottomart,gambling_lottery,342,342,0,Luna A + parent review
+lycamobile,mobile_phone_contract,336,334,2,Luna A + parent review
+pret,restaurant_cafe,335,335,0,Luna A + parent review
+wescot credit services,debt_collection,334,334,0,Luna A + parent review
+stop & shop,groceries,331,331,0,Luna A + parent review
+southern water,water,327,316,11,Luna A + parent review
+startline motor finance,car_finance_repayment,325,325,0,Luna A + parent review
+ageas,insurance_general,325,305,20,Luna A + parent review
+eurospar,groceries,320,319,1,Luna A + parent review
+toby carvery,restaurant_cafe,317,315,2,Luna A + parent review
+hobbycraft,arts_crafts,315,312,3,Luna A + parent review
+first glasgow,public_transport_rail_coach,314,314,0,Luna A + parent review
+max spielmann,printing_services,311,308,3,Luna A + parent review
+youfibre,broadband_tv_phone,310,282,28,Luna A + parent review
+jacamo,clothing_general,307,302,5,Luna A + parent review
+asda.george,clothing_general,302,294,8,Luna A + parent review
+jackpotz competition,prize_competitions,302,302,0,Luna A + parent review
+littlewoods,catalogue_retail,296,295,1,Luna A + parent review
+euro car parks,car_parking,292,292,0,Luna A + parent review
+tv licensing spp,tv_licence,288,286,2,Luna A + parent review
+cancer research uk,charitable_donation,284,272,12,Luna A + parent review
+axa,insurance_general,269,247,22,Luna A + parent review
+oxford bus company,public_transport_rail_coach,266,266,0,Luna A + parent review
+oculus,computing_devices,264,264,0,Luna A + parent review
+chopstix,takeaway,264,262,2,Luna A + parent review
+gwr,public_transport_rail_coach,263,260,3,Luna A + parent review
+rac insurance services,insurance_motor,250,230,20,Luna A + parent review
+krispy kreme,restaurant_cafe,249,240,9,Luna A + parent review
+google storage,web_services,249,246,3,Luna A + parent review
+clubwise,gym_fitness,247,225,22,Luna A + parent review
+affinity water,water,244,232,12,Luna A + parent review
+fortnite,gaming_console_pc,241,241,0,Luna A + parent review
+jd gyms,gym_fitness,240,236,4,Luna A + parent review
+fernovo,personal_loan_repayment,240,240,0,Luna A + parent review
+linkedin,online_services,239,233,6,Luna A + parent review
+finio loans,personal_loan_repayment,236,212,24,Luna A + parent review
+elite competition,prize_competitions,234,234,0,Luna A + parent review
+10bet,gambling_betting,233,231,2,Luna A + parent review
+motonovo finance,car_finance_repayment,226,222,4,Luna A + parent review
+blue motor finance,car_finance_repayment,223,223,0,Luna A + parent review
+beefeater,restaurant_cafe,222,221,1,Luna A + parent review
+wh smith,books,220,220,0,align with existing T4 whsmith
+plymouth citybus,public_transport_rail_coach,217,217,0,Luna A + parent review
+wessex water,water,214,206,8,Luna A + parent review
+sse,energy,214,194,20,Luna A + parent review
+the modern milkman,groceries_specialist,211,211,0,Luna A + parent review
+reading transport limited,public_transport_rail_coach,211,211,0,Luna A + parent review
+loungers,restaurant_cafe,205,205,0,Luna A + parent review
+nottingham city transport,public_transport_rail_coach,203,202,1,Luna A + parent review
+lush,skin_hair_care,201,201,0,Luna A + parent review
+travis perkins,home_improvement,201,159,42,Luna A + parent review
+marshmallow insurance,insurance_motor,200,200,0,Luna A + parent review
+policy expert,insurance_home,198,196,2,Luna A + parent review
+godaddy,web_services,198,194,4,Luna A + parent review
+onmo,credit_card_repayment,195,192,3,Luna A + parent review
+decathlon,sports_equipment,195,183,12,Luna A + parent review
+lottosocial,gambling_lottery,192,192,0,Luna A + parent review
+itsu,restaurant_cafe,191,190,1,Luna A + parent review
+budgetenergy,energy,191,191,0,Luna A + parent review
+jaja finance,credit_card_repayment,190,189,1,Luna A + parent review
+power ni,energy,189,189,0,Luna A + parent review
+zego,insurance_motor,186,185,1,Luna A + parent review
+castle vending,retail_other,184,184,0,Luna A + parent review
+tim hortons,restaurant_cafe,181,181,0,Luna A + parent review
+novocash,personal_loan_repayment,178,178,0,Luna A + parent review
+1st central,insurance_motor,178,173,5,Luna A + parent review
+harvester,restaurant_cafe,177,169,8,Luna A + parent review
+london north eastern railway,public_transport_rail_coach,175,151,24,Luna A + parent review
+wix,web_services,175,174,1,Luna A + parent review
+gousto,groceries_specialist,175,173,2,Luna A + parent review
+thameslink,public_transport_rail_coach,174,174,0,Luna A + parent review
+gather & gather,catering,174,174,0,Luna A + parent review
+fafabet,gambling_betting,167,167,0,Luna A + parent review
+venda valet,retail_other,166,166,0,Luna A + parent review
+denplan,insurance_health,165,163,2,Luna A + parent review
+south west water,water,165,158,7,Luna A + parent review
+direct line,insurance_general,165,163,2,Luna A + parent review
+drafty,personal_loan_repayment,164,164,0,Luna A + parent review
+7 days performance,vehicle_maintenance,164,164,0,Luna A + parent review
+lottogo,gambling_lottery,164,164,0,Luna A + parent review
+betano,gambling_betting,159,159,0,Luna A + parent review
+dvla-k,road_tax,158,155,3,Luna A + parent review
+vortex competition,prize_competitions,157,157,0,Luna A + parent review
+g2a,gaming_console_pc,155,153,2,Luna A + parent review
+world duty free,airport_spend,155,149,6,Luna A + parent review
+musicmagpie,marketplace_general,154,150,4,Luna A + parent review
+victoria's secret,clothing_general,153,153,0,Luna A + parent review
+warren james,jewellery,150,146,4,Luna A + parent review
+uniqlo,clothing_general,148,134,14,Luna A + parent review
+reading transport,public_transport_rail_coach,148,148,0,Luna A + parent review
+nwl & esw,water,147,144,3,Luna A + parent review
+cp plus,car_parking,145,145,0,Luna A + parent review
+cd selecta,retail_other,142,142,0,Luna A + parent review
+cdkeys,gaming_console_pc,141,141,0,Luna A + parent review
+homeserve,home_repair,139,136,3,Luna A + parent review
+betfred chargeback,gambling_betting,135,135,0,Luna A + parent review
+blackpool transport,public_transport_rail_coach,135,134,1,Luna A + parent review
+bershka,clothing_general,135,131,4,Luna A + parent review
+sephora,health_beauty_general,134,130,4,Luna A + parent review
+portland wines,alcohol_wine,134,134,0,Luna A + parent review
+brighton & hove buses,public_transport_rail_coach,134,134,0,Luna A + parent review
+bb-samsung cd,computing_devices,131,131,0,Luna A + parent review
+house of fraser,department_store,130,127,3,Luna A + parent review
+ee device payment,mobile_handset,129,129,0,Luna A + parent review
+rowlands pharmacy,pharmacy,129,129,0,Luna A + parent review
+first response finance,personal_loan_repayment,129,129,0,Luna A + parent review
+dunnes stores,groceries,127,120,7,Luna A + parent review
+gofundme,charitable_donation,127,126,1,Luna A + parent review
+ring standard plan,web_services,127,127,0,Luna A + parent review
+mychildatschool bromcom,education_general,124,124,0,Luna A + parent review
+nespresso,restaurant_cafe,124,122,2,Luna A + parent review
+uk fuels,fuel,124,124,0,Luna A + parent review
+groupon,marketplace_general,123,94,29,Luna A + parent review
+the fragrance shop,fragrances,122,119,3,Luna A + parent review
+fonacab,taxi_rideshare,122,122,0,Luna A + parent review
+dropbox,web_services,120,120,0,Luna A + parent review
+the white hart,pub_bar,120,120,0,Luna A + parent review
+old farmhouse,accommodation,120,119,1,Luna A + parent review
+durham county council,government_services,119,119,0,Luna A + parent review
+alphera financial services,car_finance_repayment,118,118,0,Luna A + parent review
+fashionworld,clothing_general,118,118,0,Luna A + parent review
+xplore dundee,public_transport_rail_coach,117,114,3,Luna A + parent review
+upwork,business_services,116,114,2,Luna A + parent review
+cardiff bus,public_transport_rail_coach,116,116,0,Luna A + parent review
+black sheep coffee,restaurant_cafe,115,115,0,Luna A + parent review
+go skippy,insurance_motor,114,110,4,Luna A + parent review
+ifl pet insurance,insurance_pet,114,114,0,Luna A + parent review
+moneyway,personal_loan_repayment,114,113,1,Luna A + parent review
+medivet,veterinary,111,111,0,Luna A + parent review
+flamingo land,days_out,111,111,0,Luna A + parent review
+parimatch,gambling_betting,109,109,0,Luna A + parent review
+wombwell main barnsley gb,department_store,109,109,0,Luna A + parent review
+northumbrian water,water,109,109,0,Luna A + parent review
+angling direct,sports_equipment,108,107,1,Luna B + parent review
+swiftcover,insurance_motor,107,107,0,Luna B + parent review
+cornwall council,council_tax,106,106,0,Luna B + parent review
+oxfam,charity_shop,105,105,0,Luna B + parent review
+rspca,charitable_donation,105,99,6,Luna B + parent review
+bargain world,discount_store,105,105,0,Luna B + parent review
+mbna loans,personal_loan_repayment,104,103,1,Luna B + parent review
+vision express,optician,102,98,4,Luna B + parent review
+circle k,fuel,102,100,2,Luna B + parent review
+funding circle,business_loan_repayment,102,100,2,Luna B + parent review
+all bar one,pub_bar,102,102,0,Luna B + parent review
+netbet,gambling_betting,100,100,0,Luna B + parent review
+pets corner,pet_supplies,99,95,4,Luna B + parent review
+harrods,department_store,98,93,5,Luna B + parent review
+talk talk,broadband_tv_phone,97,97,0,Luna B + parent review
+flip out,sports_participation,96,91,5,Luna B + parent review
+topps tiles,home_improvement,96,92,4,Luna B + parent review
+expedia,travel_other,96,83,13,Luna B + parent review
+council tax,council_tax,95,89,6,Luna B + parent review
+parcel2go,delivery_courier,94,93,1,Luna B + parent review
+moneygram,money_transfer_service,93,90,3,Luna B + parent review
+darwin insurance,insurance_motor,92,92,0,Luna B + parent review
+cashfloat,payday_loan,86,86,0,Luna B + parent review
+moriarty law,debt_collection,85,85,0,Luna B + parent review
+iwoca,business_loan_repayment,85,85,0,Luna B + parent review
+transport for wales,public_transport_rail_coach,84,84,0,Luna B + parent review
+animal health care cj,veterinary,84,84,0,Luna B + parent review
+dwr cymru welsh water,water,82,82,0,Luna B + parent review
+justgiving,charitable_donation,81,76,5,Luna B + parent review
+liverpool victoria,insurance_general,81,80,1,Luna B + parent review
+portsmouth water,water,81,81,0,Luna B + parent review
+paysend,money_transfer_service,81,81,0,Luna B + parent review
+zooplus,pet_supplies,79,75,4,Luna B + parent review
+west midlands metro,public_transport_rail_coach,79,79,0,Luna B + parent review
+cadbury,confectionary,78,78,0,Luna B + parent review
+budget energy,energy,77,77,0,Luna B + parent review
+coca-cola,confectionary,77,77,0,Luna B + parent review
+uno bus,public_transport_rail_coach,76,76,0,Luna B + parent review
+7-eleven,convenience_store,75,75,0,Luna B + parent review
+upper crust,restaurant_cafe,74,74,0,Luna B + parent review
+funky pigeon,gifts_flowers,73,73,0,Luna B + parent review
+mcbookie,gambling_betting,67,67,0,Luna B + parent review
+united utilities w united utilities,water,66,66,0,Luna B + parent review
+my finance club,personal_loan_repayment,66,66,0,Luna B + parent review
+menkind,gifts_flowers,65,65,0,Luna B + parent review
+coalway convenience store,convenience_store,65,65,0,Luna B + parent review
+dhl,delivery_courier,64,60,4,Luna B + parent review
+pandora,jewellery,64,64,0,Luna B + parent review
+longleat,days_out,64,64,0,Luna B + parent review
+uber uk rides,taxi_rideshare,63,63,0,Luna B + parent review
+just park,car_parking,63,63,0,Luna B + parent review
+accord mortgages,mortgage,63,63,0,Luna B + parent review
+skyline taxis,taxi_rideshare,63,63,0,Luna B + parent review
+brewdog,pub_bar,61,53,8,Luna B + parent review
+edreams,travel_other,59,58,1,Luna B + parent review
+talksportbet,gambling_betting,59,59,0,Luna B + parent review
+kingsbury food & wine,alcohol_beer_spirits,58,58,0,Luna B + parent review
+ratesetter,personal_loan_repayment,58,58,0,Luna B + parent review
+the sun,newspapers,57,57,0,Luna B + parent review
+squarespace,web_services,57,57,0,Luna B + parent review
+fair for you,personal_loan_repayment,57,57,0,Luna B + parent review
+tm legal services tmls,debt_collection,57,57,0,Luna B + parent review
+village news,convenience_store,56,56,0,Luna B + parent review
+todays local,convenience_store,56,56,0,Luna B + parent review
+talk mobile,mobile_phone_contract,55,55,0,Luna B + parent review
+rcp parking,car_parking,55,55,0,Luna B + parent review
+puccino's,restaurant_cafe,55,55,0,Luna B + parent review
+premier vet allian,veterinary,52,48,4,Luna B + parent review
+figma,software,52,50,2,Luna B + parent review
+nextltd,clothing_general,51,50,1,Luna B + parent review
+eg on the move,fuel,51,51,0,Luna B + parent review
+superdry,clothing_general,50,44,6,Luna B + parent review
+247 money,personal_loan_repayment,50,50,0,Luna B + parent review
+aci uk,debt_collection,50,50,0,Luna B + parent review
+www.amazon.,marketplace_amazon,3084,3008,76,parent override of agent skip/mismatch

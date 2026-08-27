@@ -1,0 +1,126 @@
+rule_id,merchant,pattern,detailed_category,direction,notes
+cd_glasgow_sheriff,cd glasgow,sheriff\s+court,government_services,any,Glasgow Sheriff Court / HMCTS. T5 R22 is the global description fallback.
+cd_glasgow_central,cd glasgow,glasgow\s+central,public_transport_rail_coach,any,Glasgow Central Low Level station tap.
+cd_glasgow_qst,cd glasgow,qst\s+stn,public_transport_rail_coach,any,Queen Street station OTS tap.
+cd_shop_schiphol,cd shop,schiphol|let'?s\s+play,airport_spend,any,Let's Play / Shop 118 at Schiphol. travel_retail is not a leaf; airport_spend is closest.
+cd_shop_khanz,cd shop,khanz,convenience_store,any,Shop at Khanz Birmingham.
+cd_shop_reading,cd shop,shop\s+reading,retail_other,any,Shop Reading 2 Oxford.
+foot_firstfootsoldiers,foot,firstfootsoldiers,entertainment_other,any,FirstFootSoldiers. entertainment_events is not a leaf.
+foot_stoke,foot,stoke\s+city\s+footbal,sports_tickets,any,Stoke City Football.
+glossop_cids,glossop,valley\s+cids,charitable_donation,any,Valley CIDS. charity is not a leaf.
+glossop_golf,glossop,district\s*gol,sports_participation,any,Glossop & District Golf.
+glossop_subway,glossop,glossop\s+sub|sumup\s*\*?\s*glossop\s+sub,takeaway,any,SUMUP Glossop Sub Lt (Subway).
+crawley_gov,crawley,crawley\.gov,government_services,any,Crawley Borough Council site.
+crawley_belt,crawley,black\s+belt,sports_participation,any,Crawley Black Belt / Fernyhough.
+track_southern,track,on\s+track|southern\s+ra,public_transport_rail_coach,any,On Track Southern Railway.
+track_bandits,track,track\s+bandits,clothing_general,any,SP Track Bandits. clothing_retail is not a leaf.
+longton_pfs,longton,service\s+station,fuel,any,Longton Service Station.
+longton_farm,longton,hall\s+farm,car_parking,any,Longton Hall Farm CPM. parking is not a leaf.
+cd_stirling_costa,cd stirling,costa,restaurant_cafe,any,Stirling Costa. coffee_shop is not a leaf.
+cd_stirling_goosecroft,cd stirling,goosecroft,car_parking,any,Goosecroft Road car park.
+cd_stirling_ips,cd stirling,stirling\s+council|-ips|\bips\b,car_parking,any,Stirling Council IPS parking.
+royal_victoria_hospital,royal victoria,infirma,hospital,any,Royal Victoria Infirmary.
+royal_victoria_park,royal victoria,country,days_out,any,Royal Victoria Country Park (Plaid often truncates before PARK).
+cd_merlin_cinema,cd merlin,cinemas?,cinema,any,Merlin Cinemas Prestatyn.
+cd_merlin_attractions,cd merlin,attractions?,days_out,any,Merlin Attractions / Alton.
+cd_merlin_derby,cd merlin,\bderby\b,entertainment_other,any,Merlin Derby. entertainment is not a leaf.
+cd_colchester_leisure,cd colchester,leisure,sports_participation,any,Colchester Leisure Centre.
+cd_colchester_ips,cd colchester,borough|-ips|\bips\b,car_parking,any,Colchester Borough IPS parking.
+cd_apex_kart,cd apex,kart,days_out,any,Apex Kart Chester.
+cd_apex_harlow,cd apex,harlow,business_services,any,Apex Harlow Ltd.
+cd_con_arms,cd con,coningham,pub_bar,any,Coningham Arms London.
+cd_con_conniburrow,cd con,conniburrow,unclassified_card_spend,any,Conniburrow Milton Keynes — entity not identifiable.
+cd_miss_whippy,cd miss,whippy,takeaway,any,Miss Whippy ice cream.
+cd_miss_beauty,cd miss,glam|aesthetics,beauty_treatment,any,Miss Glam / Miss Carter Aesthetics.
+medical_aid,medical,medical\s+aid,charitable_donation,any,JG Medical Aid for Palestine.
+medical_bill,medical,bill\s+medical,health_other,any,Bill Medical Canterbury. medical is not a leaf.
+medical_supermarket,medical,medical-?supermarket,pharmacy,any,Medical-Supermarket. pharmacy_supplies is not a leaf.
+wardrobe_witch,wardrobe,witch,pub_bar,any,Witch & Wardrobe Lincoln.
+wardrobe_earth,wardrobe,earth\s+wardrobe,clothing_general,any,SP Earth Wardrobe.
+wardrobe_default,wardrobe,\bwardrobe\b,clothing_general,any,Bare Wardrobe clothing. clothing_retail is not a leaf.
+cd_fresh_garbage,cd fresh,garbage,clothing_general,any,Fresh Garbage Belfast streetwear.
+cd_fresh_metro,cd fresh,fresh\s+metro,groceries,any,Fresh Metro Bradford.
+c_k_knutsford,c k,knutsford,restaurant_cafe,any,Knutsford S/W BK. takeaway_bakery is not a leaf; bakeries are restaurant_cafe.
+c_k_kremlin,c k,kremlin,pub_bar,any,Kremlin Belfast.
+botany_kiosk,botany,kiosk,takeaway,any,Botany Bay Beach Kiosk.
+botany_inn,botany,inn,pub_bar,any,Botany Bay Inn/Inne.
+afc_wigan_trains,afc wigan wallgate,northern\s+trains,public_transport_rail_coach,any,Northern Trains Ltd collapsed onto the Wallgate till string.
+afc_wigan_takeaway,afc wigan wallgate,wallgate|afc\s+wigan,takeaway,any,AFC Wigan Wallgate dining.
+scan_com,scan,scan\.com,health_other,any,SCAN.COM UK. medical is not a leaf.
+scan_discents,scan,scandiscents,home_accessories,any,SP Scandiscents. home_retail is not a leaf.
+mablethorpe_grange,mablethorpe,grange\s+leisure,accommodation,any,Grange Leisure Park. travel_lodging is not a leaf.
+mablethorpe_rock,mablethorpe,\brock\b,confectionary,any,Mablethorpe Rock. sweets_retail is not a leaf.
+wigmore_pharmacy,wigmore,pharmacy,pharmacy,any,Wigmore Pharmacy London.
+wigmore_ppoint,wigmore,ppoint|wigmore\s+&\s+ham|gillingham,convenience_store,any,PayPoint Wigmore & Ham Gillingham.
+cd_alder_vets,cd alder,vets?,veterinary,any,Alder Vets Bourne.
+cd_alder_aldermaston,cd alder,aldermaston,fuel,any,Aldermaston filling station.
+cd_drum_pfs,cd drum,filling\s+station,fuel,any,Drum Filling Station.
+cd_drum_central,cd drum,drum\s+central,musical_instruments,any,Drum Central Edinburgh. music_retail is not a leaf.
+c_unique_petrol,c unique,petrol,fuel,any,Unique Petrol Station.
+c_unique_mobile,c unique,unique\s+mobile|\bmobile\b,mobile_handset,any,Unique Mobile Northampton. electronics_retail is not a leaf.
+mexpress_medexpress,mexpress uk cd,medexpress|med\s*express,pharmacy,any,MedExpress. Observed rows are often just MEXPRESS UK CD + digits.
+mexpress_molina,mexpress uk cd,molina,delivery_courier,any,Molina Express. courier_logistics is not a leaf.
+heweston_insurance,melanie and paul heweston,insurance,insurance_general,any,insurance is not a leaf.
+heweston_loan,melanie and paul heweston,\bloan\b,loan_repayment_manual,any,loan keyword on the same counterparty.
+wik_repayment,wik,maciagowska|repayment,loan_repayment_manual,any,Wiktoria Maciagowska repayment.
+wik_sopel,wik,sopel,transfer_p2p,any,Wiktoria Sopel. p2p_transfer is not a leaf.
+artbox_scoop,artbox,scoop,restaurant_cafe,any,ARTBOX Scoop & Crumb. coffee_shop_cafe is not a leaf.
+artbox_shop,artbox,artbox,stationery,any,ARTBOX stationery.
+cd_best_vapes,cd best,best4vapes|best\s*4\s*vapes,vaping,any,Best4Vapes. vape_shop is not a leaf.
+cd_best_one,cd best,best\s+one,convenience_store,any,Best One convenience.
+fitzsimons_joshua,fitzsimons,joshua,transfer_p2p,any,MOB Joshua Fitzsimons.
+fitzsimons_pub,fitzsimons,fitzsimons,pub_bar,any,Fitzsimons EUR card tap.
+banquet_paypal,banquet,paypal,music_other,any,PayPal Banquet Records. music_retail is not a leaf.
+banquet_sq,banquet,sq\s*\*|nottingham,restaurant_cafe,any,Square Banquet Nottingham hospitality.
+thurrock_community,thurrock,community,government_services,any,Thurrock Community direct debit.
+thurrock_ips,thurrock,borough|-ips,car_parking,any,Thurrock Borough IPS parking.
+derek_wright,derek,wright|loan\s+repayment,loan_repayment_manual,any,Derek Wright loan repayment.
+derek_jones,derek,derek\s+jones|\bjones\b,transfer_p2p,any,Derek Jones Faster Payment.
+the_black_chip,the black,black\s+country,takeaway,any,The Black Country Chip.
+the_black_heath,the black,blackheath,pub_bar,any,The Blackheath.
+east_bridgford_garden,east bridgford,gdn|garden,garden,any,East Bridgford Garden Centre. garden_centre is not a leaf.
+east_bridgford_medical,east bridgford,medica,health_other,any,East Bridgford Medical. medical is not a leaf.
+cd_tp_kebabs,cd tp,amity|kebabs?,takeaway,any,TP Amity Kebabs.
+cd_tp_bandj,cd tp,b\s+and\s+j,convenience_store,any,TP B and J De.
+cd_no_offlicence,cd no.,off\s+licence,alcohol_beer_spirits,any,No.1 Off Licence Bristol. off_licence is not a leaf.
+cd_no_restaurant,cd no.,no\.?\s*7\s+restaurant|restaurant,restaurant_cafe,any,No.7 Restaurant Craigavon.
+cd_sheffield_chaucer,cd sheffield,chaucer,convenience_store,any,Sheffield Chaucer Road / Parson Cross.
+cd_sheffield_meadowhall,cd sheffield,meadow,retail_other,any,Sheffield Meadowhall.
+cd_green_man,cd green,green\s+man,pub_bar,any,Green Man London.
+cd_green_valley,cd green,green\s+valley,groceries,any,Green Valley London grocer.
+egg_zettle,egg,zettle|eggbugland,retail_other,any,ZETTLE Eggbuckland Plymouth POS. pub_bar/retail_other were both listed; till is not identifiable as a pub.
+egg_energy,egg,162224|direct\s+debit|\begg\b,energy,any,Egg Charging / Phoenix Renewables. home_energy is not a leaf; 16-22-24 is not loan_repayment_manual.
+jasmine_restaurant,jasmine,restaurant,restaurant_cafe,any,Jasmine Restaurant card spend.
+jasmine_p2p,jasmine,"chesney|sortcode|\d{10,}",transfer_p2p,any,Jasmine Chesney FPS / numeric FPS ref. p2p_transfer is not a leaf.
+paymyvet_groom,paymy.vet,groom,pet_other,any,PAYMY.VET Pets Groomi Farnham. pet_grooming is not a leaf.
+paymyvet_vets,paymy.vet,vets?|bolton,veterinary,any,PAYMY.VET Bolton Vets.
+bills_nanny,bill's,nanny,takeaway,any,Nanny Bill's.
+bills_bus,bill's,mcgill|buses,public_transport_rail_coach,any,McGill's Buses from a bills pot. public_transport_bus is not a leaf.
+bills_restaurant,bill's,restaurant,restaurant_cafe,any,Bill's Restaurant.
+reddish_pfs,reddish,service\s+stati,fuel,any,Reddish Service Station.
+reddish_shop,reddish,convenience,convenience_store,any,Reddish Convenience St.
+hafod_sq,hafod,sq\s*\*,restaurant_cafe,any,Square Hafod dining tap.
+hafod_housing,hafod,housing,rent,any,Hafod Housing Association DD.
+hart_il,hart,hart\s+il|sortcode,transfer_p2p,any,Hart Il Faster Payment. p2p_transfer is not a leaf.
+hart_council,hart,district\s+council|\bcouncil\b,council_tax,any,Hart District Council Hampshire.
+blackwells_p2p,blackwell's,sammy|k\s+a\s+blackwell,transfer_p2p,any,K A Blackwell Sammy FT.
+blackwells_books,blackwell's,blackwell,books,any,Blackwell's bookshop / Oxford.
+gamesys_unspecified,gamesys operation,gamesys,gambling_unspecified,any,"Gamesys runs bingo and casino brands; keep unspecified, do not T4-ingest casino."
+ups_ppoint,the ups store,ppoint|g\s+and\s+s\s+stores,convenience_store,any,PayPoint G and S Stores collapsed onto The UPS Store.
+ups_store,the ups store,ups\s+store,delivery_courier,any,Genuine UPS Store card tap.
+hiba_bibs,hiba,bibs|bakri|clothing,clothing_general,any,Hiba Bakri t/a Bibs clothing. clothing_retail is not a leaf.
+hiba_sagheer,hiba,sagheer,transfer_p2p,any,Hiba Sagheer personal FPS.
+collection_pot_dining,collection pot,collection\s+pot,restaurant_cafe,any,Dining POS. gifts_presents is not a leaf (would be gifts_flowers) — no money-pot narrative in this pack.
+wirral_atp,wirral mbc,\batp\b,car_parking,any,Wirral MBC ATP parking. parking is not a leaf.
+wirral_council,wirral mbc,wirral\s+mbc,council_tax,any,Wirral MBC council-tax scale DD/card.
+barbican_news,barbican,news,convenience_store,any,Barbican News. newsagent is not a leaf.
+barbican_theatre,barbican,barbican,theatre,any,Barbican Centre. arts_centre is not a leaf.
+wine_lodge_ppoint,wine lodge,ppoint,alcohol_beer_spirits,any,PayPoint Wine Lodge London. off_licence is not a leaf.
+wine_lodge_pub,wine lodge,wine\s+lodge,pub_bar,any,Yates's Wine Lodge pub.
+pier_chips,pier,fish|chips,takeaway,any,Pier 7 Fish N Chips.
+pier_p2p,pier,pieralongia,transfer_p2p,any,Pieralongia FPS. p2p_transfer is not a leaf.
+pier_36,pier,pier\s+36|donaghadee,pub_bar,any,Pier 36 Donaghadee.
+amber_valley_ips,amber valley borough council,-ips|\bips\b,car_parking,debit,Amber Valley IPS parking (Doncaster GBR fingerprint), not council tax.
+roadchef_whsmith,roadchef,whsmi,convenience_store,debit,Roadchef WHSmith shop, not the restaurant leaf.
+wembley_park_express,wembley park,expre,convenience_store,debit,Wembley Park Express convenience, not stadium days_out.
+natwest_westend_recollection,rbs-natwest w/end credit,recollection|monzo,financial_services_other,debit,Temporary credit recollection from Monzo — bank ops, not a loan product.

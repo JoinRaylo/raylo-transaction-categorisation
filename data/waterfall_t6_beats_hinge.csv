@@ -1,0 +1,133 @@
+source,provider,merchant_raw,description_raw,amount,direction,native_category,gold_leaf,ml_leaf,waterfall_leaf
+unified_v2,plaid,Abercrombie & Fitch,Abercrombie & Fitch,35.0,debit,GENERAL_MERCHANDISE_APPAREL_AND_ACCESSORIES,clothing_general,pub_bar,clothing_general
+unified_v2,plaid,Byron,Byron Hara Credit Card,130.0,debit,LOAN_PAYMENTS_CREDIT_CARD_PAYMENT,credit_card_repayment,transfer_p2p,credit_card_repayment
+unified_v2,plaid,Aclax LTD,Barclays account - deposit Aclax ltd - SortCodeAccountNumber: 20134523641341,4100.0,debit,TRANSFER_OUT_OTHER,unclassified_transfer,accountancy,unclassified_transfer
+unified_v2,plaid,Domestic & General,"DIRECT DEBIT PAYMENT TO D&G APPLIANCE CARE REF DBJR0006668, MANDATE NO 0056",7.83,debit,INSURANCE_AND_TAX_INSURANCE,insurance_general,insurance_other,insurance_general
+unified_v2,plaid,Swiftcover,SWIFTCOVER,57.76,debit,INSURANCE_AND_TAX_INSURANCE,insurance_general,unclassified_other,insurance_general
+unified_v2,plaid,Halifax District,HALIFAX DISTRICT PHALIFAX,2.08,debit,GOVERNMENTS_AND_NON_PROFIT_GOVERNMENTS_AND_NON_PROFIT,council_tax,sports_participation,council_tax
+unified_v2,equifax,Scottish Widows,SCOTTISH WIDOWS,88.52,debit,Insurance | Life Insurance,insurance_life,days_out,insurance_life
+unified_v2,equifax,Plus500,0129 22MAY25      PLUS500           LONDON          GBCREDIT,75.0,credit,Investments and Trading | Trading,investment_trading,gambling_unspecified,investment_trading
+unified_v2,equifax,Packlink,PACKLINK,2.97,debit,Services | Delivery,delivery_courier,ferry_rail_travel,delivery_courier
+unified_v2,equifax,PRA Group,PRA Group PRA GROUP              LONDON        GBR,132.0,debit,Financial Services | Debt Collection,debt_collection,night_club,debt_collection
+unified_v2,equifax,Roadchef,VMS ROADCHEF WHSMISTAFFORD,27.08,debit,"Restaurants and takeaway | Restaurants, Cafes and Bistros",restaurant_cafe,convenience_store,restaurant_cafe
+unified_v2,equifax,Amazon Services,AMAZON UK SERVICES  2617 00165995 BGC,400.18,credit,Identified Salary | Amazon,salary,experience_days,salary
+unified_v2,equifax,Fidelity,FASTER PAYMENTS RECEIPT REF.WAGES FROM FIDELITY HEALTHCAR,287.0,credit,Identified Salary | Investments,salary,experience_days,salary
+unified_v2,equifax,Plus500,7456 03MAR25  D   PLUS500           LONDON GB,244.0,debit,Investments and Trading | Trading,investment_trading,clothing_childrens,investment_trading
+unified_v2,equifax,Emirates,Crv*emiratescom Dubai Crv*emirates.com Dubai,115.39,debit,Flights and Holidays | Flights,flights,music_other,flights
+unified_v2,equifax,Santeda International Limited,SANTEDA INTL.,30.0,debit,Gambling and Betting | Poker and Casino Games,gambling_casino,unclassified_other,gambling_casino
+unified_v2,plaid,Audleys Wood,Audleys Wood Hotel ,5.5,debit,TRAVEL_AND_TRANSPORTATION_LODGING,accommodation,restaurant_cafe,accommodation
+unified_v2,plaid,Lavazza,CARD PAYMENT TO LAVAZZA PROFESSIONAL U ON 15-08-2025,1.4,debit,DINING_COFFEE,restaurant_cafe,confectionary,restaurant_cafe
+unified_v2,plaid,Wizz Air,INT'L 0064837503  Wizz Air MalMI7RKFValetta           EUR 271.97        @1.1453 Visa Rate,237.46,debit,TRAVEL_AND_TRANSPORTATION_FLIGHTS,flights,airport_spend,flights
+unified_v2,plaid,Cd The Harbour Inn Gar,9047 24JUN25 CD   THE HARBOUR INN   GARLIESTON GB,115.7,debit,TRAVEL_AND_TRANSPORTATION_LODGING,accommodation,pub_bar,accommodation
+unified_v2,plaid,Utility Warehouse,UTILITY WAREHOUSE  2050221/2050221/23 DDR Utility Warehouse,81.0,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,utility_other,energy,utility_other
+unified_v2,plaid,Nutmeg,NUTMEG  29HS8V3 DDR Nutmeg,35.0,debit,TRANSFER_OUT_INVESTMENT_AND_RETIREMENT_FUNDS,investment_general,account_charge,investment_general
+unified_v2_batch2,equifax,Boro Cars Limited,Boro Cars MB Cars                Dublin        IRL,1.01,credit,Identified Salary | Taxis,salary_gig,taxi_rideshare,salary_gig
+unified_v2_batch2,equifax,Hudson,HUDSON M M HUDSON RP4659987538108500,20.0,credit,Transfers / Other | Recruitment Services,income_agency_work,transfer_p2p,income_agency_work
+unified_v2_batch2,equifax,The Best Connection,BEST CONNECTION,290.72,credit,Transfers / Other | Recruitment Services,income_agency_work,clothing_childrens,income_agency_work
+unified_v2_batch2,equifax,Optimum Credit,OPTIMUM CREDIT Optimum Credit Uxbridge,322.74,debit,Rent and Mortgage | Mortgages,mortgage,debt_collection,mortgage
+unified_v2_batch2,equifax,Nicholl Fuel Oil,Nicholl Fuel Oils Co EndToEndID: NOTPROVIDED,20.0,debit,Utilities | Heating Oil,heating_oil,fuel,heating_oil
+unified_v2_batch2,equifax,Plusnet,PLUSNET PLC,31.99,debit,"Utilities | Internet, TV and Phone",broadband_tv_phone,night_club,broadband_tv_phone
+unified_v2_batch2,equifax,Batleys,CARD PAYMENT TO BATLEYS LTD ON 29-06-2024,44.67,debit,Shopping (Household Essentials) | Cash & Carry,cash_and_carry,unclassified_other,cash_and_carry
+unified_v2_batch2,equifax,Aramark,Aramark Ltd Ku Penrhyn Rd Market P,4.45,debit,Restaurants and takeaway | Catering,catering,convenience_store,catering
+unified_v2_batch2,equifax,adidas,ADIDASWWW.ADIDAS.C ADIDASWWW.ADIDAS.CO.UK,37.2,debit,Shopping (Fashion) | Sportswear,sportswear,unclassified_other,sportswear
+unified_v2_batch2,equifax,Fancy Dress Outfitters,FANCY DRESS SHOP (DONCASTER,2.99,debit,Shopping (Fashion) | Fancy Dress,fancy_dress,entertainment_other,fancy_dress
+unified_v2_batch2,equifax,Robert Dyas,Robert Dyas Bournemout ROBERT DYAS BOURNEMOUT BOURNEMOUTH   GBR,143.38,debit,Shopping (Home) | Tools,tools,transfer_p2p,tools
+unified_v2_batch2,equifax,Tree2MyDoor,SP TREE2MYDOOR  ON 01 APR BCC,82.0,debit,Shopping (Home) | Plants,garden,clothing_outdoor,garden
+unified_v2_batch2,equifax,Bathrooms.com,"BANK GIRO CREDIT REF WEST ONE BATHROOMS, WEST ONE BATHROOMS",2467.32,credit,Identified Salary | Bathroom Furniture and Accessories,salary,bathroom,salary
+unified_v2_batch2,equifax,beds.co.uk,WWW.BEDS.CO.UK,29.95,debit,Shopping (Home) | Bedding,bedding,baby_products,bedding
+unified_v2_batch2,equifax,Lights4Fun,CARD PAYMENT TO SP LIGHTS4FUN ON 02-01-2025,38.97,debit,Shopping (Home) | Lights and Lamps,lighting,days_out,lighting
+unified_v2_batch2,equifax,Festive Lights,Festive Lights Ltd,27.37,debit,Shopping (Home) | Lights and Lamps,lighting,live_music,lighting
+unified_v2_batch2,equifax,Debenhams,FRANCESCA COLLINS Debenhams,30.0,debit,Shopping (Discretionary) | Department Stores,department_store,transfer_p2p,department_store
+unified_v2_batch2,equifax,e2save,E2save Web,0.0,debit,Shopping (Discretionary) | Mobile Handsets and Accessories,mobile_handset,savings_transfer,mobile_handset
+unified_v2_batch2,equifax,My Nametags,Visa purchase My Nametags APPLEPAY 1122,14.95,debit,Shopping (Discretionary) | Baby Gifts,baby_products,retail_other,baby_products
+unified_v2_batch2,equifax,Go Groopie,GoGroopie  ON 24 DEC BCC,3.99,debit,Shopping (Discretionary) | Vouchers/Discount Codes,vouchers,marketplace_general,vouchers
+unified_v2_batch2,equifax,Greater Anglia,Greater Anglia GREATER ANGLIA T/O     LONDON EC2M   GBR,10.0,debit,Commuting and travel | Trains and Coaches,public_transport_rail_coach,sports_equipment,public_transport_rail_coach
+unified_v2_batch2,equifax,Triple Twenty Taxis,Triple 20 Cars Cpt TRIPLE 20 CARS* CPT    +441623442211 GBR,2.0,credit,Identified Salary | Taxis,salary_gig,taxi_rideshare,salary_gig
+unified_v2_batch2,equifax,Europcar,Europcar.com/uk,143.64,debit,Commuting and travel | General Car Hire,car_hire,carwash,car_hire
+unified_v2_batch2,equifax,Hertz,HERTZ 24/7,5.7,debit,Commuting and travel | General Car Hire,car_hire,convenience_store,car_hire
+unified_v2_batch2,equifax,Travelodge,Visa purchase TRAVELODGE GB0000 APPLEPAY 0600,99.99,debit,Flights and Holidays | Hotels and Accommodation,accommodation,travel_other,accommodation
+unified_v2_batch2,equifax,On the Beach,Onthebeachcomca,204.99,debit,Flights and Holidays | Holidays,holiday_package,live_music,holiday_package
+unified_v2_batch2,equifax,Park Resorts,Sunnydale Holiday Park PARK RESORTS            GREAT BRITAI GBR,5.4,debit,Flights and Holidays | Camping Holidays,camping_holiday,holiday_uk,camping_holiday
+unified_v2_batch2,equifax,Perran Sands Holiday Park,PERRAN SANDS HOL,27.95,debit,Flights and Holidays | Camping Holidays,camping_holiday,holiday_uk,camping_holiday
+unified_v2_batch2,equifax,Travelex,TRAVELEX@TESCO    ROYSTON,204.02,debit,Flights and Holidays | Foreign Currency,foreign_currency,public_transport_rail_coach,foreign_currency
+unified_v2_batch2,equifax,Holiday Inn,HOLIDAY INN HUNTINGDON Holiday Inn Huntingdon Cambs,3.0,debit,Flights and Holidays | Hotels and Accommodation,accommodation,pub_bar,accommodation
+unified_v2_batch2,equifax,Virgin Holidays,Direct debit VIRGIN HOLIDAYS 070436 33893077,397.0,debit,Flights and Holidays | Holidays,holiday_package,broadband_tv_phone,holiday_package
+unified_v2_batch2,equifax,Fatsoma,9577 11AUG23      WWW.FATSOMA.COM   MANCHESTER GB,7.0,debit,Entertainment | Music Tickets,live_music,education_general,live_music
+unified_v2_batch2,equifax,Millwall FC,Millwall Football Club Millwall FC            London        GBR,17.1,debit,Entertainment | Sports Ticket,sports_tickets,sports_participation,sports_tickets
+unified_v2_batch2,equifax,Fordhouses Cricket and Social Club,FORDHOUSES CRICKET FORDHOUSES CRICKET CLU,8.95,debit,Entertainment | Sporting General,sports_participation,private_members_club,sports_participation
+unified_v2_batch2,equifax,White Star Fc,White Star FC                            Anne- U14,40.0,debit,Entertainment | Sporting General,sports_participation,sports_tickets,sports_participation
+unified_v2_batch2,equifax,American Golf,AMERICAN GOLF LEISURE American Golf Leisure,3.6,debit,Shopping (Discretionary) | Sports Equipment,sports_equipment,sports_participation,sports_equipment
+unified_v2_batch2,equifax,Wembley Park,Wembley Park expreWembley,4.48,debit,Entertainment | Days Out,days_out,convenience_store,days_out
+unified_v2_batch2,equifax,Attraction Tickets,attractiontickets. attractiontickets.com,16.86,debit,Entertainment | Experience Days,experience_days,days_out,experience_days
+unified_v2_batch2,equifax,Amazon Kindle,Kindle Svcs*RZ7XA0 USA AMOUNT IN USD 9.51 ON 29 FEB VISA 1.261799 FINAL GBP AMOUNT INCLUDES NON-STERLING TRANS FEE ?0.23 ,7.77,debit,"Books, Newspapers and Magazines | General Books",books,retail_tv_online_shopping,books
+unified_v2_batch2,equifax,Scholastic Book Clubs,0184 01MAR23      SCHOLASTIC BOOK   FAIRS             WARWICK GB,14.98,debit,"Books, Newspapers and Magazines | General Books",books,sports_participation,books
+unified_v2_batch2,equifax,Sport and Recreation Alliance,Contactless Payment SPORT AND RECREATI APPLEPAY 1485,7.5,debit,Services | General Memberships,memberships,sports_participation,memberships
+unified_v2_batch2,equifax,AdmireMe,AdmireMe.VIP Kiwi Leisure  AdmireMe               GBR,35.0,debit,Entertainment | Adult Entertainment,adult_entertainment,sports_participation,adult_entertainment
+unified_v2_batch2,equifax,Steamray.com,9861 13OCT22      STREAMRAY.HELP    08000988311 GB,45.21,debit,Entertainment | Adult Entertainment,adult_entertainment,memberships,adult_entertainment
+unified_v2_batch2,equifax,Life Extension,"CARD PAYMENT TO LIFE EXTENSION FOUNDAT ,140.96 USD, RATE 0.7929/GBP ON 16-11-2024",111.77,debit,Personal Healthcare | Supplements,supplements,music_other,supplements
+unified_v2_batch2,equifax,Lenstore,Lenstore from The Seeing Eye Friend Pot Lenstore               St Martin     GBR,23.97,debit,Personal Healthcare | Glasses and Contact Lenses,optician,convenience_store,optician
+unified_v2_batch2,equifax,Mersey Care,MERSEYCARE TRUST,214.97,credit,Identified Salary | Adult Care,salary,adult_care,salary
+unified_v2_batch2,equifax,Co-op Funeralcare,CO-OPERATIVE FUNER,20.55,debit,Services | Funeral Directors,funeral,groceries,funeral
+unified_v2_batch2,equifax,The Insurance Emporium,THE INSURANCE EMPO,61.58,debit,Insurance | Other Insurance,insurance_other,insurance_general,insurance_other
+unified_v2_batch2,equifax,Wex Europe Services (uk) Limited,5881 30AUG24      WEX EUROPE        SERVICES UK       MANCHESTER GB,38.68,debit,Financial Services | Charge Card,charge_card_repayment,fuel,charge_card_repayment
+unified_v2_batch2,equifax,RBS-NatWest W/End Credit,Temporary Credit recollection from Monzo,35.0,debit,Financial Services | Revolving Credit,revolving_credit_repayment,debt_collection,revolving_credit_repayment
+unified_v2_batch2,equifax,Lex Autolease,Direct debit LEX AUTOLEASE ************9210,307.74,debit,Financial Services | Car Lease Plan,car_lease,optician,car_lease
+unified_v2_batch2,equifax,Loans 2 Go,Visa purchase LOANS2GO,176.78,debit,Financial Services | Payday Loans,payday_loan,experience_days,payday_loan
+unified_v2_batch2,equifax,CheckMyFile,8325 17SEP24      CHECKMYFILE.COM   CORNWALL GB,14.99,debit,Services | Budgeting and Credit Reporting Services,credit_reporting_service,online_services,credit_reporting_service
+unified_v2_batch2,equifax,Scottish Friendly,SFA  PSD/OB100766266AA DDR Scottish Friendly,13.27,debit,Investments and Trading | Investments,investment_general,charitable_donation,investment_general
+unified_v2_batch2,equifax,Winterflood Securities,WINTERFLOOD SECURI,15.0,debit,Investments and Trading | Trading,investment_trading,home_improvement,investment_trading
+unified_v2_batch2,equifax,One Money Mail,ONE MONEY MAIL  ON 13 DEC BCC,17.0,debit,Transfers / Other | Money Transfers,money_transfer_service,email_services,money_transfer_service
+unified_v2_batch2,equifax,Birkbeck College,BIRKBECK COLLEGE                      REFERENCE: 00091923/14015625,675.0,debit,Education and Learning | School Fees,school_fees,education_general,school_fees
+unified_v2_batch2,equifax,Preply,Visa purchase Preply Inc. APPLEPAY 6000,26.76,debit,Education and Learning | Home Learning,home_learning,payment_intermediary,home_learning
+unified_v2_batch2,equifax,Happy Tails,Contactless Payment HAPPY TAILS VETS APPLEPAY 0853,69.36,debit,Pets | Pet Care,veterinary,pet_supplies,veterinary
+unified_v2_batch2,equifax,Pet Plan,PET PLAN LTD PREM,29.15,debit,Insurance | Pet Insurance,insurance_pet,pet_supplies,insurance_pet
+unified_v2_batch2,equifax,Republic of Cats,Visa purchase REPUBLIC OF CATS APPLEPAY 1966,22.08,debit,Pets | Pet Accessories,pet_supplies,unclassified_other,pet_supplies
+unified_v2_batch2,equifax,Conservative Party,THE CONSERVATIVE W THE CONSERVATIVE WOMAN,5.0,debit,Charitable Giving | Political Parties,political_donation,private_members_club,political_donation
+unified_v2_batch2,equifax,Office Furniture Warehouse,OFFICE FURNITURE  KWH Furniture     VIA MOBILE - PYMT FP 09/06/************2212000N,60.0,debit,Shopping (Discretionary) | Office Equipment,office_equipment,home_accessories,office_equipment
+unified_v2_batch2,equifax,TGI Fridays,TGI FRIDAY'S  ON 22 SEP CLP,19.85,debit,"Restaurants and takeaway | Restaurants, Cafes and Bistros",restaurant_cafe,unclassified_other,restaurant_cafe
+unified_v2_batch2,equifax,Leicester city Council,"BANK GIRO CREDIT REF LEICESTER CITY COU, 1003038 WALTON",500.68,credit,Identified Salary | Council,salary,council_tax,salary
+unified_v2_batch2,equifax,MoneyPlus Group,Moneyplus Group MoneyPlus Group                      GBR,107.0,debit,Financial Services | Debt Management,debt_management_plan,clothing_childrens,debt_management_plan
+unified_v2_batch2,equifax,Daybreak,DAYBREAK WATERFRON DAYBREAK WATERFRONT SE,8.0,debit,Shopping (Discretionary) | Newsagents and Convenience Stores,convenience_store,restaurant_cafe,convenience_store
+unified_v2_batch2,equifax,Brewers Fayre,BREWERS FAYRE 4151 BREWERS FAYRE 41512160,10.0,debit,"Restaurants and takeaway | Restaurants, Cafes and Bistros",restaurant_cafe,home_improvement,restaurant_cafe
+unified_v2_batch2,equifax,SuperValu,POSC29MAR SUPERVALU N,7.04,debit,Shopping (Household Essentials) | General Groceries,groceries,marketplace_general,groceries
+unified_v2_batch2,equifax,Mercedes Benz,Contactless Payment MERCEDES BENZ,1.55,debit,Automotive | Garages and Parts,vehicle_maintenance,restaurant_cafe,vehicle_maintenance
+unified_v2_batch2,equifax,TSB Returns Ltd ,2395 20FEB24      TSB RETURNS LTD   TELFORD GB,7.1,debit,Services | Delivery,delivery_courier,unclassified_other,delivery_courier
+unified_v2_batch2,equifax,Oasis Community Learning,OASIS COMMUNITY LE,1404.56,credit,Identified Salary | General Education,salary,sports_participation,salary
+unified_v2_batch2,equifax,Copart,www.copart.co.uk Www.copart.co.uk,156.0,debit,Automotive | Car Dealerships,vehicle_purchase,arts_crafts,vehicle_purchase
+unified_v2_batch2,equifax,Shoe Zone,SHOE ZONE,10.2,debit,Shopping (Fashion) | Footwear,footwear,retail_small_independent,footwear
+unified_v2_batch2,equifax,Cult Beauty,KLARNA*CULT BEAUTY  ON 25 FEB BCC,24.32,debit,Personal Healthcare | General Health and Beauty,health_beauty_general,beauty_treatment,health_beauty_general
+unified_v2_batch2,equifax,De Vere Hotel,5216 01DEC24 CD   DE VERE TORTWORTH ESTA              WOTTON UNDER GB,8.9,debit,Flights and Holidays | Hotels and Accommodation,accommodation,restaurant_cafe,accommodation
+unified_v2_batch2,equifax,Vueling,BA Inflight Sales Vueling Inflight Sales,4.99,debit,Flights and Holidays | Flights,flights,airport_spend,flights
+unified_v2_batch2,equifax,WeWork,TIER TIER GB 4-7172\c/o WeWork 145 City Road\London\EC1V 1AZ  GBRGBR,0.64,debit,Services | Business Services,business_services,charitable_donation,business_services
+unified_v2_batch2,equifax,Xtra Dog,"WWW.XTRA.DOG (VIA APPLE PAY), ON 09-03-2025",18.0,debit,Pets | Pet Accessories,pet_supplies,pub_bar,pet_supplies
+unified_v2_batch2,equifax,Pound Bakery,POUNDBAKERY - WYTH POUNDBAKERY - WYTHENSH,2.85,debit,"Restaurants and takeaway | Restaurants, Cafes and Bistros",restaurant_cafe,discount_store,restaurant_cafe
+unified_v2_batch2,equifax,Amber Valley Borough Council,Amber Valley Borou-Ips AMBER VALLEY BOROU-IPS Doncaster     GBR,1.4,debit,Utilities | Council,council_tax,car_parking,council_tax
+unified_v2_batch2,plaid,Jollyes,"Jollyes - The Pet Supe - 1 Lea Road, Waltham Abbey",74.5,debit,PET_CARE_AND_SUPPLIES_PET_SUPPLIES,pet_supplies,pub_bar,pet_supplies
+unified_v2_batch2,plaid,Tiki Chichester Gb,CRV*Tiki Chicheste CD 3551,20.3,debit,DINING_DINING,restaurant_cafe,gambling_casino,restaurant_cafe
+unified_v2_batch2,plaid,United Utilities W United Utilities,United Utilities W United Utilities,62.51,debit,RENT_AND_UTILITIES_WATER,water,energy,water
+unified_v2_batch2,plaid,Supersave,Supersave,1.99,debit,TRANSFER_OUT_SAVINGS,savings_transfer,convenience_store,savings_transfer
+unified_v2_batch2,plaid,United Utilities Water,UNITED UTILITIES W,8.06,debit,RENT_AND_UTILITIES_WATER,water,utility_other,water
+unified_v2_batch2,plaid,Spotless Water,8907 08SEP25      SPOTLESS WATER LTDSURREY GB,8.73,debit,RENT_AND_UTILITIES_WATER,water,business_services,water
+unified_v2_batch2,plaid,D Ag Communications,0018 13OCT25  D   AG COMMUNICATIONS LONDON GB,10.0,debit,RENT_AND_UTILITIES_INTERNET_AND_CABLE,broadband_tv_phone,gambling_unspecified,broadband_tv_phone
+unified_v2_batch2,plaid,Old Farmhouse,OLD FARMHOUSE  ON 12 SEP CPM Old Farmhouse,30.48,debit,TRAVEL_AND_TRANSPORTATION_LODGING,accommodation,restaurant_cafe,accommodation
+unified_v2_batch2,plaid,Jade Linney Save,Jade linney       Save,60.0,debit,TRANSFER_OUT_SAVINGS,savings_transfer,transfer_p2p,savings_transfer
+unified_v2_batch2,plaid,M. Afzaal,SumUp  *M. Afzaal,6.5,debit,TRANSFER_OUT_TRANSFER_OUT_FROM_APPS,transfer_p2p,restaurant_cafe,transfer_p2p
+unified_v2_batch2,plaid,Home Super Store,HOME SUPER STORE,1.0,debit,GENERAL_MERCHANDISE_DISCOUNT_STORES,discount_store,groceries,discount_store
+unified_v2_batch2,plaid,Cvrplan,CVRPLAN 9121954714,2.7,debit,INSURANCE_AND_TAX_INSURANCE,insurance_general,account_charge,insurance_general
+unified_v2_batch2,plaid,Motonovo Finance,MotoNovo Finance L  23021023 X23SWC BGC,-486.09,credit,LOAN_DISBURSEMENTS_OTHER,loan_disbursement,car_finance_repayment,loan_disbursement
+unified_v2_batch2,plaid,Ajet,AJET - ajet.com CD 5833    27JUL25,922.8,debit,TRAVEL_AND_TRANSPORTATION_FLIGHTS,flights,experience_days,flights
+unified_v2_batch2,plaid,Ref Rc,HELLINGLY PRESCHOOL Ref Rc2911,59.85,debit,CHILDCARE_AND_EDUCATION_CHILDCARE_AND_EDUCATION,childcare,school_fees,childcare
+unified_v2_batch2,plaid,David Lloyd,4127 22AUG25 C    DAVID LLOYD       NOTTINGHAM GB,3.85,debit,PERSONAL_CARE_GYMS_AND_FITNESS_CENTERS,gym_fitness,transfer_p2p,gym_fitness
+unified_v2_batch2,plaid,Ajjb Law,AJJB LAW  ON 13 SEP BCC,10.0,debit,GENERAL_SERVICES_CONSULTING_AND_LEGAL_SERVICES,legal_services,debt_collection,legal_services
+unified_v2_batch2,plaid,Nando's,NANDOS CHICKENLAND BGC  NANDOS CHICKENLAND BGC ,-359.04,credit,INCOME_SALARY,salary,income_agency_work,salary
+unified_v2_batch2,plaid,United Utilities W United Utilities,United Utilities W United Utilities,48.84,debit,RENT_AND_UTILITIES_WATER,water,energy,water
+unified_v2_batch2,plaid,National Education First,NATIONAL EDUCATIONFIRST PAYMENT,65.68,debit,LOAN_PAYMENTS_STUDENT_LOAN_PAYMENT,student_loan_repayment,education_general,student_loan_repayment
+unified_v3,equifax,adidas,adidaswww.adidas.co.uk Adidaswww.adidas.co.uk,33.0,debit,Shopping (Fashion) | Sportswear,sportswear,unclassified_other,sportswear
+unified_v3,equifax,adidas,ADIDASWWW.ADIDAS.C ADIDASWWW.ADIDAS.CO.UK,42.35,debit,Shopping (Fashion) | Sportswear,sportswear,unclassified_other,sportswear
+unified_v3,equifax,Shoe Zone,SHOE ZONE  ON 09 JUL CLP Shoe Zone,12.99,debit,Shopping (Fashion) | Footwear,footwear,retail_small_independent,footwear
+unified_v3,plaid,COOP,CENTRAL ENG COOP RLE12 8DU,17.98,debit,FOOD_RETAIL_GROCERIES,groceries,restaurant_cafe,groceries
+unified_v3,plaid,Utility Warehouse,Utility Warehouse - SortCodeAccountNumber: 20000080256684,53.3,debit,RENT_AND_UTILITIES_OTHER_UTILITIES,utility_other,energy,utility_other
+unified_v3,plaid,Domestic & General,D&G APPLIANCE CARE,8.4,debit,INSURANCE_AND_TAX_INSURANCE,insurance_general,insurance_other,insurance_general
+unified_v4,plaid,David Lloyd,David Lloyd Clubs Swan,2.1,debit,PERSONAL_CARE_GYMS_AND_FITNESS_CENTERS,gym_fitness,transfer_p2p,gym_fitness
+unified_v4,plaid,Domestic & General,D&G APPLIANCE CARE,8.74,debit,INSURANCE_AND_TAX_INSURANCE,insurance_general,insurance_other,insurance_general
+unified_v4,plaid,Domestic & General,"DIRECT DEBIT PAYMENT TO D&G APPLIANCE CARE REF DCP90025376, MANDATE NO 0065",5.49,debit,INSURANCE_AND_TAX_INSURANCE,insurance_general,insurance_other,insurance_general

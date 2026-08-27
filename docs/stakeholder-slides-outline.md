@@ -2,7 +2,7 @@
 
 For handoff to whoever builds the actual deck. Each slide below lists: **Title**, **Subtitle** (if any), **Main body** (the content/bullets), and **Chart** (if one is warranted — otherwise "None"). This is a skeleton, not final copy — polish wording to house style when building the real slides.
 
-All numbers sourced from `docs/project-summary.md`, `data/final_evaluation_report.md`, and the Notion page (single source of truth — pull fresh numbers from there if anything has moved on since this outline was written, 2026-08-21).
+All numbers sourced from `docs/project-summary.md`, `data/final_evaluation_report.md`, and the Notion page. **This outline was written 2026-08-21.** Coverage, dictionary size, and classifier scores moved substantially on 25–26 August 2026 — pull current figures from `CLAUDE.md` (current-state block) and `docs/project-summary.md` §8, not from this outline.
 
 **One rule that matters for slide 11 specifically: always show the audited/clean numbers alongside the full-sample numbers, never the full-sample number alone.** We found and fixed real leakage in our own evaluation (see that slide's notes) — presenting only the inflated figure would undermine the credibility this project has been built on.
 

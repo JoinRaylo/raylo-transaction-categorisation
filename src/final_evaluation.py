@@ -110,7 +110,9 @@ def plaid_native_leaf(cat, direction):
 
 
 def load_dictionary():
-    return {r["normalised_merchant"]: r["detailed_category"] for r in csv.DictReader(open(DICT_CSV))}
+    """Same T4 eligibility as generate_crosswalk_sql.load_t4_dictionary."""
+    from generate_crosswalk_sql import load_t4_dictionary
+    return load_t4_dictionary(DICT_CSV)
 
 
 def load_rules():
@@ -151,9 +153,15 @@ def our_leaf(merchant, direction, description, native_leaf_fn, *native_args):
         return t2
     if direction == "credit" and DICTIONARY.get(m) in GAMBLING_SUBTYPE_LEAVES:
         return "gambling_unspecified", "T1_direction_gambling_credit"
-    if direction == "credit" and _re.search(r"\brefund\b", description or "", flags=_re.IGNORECASE):
+    if direction == "credit" and _re.search(r"\brefund(ed)?\b", description or "", flags=_re.IGNORECASE):
         if DICTIONARY.get(m) not in GAMBLING_SUBTYPE_LEAVES:
             return "refund_received", "T2_compound_refund"
+    if direction == "credit" and _re.search(
+            r"returned\s+(direct\s+debit|standing\s+order)|direct\s+debit\s+reversal|\breversal of\b",
+            description or "", flags=_re.IGNORECASE):
+        return "returned_payment", "T2_compound_returned_payment"
+    if m == "youlend" and direction == "credit":
+        return "loan_disbursement", "T2_compound_youlend_disbursement"
     if m in DICTIONARY:
         return DICTIONARY[m], "T4_dictionary"
     for rule in RULES:
