@@ -151,3 +151,69 @@ Candidate families beyond the live analogs: 29 general-category months/debit amo
 Models: `experiment3_xgb_month3.joblib`, `experiment3_xgb_month6.joblib`. Features parquet: `outputs/experiment3_xgb_proposal_features.parquet`.
 
 Script: `src/experiment3_xgb_pipeline.py`.
+
+## 50-feature cap (follow-up)
+
+Same splits and screening as above. Selected XGB is hard-capped at **50** features by inner-train gain (no extra baseline dump). `created` / application timestamp is excluded. GINI is signed. Baseline and live rows are unchanged comparators from this same fit.
+
+Month3 selected **50** features; month6 **50**.
+
+### month3 OOT
+
+| model | n | bads | signed_gini |
+|---|---|---|---|
+| taxonomy selected XGB | 4855 | 465 | 0.4771 |
+| live Plaid logistic | 4855 | 465 | 0.3275 |
+| live Plaid XGB | 4855 | 465 | 0.403 |
+| taxonomy selected XGB, Plaid-train only | 4855 | 465 | 0.4485 |
+
+Top gain (month3, capped set):
+
+| feature | gain |
+|---|---|
+| streaming_months | 0.028012 |
+| gen_general_retail_marketplaces_months | 0.025169 |
+| gen_general_retail_marketplaces_debit_n | 0.017671 |
+| gen_insurance_debit_n | 0.016001 |
+| avg_credit_transaction_amount | 0.015808 |
+| essential_spend_ratio | 0.01435 |
+| essential_spend_amount_total | 0.012849 |
+| streaming_n | 0.01262 |
+| loan_payment_consistency_ratio | 0.010743 |
+| pct_unclassified | 0.010657 |
+| priority_debt_breadth | 0.01034 |
+| credit_product_months | 0.009311 |
+| gen_insurance_months | 0.009305 |
+| gen_digital_subscriptions_services_debit_amt | 0.009298 |
+| priority_debt_months | 0.00925 |
+
+### month6 OOT
+
+| model | n | bads | signed_gini |
+|---|---|---|---|
+| taxonomy selected XGB | 6652 | 410 | 0.5638 |
+| live Plaid logistic | 6652 | 410 | 0.4045 |
+| live Plaid XGB | 6652 | 410 | 0.3861 |
+| taxonomy selected XGB, Plaid-train only | 6652 | 410 | 0.4883 |
+
+Top gain (month6, capped set):
+
+| feature | gain |
+|---|---|
+| streaming_months | 0.077409 |
+| gen_digital_subscriptions_services_months | 0.036422 |
+| salary_months | 0.024318 |
+| gen_general_retail_marketplaces_months | 0.022994 |
+| streaming_n | 0.020846 |
+| credit_product_months | 0.01823 |
+| gen_credit_loan_repayments_months | 0.015452 |
+| priority_debt_months | 0.012379 |
+| avg_credit_transaction_amount | 0.012104 |
+| priority_debt_breadth | 0.010775 |
+| loan_payment_consistency_ratio | 0.010315 |
+| salary_credit_amt | 0.010057 |
+| revolving_credit_repayment_months | 0.010046 |
+| cash_withdrawal_n | 0.009257 |
+| gen_insurance_months | 0.009199 |
+
+Capped models: `experiment3_xgb_month3_50.joblib`, `experiment3_xgb_month6_50.joblib`.
