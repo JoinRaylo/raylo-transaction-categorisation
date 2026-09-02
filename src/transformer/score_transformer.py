@@ -41,7 +41,7 @@ from eval_sets import refuse_confirmation_eval  # noqa: E402
 from score_t5b_residual import (  # noqa: E402
     GOLD_HOLDOUT, GOLD_RISK, _init_waterfall, attach_waterfall, features_frame, scores_and_margin,
 )
-from train_classifier import TxnClassifier, load_taxonomy as load_tax_tensors  # noqa: E402
+from train_classifier import TxnClassifier, load_heads, load_taxonomy as load_tax_tensors  # noqa: E402
 from pretrain_mlm import device  # noqa: E402
 
 PIPELINE_EVAL = ROOT / "outputs" / "gold_pipeline_eval.csv"
@@ -57,7 +57,7 @@ def load_model(model_dir: pathlib.Path, dev):
     assert labels["leaves"] == leaves, "taxonomy changed since training"
     tok = AutoTokenizer.from_pretrained(model_dir)
     model = TxnClassifier(model_dir, len(leaves), len(gens), leaf_to_gen, credit_ok, debit_ok)
-    model.load_state_dict(torch.load(model_dir / "heads.pt", map_location="cpu"), strict=False)
+    model.load_state_dict(load_heads(model_dir / "heads.pt"), strict=False)  # fresh mask buffers
     model.to(dev).eval()
     return tok, model, leaves
 

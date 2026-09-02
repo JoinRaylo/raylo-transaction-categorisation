@@ -148,6 +148,17 @@ class TxnClassifier(nn.Module):
         return out.index_add_(1, self.leaf_to_gen, p)
 
 
+MASK_BUFFERS = ("leaf_to_gen", "credit_ok", "debit_ok")
+
+
+def load_heads(path):
+    """Head weights only. The direction-mask buffers are rebuilt from the taxonomy +
+    gold jsonl at construction time; inheriting them from an older checkpoint silently
+    froze the taxonomy-only mask into iterations 2–3 (cash_advance credits impossible)."""
+    sd = torch.load(path, map_location="cpu")
+    return {k: v for k, v in sd.items() if k not in MASK_BUFFERS}
+
+
 def loss_fn(model, leaf_logits, gen_logits, y_leaf, y_gen, w_gen=0.3, w_cons=0.3):
     l_leaf = F.cross_entropy(leaf_logits, y_leaf)
     l_gen = F.cross_entropy(gen_logits, y_gen)
@@ -194,8 +205,8 @@ def run_stage(name, df, encoder_dir, out_dir, epochs, batch, lr, max_len, cap, f
     tok = AutoTokenizer.from_pretrained(encoder_dir)
     model = TxnClassifier(encoder_dir, len(leaves), len(gens), leaf_to_gen, credit_ok, debit_ok).to(dev)
     if (pathlib.Path(encoder_dir) / "heads.pt").exists():
-        model.load_state_dict(torch.load(pathlib.Path(encoder_dir) / "heads.pt", map_location="cpu"), strict=False)
-        log(f"[{name}] loaded classifier heads from {encoder_dir}")
+        model.load_state_dict(load_heads(pathlib.Path(encoder_dir) / "heads.pt"), strict=False)
+        log(f"[{name}] loaded classifier heads from {encoder_dir} (mask buffers NOT inherited)")
     gen_of_leaf = {l: gens.index(g) for l, g in zip(leaves, [gens[i] for i in leaf_to_gen.tolist()])}
 
     df = df[df["leaf"].isin(leaf_ix)].reset_index(drop=True)

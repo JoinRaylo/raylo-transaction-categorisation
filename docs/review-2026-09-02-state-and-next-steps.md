@@ -429,3 +429,13 @@ thin-leaf / convention reasons (overdraft split, account-switch transfers, cash-
 disbursements). Run-to-run variance is several points. **Verdict under the pre-declared
 criteria: keep hinge for now (3 misses).** Not rejected: the blockers are the same data items
 already in Weeks 2–3 (credit tranche, T6-bound risk gold) plus 3-seed runs.
+
+**Update, later 2 Sep — iterations 2–4.** Iteration 1's direction mask was too strict (cash-advance
+disbursement credits impossible); made empirical. Iterations 2–3 then inherited the stale mask
+buffers from the silver checkpoint (bug, fixed). Iteration 3 also removed the per-leaf cap and
+chose the epoch on the merchant-disjoint val (plateau at epoch 2). **Iteration 4, the first
+run with a consistent correct mask, passes 4/5 criteria** (holdout T6-bound 61.7 vs 56.9; credits
+53.1 vs 31.2; T6-bound risk 77.5 = 77.5; credit bar 28.9 vs 17.8; 1,058 rows/s; residual 57.6
+vs 58.0 is the miss). The seen/unseen split on the residual (iteration 3) is the key evidence:
+**+5.6pp on 449 unseen-merchant rows**, deficit confined to two label conventions. Seeds 7 and
+123 running. Reports `data/transformer_classifier_report.md` and `_iter{1,2,3}_report.md`.
