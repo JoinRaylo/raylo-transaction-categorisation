@@ -188,7 +188,7 @@ def balanced_order(leaves_col: pd.Series, cap: int, floor: int, rng) -> np.ndarr
 
 # ------------------------------------------------------------ train
 def run_stage(name, df, encoder_dir, out_dir, epochs, batch, lr, max_len, cap, floor, ckpt_every,
-              val_df=None):
+              val_df=None, seed=42, keep_best=True):
     dev = device()
     leaves, leaf_ix, gens, gen_ix, leaf_to_gen, credit_ok, debit_ok = load_taxonomy()
     tok = AutoTokenizer.from_pretrained(encoder_dir)
@@ -208,7 +208,8 @@ def run_stage(name, df, encoder_dir, out_dir, epochs, batch, lr, max_len, cap, f
     log(f"[{name}] dropping {int((~legal).sum()):,} / {len(df):,} rows with a direction-illegal label "
         f"({100 * (~legal).mean():.2f}%)")
     df = df[legal].reset_index(drop=True)
-    rng = np.random.default_rng(42)
+    torch.manual_seed(seed)
+    rng = np.random.default_rng(seed)
     y_leaf_all = df["leaf"].map(leaf_ix).to_numpy()
     y_gen_all = df["leaf"].map(gen_of_leaf).to_numpy()
     is_credit_all = df["is_credit"].to_numpy()
@@ -234,11 +235,12 @@ def run_stage(name, df, encoder_dir, out_dir, epochs, batch, lr, max_len, cap, f
         step = ck["step"]; log(f"[{name}] resumed at step {step}")
 
     model.train()
+    best_val, best_epoch, best_state = -1.0, None, None
     t0 = time.time(); run = collections.deque(maxlen=200)
     while step < total:
         ep = step // steps_per_epoch
         if step % steps_per_epoch == 0 and step > 0:
-            order = balanced_order(df["leaf"], cap, floor, np.random.default_rng(42 + ep))
+            order = balanced_order(df["leaf"], cap, floor, np.random.default_rng(seed + ep))
         i = (step % steps_per_epoch) * batch
         b = order[i:i + batch]
         if len(b) == 0:
@@ -264,6 +266,16 @@ def run_stage(name, df, encoder_dir, out_dir, epochs, batch, lr, max_len, cap, f
         if step % ckpt_every == 0 or step == total:
             torch.save({"model": model.state_dict(), "opt": opt.state_dict(), "sched": sched.state_dict(),
                         "step": step}, ckpt)
+        if val_df is not None and (step % steps_per_epoch == 0 or step == total):
+            acc = evaluate(model, tok, val_df, leaf_ix, dev, max_len)
+            ep_done = step // steps_per_epoch
+            log(f"[{name}] epoch {ep_done} val leaf acc {acc:.1%} (Tier-B merchant-disjoint val)")
+            if keep_best and acc > best_val:
+                best_val, best_epoch = acc, ep_done
+                best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
+    if keep_best and best_state is not None:
+        model.load_state_dict(best_state)
+        log(f"[{name}] restored best epoch {best_epoch} (val {best_val:.1%})")
     # save encoder + tokenizer (HF format) + heads
     model.encoder.save_pretrained(out_dir)
     tok.save_pretrained(out_dir)
@@ -271,11 +283,9 @@ def run_stage(name, df, encoder_dir, out_dir, epochs, batch, lr, max_len, cap, f
     (out_dir / "labels.json").write_text(json.dumps({"leaves": leaves, "generals": gens}))
     (out_dir / "train_meta.json").write_text(json.dumps({
         "stage": name, "rows": len(df), "per_epoch": int(len(order)), "epochs": epochs, "batch": batch,
-        "lr": lr, "max_len": max_len, "cap": cap, "floor": floor, "encoder_from": str(encoder_dir),
+        "lr": lr, "max_len": max_len, "cap": cap, "floor": floor, "seed": seed,
+        "best_epoch": best_epoch, "best_val": best_val, "encoder_from": str(encoder_dir),
         "wall_s": round(time.time() - t0)}, indent=2))
-    if val_df is not None:
-        acc = evaluate(model, tok, val_df, leaf_ix, dev, max_len)
-        log(f"[{name}] val (head-like, not the holdout) leaf acc {acc:.1%}")
     log(f"[{name}] saved {out_dir}")
 
 
@@ -306,6 +316,11 @@ def main():
     ap.add_argument("--from", dest="from_", choices=["mlm", "silver"], default=None)
     ap.add_argument("--max-silver", type=int, default=None)
     ap.add_argument("--ckpt-every", type=int, default=2000)
+    ap.add_argument("--cap", type=int, default=None, help="per-leaf row cap per epoch (default: silver 25k / gold 20k; 0 = no cap)")
+    ap.add_argument("--floor", type=int, default=None, help="per-leaf min rows per epoch (default: silver 200 / gold 300)")
+    ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--out", type=pathlib.Path, default=None, help="output dir for the last stage run")
+    ap.add_argument("--no-keep-best", action="store_true")
     ap.add_argument("--encoder", default=None,
                     help="Encoder dir or HF id for the silver stage (default: the MLM-adapted encoder)")
     args = ap.parse_args()
@@ -324,13 +339,17 @@ def main():
         df = silver_frame()
         if args.max_silver:
             df = df.sample(min(args.max_silver, len(df)), random_state=42)
-        run_stage("silver", df, mlm_dir, SILVER_DIR, args.epochs or 1, args.batch, args.lr, args.max_len,
-                  cap=25_000, floor=200, ckpt_every=args.ckpt_every, val_df=val)
+        cap = 25_000 if args.cap is None else (10**9 if args.cap == 0 else args.cap)
+        run_stage("silver", df, mlm_dir, args.out or SILVER_DIR, args.epochs or 1, args.batch, args.lr, args.max_len,
+                  cap=cap, floor=args.floor or 200, ckpt_every=args.ckpt_every, val_df=val,
+                  seed=args.seed, keep_best=not args.no_keep_best)
     if args.stage in ("gold", "all"):
         src = SILVER_DIR if (args.from_ or "silver") == "silver" and SILVER_DIR.exists() else mlm_dir
         df = gold_frame()
-        run_stage("gold", df, src, GOLD_DIR, args.epochs or 3, args.batch, args.lr, args.max_len,
-                  cap=20_000, floor=300, ckpt_every=args.ckpt_every, val_df=val)
+        cap = 20_000 if args.cap is None else (10**9 if args.cap == 0 else args.cap)
+        run_stage("gold", df, src, args.out or GOLD_DIR, args.epochs or 3, args.batch, args.lr, args.max_len,
+                  cap=cap, floor=args.floor or 300, ckpt_every=args.ckpt_every, val_df=val,
+                  seed=args.seed, keep_best=not args.no_keep_best)
 
 
 if __name__ == "__main__":

@@ -68,7 +68,7 @@ def predict(tok, model, leaves, df, dev, max_len=48, batch=256):
              zip(df["direction"].astype(str).str.lower(), df["amount"].fillna(0),
                  df["merchant_raw"].fillna(""), df["description_raw"].fillna(""))]
     is_credit = (df["direction"].astype(str).str.lower() == "credit").astype(int).to_numpy()
-    preds, margins = [], []
+    preds, margins, probs = [], [], []
     for i in range(0, len(texts), batch):
         enc = tok(texts[i:i + batch], truncation=True, max_length=max_len, padding="longest", return_tensors="pt")
         logits, _ = model(enc["input_ids"].to(dev), enc["attention_mask"].to(dev),
@@ -76,7 +76,27 @@ def predict(tok, model, leaves, df, dev, max_len=48, batch=256):
         top2 = torch.topk(logits, 2, dim=-1).values
         preds.extend(leaves[j] for j in logits.argmax(-1).tolist())
         margins.extend((top2[:, 0] - top2[:, 1]).tolist())
+        probs.append(torch.softmax(logits.float(), dim=-1).cpu().numpy())
+    predict.last_probs = np.concatenate(probs) if probs else np.zeros((0, len(leaves)))
     return np.array(preds, dtype=object), np.array(margins)
+
+
+def hybrid_predict(t_probs, leaves, hinge, feat, w_t=0.5):
+    """Average transformer softmax with a softmax over the hinge decision_function
+    (aligned on leaf names; hinge classes are a subset). Memorisation + generalisation."""
+    from distillation_bakeoff import featurise_for
+    X = featurise_for(hinge, feat)
+    clf = hinge["clf"]
+    scores = clf.decision_function(X)
+    scores = scores - scores.max(axis=1, keepdims=True)
+    h = np.exp(scores); h /= h.sum(axis=1, keepdims=True)
+    h_full = np.zeros_like(t_probs)
+    ix = {l: i for i, l in enumerate(leaves)}
+    for j, c in enumerate(clf.classes_):
+        if c in ix:
+            h_full[:, ix[c]] = h[:, j]
+    p = w_t * t_probs + (1 - w_t) * h_full
+    return np.array([leaves[i] for i in p.argmax(axis=1)], dtype=object)
 
 
 def cpu_throughput(tok, model, leaves, df, n=2000):
@@ -145,13 +165,14 @@ def main():
         wf = df["t6_leaf"].astype(str).to_numpy()
         tp, _ = predict(tok, model, leaves, df, dev)
         hp, _, _ = scores_and_margin(hinge, features_frame(df))
+        yp = hybrid_predict(predict.last_probs, leaves, hinge, features_frame(df))
         for cut, mask in (("all (classifier only)", np.ones(len(df), bool)), ("T6-bound", resid)):
-            for label, pred in (("hinge", hp), ("transformer", tp)):
+            for label, pred in (("hinge", hp), ("transformer", tp), ("hybrid 50/50", yp)):
                 st = stats(gold[mask], pred[mask], direction[mask], gen_of, risk_leaves)
                 rows.append({"set": name, "cut": cut, "model": label, **st})
                 out[(name, cut, label)] = st
         if name == "pipeline eval":
-            for label, pred in (("hinge", hp), ("transformer", tp)):
+            for label, pred in (("hinge", hp), ("transformer", tp), ("hybrid 50/50", yp)):
                 full = np.where(resid, pred, wf)
                 st = stats(gold, full, direction, gen_of, risk_leaves)
                 rows.append({"set": name, "cut": "full pipeline T1–T5 then model", "model": label, **st})
@@ -178,6 +199,19 @@ def main():
     ]
     misses = sum(1 for _, ok, _ in crit if not ok)
     verdict = "KEEP HINGE (missed %d)" % misses if misses >= 2 else "PASS — candidate to replace T5b"
+    y_hold = out[("holdout", "T6-bound", "hybrid 50/50")]; y_res = out[("pipeline eval", "T6-bound", "hybrid 50/50")]
+    y_risk = out[("risk gold", "T6-bound", "hybrid 50/50")]
+    crit_h = [
+        ("hybrid: holdout T6-bound leaf ≥ hinge +3pp", y_hold["leaf"] - h_hold["leaf"] >= 0.03,
+         f"{pct(y_hold['leaf'])} vs {pct(h_hold['leaf'])}"),
+        ("hybrid: pipeline residual leaf ≥ hinge +3pp", y_res["leaf"] - h_res["leaf"] >= 0.03,
+         f"{pct(y_res['leaf'])} vs {pct(h_res['leaf'])}"),
+        ("hybrid: T6-bound risk-leaf acc ≥ hinge", (y_risk["risk"] or 0) >= (h_risk["risk"] or 0),
+         f"{pct(y_risk['risk'])} vs {pct(h_risk['risk'])}"),
+        ("hybrid: credit-side bar ≥ hinge +10pp", (y_res["cbar"] or 0) - (h_res["cbar"] or 0) >= 0.10,
+         f"{pct(y_res['cbar'])} vs {pct(h_res['cbar'])}"),
+    ]
+    misses_h = sum(1 for _, ok, _ in crit_h if not ok)
 
     meta = json.loads((args.model / "train_meta.json").read_text()) if (args.model / "train_meta.json").exists() else {}
     lines = [
@@ -196,7 +230,10 @@ def main():
     lines += ["", "## Kill criteria", "", "| criterion | result | detail |", "|---|---|---|"]
     for name, ok, detail in crit:
         lines.append(f"| {name} | {'PASS' if ok else 'MISS'} | {detail} |")
-    lines += ["", f"**Verdict: {verdict}.**", ""]
+    for name, ok, detail in crit_h:
+        lines.append(f"| {name} | {'PASS' if ok else 'MISS'} | {detail} |")
+    lines += ["", f"**Verdict (transformer alone): {verdict}.** Hybrid misses {misses_h}/4 accuracy criteria "
+              f"(throughput = transformer's, {thr:,.0f} rows/s).", ""]
     args.report.write_text("\n".join(lines))
     print("\n".join(lines))
 
