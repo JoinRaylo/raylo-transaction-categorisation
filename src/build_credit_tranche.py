@@ -248,6 +248,7 @@ def _v6_with(sample_csv, preds):
     import build_gold_v6_locked as v6
     v6.SAMPLE_CSV = sample_csv
     v6.PREDICTIONS = preds
+    v6.GEMINI_THINKING_BUDGET = 0
     v6.V6_MODELS["opus"] = {"backend": "anthropic", "id": "claude-opus-5", "max_tokens": 16000, "extra": {}}
     return v6
 

@@ -41,6 +41,9 @@ from build_final_gold_v2 import TXN_ADDENDUM  # noqa: E402
 from eval_sets import v6_excluded_merchants  # noqa: E402
 
 SAMPLE_CSV = OUT_DIR / "gold_v6_locked_sample.csv"
+# Gemini thinking budget for labelling calls (None = model default). The credit
+# tranche (2 Sep) sets 0: thinking tripled latency and added nothing at temperature 0.
+GEMINI_THINKING_BUDGET = None
 V6_MODELS = {
     "gemini": {"backend": "gemini", "id": "gemini-3.7-flash", "extra": {}},
     "sonnet": {"backend": "anthropic", "id": "claude-sonnet-5", "max_tokens": 16000, "extra": {}},
@@ -231,18 +234,27 @@ def label(model_key):
             "required": ["results"],
         }
 
+        gen_kwargs = {}
+        if GEMINI_THINKING_BUDGET is not None:
+            gen_kwargs["thinking_config"] = types.ThinkingConfig(thinking_budget=GEMINI_THINKING_BUDGET)
+
         def classify_batch(batch, tag, attempt=0):
+            import time as _time
             user_msg = ("Classify each of these real transactions:\n\n"
                         + "\n".join(render(j + 1, r) for j, r in enumerate(batch)))
+            _t0 = _time.time()
             try:
                 resp = client.models.generate_content(
                     model=cfg["id"], contents=user_msg,
                     config=types.GenerateContentConfig(
                         system_instruction=gemini_system,
                         response_mime_type="application/json", response_schema=schema, temperature=0.0,
+                        **gen_kwargs,
                     ),
                 )
                 data = json.loads(resp.text)
+                if _time.time() - _t0 > 20:
+                    print(f"  [{tag}] slow call {_time.time() - _t0:.0f}s", file=sys.stderr)
             except Exception as e:
                 if attempt < 2:
                     print(f"  [{tag}] error ({e}), retrying...", file=sys.stderr)
