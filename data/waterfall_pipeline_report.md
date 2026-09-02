@@ -18,6 +18,9 @@ Source mix: unified_v2_batch2 578, risk 508, unified_v2 459, unified_v3 285, uni
 | T6/T7 backup on residual | 500 | 27.0% | 41.2% |
 | full pipeline: T1–T5 then hinge | 1884 | 80.5% | 86.4% |
 | rules-only waterfall (T1–T7, no ML) | 1884 | 72.0% | 79.8% |
+| provider-native only (T6 crosswalk of Plaid/Equifax category, no T1–T5, no classifier) | 1884 | 31.8% | 44.1% |
+
+Three-way apples-to-apples on the same 1,884 rows: **80.5%** (T1–T5 then hinge) vs **72.0%** (T1–T7 rules-only, provider as T6 backup only on the leftover) vs **31.8%** (provider-native category alone through the T6 crosswalk, no T1–T5, no classifier — i.e. "just use Plaid/Equifax's own category"). Detail in "Provider-native only" below.
 
 Waterfall tier mix (rules-only leaf, including T6/T7):
 
@@ -51,6 +54,30 @@ Waterfall tier mix (rules-only leaf, including T6/T7):
 | `T5_R24` | 1 | 100.0% |
 | `T5_R25` | 1 | 100.0% |
 | `T5_R30` | 1 | 100.0% |
+
+## T1–T4 vs provider-native (same rows)
+
+The 72.0% rules-only number is **T1–T7** (Plaid/Equifax as T6 on the leftover). This table is the other question: on rows our waterfall already resolves at **T1–T4** (n=1339 of 1884), how does that leaf compare with mapping the provider's own category through T6 only. Native-filled only — risk gold has no `native_category` (432 Plaid T1–T4 rows omitted).
+
+| Slice | n | our T1–T4 leaf | our general | provider-native leaf | native general |
+|---|---:|---:|---:|---:|---:|
+| T1–T4 (all providers, including risk gold with blank native) | 1339 | 88.1% | 93.8% | 33.8% | 45.5% |
+| T1–T4, native filled (Plaid + Equifax) | 862 | 91.1% | 94.7% | 52.6% | 70.6% |
+| T1–T4 Plaid, native filled | 484 | 91.9% | 96.1% | 31.8% | 59.1% |
+| T1–T4 Equifax, native filled | 378 | 89.9% | 92.9% | 79.1% | 85.4% |
+| T4 Plaid, native filled | 457 | 91.7% | 95.8% | 31.9% | 60.6% |
+| T1–T5 Plaid, native filled | 508 | 91.5% | 95.5% | 31.5% | 58.3% |
+
+## Provider-native only (no T1–T5, no classifier)
+
+Same 1,884 rows. Leaf is the T6 crosswalk of the provider's own category field — no dictionary, no T2/T5, no hinge. Blank native (mostly risk gold) maps to `unclassified_other`. This is the “just use Plaid/Equifax” baseline against **80.5%** (T1–T5 then hinge) and **72.0%** (T1–T7 rules-only).
+
+| Slice | n | leaf | general |
+|---|---:|---:|---:|
+| all 1,884 (blank native → unclassified_other) | 1884 | 31.8% | 44.1% |
+| native filled only | 1318 | 45.4% | 63.0% |
+| Plaid, native filled | 794 | 26.2% | 49.9% |
+| Equifax, native filled | 524 | 74.6% | 82.8% |
 
 ## Hinge vs T6 on the residual, by category
 

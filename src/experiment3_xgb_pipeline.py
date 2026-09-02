@@ -86,6 +86,31 @@ LIVE_FEATURES = [
     "telco_months",
 ]
 
+# Same 20 definitions, rebuilt on T1–T7 leaves. Names differ where the live
+# table is Plaid-specific (detailed categories, mortgage auto-payment).
+LIVE_ANALOG = {
+    "spend_hhi": "spend_hhi",
+    "num_distinct_detailed_categories": "num_distinct_leaves",
+    "p2p_to_salary_ratio": "p2p_to_salary_ratio",
+    "num_distinct_merchants": "num_distinct_merchants",
+    "grocer_months": "grocer_months",
+    "avg_credit_transaction_amount": "avg_credit_transaction_amount",
+    "mortgage_auto_payment_debit_amount": "mortgage_debit_amount",
+    "loan_payment_monthly_cv": "loan_payment_monthly_cv",
+    "essential_spend_ratio": "essential_spend_ratio",
+    "essential_spend_amount_total": "essential_spend_amount_total",
+    "has_recent_salary_flag": "has_recent_salary_flag",
+    "legit_life_footprint_months": "legit_life_footprint_months",
+    "returned_payment_count": "returned_payment_count",
+    "total_months": "total_months",
+    "loan_payment_months": "loan_repayment_months",
+    "loan_payment_consistency_ratio": "loan_payment_consistency_ratio",
+    "streaming_months": "streaming_months",
+    "bnpl_30d_vs_90d_ratio": "bnpl_30d_vs_90d_ratio",
+    "pct_p2p_like_debit_amount": "pct_p2p_like_debit_amount",
+    "telco_months": "telco_months",
+}
+
 BASELINE_FEATURES = [
     "total_months",
     "spend_hhi",
@@ -155,6 +180,11 @@ M6_TRAIN_END = "2025-11-01"
 M6_OOT_END = "2026-02-01"
 M3_Y = "month3_1plus_pia"
 M6_Y = "month6_3plus_pia_from_subscription"
+M12_Y = "month12_3plus_pia_from_subscription"
+M12_TRAIN_START = "2023-01-01"
+# Last mature month in the PIA table (27 Aug 2026) is 2025-08; Sep+ is filled as 0.
+M12_TRAIN_END = "2025-06-01"
+M12_OOT_END = "2025-09-01"
 
 
 def _taxonomy_rows():
@@ -856,16 +886,18 @@ def _meta_cols():
     return {
         "proposal_id", "financial_proposal_id", "financial_proposal_created_at",
         M3_Y, M6_Y, "provider",
-    } | {f"live_{c}" for c in LIVE_FEATURES}
+    } | {f"live_{c}" for c in LIVE_FEATURES} | {
+        "month12_3plus_pia_from_subscription",
+    }
 
 
 def _candidate_cols(df: pd.DataFrame) -> list[str]:
-    skip = _meta_cols()
+    skip = _meta_cols() | {"created"}
     out = []
     for c in df.columns:
         if c in skip:
             continue
-        if df[c].dtype == object:
+        if df[c].dtype == object or pd.api.types.is_datetime64_any_dtype(df[c]):
             continue
         out.append(c)
     return out
@@ -1000,17 +1032,15 @@ def _fit_logit(X, y):
     return pipe
 
 
-def _gain_prune(clf, cols, inner_train, inner_valid, ycol, min_keep=20):
+def _gain_prune(clf, cols, max_keep: int = 50, min_keep: int = 20):
     gain = clf.feature_importances_
     order = np.argsort(-gain)
     ranked = [(cols[i], float(gain[i])) for i in order]
-    # Keep features that produced any split, plus baseline that survived screen.
     nonzero = [c for c, g in ranked if g > 0]
     if len(nonzero) < min_keep:
         nonzero = [c for c, _ in ranked[:min_keep]]
-    # Cap at 80 to avoid an over-wide GBM on ~50k rows.
-    if len(nonzero) > 80:
-        nonzero = nonzero[:80]
+    if len(nonzero) > max_keep:
+        nonzero = nonzero[:max_keep]
     return nonzero, ranked
 
 
@@ -1023,7 +1053,7 @@ def _score_block(name, proba, y):
     }
 
 
-def _run_one(df, ycol, train_start, train_end, oot_end, label):
+def _run_one(df, ycol, train_start, train_end, oot_end, label, max_features: int = 50):
     import joblib
 
     train = _drop_immature_months(_window(df, train_start, train_end, ycol), ycol)
@@ -1045,12 +1075,9 @@ def _run_one(df, ycol, train_start, train_end, oot_end, label):
         return frame[cols].apply(pd.to_numeric, errors="coerce")
 
     xgb1 = _fit_xgb(_X(inner_tr, kept), y_tr, _X(inner_va, kept), y_va)
-    selected, ranked = _gain_prune(xgb1, kept, inner_tr, inner_va, ycol)
-    # Always retain surviving baseline analogs.
-    for c in BASELINE_FEATURES:
-        if c in kept and c not in selected:
-            selected.append(c)
-    print(f"  after gain prune: {len(selected)} features", file=sys.stderr)
+    selected, ranked = _gain_prune(xgb1, kept, max_keep=max_features)
+    print(f"  after gain prune: {len(selected)} features (cap {max_features})",
+          file=sys.stderr)
 
     xgb_final = _fit_xgb(_X(inner_tr, selected), y_tr, _X(inner_va, selected), y_va)
     # Refit on full train with the same n_estimators as early-stopped.
@@ -1178,8 +1205,10 @@ def train(df=None):
     df = _prepare(df)
     OUT_DIR.mkdir(exist_ok=True)
 
-    m3 = _run_one(df, M3_Y, M3_TRAIN_START, M3_TRAIN_END, M3_OOT_END, "month3")
-    m6 = _run_one(df, M6_Y, M6_TRAIN_START, M6_TRAIN_END, M6_OOT_END, "month6")
+    m3 = _run_one(df, M3_Y, M3_TRAIN_START, M3_TRAIN_END, M3_OOT_END, "month3",
+                  max_features=80)
+    m6 = _run_one(df, M6_Y, M6_TRAIN_START, M6_TRAIN_END, M6_OOT_END, "month6",
+                  max_features=80)
     joblib.dump({"model": m3["model"], "features": m3["selected"], "y": M3_Y}, MODEL_M3)
     joblib.dump({"model": m6["model"], "features": m6["selected"], "y": M6_Y}, MODEL_M6)
     SEL_JSON.write_text(json.dumps({
@@ -1284,6 +1313,249 @@ def train(df=None):
     return m3, m6
 
 
+MODEL_M3_50 = OUT_DIR / "experiment3_xgb_month3_50.joblib"
+MODEL_M6_50 = OUT_DIR / "experiment3_xgb_month6_50.joblib"
+
+
+def train_capped(max_features: int = 50):
+    """Follow-up: same splits, hard cap on selected XGB features. Appends report."""
+    import joblib
+
+    df = _prepare(pd.read_parquet(FEAT_PARQUET))
+    m3 = _run_one(df, M3_Y, M3_TRAIN_START, M3_TRAIN_END, M3_OOT_END, "month3",
+                  max_features=max_features)
+    m6 = _run_one(df, M6_Y, M6_TRAIN_START, M6_TRAIN_END, M6_OOT_END, "month6",
+                  max_features=max_features)
+    joblib.dump({"model": m3["model"], "features": m3["selected"], "y": M3_Y,
+                 "max_features": max_features}, MODEL_M3_50)
+    joblib.dump({"model": m6["model"], "features": m6["selected"], "y": M6_Y,
+                 "max_features": max_features}, MODEL_M6_50)
+    sel = json.loads(SEL_JSON.read_text()) if SEL_JSON.exists() else {}
+    sel[f"month3_{max_features}"] = m3["selected"]
+    sel[f"month6_{max_features}"] = m6["selected"]
+    SEL_JSON.write_text(json.dumps(sel, indent=2))
+
+    def rows(run, tag):
+        out = []
+        for r in run["results"]:
+            if "inner valid" in r["model"]:
+                continue
+            if "baseline" in r["model"]:
+                continue
+            out.append({
+                "model": r["model"].replace(run["label"] + " ", ""),
+                "n": r["n"],
+                "bads": r["bads"],
+                "signed_gini": r["gini"],
+            })
+        return out
+
+    ga3 = sorted(m3["gain_rows"], key=lambda x: -x["gain"])[:15]
+    ga6 = sorted(m6["gain_rows"], key=lambda x: -x["gain"])[:15]
+    add = [
+        "",
+        f"## {max_features}-feature cap (follow-up)",
+        "",
+        f"Same splits and screening as above. Selected XGB is hard-capped at "
+        f"**{max_features}** features by inner-train gain (no extra baseline dump). "
+        f"`created` / application timestamp is excluded. GINI is signed. "
+        f"Baseline and live rows are unchanged comparators from this same fit.",
+        "",
+        f"Month3 selected **{m3['n_selected']}** features; month6 **{m6['n_selected']}**.",
+        "",
+        "### month3 OOT",
+        "",
+        _md_table(rows(m3, "m3"), ["model", "n", "bads", "signed_gini"]),
+        "",
+        "Top gain (month3, capped set):",
+        "",
+        _md_table(ga3, ["feature", "gain"]),
+        "",
+        "### month6 OOT",
+        "",
+        _md_table(rows(m6, "m6"), ["model", "n", "bads", "signed_gini"]),
+        "",
+        "Top gain (month6, capped set):",
+        "",
+        _md_table(ga6, ["feature", "gain"]),
+        "",
+        f"Capped models: `{MODEL_M3_50.name}`, `{MODEL_M6_50.name}`.",
+        "",
+    ]
+    REPORT.write_text(REPORT.read_text() + "\n".join(add))
+    print(f"Appended {max_features}-feature cap to {REPORT}", file=sys.stderr)
+    for r in m3["results"] + m6["results"]:
+        print(f"  {r['model']}: GINI {r['gini']} n={r['n']:,} bads={r['bads']}",
+              file=sys.stderr)
+    return m3, m6
+
+
+MODEL_M12_50 = OUT_DIR / "experiment3_xgb_month12_50.joblib"
+
+
+def _attach_month12(df: pd.DataFrame) -> pd.DataFrame:
+    client = _client()
+    y = client.query(
+        f"""
+        SELECT CAST(financial_proposal_id AS STRING) AS financial_proposal_id,
+               {M12_Y}
+        FROM `raylo-production.dbt_production.ds_first_order_proposal_pia_metrics`
+        WHERE {M12_Y} IS NOT NULL
+        """,
+        location=LOCATION,
+    ).result().to_dataframe()
+    y["financial_proposal_id"] = y["financial_proposal_id"].astype(str)
+    out = df.drop(columns=[M12_Y], errors="ignore")
+    return out.merge(y, on="financial_proposal_id", how="left")
+
+
+def train_month12(max_features: int = 50):
+    """month12_3plus_pia_from_subscription, 50-feature XGB. Appends report."""
+    import joblib
+
+    df = _attach_month12(_prepare(pd.read_parquet(FEAT_PARQUET)))
+    run = _run_one(df, M12_Y, M12_TRAIN_START, M12_TRAIN_END, M12_OOT_END,
+                   "month12", max_features=max_features)
+    joblib.dump({"model": run["model"], "features": run["selected"], "y": M12_Y,
+                 "max_features": max_features}, MODEL_M12_50)
+    sel = json.loads(SEL_JSON.read_text()) if SEL_JSON.exists() else {}
+    sel[f"month12_{max_features}"] = run["selected"]
+    SEL_JSON.write_text(json.dumps(sel, indent=2))
+    ga = sorted(run["gain_rows"], key=lambda x: -x["gain"])[:15]
+    gini_rows = [{"model": r["model"], "n": r["n"], "bads": r["bads"],
+                  "signed_gini": r["gini"]} for r in run["results"]]
+    add = [
+        "",
+        "## month12_3plus_pia_from_subscription (follow-up)",
+        "",
+        "Same 50-feature selected XGB spec as the cap follow-up. "
+        f"Train `{M12_TRAIN_START}` to `< {M12_TRAIN_END}` "
+        f"(n={run['train_n']:,}, {run['train_bads']:,} bads; "
+        f"Equifax {run['eqx_train']:,} / Plaid {run['plaid_train']:,}). "
+        f"OOT `{M12_TRAIN_END}` to `< {M12_OOT_END}` "
+        f"(n={run['oot_n']:,}, {run['oot_bads']:,} bads; "
+        f"Plaid {run['plaid_oot']:,} / Equifax {run['eqx_oot']:,}). "
+        "Sep 2025 onwards is filled as 0 in PIA (immature) and is dropped. "
+        "Plaid live-feature comparators only exist if the train window has Plaid "
+        "(it largely does not — Plaid go-live is Aug 2025, which sits in OOT).",
+        "",
+        _md_table(gini_rows, ["model", "n", "bads", "signed_gini"]),
+        "",
+        f"Selected **{run['n_selected']}** features. Top gain:",
+        "",
+        _md_table(ga, ["feature", "gain"]),
+        "",
+        f"Model: `{MODEL_M12_50.name}`.",
+        "",
+    ]
+    REPORT.write_text(REPORT.read_text() + "\n".join(add))
+    print(f"Appended month12 to {REPORT}", file=sys.stderr)
+    for r in run["results"]:
+        print(f"  {r['model']}: GINI {r['gini']} n={r['n']:,} bads={r['bads']}",
+              file=sys.stderr)
+    return run
+
+
+def _x_num(frame, cols):
+    return frame[cols].apply(pd.to_numeric, errors="coerce")
+
+
+def _fit_xgb_full(train, cols, ycol, inner_tr, inner_va):
+    import xgboost as xgb
+    y_tr = inner_tr[ycol].astype(int)
+    y_va = inner_va[ycol].astype(int)
+    early = _fit_xgb(_x_num(inner_tr, cols), y_tr, _x_num(inner_va, cols), y_va)
+    best = int(getattr(early, "best_iteration", None) or early.n_estimators)
+    pos = max(int(train[ycol].sum()), 1)
+    neg = max(int((train[ycol] == 0).sum()), 1)
+    clf = xgb.XGBClassifier(
+        n_estimators=max(best, 50),
+        max_depth=4,
+        learning_rate=0.05,
+        subsample=0.85,
+        colsample_bytree=0.7,
+        min_child_weight=15,
+        reg_lambda=2.0,
+        objective="binary:logistic",
+        eval_metric="auc",
+        tree_method="hist",
+        n_jobs=-1,
+        scale_pos_weight=neg / pos,
+    )
+    clf.fit(_x_num(train, cols), train[ycol].astype(int))
+    return clf
+
+
+def train_live_analog():
+    """Live 20-feature shortlist: Plaid-native vs rebuilt on our leaves.
+
+    Plaid-train only, month3 (and month6) OOT. Isolates categorisation, not
+    extra features or Equifax volume.
+    """
+    df = _prepare(pd.read_parquet(FEAT_PARQUET))
+    analog_cols = [LIVE_ANALOG[c] for c in LIVE_FEATURES]
+    missing = [c for c in analog_cols if c not in df.columns]
+    live_cols = [f"live_{c}" for c in LIVE_FEATURES]
+    missing_live = [c for c in live_cols if c not in df.columns]
+    if missing or missing_live:
+        raise SystemExit(f"missing analog {missing} live {missing_live}")
+
+    lines = [
+        "",
+        "## Live 20-feature shortlist: Plaid-native vs our leaves (follow-up)",
+        "",
+        "The published **taxonomy baseline** was *not* this test: it used the analog "
+        "shortlist **plus** priority-debt / gambling-subtype extras, and trained on "
+        "Equifax+Plaid. This follow-up uses the **same 20 live-model columns**, "
+        "Plaid-train only, month3 OOT March–April 2026 (and the month6 OOT for completeness). "
+        "Name mapping: `num_distinct_detailed_categories` → `num_distinct_leaves`; "
+        "`mortgage_auto_payment_debit_amount` → `mortgage_debit_amount`; "
+        "`loan_payment_months` → `loan_repayment_months`. Strict p2p (not unclassified_transfer). "
+        "GINI is signed.",
+        "",
+    ]
+    for ycol, t0, t1, t2, title in [
+        (M3_Y, M3_TRAIN_START, M3_TRAIN_END, M3_OOT_END, "month3"),
+        (M6_Y, M6_TRAIN_START, M6_TRAIN_END, M6_OOT_END, "month6"),
+    ]:
+        train = _drop_immature_months(_window(df, t0, t1, ycol), ycol)
+        oot = _drop_immature_months(_window(df, t1, t2, ycol), ycol)
+        train = train[train["is_plaid"] == 1]
+        oot = oot[oot["is_plaid"] == 1]
+        p_tr, p_va, _ = _inner_cut(train)
+        y_oot = oot[ycol].astype(int)
+        logit_live = _fit_logit(_x_num(train, live_cols), train[ycol])
+        logit_our = _fit_logit(_x_num(train, analog_cols), train[ycol])
+        xgb_live = _fit_xgb_full(train, live_cols, ycol, p_tr, p_va)
+        xgb_our = _fit_xgb_full(train, analog_cols, ycol, p_tr, p_va)
+        blocks = [
+            _score_block(f"{title} live 20 logistic",
+                         logit_live.predict_proba(_x_num(oot, live_cols))[:, 1], y_oot),
+            _score_block(f"{title} our-leaves 20 logistic",
+                         logit_our.predict_proba(_x_num(oot, analog_cols))[:, 1], y_oot),
+            _score_block(f"{title} live 20 XGB",
+                         xgb_live.predict_proba(_x_num(oot, live_cols))[:, 1], y_oot),
+            _score_block(f"{title} our-leaves 20 XGB",
+                         xgb_our.predict_proba(_x_num(oot, analog_cols))[:, 1], y_oot),
+        ]
+        lines += [
+            f"### {title} OOT (Plaid-train only, n={len(oot):,} / {int(y_oot.sum())} bads; "
+            f"train n={len(train):,} / {int(train[ycol].sum())} bads)",
+            "",
+            _md_table(
+                [{"model": b["model"], "n": b["n"], "bads": b["bads"],
+                  "signed_gini": b["gini"]} for b in blocks],
+                ["model", "n", "bads", "signed_gini"],
+            ),
+            "",
+        ]
+        for b in blocks:
+            print(f"  {b['model']}: GINI {b['gini']}", file=sys.stderr)
+
+    REPORT.write_text(REPORT.read_text() + "\n".join(lines))
+    print(f"Appended live-vs-analog 20 to {REPORT}", file=sys.stderr)
+
+
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     stage = argv[0] if argv else "all"
@@ -1295,6 +1567,12 @@ def main(argv=None):
         features()
     elif stage == "train":
         train()
+    elif stage == "train50":
+        train_capped(50)
+    elif stage == "train12":
+        train_month12(50)
+    elif stage == "train_analog20":
+        train_live_analog()
     elif stage in ("all", ""):
         fetch()
         classify()

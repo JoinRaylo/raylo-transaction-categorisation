@@ -30,7 +30,9 @@ from score_t5b_residual import (  # noqa: E402
     GOLD_V4,
     HINGE_PATH,
     attach_waterfall,
+    eqx_native_leaf,
     features_frame,
+    plaid_native_leaf,
     scores_and_margin,
 )
 from score_t5b_residual import _init_waterfall  # noqa: E402
@@ -174,6 +176,69 @@ def summarise(name, df, ml_pred, gen_of):
         by_tier.append((str(t), len(g), ok))
     by_tier.sort(key=lambda x: -x[1])
     return table, by_tier, pipe
+
+
+def native_only_leaf(provider, native_cat, direction):
+    """T6 map of the provider category — no T1–T5. Blank native → empty leaf."""
+    native = "" if native_cat is None or (isinstance(native_cat, float) and pd.isna(native_cat)) else str(native_cat)
+    direction = "" if direction is None or (isinstance(direction, float) and pd.isna(direction)) else str(direction)
+    if str(provider or "plaid").strip().lower() == "equifax":
+        pri, sub = (native.split(" | ", 1) + [""])[:2] if native else ("", "")
+        return eqx_native_leaf(pri, sub, direction)
+    return plaid_native_leaf(native, direction)
+
+
+def t14_vs_native(df, gen_of):
+    """Our T1–T4 leaf vs provider-native map on the same rows.
+
+    Risk gold has no native_category, so the Plaid comparison uses rows with a
+    filled native field. Otherwise Plaid is scored as a blank map and looks
+    worse than it is.
+    """
+    gold = df["gold_leaf"].astype(str).to_numpy()
+    ours = df["t6_leaf"].astype(str).to_numpy()
+    nat = np.array([
+        native_only_leaf(r.get("provider"), r.get("native_category"), r.get("direction"))
+        for r in df.to_dict("records")
+    ], dtype=object)
+    tier = df["waterfall_tier"].astype(str)
+    t14 = tier.str.startswith(("T1_", "T2_", "T3_", "T4_")).to_numpy()
+    t5 = tier.str.startswith("T5_").to_numpy()
+    plaid = df["provider"].fillna("").astype(str).str.lower().eq("plaid").to_numpy()
+    eqx = df["provider"].fillna("").astype(str).str.lower().eq("equifax").to_numpy()
+    has_nat = df["native_category"].fillna("").astype(str).str.strip().ne("").to_numpy()
+
+    def acc(mask, pred):
+        n = int(mask.sum())
+        if n == 0:
+            return n, None, None
+        leaf = float((pred[mask] == gold[mask]).mean())
+        gen = float(np.mean([
+            gen_of.get(p, "") == gen_of.get(g, "")
+            for p, g in zip(pred[mask], gold[mask])
+        ]))
+        return n, leaf, gen
+
+    slices = [
+        ("T1–T4 (all providers, including risk gold with blank native)", t14),
+        ("T1–T4, native filled (Plaid + Equifax)", t14 & has_nat),
+        ("T1–T4 Plaid, native filled", t14 & plaid & has_nat),
+        ("T1–T4 Equifax, native filled", t14 & eqx & has_nat),
+        ("T4 Plaid, native filled", tier.str.startswith("T4_").to_numpy() & plaid & has_nat),
+        ("T1–T5 Plaid, native filled", (t14 | t5) & plaid & has_nat),
+    ]
+    rows = []
+    for label, mask in slices:
+        n_o, o_leaf, o_gen = acc(mask, ours)
+        _n_n, n_leaf, n_gen = acc(mask, nat)
+        rows.append({
+            "slice": label, "n": n_o,
+            "ours_leaf": o_leaf, "ours_gen": o_gen,
+            "native_leaf": n_leaf, "native_gen": n_gen,
+        })
+    n_t14 = int(t14.sum())
+    n_blank_plaid = int((t14 & plaid & ~has_nat).sum())
+    return rows, n_t14, n_blank_plaid, nat, has_nat, plaid, eqx
 
 
 def fmt_pct(x):
@@ -335,6 +400,50 @@ def main():
         "",
     ]
     append_table(lines, "Pipeline eval (row-disjoint from training)", len(df), table, by_tier)
+
+    t14_rows, n_t14, n_blank_plaid, nat, has_nat, plaid, eqx = t14_vs_native(df, gen_of)
+    lines.append("## T1–T4 vs provider-native (same rows)\n")
+    lines.append(
+        "The 72.0% rules-only number is **T1–T7** (Plaid/Equifax as T6 on the leftover). "
+        "This table is the other question: on rows our waterfall already resolves at "
+        f"**T1–T4** (n={n_t14} of {len(df)}), how does that leaf compare with mapping "
+        "the provider's own category through T6 only. Native-filled only — risk gold "
+        f"has no `native_category` ({n_blank_plaid} Plaid T1–T4 rows omitted).\n"
+    )
+    lines.append("| Slice | n | our T1–T4 leaf | our general | provider-native leaf | native general |")
+    lines.append("|---|---:|---:|---:|---:|---:|")
+    for r in t14_rows:
+        lines.append(
+            f"| {r['slice']} | {r['n']} | {fmt_pct(r['ours_leaf'])} | {fmt_pct(r['ours_gen'])} "
+            f"| {fmt_pct(r['native_leaf'])} | {fmt_pct(r['native_gen'])} |"
+        )
+    lines.append("")
+
+    gold_arr = df["gold_leaf"].astype(str).to_numpy()
+    lines.append("## Provider-native only (no T1–T5, no classifier)\n")
+    lines.append(
+        "Same 1,884 rows. Leaf is the T6 crosswalk of the provider's own category "
+        "field — no dictionary, no T2/T5, no hinge. Blank native (mostly risk gold) "
+        "maps to `unclassified_other`. This is the “just use Plaid/Equifax” baseline "
+        "against **80.5%** (T1–T5 then hinge) and **72.0%** (T1–T7 rules-only).\n"
+    )
+    lines.append("| Slice | n | leaf | general |")
+    lines.append("|---|---:|---:|---:|")
+    native_slices = [
+        ("all 1,884 (blank native → unclassified_other)", np.ones(len(df), dtype=bool)),
+        ("native filled only", has_nat),
+        ("Plaid, native filled", plaid & has_nat),
+        ("Equifax, native filled", eqx & has_nat),
+    ]
+    for label, mask in native_slices:
+        n = int(mask.sum())
+        leaf = float((nat[mask] == gold_arr[mask]).mean())
+        gen = float(np.mean([
+            gen_of.get(p, "") == gen_of.get(g, "")
+            for p, g in zip(nat[mask], gold_arr[mask])
+        ]))
+        lines.append(f"| {label} | {n} | {fmt_pct(leaf)} | {fmt_pct(gen)} |")
+    lines.append("")
 
     n_res = int(residual.sum())
     n_t6_ahead = sum(1 for r in leaf_rows if r["t6_minus_hinge"] > 1e-12)

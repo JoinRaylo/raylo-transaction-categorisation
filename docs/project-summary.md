@@ -40,6 +40,8 @@ The runtime classifier was retrained on those labels (**382,183** rows at v5). R
 
 On labelled rows that are not in the training file (1,884 transactions), rules plus the hinge classifier now score **80.5%** leaf. The leftover T6 slice is **500** rows (T5 R31 caught 16 blank-merchant StepChange rows). Pack 1 (414) and pack 2 (142) are labelled and in `tuning_leaf_topup.csv`. jsonl rebuilt; the v5b/v5c heads are **not** served (risk bar 79%). T6 stays on Plaid’s **PFC detailed** category: the older list `category` field was worse on leftover gold (15.7% vs 18.6% leaf).
 
+The apples-to-apples baseline for that 80.5%: on the same 1,884 rows, just mapping the provider's own category through our T6 crosswalk — no dictionary, no rules, no classifier — scores **31.8%** leaf / **44.1%** general. That is the third number next to 80.5% (rules + classifier) and 72.0% (rules-only, provider used only as the T6 backup on the leftover): it is what "just use Plaid/Equifax's own category" gets you on its own. `data/waterfall_pipeline_report.md`.
+
 The generated crosswalk SQL is now small enough to run: T4 is a join to a BigQuery table (`merchant_dictionary_t4`; CSV is 91,824 rows).
 
 A further Equifax-only labelling tranche is not worth it: Equifax has only 6,518 vendor names, most unmatched volume is a blank vendor field, and Equifax is a dead dump. Live traffic is Plaid.
@@ -54,11 +56,20 @@ Side-findings still outstanding outside this repo: every Plaid Asset Report stil
 
 ## Progress log
 
+- **2026-09-01 (category-granularity sensitivity)** — Stakeholders asked what happens to model performance if the taxonomy had fewer, or more, categories. Rebuilt the Experiment 3 features at seven levels of granularity — all 275 leaves / today's 69 (40 key leaves + 29 generals) / 29 generals / 17 budget-line groups / 9 macro groups / 7 cash-flow types / 4 minimal groups — and refit the same XGBoost at each, in two variants (orthogonal dimensions held constant, and dropped). **The curve is flat from 275 down to ~17 groups** (month3 0.475–0.484, month6 0.542–0.576 uncapped) and only falls below 9 groups (~7 GINI points lost by 7 groups). **Every rung, even 4 categories, still beats the live model (0.403 / 0.386)** — the gain over Plaid's categories comes from resolving the merchant correctly, not from fine bucketing. Going *finer* than today buys nothing. Two measured caveats: the 50-feature cap flatters coarse taxonomies (both columns reported), and collapsing gambling subtypes costs no model GINI even though it costs univariate IV — the subtype rule stands on screening/interpretability grounds, not GINI. The taxonomy is unchanged; rungs live in `taxonomy/granularity_ladder.csv`. `src/experiment3_granularity_ladder.py`, `data/experiment3_granularity_ladder_report.md`.
+- **2026-08-31 (provider-native-only baseline)** — Added the third apples-to-apples number to the pipeline readout: on the same 1,884 row-disjoint gold rows, mapping only the provider's own category through our T6 crosswalk (no T1–T5, no classifier) scores **31.8%** leaf / **44.1%** general, vs **80.5%** (T1–T5 then hinge) and **72.0%** (T1–T7 rules-only). No new measurement — this number was already computed in `data/waterfall_pipeline_report.md`; it is now surfaced as a headline row there and referenced here and in the README. Classifier not retrained.
+
 - **2026-08-27 (serving head decision: hinge SVM)** — Carlos confirmed the linear SVM (hinge) as the runtime classifier's serving head; logistic regression is kept as rollback only. Hinge wins every metric that gates promotion (holdout, F1, risk gold, risk bar 86% vs 81%, residual head-to-head); the probability argument for logreg fell away once gated fallback to the provider was measured harmful and margin-based abstention proved sufficient. No retrain, no new scores — the 80.5% pipeline headline already used hinge.
+
+- **2026-08-28 (live 20 vs our-leaf 20)** — Same 20 live-model features, Plaid-train only. Month3 OOT: our leaves logistic **0.315** vs live **0.328**; XGB **0.379** vs **0.390**. Month6 OOT: our leaves **win** (logistic 0.430 vs 0.405; XGB 0.442 vs 0.383). Addendum on `data/experiment3_xgb_report.md`.
+
+- **2026-08-27 (Experiment 3 month12)** — `month12_3plus_pia_from_subscription`, 50-feature XGB. Train through May 2025 (Equifax; n=32,845 / 5,090 bads), OOT Jun–Aug 2025 (n=3,780 / 420 bads). Signed GINI **0.484** (analog XGB 0.399 / logistic 0.348). No live Plaid comparator — Plaid starts in the OOT. Addendum on `data/experiment3_xgb_report.md`.
 
 - **2026-08-27 (Experiment 3 50-feature cap)** — Same OOT, selected XGB hard-capped at 50 features (`created` dropped). Month3 OOT **0.477** (was 0.478 at 102); month6 **0.564** (was 0.560 at 96). Plaid-train-only 0.449 / 0.488. Addendum on `data/experiment3_xgb_report.md`.
 
 - **2026-08-27 (Experiment 3 XGBoost)** — Rebuilt features from T1–T7 labels (T5b on leftover). Signed Mar–Apr month3 OOT: taxonomy XGB **0.478** vs live logistic **0.328** / live XGB **0.403**. month6 OOT Nov 2025–Jan 2026: taxonomy XGB **0.560** vs live logistic **0.405**. `data/experiment3_xgb_report.md`.
+
+- **2026-08-28 (T1–T4 vs Plaid on pipeline eval)** — Same 1,884 rows. On T1–T4 Plaid rows with a filled native category (n=484), our leaf is **91.9%** vs Plaid-native **31.8%**. Equifax T1–T4 (n=378): **89.9%** vs Equifax-native **79.1%**. The 72% figure is T1–T7 rules-only, not T1–T4. `data/waterfall_pipeline_report.md`.
 
 - **2026-08-27 (frontier vs hinge, framing)** — Gemini 3.7 Flash and Sonnet 5 on the same holdout / risk / pipeline sets as serving hinge, full labelling prompt (90,516 chars, 465 notes). Holdout leaf: hinge **53.9%**, Gemini **83.9%**, Sonnet **79.1%**. Leftover: 59.2 / **73.0** / 67.4. T1–T5 then model: 80.5 / **84.2** / 82.7. Not for runtime. `data/frontier_vs_classifier_report.md`.
 

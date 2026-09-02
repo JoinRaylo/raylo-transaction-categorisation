@@ -217,3 +217,58 @@ Top gain (month6, capped set):
 | gen_insurance_months | 0.009199 |
 
 Capped models: `experiment3_xgb_month3_50.joblib`, `experiment3_xgb_month6_50.joblib`.
+
+## month12_3plus_pia_from_subscription (follow-up)
+
+Same 50-feature selected XGB spec as the cap follow-up. Train `2023-01-01` to `< 2025-06-01` (n=32,845, 5,090 bads; Equifax 32,845 / Plaid 0). OOT `2025-06-01` to `< 2025-09-01` (n=3,780, 420 bads; Plaid 499 / Equifax 3,281). Sep 2025 onwards is filled as 0 in PIA (immature) and is dropped. Plaid live-feature comparators only exist if the train window has Plaid (it largely does not — Plaid go-live is Aug 2025, which sits in OOT).
+
+| model | n | bads | signed_gini |
+|---|---|---|---|
+| month12 taxonomy selected XGB | 3780 | 420 | 0.4843 |
+| month12 taxonomy selected XGB (inner valid) | 6569 | 1019 | 0.4782 |
+| month12 taxonomy baseline logistic | 3780 | 420 | 0.3477 |
+| month12 taxonomy baseline XGB | 3780 | 420 | 0.3993 |
+
+Selected **50** features. Top gain:
+
+| feature | gain |
+|---|---|
+| salary_months | 0.038185 |
+| loan_repayment_months | 0.023603 |
+| avg_credit_transaction_amount | 0.018868 |
+| gen_general_retail_marketplaces_months | 0.016861 |
+| gen_digital_subscriptions_services_months | 0.016627 |
+| streaming_months | 0.016124 |
+| loan_payment_consistency_ratio | 0.015244 |
+| credit_product_months | 0.014101 |
+| salary_credit_amt | 0.012985 |
+| priority_debt_months | 0.012111 |
+| gen_insurance_months | 0.011604 |
+| priority_debt_breadth | 0.010833 |
+| mortgage_n | 0.010397 |
+| gambling_betting_debit_amt | 0.010086 |
+| cash_withdrawal_debit_amt | 0.009647 |
+
+Model: `experiment3_xgb_month12_50.joblib`.
+
+## Live 20-feature shortlist: Plaid-native vs our leaves (follow-up)
+
+The published **taxonomy baseline** was *not* this test: it used the analog shortlist **plus** priority-debt / gambling-subtype extras, and trained on Equifax+Plaid. This follow-up uses the **same 20 live-model columns**, Plaid-train only, month3 OOT March–April 2026 (and the month6 OOT for completeness). Name mapping: `num_distinct_detailed_categories` → `num_distinct_leaves`; `mortgage_auto_payment_debit_amount` → `mortgage_debit_amount`; `loan_payment_months` → `loan_repayment_months`. Strict p2p (not unclassified_transfer). GINI is signed.
+
+### month3 OOT (Plaid-train only, n=4,855 / 465 bads; train n=12,814 / 1145 bads)
+
+| model | n | bads | signed_gini |
+|---|---|---|---|
+| month3 live 20 logistic | 4855 | 465 | 0.3275 |
+| month3 our-leaves 20 logistic | 4855 | 465 | 0.3153 |
+| month3 live 20 XGB | 4855 | 465 | 0.3899 |
+| month3 our-leaves 20 XGB | 4855 | 465 | 0.3791 |
+
+### month6 OOT (Plaid-train only, n=6,652 / 410 bads; train n=3,835 / 243 bads)
+
+| model | n | bads | signed_gini |
+|---|---|---|---|
+| month6 live 20 logistic | 6652 | 410 | 0.4045 |
+| month6 our-leaves 20 logistic | 6652 | 410 | 0.4304 |
+| month6 live 20 XGB | 6652 | 410 | 0.3825 |
+| month6 our-leaves 20 XGB | 6652 | 410 | 0.4419 |
