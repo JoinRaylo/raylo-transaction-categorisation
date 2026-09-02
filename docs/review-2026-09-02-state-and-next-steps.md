@@ -439,3 +439,7 @@ run with a consistent correct mask, passes 4/5 criteria** (holdout T6-bound 61.7
 vs 58.0 is the miss). The seen/unseen split on the residual (iteration 3) is the key evidence:
 **+5.6pp on 449 unseen-merchant rows**, deficit confined to two label conventions. Seeds 7 and
 123 running. Reports `data/transformer_classifier_report.md` and `_iter{1,2,3}_report.md`.
+**Seeds 7 and 123 confirm iteration 4** (means: holdout T6-bound 62.3 vs 56.9; residual 58.7 vs
+58.0; T6-bound risk 80.8 vs 77.5; credit bar 31.8 vs 17.8; full pipeline 81.5 vs 81.3). The
+transformer is a confirmed T5b candidate. Section 5's Stage 3 is therefore passed on the
+accuracy side; promotion now waits on the Week 2–3 data items and a serving design.

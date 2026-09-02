@@ -80,3 +80,33 @@ T5b**. It is not a promotion:
 Next: 3 seeds → if the mean holds, (a) credit tranche + T6-bound risk gold, (b) full 22M
 pretraining corpus and a 44–66M encoder on a rented GPU, (c) T5 rule for the overdraft
 convention, (d) serving path design.
+
+## Three seeds of the iteration-4 recipe (seeds 42 / 7 / 123; per-seed reports in `outputs/transformer/iter4_seed*_report.md`)
+
+| cut | hinge | seed 42 | seed 7 | seed 123 | **mean** |
+|---|---:|---:|---:|---:|---:|
+| holdout T6-bound leaf (n=418) | 56.9% | 61.7% | 63.2% | 62.0% | **62.3%** |
+| holdout T6-bound credit leaf (n=32) | 31.2% | 53.1% | 53.1% | 53.1% | **53.1%** |
+| pipeline residual leaf (n=505) | 58.0% | 57.6% | 59.6% | 59.0% | **58.7%** |
+| pipeline residual credit-bar (n=45) | 17.8% | 28.9% | 33.3% | 33.3% | **31.8%** |
+| risk gold T6-bound risk-leaf acc (n=40) | 77.5% | 77.5% | 80.0% | 85.0% | **80.8%** |
+| full pipeline T1–T5 then model (n=2,004) | 81.3% | 81.2% | 81.7% | 81.6% | **81.5%** |
+| full pipeline, credit rows (n=180) | 56.1% | 58.9% | 60.0% | 60.0% | **59.6%** |
+
+All three seeds pass 4/5 criteria (the +3pp residual threshold is the miss every time; the
+residual is +0.7pp on average). Seed spread is ~1.5pp on the 418-row cut and ~2pp on the
+505-row cut — far tighter than iterations 1–3, which were confounded by the mask bug.
+**Verdict: the transformer is a confirmed candidate to replace T5b** — better on novel
+merchants (+5.4pp), much better on credits (+22pp / +14pp), level-to-better on the T6-bound
+risk slice, and neutral on the blended pipeline. Not yet promoted: needs the credit tranche
+and T6-bound risk gold for the small cuts, a serving path, and one more look at the two
+label conventions it loses on.
+
+Paired bootstrap (2,000 resamples) of transformer − hinge, per seed:
+
+| cut | seed 42 | seed 7 | seed 123 |
+|---|---:|---:|---:|
+| holdout T6-bound (n=418) | +4.8pp [+1.0, +8.6] | +6.2pp [+1.9, +10.3] | +5.0pp [+1.0, +9.3] |
+| pipeline residual (n=505) | −0.4pp [−4.2, +3.8] | +1.6pp [−2.4, +5.7] | +1.0pp [−3.2, +5.0] |
+
+The novel-merchant gain excludes zero on every seed; the residual is a statistical tie.
