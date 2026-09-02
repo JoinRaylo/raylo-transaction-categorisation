@@ -413,3 +413,19 @@ retrain scoring — see the "Week 1 outcome" section at the end of this document
 Tests: 34 passing (4 new). Open from Week 1: re-run ladder/stress/champion on the as-of
 features; decide whether the v6 de-leaked dump replaces v5 as the serving weights (no
 evidence either way on T6-bound rows — leave until the credit tranche retrain).
+
+
+## Transformer — first full cycle (same day, 2026-09-02; Carlos chose to start before the credit tranche)
+
+Built and run end to end (`src/transformer/`): 5.08M-sentence MLM corpus (23.7% credit),
+1.90M T1–T5 silver labels, BERT-small + 4,000 domain tokens MLM (4.5 h), silver then gold
+fine-tune with leaf+general heads, hierarchy loss and a direction mask, scorer with the
+Stage-3 kill criteria vs the de-leaked hinge. Reports:
+`data/transformer_classifier_iter1_report.md`, `data/transformer_classifier_report.md`.
+
+Result: **beats the hinge on novel merchants** (holdout T6-bound 61–64% vs 56.9%; credits
+41–56% vs 31%), flat on the pipeline residual, loses on the 40-row T6-bound risk slice for
+thin-leaf / convention reasons (overdraft split, account-switch transfers, cash-advance
+disbursements). Run-to-run variance is several points. **Verdict under the pre-declared
+criteria: keep hinge for now (3 misses).** Not rejected: the blockers are the same data items
+already in Weeks 2–3 (credit tranche, T6-bound risk gold) plus 3-seed runs.
