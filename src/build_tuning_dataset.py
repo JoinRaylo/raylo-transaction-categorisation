@@ -55,6 +55,10 @@ LABELS_SOURCE = ROOT / "data" / "production_labels_tranche4.csv"
 GOLD_TXN_FILE = ROOT / "data" / "gold_transactions.csv"
 GOLD_V1_FILES = [ROOT / "data" / "gold_merchant_labels.csv", ROOT / "data" / "gold_tail_labels.csv"]
 TOPUP_FILE = ROOT / "data" / "tuning_leaf_topup.csv"
+# Row-level credit tranche (2 Sep review, Week 2): live Plaid credits + T6-bound risk
+# debits, labelled Gemini+Sonnet consensus / Opus tiebreak / Carlos. Written by
+# build_credit_tranche.py apply. Merchant-disjoint from the credit eval it also writes.
+CREDIT_TOPUP_FILE = ROOT / "data" / "tuning_credit_topup.csv"
 # Unweighted SGD ignores classes with tens of rows against 166k. Repeat
 # starved-leaf top-up examples until each has at least this many effective
 # training rows. Do not oversample leaves that already have hundreds of
@@ -305,7 +309,19 @@ def build():
             if r["gold_leaf"] in starved_topup:
                 starved_topup[r["gold_leaf"]].append(ex)
 
-    train = train + tier_a_train_examples + topup_examples
+    credit_examples = []
+    if CREDIT_TOPUP_FILE.exists():
+        for r in csv.DictReader(open(CREDIT_TOPUP_FILE)):
+            m = _norm(r.get("merchant_raw") or "")
+            if m and m in (holdout_merchants | risk_merchants):
+                continue
+            if not r.get("gold_leaf") or r["gold_leaf"] not in leaves:
+                continue
+            credit_examples.append(to_example(r.get("merchant_raw") or "", r.get("description_raw") or "",
+                                              abs(float(r["amount"])), r["direction"], r["gold_leaf"]))
+        print(f"Credit tranche top-up: {len(credit_examples)} rows", file=sys.stderr)
+
+    train = train + tier_a_train_examples + topup_examples + credit_examples
 
     def _leaf_of(ex):
         return next(m["content"] for m in ex["messages"] if m["role"] == "assistant")
@@ -367,7 +383,8 @@ def build():
 
     all_targets = ([t["target"] for t in txns]
                    + [r["gold_leaf"] for m, rows in tier_a.items() if m not in holdout_merchants for r in rows]
-                   + ([r["gold_leaf"] for r in csv.DictReader(open(TOPUP_FILE))] if TOPUP_FILE.exists() else []))
+                   + ([r["gold_leaf"] for r in csv.DictReader(open(TOPUP_FILE))] if TOPUP_FILE.exists() else [])
+                   + ([r["gold_leaf"] for r in csv.DictReader(open(CREDIT_TOPUP_FILE))] if CREDIT_TOPUP_FILE.exists() else []))
     target_counts = Counter(all_targets)
     print(f"Tier B: {len(txns)} txns ({len(tier_b_target_counts)} classes)", file=sys.stderr)
     print(f"Tier A: {n_risk_tier_a} rows on risk-gold merchants excluded", file=sys.stderr)

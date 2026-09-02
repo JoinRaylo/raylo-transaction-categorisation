@@ -228,6 +228,7 @@ def fetch():
 
     df = pd.concat([cred, risk], ignore_index=True).drop(columns=["_text"])
     df["provider"] = "plaid"
+    df.insert(1, "merchant", df["merchant_raw"].fillna("").map(_norm))  # v6.label expects it
     df.insert(0, "row_id", range(len(df)))
     OUT_DIR.mkdir(exist_ok=True)
     df.to_csv(SAMPLE_CSV, index=False)
