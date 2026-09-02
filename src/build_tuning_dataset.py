@@ -107,6 +107,17 @@ def load_tier_a():
     return by_merchant
 
 
+def load_risk_merchants():
+    """Merchants in the risk-category gold set — excluded from ALL training rows."""
+    out = set()
+    if RISK_GOLD.exists():
+        for r in csv.DictReader(open(RISK_GOLD)):
+            m = _norm(r.get("merchant_raw") or "")
+            if m:
+                out.add(m)
+    return out
+
+
 def frozen_holdout_merchants():
     """Merchant set from the published holdout file — never reshuffled."""
     return {_norm(r["merchant_raw"]) for r in csv.DictReader(open(SLM_EVAL_CSV))}
@@ -225,11 +236,25 @@ def build():
 
     train, val = [], []
     tier_a_preview = load_tier_a()
+    # 2026-09-02: the risk-category gold set was described as "held out" but
+    # 77.5% of its rows shared a merchant with Tier B (bookmakers/lenders are
+    # tranche-4 merchants too), so the 86.1% risk bar was in-sample. Risk-gold
+    # merchants are now excluded from Tier B, Tier A training rows and the
+    # top-up, exactly like the frozen holdout merchants.
+    risk_merchants = load_risk_merchants()
+    n_risk_skipped = 0
     for t in txns:
         if t["merchant"] in tier_a_preview:
             continue  # Tier A supersedes Tier B for overlapping merchants
+        if t["merchant"] in risk_merchants:
+            n_risk_skipped += 1
+            continue
         (val if t["merchant"] in val_merchants else train).append(tier_b_example(t))
-    tier_b_target_counts = Counter(t["target"] for t in txns if t["merchant"] not in tier_a_preview)
+    tier_b_target_counts = Counter(t["target"] for t in txns
+                                   if t["merchant"] not in tier_a_preview
+                                   and t["merchant"] not in risk_merchants)
+    print(f"Tier B: skipped {n_risk_skipped} rows on {len(risk_merchants)} risk-gold merchants",
+          file=sys.stderr)
 
     # ---------- Tier A: unified gold. Holdout merchants frozen from SLM_EVAL_CSV ----------
     tier_a = load_tier_a()
@@ -238,9 +263,13 @@ def build():
 
     tier_a_train_examples = []
     n_iter_eval_rows = 0
+    n_risk_tier_a = 0
     for m, rows in tier_a.items():
         if m in holdout_merchants:
             n_iter_eval_rows += len(rows)
+            continue
+        if m in risk_merchants:
+            n_risk_tier_a += len(rows)
             continue
         train_rows = [r for r in rows if r.get("role") != "iter_eval"]
         reps = OVERSAMPLE_FACTOR if m in conflicting else 1
@@ -267,7 +296,7 @@ def build():
             # is the UK charge-card population AND a v2 holdout merchant). Dropping
             # those top-up rows would leave the class empty; keep them. Other
             # top-up rows still skip holdout merchants.
-            if (_norm(r["merchant_raw"]) in holdout_merchants
+            if (_norm(r["merchant_raw"]) in (holdout_merchants | risk_merchants)
                     and r["gold_leaf"] not in STARVED_TOPUP_LEAVES):
                 continue
             ex = to_example(r["merchant_raw"], r["description_raw"], abs(float(r["amount"])),
@@ -306,12 +335,6 @@ def build():
               file=sys.stderr)
     train = train + starved_extra
 
-    risk_merchants = set()
-    if RISK_GOLD.exists():
-        for r in csv.DictReader(open(RISK_GOLD)):
-            m = _norm(r.get("merchant_raw") or "")
-            if m:
-                risk_merchants.add(m)
     blocked = risk_merchants | holdout_merchants | {""}
     guard_extra = []
     for leaf in sorted(RISK_GUARD_LEAVES):
@@ -347,6 +370,7 @@ def build():
                    + ([r["gold_leaf"] for r in csv.DictReader(open(TOPUP_FILE))] if TOPUP_FILE.exists() else []))
     target_counts = Counter(all_targets)
     print(f"Tier B: {len(txns)} txns ({len(tier_b_target_counts)} classes)", file=sys.stderr)
+    print(f"Tier A: {n_risk_tier_a} rows on risk-gold merchants excluded", file=sys.stderr)
     print(f"Tier A: {len(tier_a_train_examples)} examples after oversample "
           f"({len(tier_a) - len(holdout_merchants)} train merchants, {len(conflicting)} conflicting "
           f"oversampled {OVERSAMPLE_FACTOR}x); {n_iter_eval_rows} unified rows on frozen holdout "

@@ -300,7 +300,12 @@ def t2_morr_cafe_tier(merchant_expr, desc_expr):
 
 
 def _t2_carlos_when(merchant_expr, desc_expr, merch, pat, then_value, direction):
-    pat_sql = pat.replace("\\", "\\\\").replace("'", "\\'")
+    # Emitted inside a BigQuery RAW string (r'...'), so backslashes must NOT be
+    # doubled: r'payin\\s*3' is a literal backslash in RE2 and never matches.
+    # Until 2026-09-02 every Carlos-pack pattern with \s / \b was dead in SQL
+    # (34 of 42 rules) while the Python mirror fired them; the parity check
+    # (`check_waterfall_parity.py`) caught it on PayPal Credit Pay in 3.
+    pat_sql = pat.replace("'", "\\'")
     dir_clause = "" if direction == "any" else f" AND r.direction='{direction}'"
     return (f"      WHEN {merchant_expr}='{esc(merch)}'{dir_clause} "
             f"AND REGEXP_CONTAINS({desc_expr}, r'{pat_sql}') THEN '{then_value}'")
@@ -563,6 +568,108 @@ def match_t2(merchant, direction, description):
             return row["detailed_category"], f"T2_compound_{row['rule_id']}"
     return None
 
+# ---- CASE bodies, shared by generate() and check_waterfall_parity.py ----
+# Each returns "    CASE ... " up to (not including) the END line, so callers
+# append `END AS leaf` / `END AS resolution_tier`.
+
+def eqx_leaf_case():
+    return f"""    CASE
+      -- T1: direction-dependent overrides
+      WHEN r.pri LIKE 'Gambling and Betting%' AND r.direction='credit' THEN 'gambling_unspecified'
+      WHEN r.sub='Council' AND r.direction='credit' THEN 'salary'
+      -- T2: compound rule - gig income
+      WHEN r.pri='Identified Salary' AND r.sub IN ('Taxis','Delivery','Take Away') THEN 'salary_gig'
+      WHEN r.pri='Identified Salary' AND r.sub IN ('Recruitment Services','Employment Agencies') THEN 'income_agency_work'
+      -- T2: provider-entity collisions (Tesco Bank/Petrol/PhoneIns; HMRC
+      -- Child Benefit / tax credits / SA refunds). Must precede T4.
+{t2_entity_collision_leaf(EQX_MERCHANT_EXPR, EQX_DESC_EXPR)}
+      -- T3: MECHANISM-OVERRIDE primaries (mechanism determines leaf regardless of merchant)
+      WHEN r.pri='Identified Salary' THEN 'salary'
+      WHEN r.pri='Refund' THEN 'refund_received'
+      WHEN r.pri IN ('Benefits','Welfare') THEN 'benefits_state'
+      WHEN r.pri='Pension Payout' THEN 'pension_received'
+      WHEN r.pri='Tax Refund' THEN 'tax_refund'
+      WHEN r.pri='Cash Back' THEN 'cashback'
+      WHEN r.pri='Cash Machine' THEN 'cash_withdrawal'
+      WHEN r.pri='Cash Deposit' THEN 'cash_deposit'
+      WHEN r.pri IN ('Interest','Interests and Dividends') THEN 'savings_interest_received'
+      WHEN r.pri='Balance Transfers' THEN 'balance_transfer'
+      WHEN r.pri='Adjustments' THEN 'adjustment'
+      -- T1 (dict-informed): bookmaker credits stay unspecified even when T4
+      -- would assign a debit subtype. Plaid native T1 only sees Plaid's
+      -- gambling category, so salary-mislabeled Sky Bet credits used to lose to T4.
+{t1_gambling_credit_leaf()}
+{t2_refund_leaf(EQX_DESC_EXPR)}
+{t2_returned_leaf(EQX_DESC_EXPR)}
+{t2_youlend_credit_leaf(EQX_MERCHANT_EXPR)}
+      -- T4: merchant dictionary (provider-independent, overrides both providers' own categories)
+      WHEN d.leaf IS NOT NULL THEN d.leaf
+      -- T5: deterministic rules
+{rules_leaf_case(EQX_MERCHANT_EXPR, EQX_DESC_EXPR)}
+      -- T6: provider crosswalk fallback (sub = WHAT, primary = mechanism fallback)
+      WHEN s.leaf IS NOT NULL THEN s.leaf
+      WHEN p.leaf IS NOT NULL THEN p.leaf
+      ELSE 'unclassified_other'
+"""
+
+
+def eqx_tier_case():
+    return f"""    CASE
+      WHEN r.pri LIKE 'Gambling and Betting%' AND r.direction='credit' THEN 'T1_direction'
+      WHEN r.sub='Council' AND r.direction='credit' THEN 'T1_direction'
+      WHEN r.pri='Identified Salary' AND r.sub IN ('Taxis','Delivery','Take Away') THEN 'T2_compound'
+      WHEN r.pri='Identified Salary' AND r.sub IN ('Recruitment Services','Employment Agencies') THEN 'T2_compound'
+{t2_entity_collision_tier(EQX_MERCHANT_EXPR, EQX_DESC_EXPR)}
+      WHEN r.pri IN ('Identified Salary','Refund','Benefits','Welfare','Pension Payout','Tax Refund',
+        'Cash Back','Cash Machine','Cash Deposit','Interest','Interests and Dividends',
+        'Balance Transfers','Adjustments') THEN 'T3_mechanism_override'
+{t1_gambling_credit_tier()}
+{t2_refund_tier(EQX_DESC_EXPR)}
+{t2_returned_tier(EQX_DESC_EXPR)}
+{t2_youlend_credit_tier(EQX_MERCHANT_EXPR)}
+      WHEN d.leaf IS NOT NULL THEN 'T4_merchant_dictionary'
+{rules_tier_case(EQX_MERCHANT_EXPR, EQX_DESC_EXPR)}
+      WHEN s.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
+      WHEN p.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
+      ELSE 'T7_unclassified'
+"""
+
+
+def plaid_leaf_case():
+    return f"""    CASE
+      -- T1: direction-dependent overrides
+      WHEN r.cat='ENTERTAINMENT_CASINOS_AND_GAMBLING' AND r.direction='credit' THEN 'gambling_unspecified'
+      -- T2: provider-entity collisions -- see eqx_resolved
+{t2_entity_collision_leaf(PLAID_MERCHANT_EXPR, PLAID_DESC_EXPR)}
+{t1_gambling_credit_leaf()}
+{t2_refund_leaf(PLAID_DESC_EXPR)}
+{t2_returned_leaf(PLAID_DESC_EXPR)}
+{t2_youlend_credit_leaf(PLAID_MERCHANT_EXPR)}
+      -- T4: merchant dictionary (provider-independent, overrides both providers' own categories)
+      WHEN d.leaf IS NOT NULL THEN d.leaf
+      -- T5: deterministic rules
+{rules_leaf_case(PLAID_MERCHANT_EXPR, PLAID_DESC_EXPR)}
+      -- T6: provider crosswalk fallback
+      WHEN x.leaf IS NOT NULL THEN x.leaf
+      ELSE 'unclassified_other'
+"""
+
+
+def plaid_tier_case():
+    return f"""    CASE
+      WHEN r.cat='ENTERTAINMENT_CASINOS_AND_GAMBLING' AND r.direction='credit' THEN 'T1_direction'
+{t2_entity_collision_tier(PLAID_MERCHANT_EXPR, PLAID_DESC_EXPR)}
+{t1_gambling_credit_tier()}
+{t2_refund_tier(PLAID_DESC_EXPR)}
+{t2_returned_tier(PLAID_DESC_EXPR)}
+{t2_youlend_credit_tier(PLAID_MERCHANT_EXPR)}
+      WHEN d.leaf IS NOT NULL THEN 'T4_merchant_dictionary'
+{rules_tier_case(PLAID_MERCHANT_EXPR, PLAID_DESC_EXPR)}
+      WHEN x.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
+      ELSE 'T7_unclassified'
+"""
+
+
 def generate():
     sql = f"""
 -- ============ RAYLO UNIFIED TAXONOMY - crosswalk application (sample test) ============
@@ -602,63 +709,8 @@ eqx_raw AS (
 ),
 eqx_resolved AS (
   SELECT r.*,
-    CASE
-      -- T1: direction-dependent overrides
-      WHEN r.pri LIKE 'Gambling and Betting%' AND r.direction='credit' THEN 'gambling_unspecified'
-      WHEN r.sub='Council' AND r.direction='credit' THEN 'salary'
-      -- T2: compound rule - gig income
-      WHEN r.pri='Identified Salary' AND r.sub IN ('Taxis','Delivery','Take Away') THEN 'salary_gig'
-      WHEN r.pri='Identified Salary' AND r.sub IN ('Recruitment Services','Employment Agencies') THEN 'income_agency_work'
-      -- T2: provider-entity collisions (Tesco Bank/Petrol/PhoneIns; HMRC
-      -- Child Benefit / tax credits / SA refunds). Must precede T4.
-{t2_entity_collision_leaf(EQX_MERCHANT_EXPR, EQX_DESC_EXPR)}
-      -- T3: MECHANISM-OVERRIDE primaries (mechanism determines leaf regardless of merchant)
-      WHEN r.pri='Identified Salary' THEN 'salary'
-      WHEN r.pri='Refund' THEN 'refund_received'
-      WHEN r.pri IN ('Benefits','Welfare') THEN 'benefits_state'
-      WHEN r.pri='Pension Payout' THEN 'pension_received'
-      WHEN r.pri='Tax Refund' THEN 'tax_refund'
-      WHEN r.pri='Cash Back' THEN 'cashback'
-      WHEN r.pri='Cash Machine' THEN 'cash_withdrawal'
-      WHEN r.pri='Cash Deposit' THEN 'cash_deposit'
-      WHEN r.pri IN ('Interest','Interests and Dividends') THEN 'savings_interest_received'
-      WHEN r.pri='Balance Transfers' THEN 'balance_transfer'
-      WHEN r.pri='Adjustments' THEN 'adjustment'
-      -- T1 (dict-informed): bookmaker credits stay unspecified even when T4
-      -- would assign a debit subtype. Plaid native T1 only sees Plaid's
-      -- gambling category, so salary-mislabeled Sky Bet credits used to lose to T4.
-{t1_gambling_credit_leaf()}
-{t2_refund_leaf(EQX_DESC_EXPR)}
-{t2_returned_leaf(EQX_DESC_EXPR)}
-{t2_youlend_credit_leaf(EQX_MERCHANT_EXPR)}
-      -- T4: merchant dictionary (provider-independent, overrides both providers' own categories)
-      WHEN d.leaf IS NOT NULL THEN d.leaf
-      -- T5: deterministic rules
-{rules_leaf_case(EQX_MERCHANT_EXPR, EQX_DESC_EXPR)}
-      -- T6: provider crosswalk fallback (sub = WHAT, primary = mechanism fallback)
-      WHEN s.leaf IS NOT NULL THEN s.leaf
-      WHEN p.leaf IS NOT NULL THEN p.leaf
-      ELSE 'unclassified_other'
-    END AS leaf,
-    CASE
-      WHEN r.pri LIKE 'Gambling and Betting%' AND r.direction='credit' THEN 'T1_direction'
-      WHEN r.sub='Council' AND r.direction='credit' THEN 'T1_direction'
-      WHEN r.pri='Identified Salary' AND r.sub IN ('Taxis','Delivery','Take Away') THEN 'T2_compound'
-      WHEN r.pri='Identified Salary' AND r.sub IN ('Recruitment Services','Employment Agencies') THEN 'T2_compound'
-{t2_entity_collision_tier(EQX_MERCHANT_EXPR, EQX_DESC_EXPR)}
-      WHEN r.pri IN ('Identified Salary','Refund','Benefits','Welfare','Pension Payout','Tax Refund',
-        'Cash Back','Cash Machine','Cash Deposit','Interest','Interests and Dividends',
-        'Balance Transfers','Adjustments') THEN 'T3_mechanism_override'
-{t1_gambling_credit_tier()}
-{t2_refund_tier(EQX_DESC_EXPR)}
-{t2_returned_tier(EQX_DESC_EXPR)}
-{t2_youlend_credit_tier(EQX_MERCHANT_EXPR)}
-      WHEN d.leaf IS NOT NULL THEN 'T4_merchant_dictionary'
-{rules_tier_case(EQX_MERCHANT_EXPR, EQX_DESC_EXPR)}
-      WHEN s.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
-      WHEN p.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
-      ELSE 'T7_unclassified'
-    END AS resolution_tier
+{eqx_leaf_case()}    END AS leaf,
+{eqx_tier_case()}    END AS resolution_tier
   FROM eqx_raw r
   LEFT JOIN sub_xw s ON r.sub = s.eqx_sub
   LEFT JOIN pri_xw p ON r.pri = p.eqx_pri
@@ -676,35 +728,8 @@ plaid_raw AS (
 ),
 plaid_resolved AS (
   SELECT r.*,
-    CASE
-      -- T1: direction-dependent overrides
-      WHEN r.cat='ENTERTAINMENT_CASINOS_AND_GAMBLING' AND r.direction='credit' THEN 'gambling_unspecified'
-      -- T2: provider-entity collisions -- see eqx_resolved
-{t2_entity_collision_leaf(PLAID_MERCHANT_EXPR, PLAID_DESC_EXPR)}
-{t1_gambling_credit_leaf()}
-{t2_refund_leaf(PLAID_DESC_EXPR)}
-{t2_returned_leaf(PLAID_DESC_EXPR)}
-{t2_youlend_credit_leaf(PLAID_MERCHANT_EXPR)}
-      -- T4: merchant dictionary (provider-independent, overrides both providers' own categories)
-      WHEN d.leaf IS NOT NULL THEN d.leaf
-      -- T5: deterministic rules
-{rules_leaf_case(PLAID_MERCHANT_EXPR, PLAID_DESC_EXPR)}
-      -- T6: provider crosswalk fallback
-      WHEN x.leaf IS NOT NULL THEN x.leaf
-      ELSE 'unclassified_other'
-    END AS leaf,
-    CASE
-      WHEN r.cat='ENTERTAINMENT_CASINOS_AND_GAMBLING' AND r.direction='credit' THEN 'T1_direction'
-{t2_entity_collision_tier(PLAID_MERCHANT_EXPR, PLAID_DESC_EXPR)}
-{t1_gambling_credit_tier()}
-{t2_refund_tier(PLAID_DESC_EXPR)}
-{t2_returned_tier(PLAID_DESC_EXPR)}
-{t2_youlend_credit_tier(PLAID_MERCHANT_EXPR)}
-      WHEN d.leaf IS NOT NULL THEN 'T4_merchant_dictionary'
-{rules_tier_case(PLAID_MERCHANT_EXPR, PLAID_DESC_EXPR)}
-      WHEN x.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
-      ELSE 'T7_unclassified'
-    END AS resolution_tier
+{plaid_leaf_case()}    END AS leaf,
+{plaid_tier_case()}    END AS resolution_tier
   FROM plaid_raw r
   LEFT JOIN plaid_xw x ON r.cat = x.plaid_cat
   LEFT JOIN dict_xw d ON LOWER(TRIM(r.merchant_raw)) = d.merchant

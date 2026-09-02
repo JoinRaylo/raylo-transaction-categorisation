@@ -32,6 +32,18 @@ TAXONOMY_CSV = ROOT / "taxonomy" / "taxonomy.csv"
 # it being the single highest-IV feature found in the whole project).
 RISK_GENERAL_CATEGORIES = {"gambling", "credit_loan_repayments", "high_cost_distress_credit"}
 
+# Credit-side minimum bar (2026-09-02). Credits are 24.7% of live Plaid rows and
+# half the money, but 0.65% of the training jsonl; the pipeline scored 53% on
+# credits vs 83% on debits. These are the income / transfer leaves the
+# affordability and risk features depend on. Reported whenever the prediction
+# CSV carries a `direction` column.
+CREDIT_BAR_LEAVES = {
+    "salary", "salary_gig", "income_agency_work", "benefits_state", "pension_received",
+    "refund_received", "returned_payment", "transfer_own_account", "transfer_p2p",
+    "loan_disbursement", "income_other_unspecified", "tax_refund", "cashback",
+}
+CREDIT_BAR = 0.70
+
 
 def load_taxonomy():
     rows = list(csv.DictReader(open(TAXONOMY_CSV)))
@@ -58,6 +70,30 @@ def analyse(rows, gen_of, risk_leaves):
         if g != r["pred_leaf"]:
             per_leaf_errors[g][0] += 1
 
+    by_direction = {}
+    if rows and "direction" in rows[0]:
+        for d in ("debit", "credit"):
+            sub = [r for r in rows if str(r.get("direction", "")).lower() == d]
+            if sub:
+                by_direction[d] = {
+                    "n": len(sub),
+                    "leaf_acc": sum(1 for r in sub if r["gold_leaf"] == r["pred_leaf"]) / len(sub),
+                    "gen_acc": sum(1 for r in sub
+                                   if gen_of.get(r["pred_leaf"]) == gen_of.get(r["gold_leaf"])) / len(sub),
+                }
+        credit_bar_rows = [r for r in rows
+                           if str(r.get("direction", "")).lower() == "credit"
+                           and r["gold_leaf"] in CREDIT_BAR_LEAVES]
+        by_direction["credit_bar_n"] = len(credit_bar_rows)
+        by_direction["credit_bar_acc"] = (
+            sum(1 for r in credit_bar_rows if r["gold_leaf"] == r["pred_leaf"]) / len(credit_bar_rows)
+            if credit_bar_rows else None)
+        cb_conf = Counter()
+        for r in credit_bar_rows:
+            if r["gold_leaf"] != r["pred_leaf"]:
+                cb_conf[(r["gold_leaf"], r["pred_leaf"])] += 1
+        by_direction["credit_bar_confusion"] = cb_conf
+
     risk_rows = [r for r in rows if r["gold_leaf"] in risk_leaves]
     risk_n = len(risk_rows)
     risk_correct = sum(1 for r in risk_rows if r["gold_leaf"] == r["pred_leaf"])
@@ -72,6 +108,7 @@ def analyse(rows, gen_of, risk_leaves):
         "confusion": confusion, "per_leaf_errors": per_leaf_errors,
         "risk_n": risk_n, "risk_acc": (risk_correct / risk_n) if risk_n else None,
         "risk_confusion": risk_confusion,
+        "by_direction": by_direction,
     }
 
 
@@ -85,6 +122,24 @@ def report(path, min_risk_accuracy):
 
     print(f"=== {path} ({a['n']} rows) ===")
     print(f"Overall:  leaf {a['leaf_acc']:.1%} / general {a['gen_acc']:.1%}")
+
+    bd = a.get("by_direction") or {}
+    if bd:
+        print("\n--- By direction ---")
+        for d in ("debit", "credit"):
+            if d in bd:
+                print(f"  {d:6} n={bd[d]['n']:5} | leaf {bd[d]['leaf_acc']:.1%} / general {bd[d]['gen_acc']:.1%}")
+        if bd.get("credit_bar_acc") is not None:
+            status = "OK" if bd["credit_bar_acc"] >= CREDIT_BAR else "BELOW BAR"
+            print(f"  credit-side bar ({len(CREDIT_BAR_LEAVES)} income/transfer leaves): "
+                  f"n={bd['credit_bar_n']} | accuracy {bd['credit_bar_acc']:.1%} | "
+                  f"bar {CREDIT_BAR:.0%} | {status}")
+            for (g, pr), c in bd["credit_bar_confusion"].most_common(8):
+                print(f"    {g} -> {pr}: {c}")
+        else:
+            print("  credit-side bar: n=0 credit rows on bar leaves")
+    else:
+        print("\n--- By direction: prediction CSV has no `direction` column (add it) ---")
 
     print(f"\n--- Risk-category minimum bar (gambling / credit_loan_repayments / "
           f"high_cost_distress_credit, {len(risk_leaves)} leaves) ---")

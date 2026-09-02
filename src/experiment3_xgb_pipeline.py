@@ -170,6 +170,9 @@ KEY_LEAVES = [
 ]
 
 DESC_TRUNC = 300
+# Equifax history window per proposal (days before financial_proposal_created_at).
+# 189 days is the Equifax product's average history; Plaid Asset Reports are 90.
+EQX_HISTORY_DAYS = 189
 CLASSIFY_CHUNK = 60_000
 
 M3_TRAIN_START = "2023-01-01"
@@ -344,6 +347,12 @@ eqx_raw AS (
   JOIN `raylo-production.equifax_data.open_banking_transactions_with_matches` t
     ON t.financial_proposal_id = c.financial_proposal_id
   WHERE t.final_matched_on != 'name_time'
+    -- As-of filter (2026-09-02): only history knowable at decision time.
+    -- Before this, 5.5% of Equifax proposals carried post-proposal rows
+    -- (days_since_* down to -944) and those proposals had half the bad rate.
+    AND DATE(t.PostDate) <= DATE(c.financial_proposal_created_at)
+    AND DATE(t.PostDate) >= DATE_SUB(DATE(c.financial_proposal_created_at),
+                                     INTERVAL {EQX_HISTORY_DAYS} DAY)
 )
 SELECT
   r.proposal_id,
@@ -1136,8 +1145,34 @@ def _run_one(df, ycol, train_start, train_end, oot_end, label, max_features: int
             xgb_l = _fit_xgb(
                 _X(p_tr, live_cols), p_tr[ycol].astype(int),
                 _X(p_va, live_cols), p_va[ycol].astype(int))
+            # 2026-09-02: refit on the full Plaid train window with the
+            # early-stopped n_estimators, exactly like the taxonomy models.
+            # The 80%-only fit understated the live comparator (0.386 vs
+            # ~0.41 on month6).
+            best_l = int(getattr(xgb_l, "best_iteration", None) or xgb_l.n_estimators)
+            pos_l = max(int(plaid_train[ycol].sum()), 1)
+            neg_l = max(int((plaid_train[ycol] == 0).sum()), 1)
+            xgb_l_refit = xgb.XGBClassifier(
+                n_estimators=max(best_l, 50),
+                max_depth=4,
+                learning_rate=0.05,
+                subsample=0.85,
+                colsample_bytree=0.7,
+                min_child_weight=15,
+                reg_lambda=2.0,
+                objective="binary:logistic",
+                eval_metric="auc",
+                tree_method="hist",
+                n_jobs=-1,
+                scale_pos_weight=neg_l / pos_l,
+            )
+            xgb_l_refit.fit(_X(plaid_train, live_cols), plaid_train[ycol].astype(int))
             results.append(_score_block(
                 f"{label} live Plaid XGB",
+                xgb_l_refit.predict_proba(_X(plaid_oot, live_cols))[:, 1],
+                plaid_oot[ycol].astype(int)))
+            results.append(_score_block(
+                f"{label} live Plaid XGB (80% inner fit, pre-2026-09-02 method)",
                 xgb_l.predict_proba(_X(plaid_oot, live_cols))[:, 1],
                 plaid_oot[ycol].astype(int)))
             xgb_tp = _fit_xgb(

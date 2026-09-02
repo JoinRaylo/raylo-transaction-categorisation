@@ -272,3 +272,60 @@ The published **taxonomy baseline** was *not* this test: it used the analog shor
 | month6 our-leaves 20 logistic | 6652 | 410 | 0.4304 |
 | month6 live 20 XGB | 6652 | 410 | 0.3825 |
 | month6 our-leaves 20 XGB | 6652 | 410 | 0.4419 |
+
+## Addendum 2026-09-02 — Equifax as-of filter and full-refit live comparator
+
+Two methodology fixes from the 2 Sep programme review
+(`docs/review-2026-09-02-state-and-next-steps.md` §2.4–2.5), then the
+`fetch → classify → features → train → train50` stages were re-run. The script
+rewrites this file; the 27 Aug body above was restored from a backup and this
+addendum appended, per the dated-report convention.
+
+1. **As-of filter on Equifax history.** `_eqx_fetch_sql` now keeps only rows with
+   `DATE(PostDate) <= DATE(financial_proposal_created_at)` and within
+   `EQX_HISTORY_DAYS = 189` days before it. Before, 5.5% of Equifax proposals
+   carried post-proposal transactions (`days_since_*` down to −944) and those
+   proposals had roughly half the bad rate. Equifax train proposals fell
+   36,126 → **35,483** (proposals with no in-window history drop out).
+2. **Live comparator refit on the full Plaid train window** with the
+   early-stopped `n_estimators`, exactly as the taxonomy models are. The old
+   80%-inner-fit number is kept as a labelled row for comparison.
+
+Same OOT windows and n/bads as 27 Aug (month3 4,855 / 465; month6 6,652 / 410).
+Single seed; the stress test's 3-seed live full-refit mean was 0.392 / 0.411,
+so treat ±0.01–0.02 as noise on any one row.
+
+### Uncapped (gain prune cap 80)
+
+| model | month3 | month6 |
+|---|---:|---:|
+| taxonomy selected XGB (Equifax+Plaid train) | **0.4738** (was 0.4781) | **0.5720** (was 0.5601) |
+| taxonomy selected XGB, Plaid-train only | 0.4633 (was 0.4669) | 0.5210 (was 0.5316) |
+| taxonomy baseline XGB | 0.3659 | 0.4722 |
+| live Plaid XGB, full refit (new method) | **0.3820** | **0.3854** |
+| live Plaid XGB, 80% inner fit (old method) | 0.3973 (was 0.403) | 0.3861 |
+| live Plaid logistic | 0.3275 | 0.4045 |
+
+### 50-feature cap (headline spec)
+
+| model | month3 | month6 |
+|---|---:|---:|
+| taxonomy selected XGB (Equifax+Plaid train) | **0.4772** (was 0.4771) | **0.5620** (was 0.5638) |
+| taxonomy selected XGB, Plaid-train only | **0.4448** (was 0.4485) | **0.5044** (was 0.4883) |
+| live Plaid XGB, full refit | 0.3820 | 0.3854 |
+
+### Read
+
+- The as-of leak did **not** carry the headline: capped month3 is unchanged
+  (0.477) and month6 moves within noise (0.564 → 0.562). The post-proposal rows
+  were a knowability problem, not the source of the uplift.
+- The honest like-for-like pair is still **Plaid-train-only vs full-refit live**:
+  month3 **0.445 vs 0.382**, month6 **0.504 vs 0.385**. Quote these, not the
+  pooled Equifax+Plaid rows, when the claim is "same population as the live model".
+- The same-20-feature ablation in the stress test remains the only
+  taxonomy-only comparison, and it is inconclusive; the uplift above is the
+  whole feature/model bundle.
+- Cached artefacts overwritten: `outputs/experiment3_xgb_proposal_features.parquet`,
+  `experiment3_xgb_month{3,6}.joblib`, `_50.joblib`, `experiment3_xgb_selected_features.json`.
+  The granularity ladder, stress test and champion search still read the 27 Aug
+  features and have **not** been re-run on the as-of features.

@@ -359,6 +359,9 @@ MLM on ~50M short sentences is roughly 6–10 h on MPS or ~1 h on one A100).
 
 ## 6. Recommended order of work
 
+**Status 2026-09-02 (same day):** items 1–6 below are done except the final
+retrain scoring — see the "Week 1 outcome" section at the end of this document.
+
 **Week 1 — make the numbers honest (no new modelling):**
 1. Commit the current tree. Reword README/CLAUDE.md headlines: Experiment 3 = Plaid-only
    0.449 / 0.488 vs full-refit live 0.392 / 0.411 pending the as-of fix; granularity
@@ -394,3 +397,19 @@ MLM on ~50M short sentences is roughly 6–10 h on MPS or ~1 h on one A100).
     matured outcome window once; score v6 once, at the same gate.
 12. Raise the 90-day Asset Report request (CLAUDE.md §10) with the Plaid-integration
     owner — still the highest-leverage single fix in the programme.
+
+
+## Week 1 outcome (same day, 2026-09-02)
+
+| Item | Result |
+|---|---|
+| 1 Commit + reword | Snapshot commit `2a342e1`; README / CLAUDE.md / project-summary headlines reworded (Exp3 like-for-like, granularity per stress test, pipeline with splits). |
+| 2 De-leak risk gold | Risk merchants excluded from Tier A/B/top-up; jsonl 383,066 → **381,560**; holdout MD5 unchanged. Fresh hinge: holdout **56.0%** (v5 53.9%), **risk bar 62.7% FAIL** (v5 in-sample 86.1%); T6-bound risk rows 77.5% for both. Serving dump unchanged. `data/classifier_v6_deleaked_report.md`. |
+| 3 T4 purge | `build_merchant_dictionary.py` tranche-4 downgrade guard: −1,575 agent keys tranche 4 marks `context_dependent`; bare `credit` dropped; 0 agent keys disagree with a classifiable tranche-4 leaf (the "41" were human packs or tranche-4 abstains, kept). Dictionary **90,261**; BQ reloaded; guard test added. |
+| 4 Python = SQL | `our_leaf()` reordered (T1/T2-gig/T3 before T4; T7 for unmapped). Generator CASE bodies factored into functions; `src/check_waterfall_parity.py` runs them in BigQuery over the eval rows: **2,004/2,004 leaf agreement**. Found + fixed: `_t2_carlos_when` double-escaped backslashes inside `r'...'`, so 34/42 Carlos-pack T2 rules never fired in SQL. SQL regenerated. |
+| 5 Direction / provenance splits | `confusion_analysis.analyse()` returns `by_direction` + credit-side bar (`CREDIT_BAR_LEAVES`, 70%); `compare_classifier_versions.py` carries `direction`; `score_waterfall_pipeline.py` reports debit/credit and human-v2 vs LLM-drafted rows. Pipeline: **81.8%** on 2,004 rows; credit **57.8%** / debit 84.2%; human-v2 **77.7%** / LLM-drafted 86.1%. `label_source` is derived from the eval `source` column (gold CSVs not edited). |
+| 6 Experiment 3 | As-of filter (`PostDate <= created_at`, 189-day window) + live XGB full refit; re-ran fetch→train50. Capped 0.477 / 0.562 (unchanged); Plaid-only 0.445 / 0.504; live full-refit 0.382 / 0.385. Ladder / stress / champion **not** re-run on as-of features. Addendum in `data/experiment3_xgb_report.md`. |
+
+Tests: 34 passing (4 new). Open from Week 1: re-run ladder/stress/champion on the as-of
+features; decide whether the v6 de-leaked dump replaces v5 as the serving weights (no
+evidence either way on T6-bound rows — leave until the credit tranche retrain).

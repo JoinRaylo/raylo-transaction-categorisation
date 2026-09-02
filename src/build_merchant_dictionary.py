@@ -517,6 +517,41 @@ if _T4_LABELS.exists():
 print(f"production_tranche4: added {_t4_added}, retargeted {_t4_updated}, "
       f"skipped_unclassified {_t4_skipped_unclass}, skipped_t2 {_t4_skipped_t2}")
 
+# ---- tranche-4 downgrade guard (2026-09-02) ----
+# Tranche 4 re-labelled the full merchant population. Where it marked a string
+# `context_dependent`, an older agent-tier key (tranche 3 accepted/auto_accept/
+# "human_reviewed", which was agent work) must not stay in T4 as a deterministic
+# label: 1,633 such keys were live on 2026-09-02 (`miss`, `dad`, `credit`,
+# `trading`, `new zealand` ...). Likewise an agent-tier key whose leaf disagrees
+# with a *classifiable* tranche-4 final leaf is agent-vs-agent disagreement and
+# falls through to T5/T5b. Human packs (human_override_*, gold_v2_review,
+# gating_adjudication, llm_proposed seed) are kept: they were adjudicated with
+# the collision in view.
+_AGENT_SOURCE_PREFIXES = ("production_tranche3_", "production_tranche4_")
+_t4_ctx, _t4_final_of = set(), {}
+if _T4_LABELS.exists():
+    for r in csv.DictReader(open(_T4_LABELS)):
+        m = r["merchant"].strip().lower()
+        if r["tier"] == "context_dependent":
+            _t4_ctx.add(m)
+        if r["tier"] in _PROD_GOOD_TIERS and r["final_leaf"] not in _T4_SKIP_LEAVES:
+            _t4_final_of[m] = r["final_leaf"]
+_n_ctx = _n_dis = 0
+_kept = []
+for r in rows:
+    m = r["normalised_merchant"]
+    agent = r["source"].startswith(_AGENT_SOURCE_PREFIXES)
+    if agent and m in _t4_ctx:
+        _n_ctx += 1
+        continue
+    if agent and m in _t4_final_of and _t4_final_of[m] != r["detailed_category"]:
+        _n_dis += 1
+        continue
+    _kept.append(r)
+rows = _kept
+print(f"tranche4_downgrade_guard: dropped {_n_ctx} context_dependent agent keys, "
+      f"{_n_dis} agent keys disagreeing with tranche-4 final leaf")
+
 # T2 collision keys and amount-only same-narrative splits must not sit in T4
 # (T2 fires first, but unmatched narratives would still take the wrong T4 leaf).
 # gamesys operation is the documented single-leaf exception (unspecified, not casino).
@@ -700,6 +735,10 @@ if _pc:
 _BARE_TOKEN_DROP = {
     "now",
     "mercedes-benz", "plus", "gem", "home", "city", "orbit", "spring", "wood j",
+    # 2026-09-02: a gold_v2 PayPal Credit row left the bare merchant string
+    # `credit` -> revolving_credit_repayment as an exact T4 key. Tranche 4 marks
+    # the string context_dependent; `paypal credit` is the real key.
+    "credit",
 }
 _n_bare = len(rows)
 rows = [r for r in rows if r["normalised_merchant"] not in _BARE_TOKEN_DROP]

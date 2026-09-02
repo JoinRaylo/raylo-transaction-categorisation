@@ -141,16 +141,61 @@ def _rule_matches(rule, merchant_text, description_text, direction):
     return True
 
 
+def _eqx_pre_t4(pri, sub, direction):
+    """Equifax T1 / T2-gig / T3 that the SQL fires BEFORE the T4 dictionary."""
+    if pri and pri.startswith("Gambling and Betting") and direction == "credit":
+        return "gambling_unspecified", "T1_direction"
+    if sub == "Council" and direction == "credit":
+        return "salary", "T1_direction"
+    if pri == "Identified Salary" and sub in ("Taxis", "Delivery", "Take Away"):
+        return "salary_gig", "T2_compound"
+    if pri == "Identified Salary" and sub in ("Recruitment Services", "Employment Agencies"):
+        return "income_agency_work", "T2_compound"
+    return None
+
+
+def _eqx_t3(pri):
+    if pri in MECH:
+        return MECH_LEAF[pri], "T3_mechanism_override"
+    return None
+
+
+def _plaid_pre_t4(cat, direction):
+    if cat == "ENTERTAINMENT_CASINOS_AND_GAMBLING" and direction == "credit":
+        return "gambling_unspecified", "T1_direction"
+    return None
+
+
 def our_leaf(merchant, direction, description, native_leaf_fn, *native_args):
-    """T2 (narrative-disambiguated merchant collisions) -> T4 (dictionary) -> T5 (rules)
-    -> native crosswalk fallback (T6/T1/T3)."""
+    """Python mirror of the generated SQL waterfall, in the SAME order:
+
+    T1 native direction -> T2 gig (Equifax) -> T2 entity collisions ->
+    T3 mechanism override (Equifax) -> T1 dict-informed gambling credit ->
+    T2 refund -> T2 returned -> T2 YouLend -> T4 dictionary -> T5 rules ->
+    T6 provider crosswalk -> T7 unclassified.
+
+    Before 2026-09-02 this ran T4 before T1/T3, so an Equifax
+    `Identified Salary | General Groceries` with vendor `tesco` scored as
+    `groceries` here and `salary` in BigQuery. `check_waterfall_parity.py`
+    now asserts the two agree on the pipeline eval rows.
+    """
     from generate_crosswalk_sql import (  # noqa: PLC0415
         GAMBLING_SUBTYPE_LEAVES, match_t2,
     )
     m = merchant.strip().lower() if merchant else ""
+    is_eqx = native_leaf_fn is eqx_native_leaf
+    pre = (_eqx_pre_t4(*native_args) if is_eqx
+           else _plaid_pre_t4(*native_args) if native_leaf_fn is plaid_native_leaf
+           else None)
+    if pre is not None:
+        return pre
     t2 = match_t2(merchant, direction, description)
     if t2 is not None:
         return t2
+    if is_eqx:
+        t3 = _eqx_t3(native_args[0])
+        if t3 is not None:
+            return t3
     if direction == "credit" and DICTIONARY.get(m) in GAMBLING_SUBTYPE_LEAVES:
         return "gambling_unspecified", "T1_direction_gambling_credit"
     if direction == "credit" and _re.search(r"\brefund(ed)?\b", description or "", flags=_re.IGNORECASE):
@@ -167,7 +212,10 @@ def our_leaf(merchant, direction, description, native_leaf_fn, *native_args):
     for rule in RULES:
         if _rule_matches(rule, m, description, direction):
             return rule["detailed_category"], f"T5_{rule['rule_id']}"
-    return native_leaf_fn(*native_args), "T6_native_fallback"
+    leaf = native_leaf_fn(*native_args)
+    if leaf == "unclassified_other":
+        return leaf, "T7_unclassified"
+    return leaf, "T6_native_fallback"
 
 
 def fetch():

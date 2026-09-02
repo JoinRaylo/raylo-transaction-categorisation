@@ -65,18 +65,20 @@ def apply_t5(df_gold, preds):
 
 
 def metrics(df_gold, preds, gen_of, risk_leaves):
-    rows = [{"gold_leaf": g, "pred_leaf": p}
-            for g, p in zip(df_gold["gold_leaf"].tolist(), preds.tolist())]
+    rows = [{"gold_leaf": g, "pred_leaf": p, "direction": d}
+            for g, p, d in zip(df_gold["gold_leaf"].tolist(), preds.tolist(),
+                               df_gold["direction"].astype(str).str.lower().tolist())]
     return analyse(rows, gen_of, risk_leaves)
 
 
 def write_preds(path, df_gold, preds, confs):
     with open(path, "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=["merchant_raw", "gold_leaf", "pred_leaf", "confidence"])
+        w = csv.DictWriter(f, fieldnames=["merchant_raw", "direction", "gold_leaf", "pred_leaf", "confidence"])
         w.writeheader()
         for i, row in df_gold.iterrows():
             w.writerow({
                 "merchant_raw": row["merchant_raw"],
+                "direction": str(row["direction"]).lower(),
                 "gold_leaf": row["gold_leaf"],
                 "pred_leaf": preds[i],
                 "confidence": confs[i],
@@ -85,7 +87,12 @@ def write_preds(path, df_gold, preds, confs):
 
 def fmt(a):
     risk = f"{a['risk_acc']:.1%}" if a["risk_acc"] is not None else "n/a"
-    return f"leaf {a['leaf_acc']:.1%} / gen {a['gen_acc']:.1%} / risk {risk} (n={a['risk_n']})"
+    bd = a.get("by_direction") or {}
+    cr = bd.get("credit", {})
+    credit = f" / credit {cr['leaf_acc']:.1%} (n={cr['n']})" if cr else ""
+    cb = bd.get("credit_bar_acc")
+    credit += f" / credit-bar {cb:.1%} (n={bd['credit_bar_n']})" if cb is not None else ""
+    return f"leaf {a['leaf_acc']:.1%} / gen {a['gen_acc']:.1%} / risk {risk} (n={a['risk_n']}){credit}"
 
 
 def main():

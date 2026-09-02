@@ -170,12 +170,42 @@ def summarise(name, df, ml_pred, gen_of):
         m, leaf, gen = acc(pred, mask)
         table.append({"set": name, "slice": label, "n": m, "leaf": leaf, "general": gen})
 
+    # 2026-09-02: direction and label-provenance splits. Credits are 25% of live
+    # Plaid rows and were 53% vs 83% for debits; human-reviewed v2 rows scored
+    # 77.0% vs 84.8% on LLM-drafted v3/v4/risk rows. Both must stay visible.
+    direction = df["direction"].astype(str).str.lower().to_numpy()
+    for d in ("debit", "credit"):
+        m, leaf, gen = acc(pipe, direction == d)
+        table.append({"set": name, "slice": f"full pipeline — {d} rows", "n": m,
+                      "leaf": leaf, "general": gen})
+    m, leaf, gen = acc(ml_pred, residual & (direction == "credit"))
+    table.append({"set": name, "slice": "classifier on residual — credit rows", "n": m,
+                  "leaf": leaf, "general": gen})
+    prov = df["source"].astype(str).map(label_source).to_numpy()
+    for lab in ("human_adjudicated_v2", "llm_drafted_agent_adjudicated"):
+        m, leaf, gen = acc(pipe, prov == lab)
+        table.append({"set": name, "slice": f"full pipeline — {lab} rows", "n": m,
+                      "leaf": leaf, "general": gen})
+
     by_tier = []
     for t, g in df.groupby(df["waterfall_tier"].astype(str), dropna=False):
         ok = float((g["t6_leaf"].astype(str) == g["gold_leaf"].astype(str)).mean())
         by_tier.append((str(t), len(g), ok))
     by_tier.sort(key=lambda x: -x[1])
     return table, by_tier, pipe
+
+
+def label_source(source: str) -> str:
+    """Provenance of a gold row's label, from the pipeline-eval `source` column.
+
+    v2 / v2_batch2 rows carry Carlos's adjudication notes; v3, v4 and the risk
+    set were Gemini/Sonnet-drafted and agent-adjudicated against the locked
+    conventions (see docs/review-2026-09-02-state-and-next-steps.md §2.9).
+    """
+    s = str(source)
+    if s in ("unified_v2", "unified_v2_batch2"):
+        return "human_adjudicated_v2"
+    return "llm_drafted_agent_adjudicated"
 
 
 def native_only_leaf(provider, native_cat, direction):
