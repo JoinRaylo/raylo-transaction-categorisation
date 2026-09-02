@@ -79,8 +79,23 @@ def log(msg):
 
 
 # ------------------------------------------------------------ taxonomy
+EMPIRICAL_MIN_ROWS = 5
+
+
+def _empirical_direction_counts():
+    """(leaf, direction) -> rows in the gold jsonl. Iteration 1 showed the taxonomy-only
+    mask forbids conventions the gold set uses (a cash-advance *disbursement* credit is
+    labelled `cash_advance`); the mask is therefore taxonomy OR observed-in-gold."""
+    if not TRAIN_JSONL.exists():
+        return {}
+    df = _parse_tuning_jsonl(TRAIN_JSONL)
+    c = df.groupby(["leaf", df["is_credit"].astype(int)]).size()
+    return {(l, int(d)): int(n) for (l, d), n in c.items()}
+
+
 def load_taxonomy():
     tax = pd.read_csv(TAXONOMY)
+    emp = _empirical_direction_counts()
     leaves = sorted(tax["detailed_category"].tolist()) + ["unclassified_other"] \
         if "unclassified_other" not in set(tax["detailed_category"]) else sorted(tax["detailed_category"].tolist())
     leaf_ix = {l: i for i, l in enumerate(leaves)}
@@ -91,9 +106,11 @@ def load_taxonomy():
     leaf_to_gen = torch.tensor([gen_ix[gen_of.get(l, gens[0])] for l in leaves])
     credit_ok = torch.tensor([
         (cft.get(l) in CREDIT_OK) or (l in BOTH_OK_LEAVES) or l.startswith("unclassified")
+        or emp.get((l, 1), 0) >= EMPIRICAL_MIN_ROWS
         for l in leaves])
     debit_ok = torch.tensor([
         (cft.get(l) in DEBIT_OK) or (l in BOTH_OK_LEAVES) or l.startswith("unclassified")
+        or emp.get((l, 0), 0) >= EMPIRICAL_MIN_ROWS
         for l in leaves])
     return leaves, leaf_ix, gens, gen_ix, leaf_to_gen, credit_ok, debit_ok
 

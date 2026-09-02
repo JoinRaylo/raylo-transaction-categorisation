@@ -83,9 +83,11 @@ def cpu_throughput(tok, model, leaves, df, n=2000):
     cpu_model = TxnClassifier.__new__(TxnClassifier)
     cpu_model.__dict__ = model.__dict__.copy()
     model_cpu = model.to(torch.device("cpu"))
+    torch.set_num_threads(max(1, (__import__("os").cpu_count() or 2)))
     sub = df.head(n)
+    predict(tok, model_cpu, leaves, sub.head(256), torch.device("cpu"), batch=256)  # warm-up
     t0 = time.time()
-    predict(tok, model_cpu, leaves, sub, torch.device("cpu"), batch=256)
+    predict(tok, model_cpu, leaves, sub, torch.device("cpu"), batch=512)
     dt = time.time() - t0
     return len(sub) / dt
 
