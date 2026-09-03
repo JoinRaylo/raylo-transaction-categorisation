@@ -47,7 +47,7 @@ def load_gold(path):
     df = pd.DataFrame({
         "vendor": df_gold["merchant_raw"].fillna(""),
         "description": df_gold["description_raw"].fillna(""),
-        "amount": df_gold["amount"].astype(float),
+        "amount": pd.to_numeric(df_gold["amount"], errors="coerce").fillna(0.0).abs().astype(float),
         "is_credit": (df_gold["direction"] == "credit").astype(int),
     })
     return df_gold, df
