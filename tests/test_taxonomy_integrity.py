@@ -832,3 +832,52 @@ def test_training_build_excludes_risk_gold_merchants():
     assert 'if t["merchant"] in risk_merchants' in src
     assert "if m in risk_merchants" in src
     assert "(holdout_merchants | risk_merchants)" in src
+
+
+def test_card_issuer_and_overdraft_t5_rules_no_labelled_false_positives():
+    """R33–R37 (3 Sep) must not fire against a different gold leaf on the labelled sets,
+    beyond the known Amex charge-card split and the older ACC-NWEST own-account rows."""
+    import re
+    sys.path.insert(0, str(ROOT / "src"))
+    from final_evaluation import _rule_matches
+    rules = [r for r in csv.DictReader(RULES.open()) if r["rule_id"] in {"R33", "R34", "R35", "R36", "R37"}]
+    assert len(rules) == 5
+    for r in rules:
+        re.compile(r["pattern"], re.I)
+        if r["exclude_pattern"]:
+            re.compile(r["exclude_pattern"], re.I)
+    order = sorted(rules, key=lambda r: (int(r["priority"]), r["rule_id"]))
+
+    def fire(desc, direction):
+        for r in order:
+            if _rule_matches(r, "", desc, direction):
+                return r["detailed_category"]
+        return None
+
+    fixtures = [
+        ("AMERICAN EXP 3773 PB4525******88522", "debit", "charge_card_repayment"),
+        ("HSBC BNK VSA454638454638******4482", "debit", "credit_card_repayment"),
+        ("LLOYDS BANK PLATIN 300000001626157001", "debit", "credit_card_repayment"),
+        ("CREDIT CARD 600000001610288678", "debit", "credit_card_repayment"),
+        ("AQUA CREDIT CARD XXXXXXXXXXXX8527 FIRST DDR PAYMENT DDR Aqua", "debit", "credit_card_repayment"),
+        ("UNARRANGED OVERDRAFT CHARGES 16JUN23-14JUL23", "debit", "overdraft_unarranged"),
+        ("OVERDRAFT INTERESTTO 12SEP2025", "debit", "interest_charged"),
+        ("Arranged Overdraft Interest", "debit", "overdraft_arranged"),
+        ("August overdraft fees", "debit", "overdraft_arranged"),
+        ("Overdraft", "debit", "overdraft_arranged"),
+        ("HSBC BNK VSA454638454638******4482", "credit", None),   # credits never fire
+        ("Aqua vitae restaurant", "debit", None),                  # issuer word without a card token
+        ("card payment to tesco stores", "debit", None),           # 'card payment' alone is not an issuer
+    ]
+    for desc, direction, expected in fixtures:
+        assert fire(desc, direction) == expected, (desc, direction, fire(desc, direction))
+    # dictionary merchants: the rules must not relabel any T4 key
+    for r in csv.DictReader(DICT.open()):
+        f = fire(r["normalised_merchant"], "debit")
+        assert f is None or f == r["detailed_category"], (r["normalised_merchant"], f, r["detailed_category"])
+    # holdout + pipeline eval: any firing must agree with gold except the Amex split
+    for name in ("gold_v2_slm_eval_holdout.csv",):
+        for r in csv.DictReader((ROOT / "data" / name).open()):
+            f = fire(r.get("description_raw", ""), r.get("direction", "").lower())
+            if f and f != r["gold_leaf"]:
+                assert {f, r["gold_leaf"]} <= {"credit_card_repayment", "charge_card_repayment"}, (name, r["description_raw"], f, r["gold_leaf"])

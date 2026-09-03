@@ -47,6 +47,8 @@ If a future review is reopened, the labelling prompt is:
 - T4 dictionary wins for the **same entity**. Same string, different products → `t2_candidate`, do not silent-overwrite T4. Do not ingest `context_dependent` / T2 collision keys / `unclassified_*` into T4. Do not dictionary `cd glasgow`, Drayton Court, Fountain Hotel.
 - Bookmaker/casino **credits** stay in-family. Retailer refund credits → often `refund_received`.
 - **mixed_basket** when mixed-goods retailers cannot determine necessity.
+- **Card-issuer repayments with a masked card token** (`HSBC BNK VSA…******4482`, `LLOYDS BANK PLATIN 3000…`, `ACC-NWESTPLAT 5522…`, `CREDIT CARD 6000…`, Aqua/Vanquis/MBNA/Barclaycard/Capital One/NewDay/Marbles/Fluid/Zopa/M&S/John Lewis/Virgin Money/Halifax/Tesco Bank card) on a **debit** → `credit_card_repayment` (T5 R34, description, after T4). **American Express** → `charge_card_repayment` (T5 R33). Card-issuer **credits** → `cash_advance` (Carlos 3 Sep). 3 Sep.
+- **Overdraft narratives (debit, blank merchant):** `unarranged` / `unauthorised` / `unplanned overdraft` → `overdraft_unarranged` (R35); bare `OVERDRAFT INTEREST TO <date>` → `interest_charged` (R36, Carlos 3 Sep); `Arranged Overdraft …`, `<Month> overdraft fees`, and bare `Overdraft` → `overdraft_arranged` (R37; Carlos 3 Sep: default arranged).
 
 ## Historical review output (do not resume)
 
