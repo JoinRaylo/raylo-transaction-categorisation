@@ -455,3 +455,30 @@ transformer 3 seeds vs v7: +3.7pp novel merchants, +2.4pp credits (CIs exclude z
 **T6-bound risk 47–51% for both on 400 rows**. §2.1 is fixed on the data side; §5's transformer is
 near-equivalent to the hinge on today's data. Next: T6-bound risk tranche + issuer/overdraft rules;
 decide GCP pretraining scale-up.
+
+## Week 2 outcome, part 2 (2026-09-03 pm) — T6-bound risk: rules + tranche
+
+**Rules first.** Five T5 description rules from the 400-row T6-bound risk gold (R33 Amex →
+charge card; R34 card issuer + masked card token → `credit_card_repayment`; R35 unarranged
+overdraft; R36 bare overdraft interest → `interest_charged`; R37 arranged / `<Month> overdraft
+fees` / bare `Overdraft` → `overdraft_arranged`), FP-scanned on 409k jsonl rows + every gold set
++ 90k dictionary keys (zero disagreements outside the Amex split and 10 older ACC-NWEST rows).
+Effect with hinge v7: **T6-bound risk-leaf accuracy 48.3% → 58.6%** (n=174) before any retrain.
+
+**Then the tranche.** 5,000 T6-bound risk-looking debits sampled with the new rules already
+applied (so still-residual rows), 79% blank merchant, floors for gambling / cards / high-cost /
+savings. Gemini+Sonnet agreement **65%** (vs 76% on credits — debit risk narratives are
+harder); Opus tiebreak 1,233; agent adjudication 480/500 splits. The review workbook was
+filled by an agent on Carlos's behalf and he accepted it: **all rows are `agent_review`, none
+`human_reviewed`**, so this tranche has no human noise ceiling (agent blind pass vs key 72.7%
+raw, 90.0% after a second adjudication). 14 conventions accepted (7/8 reworded) and written
+into `AGENT_RULES.md`; convention remaps applied to 122 accepted rows; T4 fixes
+(payment-assist, fairforyou, ooodles, kmc main, aci uk keys, hme rtl grp cards) and T5
+R38–R51 blank-merchant rules added (Zettle rejected as a rule: 95% FP; imgflux/floxyhealth
+rejected: EUR foreign-spend convention conflict). Parity 2,000/2,000 after regeneration.
+`data/tuning_risk_topup.csv` 4,998 rows → jsonl rebuilt → hinge v8 + transformer (3 seeds)
+retraining; results appended below when in.
+
+Note: CLAUDE.md / README / project-summary were being edited concurrently by another session
+(Gemini 3.8 comparison, sub-leaf pilot); this phase's headline lines go there once that
+session has committed.
