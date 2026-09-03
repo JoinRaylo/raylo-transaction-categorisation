@@ -731,6 +731,30 @@ if _pc:
     _pc["notes"] = "revolving line, not Klarna-style BNPL"
     print("human_override_20260827_paypal_credit: retargeted paypal credit")
 
+# ---- Carlos 3 Sep 2026: risk-tranche review conventions 5/8/10/12 + kmc ----
+_T4_20260903 = {
+    "payment-assist.co.uk": ("bnpl", "Payment Assist = BNPL per AGENT_RULES; was retail_finance (conv 10)"),
+    "fairforyou": ("personal_loan_repayment", "matches human override fair for you (conv 10)"),
+    "ooodles finance": ("retail_finance_repayment", "tech subscription, not car finance (conv 12)"),
+    "kmc main": ("mortgage", "Kensington Mortgage Company; contradicted kmc main kensington mortgages -> mortgage"),
+    "aci uk ltd": ("debt_collection", "conv 5; matches aci uk"),
+    "aciukltd": ("debt_collection", "conv 5; truncated narrative form"),
+    "hme rtl grp cards": ("revolving_credit_repayment", "Home Retail Group card services (Argos card) = revolving line (conv 8 reworded)"),
+}
+_by_key = {r["normalised_merchant"]: r for r in rows}
+_n_add = _n_upd = 0
+for _k, (_leaf, _why) in _T4_20260903.items():
+    if _k in _by_key:
+        if _by_key[_k]["detailed_category"] != _leaf:
+            _by_key[_k].update(detailed_category=_leaf, confidence="high",
+                               source="human_override_20260903_risk_tranche", review_status="approved", notes=_why)
+            _n_upd += 1
+    else:
+        rec = {"normalised_merchant": _k, "detailed_category": _leaf, "confidence": "high",
+               "source": "human_override_20260903_risk_tranche", "review_status": "approved", "notes": _why}
+        rows.append(rec); _by_key[_k] = rec; _n_add += 1
+print(f"human_override_20260903_risk_tranche: added {_n_add}, retargeted {_n_upd}")
+
 # Tokens that must not be T4: narrative T2/T5 only.
 _BARE_TOKEN_DROP = {
     "now",

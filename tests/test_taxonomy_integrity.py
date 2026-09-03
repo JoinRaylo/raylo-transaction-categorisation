@@ -881,3 +881,38 @@ def test_card_issuer_and_overdraft_t5_rules_no_labelled_false_positives():
             f = fire(r.get("description_raw", ""), r.get("direction", "").lower())
             if f and f != r["gold_leaf"]:
                 assert {f, r["gold_leaf"]} <= {"credit_card_repayment", "charge_card_repayment"}, (name, r["description_raw"], f, r["gold_leaf"])
+
+
+def test_blank_merchant_t5_rules_r38_r51_fixtures():
+    """3 Sep risk-tranche description rules: fire on the blank-merchant narrative forms of
+    known T4 keys / accepted conventions, never on credits, never on Zettle (a rail)."""
+    sys.path.insert(0, str(ROOT / "src"))
+    from final_evaluation import _rule_matches
+    ids = {"R38", "R39", "R40", "R41", "R44", "R45", "R46", "R47", "R48", "R49", "R50", "R51"}
+    rules = sorted((r for r in csv.DictReader(RULES.open()) if r["rule_id"] in ids),
+                   key=lambda r: (int(r["priority"]), r["rule_id"]))
+    assert len(rules) == 12
+
+    def fire(desc, direction="debit"):
+        for r in rules:
+            if _rule_matches(r, "", desc, direction):
+                return r["detailed_category"]
+        return None
+
+    for desc, expected in [
+        ("1218 04JUL25 YOUR PLAN CARD PAYMENT CREATI", "credit_card_repayment"),
+        ("DFH FINANCIAL SOLUTIONS DD", "debt_management_plan"),
+        ("CARD PAYMENT TO FGFS LTD ON 12-08-2025", "retail_finance_repayment"),
+        ("Hme Rtl Grp Cards, 00008921900III2163", "revolving_credit_repayment"),
+        ("ACIUKLTD 12345", "debt_collection"),
+        ("WWW.PAYMENT-ASSISTMELTON MOWBRA", "bnpl"),
+        ("CARD PAYMENT TO WWW.FAIRFORYOU.CO.UK", "personal_loan_repayment"),
+        ("CASE: DRS123456 CARD: ****1234", "debt_collection"),
+        ("TRAVL PLUS FEE REF 123 PDP", "account_charge"),
+        ("ZETTLE_*ESPRESS ORGANI", None),
+    ]:
+        assert fire(desc) == expected, (desc, fire(desc))
+    assert fire("CARD PAYMENT TO FGFS LTD", "credit") is None
+    for r in csv.DictReader(DICT.open()):
+        f = fire(r["normalised_merchant"])
+        assert f is None or f == r["detailed_category"], (r["normalised_merchant"], f, r["detailed_category"])

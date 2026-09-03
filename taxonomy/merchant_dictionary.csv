@@ -17295,7 +17295,7 @@ lci,gambling_betting,medium,production_tranche4_agent_review,approved,"LLM-conse
 m gleeson,transfer_p2p,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
 moredon stores,convenience_store,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
 who internet,gambling_betting,medium,production_tranche4_agent_review,approved,"LLM-consensus label, tier=agent_review, tranche=4"
-fairforyou,retail_finance_repayment,medium,production_tranche4_agent_consensus,approved,"LLM-consensus label, tier=agent_consensus, tranche=4"
+fairforyou,personal_loan_repayment,high,human_override_20260903_risk_tranche,approved,matches human override fair for you (conv 10)
 ag communications,gambling_unspecified,medium,production_tranche4_agent_review,approved,"LLM-consensus label, tier=agent_review, tranche=4"
 m horrix,transfer_p2p,medium,production_tranche4_agent_review,approved,"LLM-consensus label, tier=agent_review, tranche=4"
 a dawson,transfer_p2p,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
@@ -34341,7 +34341,7 @@ vaishali,transfer_p2p,medium,production_tranche4_agent_tiebreak,approved,"LLM-co
 aqualand torre molinos,days_out,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
 sutton stores premier exp,groceries,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
 south lanarkshire cnl,government_services,medium,production_tranche4_agent_review,approved,"LLM-consensus label, tier=agent_review, tranche=4"
-kmc main,rent,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
+kmc main,mortgage,high,human_override_20260903_risk_tranche,approved,Kensington Mortgage Company; contradicted kmc main kensington mortgages -> mortgage
 station way ltd,car_parking,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
 seana minshall patten,transfer_own_account,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
 murray,transfer_p2p,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
@@ -43062,7 +43062,7 @@ credit style,debt_collection,medium,production_tranche4_agent_review,approved,"L
 cd morr isle of,groceries,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
 animal health careinitial,veterinary,medium,production_tranche4_agent_consensus,approved,"LLM-consensus label, tier=agent_consensus, tranche=4"
 boots uk ecomm cd,pharmacy,medium,production_tranche4_agent_consensus,approved,"LLM-consensus label, tier=agent_consensus, tranche=4"
-payment-assist.co.uk,retail_finance_repayment,medium,production_tranche4_agent_review,approved,"LLM-consensus label, tier=agent_review, tranche=4"
+payment-assist.co.uk,bnpl,high,human_override_20260903_risk_tranche,approved,Payment Assist = BNPL per AGENT_RULES; was retail_finance (conv 10)
 bp leander s.stn fs,fuel,medium,production_tranche4_agent_consensus,approved,"LLM-consensus label, tier=agent_consensus, tranche=4"
 p m k supermarket,groceries,medium,production_tranche4_agent_consensus,approved,"LLM-consensus label, tier=agent_consensus, tranche=4"
 esso sun inn,fuel,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
@@ -57144,7 +57144,7 @@ millennium farm pet,pet_supplies,medium,production_tranche4_agent_consensus,appr
 one nation,charitable_donation,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
 cd co operative food clo,groceries,medium,production_tranche4_agent_consensus,approved,"LLM-consensus label, tier=agent_consensus, tranche=4"
 ground control,restaurant_cafe,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
-ooodles finance,car_finance_repayment,medium,production_tranche4_agent_review,approved,"LLM-consensus label, tier=agent_review, tranche=4"
+ooodles finance,retail_finance_repayment,high,human_override_20260903_risk_tranche,approved,"tech subscription, not car finance (conv 12)"
 joby johnson,transfer_p2p,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
 st davids hospice,charity_shop,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
 amplius guh,rent,medium,production_tranche4_agent_review,approved,"LLM-consensus label, tier=agent_review, tranche=4"
@@ -90260,3 +90260,6 @@ the grove,pub_bar,high,human_override_20260826_carlos_b,approved,Carlos B leftov
 standing order,transfer_bank_unspecified,high,human_override_20260826_carlos_b,approved,Carlos B leftover purpose-unknown SO; returned standing order is T2
 trading 212,investment_trading,high,human_override_20260827_trading212,approved,Carlos 27 Aug; exact Plaid merchant (space)
 trading212,investment_trading,high,human_override_20260827_trading212,approved,Carlos 27 Aug; concatenated variant
+aci uk ltd,debt_collection,high,human_override_20260903_risk_tranche,approved,conv 5; matches aci uk
+aciukltd,debt_collection,high,human_override_20260903_risk_tranche,approved,conv 5; truncated narrative form
+hme rtl grp cards,revolving_credit_repayment,high,human_override_20260903_risk_tranche,approved,Home Retail Group card services (Argos card) = revolving line (conv 8 reworded)
