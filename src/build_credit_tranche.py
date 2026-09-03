@@ -66,6 +66,8 @@ SAMPLE_CSV = OUT_DIR / "credit_tranche_sample.csv"
 PRED = {k: OUT_DIR / f"credit_tranche_predictions_{k}.csv" for k in ("gemini", "sonnet", "opus")}
 TIEBREAK_SAMPLE = OUT_DIR / "credit_tranche_tiebreak_sample.csv"
 LABELS_CSV = OUT_DIR / "credit_tranche_labels.csv"
+NEEDS_REVIEW_CSV = OUT_DIR / "credit_tranche_needs_review.csv"
+AGENT_ADJ_CSV = OUT_DIR / "credit_tranche_agent_adjudication.csv"  # tier=agent_review, from the adjudication agent
 REVIEW_XLSX = OUT_DIR / "credit_tranche_review.xlsx"
 REVIEW_COMPLETED_XLSX = OUT_DIR / "credit_tranche_review_completed.xlsx"
 
@@ -297,6 +299,21 @@ def gate():
         out.append({**r, "gemini_leaf": gl, "sonnet_leaf": sl, "opus_leaf": ol,
                     "final_leaf": final, "tier": tier, "resolution_source": src,
                     "general_category": gen_of.get(final, "")})
+    # Agent adjudication of the three-way splits (same role as the v6 agent pass):
+    # sets final_leaf with tier=agent_review; rows it left blank stay needs_review.
+    if AGENT_ADJ_CSV.exists():
+        adj = {r["row_id"]: r for r in csv.DictReader(open(AGENT_ADJ_CSV))}
+        n_adj = 0
+        for r in out:
+            a = adj.get(r["row_id"])
+            if a and a.get("final_leaf") and r["tier"] == "needs_review":
+                if a["final_leaf"] not in gen_of:
+                    sys.exit(f"adjudication row {r['row_id']}: {a['final_leaf']!r} not a taxonomy leaf")
+                r.update(final_leaf=a["final_leaf"], tier="agent_review",
+                         resolution_source=f"agent_review: {a.get('note', '')[:120]}",
+                         general_category=gen_of[a["final_leaf"]])
+                tiers["needs_review"] -= 1; tiers["agent_review"] += 1; n_adj += 1
+        print(f"agent adjudication applied to {n_adj} rows", file=sys.stderr)
     with open(LABELS_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(out[0].keys()))
         w.writeheader(); w.writerows(out)
@@ -311,7 +328,7 @@ def sheet():
     import random
     rng = random.Random(SEED)
     flagged = [r for r in rows if r["tier"] == "needs_review" or r["tier"].endswith("review_required")]
-    accepted = [r for r in rows if r["tier"] in ("agent_consensus", "agent_tiebreak")]
+    accepted = [r for r in rows if r["tier"] in ("agent_consensus", "agent_tiebreak", "agent_review")]
     blind = rng.sample(accepted, min(N_BLIND, len(accepted)))
     cols = ["row_id", "stratum", "merchant_raw", "description_raw", "amount", "direction", "native_category",
             "gemini_leaf", "sonnet_leaf", "opus_leaf", "final_leaf", "tier", "resolution_source"]
@@ -362,7 +379,7 @@ def apply_review(path=None):
         print(f"no completed workbook at {path}; applying agent labels only", file=sys.stderr)
 
     keep = [r for r in rows.values() if r["final_leaf"] and r["tier"] in
-            ("agent_consensus", "agent_tiebreak", "human_reviewed")]
+            ("agent_consensus", "agent_tiebreak", "agent_review", "human_reviewed")]
     df = pd.DataFrame(keep)
     for c in ("reviewer_id",):
         if c not in df.columns:
