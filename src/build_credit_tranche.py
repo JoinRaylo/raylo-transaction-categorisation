@@ -245,6 +245,7 @@ def fetch_risk_tranche():
     out = out.drop(columns=["_text"])
     out["stratum"] = "risk_t6bound_debit"
     out["provider"] = "plaid"
+    out["merchant"] = out["merchant_raw"].fillna("").map(_norm)   # the v6 labeller keys on this column
     out.insert(0, "row_id", range(len(out)))
     OUT_DIR.mkdir(exist_ok=True)
     out.to_csv(SAMPLE_CSV, index=False)
