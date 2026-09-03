@@ -45,6 +45,8 @@ from train_classifier import TxnClassifier, load_heads, load_taxonomy as load_ta
 from pretrain_mlm import device  # noqa: E402
 
 PIPELINE_EVAL = ROOT / "outputs" / "gold_pipeline_eval.csv"
+CREDIT_EVAL = ROOT / "data" / "gold_credit_eval.csv"                    # 3 Sep tranche, merchant-disjoint
+RISK_T6_GOLD = ROOT / "data" / "gold_transactions_risk_t6bound.csv"     # 3 Sep tranche, T6-bound debits
 DEFAULT_MODEL = ROOT / "outputs" / "distill_models" / "txn_classifier_gold"
 DEFAULT_HINGE = ROOT / "outputs" / "distill_models" / "tfidf_linearsvm_sgd_v6_deleaked.joblib"
 REPORT = ROOT / "data" / "transformer_classifier_report.md"
@@ -154,6 +156,13 @@ def main():
     sets.append(("risk gold", attach_waterfall(risk).reset_index(drop=True)))
     pipe = pd.read_csv(PIPELINE_EVAL)
     sets.append(("pipeline eval", attach_waterfall(pipe).reset_index(drop=True)))
+    for name, path in (("credit eval", CREDIT_EVAL), ("risk T6-bound gold", RISK_T6_GOLD)):
+        if path.exists():
+            refuse_confirmation_eval(path)
+            g = pd.read_csv(path, dtype={"merchant_raw": str, "description_raw": str})
+            if "provider" not in g.columns:
+                g["provider"] = "plaid"
+            sets.append((name, attach_waterfall(g).reset_index(drop=True)))
 
     rows = []
     out = {}
@@ -184,15 +193,23 @@ def main():
     h_hold = out[("holdout", "T6-bound", "hinge")]; t_hold = out[("holdout", "T6-bound", "transformer")]
     h_res = out[("pipeline eval", "T6-bound", "hinge")]; t_res = out[("pipeline eval", "T6-bound", "transformer")]
     h_risk = out[("risk gold", "T6-bound", "hinge")]; t_risk = out[("risk gold", "T6-bound", "transformer")]
-    h_cb = out[("pipeline eval", "T6-bound", "hinge")]; t_cb = out[("pipeline eval", "T6-bound", "transformer")]
+    # Credit bar and T6-bound risk now come from the 3 Sep tranche sets when present
+    # (2,000 / 400 rows instead of 45 / 40).
+    if ("credit eval", "T6-bound", "hinge") in out:
+        h_cb = out[("credit eval", "T6-bound", "hinge")]; t_cb = out[("credit eval", "T6-bound", "transformer")]
+    else:
+        h_cb = out[("pipeline eval", "T6-bound", "hinge")]; t_cb = out[("pipeline eval", "T6-bound", "transformer")]
+    if ("risk T6-bound gold", "all (classifier only)", "hinge") in out:
+        h_risk = out[("risk T6-bound gold", "all (classifier only)", "hinge")]
+        t_risk = out[("risk T6-bound gold", "all (classifier only)", "transformer")]
     crit = [
         ("holdout T6-bound leaf ≥ hinge +3pp", t_hold["leaf"] - h_hold["leaf"] >= 0.03,
          f"{pct(t_hold['leaf'])} vs {pct(h_hold['leaf'])} (n={t_hold['n']})"),
         ("pipeline residual leaf ≥ hinge +3pp", t_res["leaf"] - h_res["leaf"] >= 0.03,
          f"{pct(t_res['leaf'])} vs {pct(h_res['leaf'])} (n={t_res['n']})"),
-        ("T6-bound risk-leaf acc ≥ hinge", (t_risk["risk"] or 0) >= (h_risk["risk"] or 0),
+        ("T6-bound risk-leaf acc ≥ hinge (risk T6-bound gold if present)", (t_risk["risk"] or 0) >= (h_risk["risk"] or 0),
          f"{pct(t_risk['risk'])} vs {pct(h_risk['risk'])} (n={t_risk['risk_n']})"),
-        ("credit-side bar (pipeline residual) ≥ hinge +10pp",
+        ("credit-side bar (credit eval T6-bound, else pipeline residual) ≥ hinge +10pp",
          (t_cb["cbar"] or 0) - (h_cb["cbar"] or 0) >= 0.10,
          f"{pct(t_cb['cbar'])} vs {pct(h_cb['cbar'])} (n={t_cb['cbar_n']})"),
         ("CPU throughput ≥ 1,000 rows/s", thr >= 1000, f"{thr:,.0f} rows/s"),

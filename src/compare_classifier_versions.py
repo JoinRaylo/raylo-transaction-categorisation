@@ -115,6 +115,10 @@ def main():
         ("holdout", HOLDOUT, f"{args.out_prefix}_holdout_predictions.csv"),
         ("risk", RISK, f"{args.out_prefix}_risk_predictions.csv"),
     ]
+    for name, path in (("credit_eval", ROOT / "data" / "gold_credit_eval.csv"),
+                       ("risk_t6bound", ROOT / "data" / "gold_transactions_risk_t6bound.csv")):
+        if path.exists():
+            sets.append((name, path, f"{args.out_prefix}_{name}_predictions.csv"))
 
     print(f"old: {args.old}")
     print(f"new: {args.new}\n")

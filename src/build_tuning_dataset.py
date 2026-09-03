@@ -111,14 +111,23 @@ def load_tier_a():
     return by_merchant
 
 
+EVAL_ONLY_FILES = [
+    ROOT / "data" / "gold_transactions_risk_categories.csv",
+    ROOT / "data" / "gold_transactions_risk_t6bound.csv",   # 3 Sep: T6-bound risk gold (400)
+    ROOT / "data" / "gold_credit_eval.csv",                  # 3 Sep: merchant-disjoint credit eval (2,000)
+]
+
+
 def load_risk_merchants():
-    """Merchants in the risk-category gold set — excluded from ALL training rows."""
+    """Merchants in the risk-category gold sets and the credit eval — excluded from ALL
+    training rows (Tier A, Tier B, top-ups). Name kept for the existing call sites."""
     out = set()
-    if RISK_GOLD.exists():
-        for r in csv.DictReader(open(RISK_GOLD)):
-            m = _norm(r.get("merchant_raw") or "")
-            if m:
-                out.add(m)
+    for path in EVAL_ONLY_FILES:
+        if path.exists():
+            for r in csv.DictReader(open(path)):
+                m = _norm(r.get("merchant_raw") or "")
+                if m:
+                    out.add(m)
     return out
 
 

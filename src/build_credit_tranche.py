@@ -24,7 +24,8 @@ What this builds (all under outputs/ until `apply`):
   sheet     review workbook for Carlos: flagged rows + a BLIND 300-row slice.
   apply     after review: data/production_labels_credit_tranche.csv, a merchant-
             disjoint 2,000-row credit eval, the T6-bound risk gold, and the training
-            top-up file build_tuning_dataset.py reads.
+            top-up file build_tuning_dataset.py reads. Reads Flagged, Blind_300,
+            and Accepted_remaps (Carlos-approved bulk retargets of agent labels).
 
 Usage:
     python src/build_credit_tranche.py fetch
@@ -355,13 +356,20 @@ def apply_review(path=None):
     if path.exists():
         flagged = pd.read_excel(path, sheet_name="Flagged", dtype=str).fillna("")
         n_set = 0
+        n_drop = 0
         for _, r in flagged.iterrows():
+            rid = str(r["row_id"]).strip()
+            if rid not in rows:
+                sys.exit(f"row {rid}: not in {LABELS_CSV}")
             leaf = r["carlos_leaf"].strip()
             if leaf:
                 if leaf not in gen_of:
-                    sys.exit(f"row {r['row_id']}: {leaf!r} is not a taxonomy leaf")
-                rows[r["row_id"]].update(final_leaf=leaf, tier="human_reviewed", resolution_source="carlos",
-                                         reviewer_id="carlos", general_category=gen_of[leaf]); n_set += 1
+                    sys.exit(f"row {rid}: {leaf!r} is not a taxonomy leaf")
+                rows[rid].update(final_leaf=leaf, tier="human_reviewed", resolution_source="carlos",
+                                 reviewer_id="carlos", general_category=gen_of[leaf]); n_set += 1
+            else:
+                rows[rid].update(final_leaf="", tier="dropped", resolution_source="carlos_drop")
+                n_drop += 1
         blind = pd.read_excel(path, sheet_name="Blind_300", dtype=str).fillna("")
         key = pd.read_excel(path, sheet_name="Blind_300_key", dtype=str).fillna("")
         merged = blind.merge(key, on="row_id")
@@ -371,10 +379,36 @@ def apply_review(path=None):
             print(f"BLIND SLICE: Carlos vs agent final agreement {agree:.1%} on {len(done)} rows "
                   f"(label-noise ceiling for this tranche)", file=sys.stderr)
             for _, r in done.iterrows():
-                rows[r["row_id"]].update(final_leaf=r["carlos_leaf"].strip(), tier="human_reviewed",
-                                         resolution_source="carlos", reviewer_id="carlos",
-                                         general_category=gen_of.get(r["carlos_leaf"].strip(), ""))
-        print(f"applied {n_set} flagged labels from {path.name}", file=sys.stderr)
+                rid = str(r["row_id"]).strip()
+                leaf = r["carlos_leaf"].strip()
+                if leaf not in gen_of:
+                    sys.exit(f"Blind_300 row {rid}: {leaf!r} is not a taxonomy leaf")
+                rows[rid].update(final_leaf=leaf, tier="human_reviewed",
+                                 resolution_source="carlos", reviewer_id="carlos",
+                                 general_category=gen_of[leaf])
+        print(f"applied {n_set} flagged labels from {path.name} (dropped {n_drop})", file=sys.stderr)
+        # Carlos-approved retargets of agent labels (conventions A/E/G/T1 etc.).
+        # Does not overwrite human_reviewed rows from Flagged / Blind_300.
+        try:
+            remaps = pd.read_excel(path, sheet_name="Accepted_remaps", dtype=str).fillna("")
+        except ValueError:
+            remaps = pd.DataFrame()
+        n_remap = 0
+        for _, r in remaps.iterrows():
+            rid = str(r.get("row_id", "")).strip()
+            leaf = str(r.get("new_leaf", "")).strip()
+            if not rid or not leaf or rid not in rows:
+                continue
+            if rows[rid].get("tier") in ("human_reviewed", "dropped"):
+                continue
+            if leaf not in gen_of:
+                sys.exit(f"Accepted_remaps row {rid}: {leaf!r} is not a taxonomy leaf")
+            rows[rid].update(final_leaf=leaf, tier="agent_review",
+                             resolution_source=f"carlos_remap: {str(r.get('reason', ''))[:120]}",
+                             general_category=gen_of[leaf])
+            n_remap += 1
+        if n_remap:
+            print(f"applied {n_remap} accepted-row remaps from {path.name}", file=sys.stderr)
     else:
         print(f"no completed workbook at {path}; applying agent labels only", file=sys.stderr)
 
