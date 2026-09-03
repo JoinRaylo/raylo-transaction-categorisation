@@ -164,3 +164,38 @@ keep hinge (v7) as T5b.**
   context, tens of millions of examples), which is the Uncapped-scale data the hinge cannot
   exploit but the encoder can.
 - T6-bound risk tranche + rules for card-issuer inflows / overdraft narratives — moves both.
+
+## Iteration 6 — both models retrained with the risk tranche (2026-09-03 evening)
+
+Training file 414,400 rows (credit 7.4%, plus 4,998 T6-bound risk debits). Comparator
+**hinge v8** (same file). Transformer: same encoder/silver stage; gold pass uncapped, 4 epochs,
+best epoch by Tier-B val; seeds 42 / 7 / 123. Rules R33–R51 live (they change which eval
+rows are "T6-bound").
+
+| cut | hinge v8 | transformer (3-seed mean) | Δ, paired 95% CI |
+|---|---:|---:|---:|
+| holdout T6-bound leaf (n=416) | 59.4% | **62.5%** | +3.1pp [−0.2, +6.6] |
+| pipeline residual leaf (n=478) | 59.8% | **61.7%** | +1.9pp [−1.2, +4.9] |
+| credit eval leaf (n=2,000) | 85.9% | **87.8%** | +2.0pp [+0.8, +3.2] |
+| risk T6-bound gold, all 400 | 67.2% | **69.4%** | +2.2pp [−1.8, +6.1] |
+| **risk T6-bound gold, risk-leaf rows (n=174)** | 75.9% | **79.5%** (77.0–82.2) | +3.6pp [−0.8, +8.2] |
+| full pipeline T1–T5 then model (n=2,000) | 82.2% | **82.7%** | tie |
+| general accuracy, every cut | — | +2 to +8pp | consistently better |
+
+Kill criteria as written: every seed misses 2–3 (the "+3pp" and "+10pp" thresholds; the
+credit bar is saturated at ~88–89% for both). **Verdict under the rule: keep hinge (v8).**
+
+### Read
+- **Both heads now clear the 70% risk bar on the honest slice** (hinge 75.9%, transformer
+  79.5%). The transformer is ahead on every cut, by 2–4pp at leaf level and 2–8pp at general
+  level, but only the credit-eval gap (n=2,000) excludes zero on its own; the others are
+  consistent in sign across all three seeds and all six cuts, which is the pattern of a
+  real small effect measured on sets of 400–500 rows.
+- The pipeline residual, the one cut where the transformer had trailed (iterations 4–5), is
+  now +1.9pp in its favour: the risk tranche gave it the head examples it lacked there.
+- **Decision framing for Carlos:** on today's data the transformer is a modest, consistent
+  improvement over the hinge (~+2–4pp leaf, +2–8pp general, +3.6pp on T6-bound risk leaves)
+  at ~10× the serving cost of a 65 MB linear model. The pre-declared thresholds (+3 / +10pp)
+  were set when a large gap was expected; they are not met, and they should not be re-cut by
+  this result. A GPU pretraining scale-up is the one lever left that acts on the transformer's
+  edge (unseen text) rather than on both models equally.

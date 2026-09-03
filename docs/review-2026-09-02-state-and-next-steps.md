@@ -482,3 +482,13 @@ retraining; results appended below when in.
 Note: CLAUDE.md / README / project-summary were being edited concurrently by another session
 (Gemini 3.8 comparison, sub-leaf pilot); this phase's headline lines go there once that
 session has committed.
+
+**Retrains on the risk tranche (3 Sep evening).** Hinge v8: **T6-bound risk-leaf accuracy
+48.3% → 75.9%** (n=174), above the 70% bar for the first time; nothing else moved (holdout
++0.5, credit eval +0.9). Transformer 3 seeds vs v8: +3.1 holdout T6-bound, +1.9 residual,
++2.0 credit eval (CI excludes 0), +3.6 T6-bound risk leaves (79.5%), general accuracy +2–8pp
+everywhere; verdict under the pre-declared thresholds still "keep hinge", but the transformer
+is now ahead on every cut. `data/classifier_v8_risk_report.md`,
+`data/transformer_classifier_report.md` (iteration 6). The serving dump (v5) is now far
+behind both: +24pp on credits, +28pp on T6-bound risk. Next decisions: serving path and
+whether to promote v8 / the transformer; GPU pretraining scale-up.
