@@ -57,25 +57,31 @@ from build_gold_risk_categories import KEYWORD_FALLBACK  # noqa: E402
 from build_tuning_dataset import frozen_holdout_merchants, load_risk_merchants  # noqa: E402
 from eval_sets import _V6_GOLD_FILES  # noqa: E402
 
+import os
+TRANCHE = os.environ.get("TRANCHE", "credit")   # "credit" (2 Sep) or "risk" (3 Sep T6-bound risk debits)
 N_CREDIT = 30_000
 N_RISK_DEBIT = 400
+N_RISK_TRANCHE = 5_000          # TRANCHE=risk: T6-bound risk-looking debits for TRAINING
+RISK_FLOOR = 300                # per proxy bucket (gambling / debt collection / high-cost / savings / cards / overdraft)
 MAX_PER_TEXT = 5          # rows per normalised (merchant, description)
 OVERSAMPLE = 3            # rows fetched per stratum quota before dedupe/exclusion
 SEED = 20260902
 
-SAMPLE_CSV = OUT_DIR / "credit_tranche_sample.csv"
-PRED = {k: OUT_DIR / f"credit_tranche_predictions_{k}.csv" for k in ("gemini", "sonnet", "opus")}
-TIEBREAK_SAMPLE = OUT_DIR / "credit_tranche_tiebreak_sample.csv"
-LABELS_CSV = OUT_DIR / "credit_tranche_labels.csv"
-NEEDS_REVIEW_CSV = OUT_DIR / "credit_tranche_needs_review.csv"
-AGENT_ADJ_CSV = OUT_DIR / "credit_tranche_agent_adjudication.csv"  # tier=agent_review, from the adjudication agent
-REVIEW_XLSX = OUT_DIR / "credit_tranche_review.xlsx"
-REVIEW_COMPLETED_XLSX = OUT_DIR / "credit_tranche_review_completed.xlsx"
+_P = f"{TRANCHE}_tranche"
+SAMPLE_CSV = OUT_DIR / f"{_P}_sample.csv"
+PRED = {k: OUT_DIR / f"{_P}_predictions_{k}.csv" for k in ("gemini", "sonnet", "opus")}
+TIEBREAK_SAMPLE = OUT_DIR / f"{_P}_tiebreak_sample.csv"
+LABELS_CSV = OUT_DIR / f"{_P}_labels.csv"
+NEEDS_REVIEW_CSV = OUT_DIR / f"{_P}_needs_review.csv"
+AGENT_ADJ_CSV = OUT_DIR / f"{_P}_agent_adjudication.csv"  # tier=agent_review, from the adjudication agent
+REVIEW_XLSX = OUT_DIR / f"{_P}_review.xlsx"
+REVIEW_COMPLETED_XLSX = OUT_DIR / f"{_P}_review_completed.xlsx"
 
-FINAL_LABELS = ROOT / "data" / "production_labels_credit_tranche.csv"
+FINAL_LABELS = ROOT / "data" / f"production_labels_{_P}.csv"
 CREDIT_EVAL = ROOT / "data" / "gold_credit_eval.csv"
 RISK_T6_GOLD = ROOT / "data" / "gold_transactions_risk_t6bound.csv"
 CREDIT_TOPUP = ROOT / "data" / "tuning_credit_topup.csv"
+RISK_TOPUP = ROOT / "data" / "tuning_risk_topup.csv"    # TRANCHE=risk output (training only; gold is the 400-row set)
 N_CREDIT_EVAL = 2_000
 N_BLIND = 300
 
@@ -182,6 +188,70 @@ WHERE NOT REGEXP_CONTAINS(resolution_tier, r'^T[1-5]_')
 ORDER BY RAND()
 LIMIT {N_RISK_DEBIT * OVERSAMPLE}
 """
+
+
+RISK_BUCKETS = {
+    "gambling": r"\bbet\b|betting|casino|bingo|lottery|lotto|poker|slots|gambl",
+    "debt_collection": r"debt|collection|recover|enforcement|bailiff|arrears|lowell|cabot|moorcroft|pra group|intrum|zinc",
+    "high_cost_credit": r"payday|wonga|lending\s*stream|quickquid|cashfloat|moneyboat|dot\s*dot|creditspring|fund\s*ourselves|pawn|cash\s*converters|loan",
+    "cards": r"credit\s*card|\*{3,}\d{3,}|amex|american\s*exp|barclaycard|mbna|capital\s*one|aqua|vanquis|newday|marbles",
+    "overdraft_fees": r"overdraft|unarranged|unpaid\s*item|returned\s*item|account\s*fee|monthly\s*fee|maintaining\s*the\s*account",
+    "bnpl_savings": r"klarna|clearpay|zilch|laybuy|bnpl|pay\s*in\s*3|saver|savings|\bpot\b|round\s*up",
+}
+
+
+def _bucket(desc: str) -> str:
+    import re as _re
+    d = (desc or "").lower()
+    for b, pat in RISK_BUCKETS.items():
+        if _re.search(pat, d):
+            return b
+    return "other"
+
+
+def fetch_risk_tranche():
+    """TRANCHE=risk: N_RISK_TRANCHE T6-bound risk-looking debits for TRAINING, with a floor per
+    proxy bucket so gambling / debt collection / high-cost credit / savings are not starved.
+    Excludes eval-set merchants (incl. the 400-row T6-bound gold) and training rows."""
+    from google.cloud import bigquery
+    client = bigquery.Client(project="raylo-production")
+    excluded = eval_merchants()
+    tkeys = train_keys()
+    gold_texts = set()
+    if RISK_T6_GOLD.exists():
+        g = pd.read_csv(RISK_T6_GOLD, dtype=str).fillna("")
+        gold_texts = set(g["merchant_raw"].map(_norm) + "||" + g["description_raw"].map(_norm))
+    sql = _risk_debit_sql().replace(f"LIMIT {N_RISK_DEBIT * OVERSAMPLE}", f"LIMIT {N_RISK_TRANCHE * OVERSAMPLE * 2}")
+    df = client.query(sql).to_dataframe(create_bqstorage_client=True)
+    m = df["merchant_raw"].fillna("").map(_norm); d = df["description_raw"].fillna("").map(_norm)
+    before = len(df)
+    df = df[~m.isin(excluded) & ~(m + "||" + d).isin(gold_texts)].copy()
+    from score_waterfall_pipeline import row_key
+    keys = [row_key(a, b, c, e) for a, b, c, e in
+            zip(df["merchant_raw"].fillna(""), df["description_raw"].fillna(""), df["amount"], df["direction"])]
+    df = df[[k not in tkeys for k in keys]].copy()
+    df["_text"] = df["merchant_raw"].fillna("").map(_norm) + "||" + df["description_raw"].fillna("").map(_norm)
+    df = df.sample(frac=1.0, random_state=SEED)
+    df = df[df.groupby("_text").cumcount() < MAX_PER_TEXT]
+    df["bucket"] = df["description_raw"].fillna("").map(_bucket)
+    print(f"  fetched {before:,} → {len(df):,} after exclusions/cap; buckets: {df.bucket.value_counts().to_dict()}", file=sys.stderr)
+    parts = []
+    remaining = N_RISK_TRANCHE
+    for b, g in df.groupby("bucket"):
+        take = min(len(g), RISK_FLOOR); parts.append(g.head(take)); remaining -= take
+    taken = pd.concat(parts)
+    rest = df.drop(taken.index)
+    out = pd.concat([taken, rest.head(max(remaining, 0))]).sample(frac=1.0, random_state=SEED).reset_index(drop=True)
+    out = out.drop(columns=["_text"])
+    out["stratum"] = "risk_t6bound_debit"
+    out["provider"] = "plaid"
+    out.insert(0, "row_id", range(len(out)))
+    OUT_DIR.mkdir(exist_ok=True)
+    out.to_csv(SAMPLE_CSV, index=False)
+    print(f"Wrote {SAMPLE_CSV}: {len(out):,} rows; buckets {out.bucket.value_counts().to_dict()}; "
+          f"blank merchant {(out.merchant_raw.fillna('') == '').mean():.0%}; distinct texts "
+          f"{(out.merchant_raw.fillna('').map(_norm) + '||' + out.description_raw.fillna('').map(_norm)).nunique():,}",
+          file=sys.stderr)
 
 
 def fetch():
@@ -294,7 +364,7 @@ def gate():
         else:
             final, tier, src = "", "needs_review", "missing prediction"
         # Risk-family and income leaves on the T6-bound debit stratum always go to review.
-        if r["stratum"] != "credit" and tier != "needs_review":
+        if TRANCHE == "credit" and r["stratum"] != "credit" and tier != "needs_review":
             tier = "agent_" + tier.split("_", 1)[1] + "_review_required"
         tiers[tier] += 1
         out.append({**r, "gemini_leaf": gl, "sonnet_leaf": sl, "opus_leaf": ol,
@@ -421,6 +491,11 @@ def apply_review(path=None):
     df.to_csv(FINAL_LABELS, index=False)
     print(f"Wrote {FINAL_LABELS}: {len(df):,} labelled rows", file=sys.stderr)
 
+    if TRANCHE == "risk":
+        tr = df.rename(columns={"final_leaf": "gold_leaf"})
+        tr.to_csv(RISK_TOPUP, index=False)
+        print(f"risk training top-up {len(tr):,} rows → {RISK_TOPUP} (gold stays the 400-row T6-bound set)", file=sys.stderr)
+        return
     # Splits. Credit eval is merchant-disjoint from everything else in this tranche:
     # pick whole merchant groups (blank merchants split by description text) until 2,000.
     cred = df[df["stratum"] == "credit"].copy()
@@ -450,7 +525,7 @@ if __name__ == "__main__":
         sys.exit(__doc__)
     cmd = args[0]
     if cmd == "fetch":
-        fetch()
+        fetch_risk_tranche() if TRANCHE == "risk" else fetch()
     elif cmd == "label":
         label(args[1])
     elif cmd == "tiebreak":
