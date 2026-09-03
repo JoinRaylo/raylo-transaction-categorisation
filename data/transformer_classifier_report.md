@@ -110,3 +110,57 @@ Paired bootstrap (2,000 resamples) of transformer − hinge, per seed:
 | pipeline residual (n=505) | −0.4pp [−4.2, +3.8] | +1.6pp [−2.4, +5.7] | +1.0pp [−3.2, +5.0] |
 
 The novel-merchant gain excludes zero on every seed; the residual is a statistical tie.
+
+## Iteration 5 — both models retrained with the credit tranche (2026-09-03)
+
+Training file `outputs/tuning_train.jsonl` **409,417** rows (credit share 7.4%, was 0.65%);
+comparator is **hinge v7** trained on the same file (`data/classifier_v7_credit_report.md`).
+Transformer: same encoder/silver stage; gold pass uncapped, 4 epochs, best epoch by Tier-B val
+(epochs 1 / 1 / 3), seeds 42 / 7 / 123. New eval sets: `gold_credit_eval.csv` (2,000,
+merchant-disjoint, 84.3% blind human agreement) and `gold_transactions_risk_t6bound.csv`
+(400 T6-bound risk-looking debits, 383 Carlos-labelled).
+
+| cut | hinge v7 | transformer (3-seed mean) | Δ, paired 95% CI |
+|---|---:|---:|---:|
+| holdout T6-bound leaf (n=418) | 57.2% | **60.9%** | +3.7pp [+0.3, +7.2] |
+| credit eval leaf (n=2,000) | 85.0% | **87.4%** | +2.4pp [+1.3, +3.6] |
+| credit eval general (n=2,000) | 87.6% | **88.9%** | — |
+| pipeline residual leaf (n=505) | 59.2% | 57.9% | −1.3pp [−4.9, +2.2] |
+| risk T6-bound gold leaf (n=400) | 51.5% | 49.4% | −2.1pp [−7.0, +2.7] |
+| risk T6-bound gold, risk-leaf acc (n=174) | 48.3% | 47.3% (43.1–51.1) | tie |
+| full pipeline T1–T5 then model (n=2,004) | 81.6% | 81.3% | tie |
+| general accuracy, every cut | — | +1 to +6pp | consistently better |
+| CPU rows/s | — | ~1,050 | — |
+
+Kill criteria as written: every seed **misses ≥2** (residual +3pp; risk ≥ hinge on 2 of 3
+seeds; the "+10pp credit bar" is now unreachable — both models sit at 89–91%). **Verdict:
+keep hinge (v7) as T5b.**
+
+### Read
+
+1. **The credit lead was a data effect, not an architecture effect.** Once the hinge saw the
+   same 28k credit rows it went 62 → 85% on the credit eval; the transformer is +2.4pp above
+   it (CI excludes zero) — real, but small. Iteration 4's +22pp on credits was the encoder
+   generalising from 0.6% credit data that the hinge could not; that advantage is what the
+   tranche removed.
+2. **What survives is the novel-merchant gain** (+3.7pp holdout T6-bound, CI excludes zero
+   on the 3-seed mean, slightly narrower than iteration 4's +5.4) and **general-level accuracy**
+   (+1–6pp on every cut), i.e. when the transformer is wrong it is wrong within the right
+   family more often.
+3. **T6-bound risk is a tie at ~48–51% for both**, now on 174 rows — the honest number for
+   the slice T5b serves on risk leaves. Neither model is close to the 70% bar. The gold there
+   is dominated by card-issuer inflows, account charges, overdraft narratives and personal
+   loans: rule and labelling work, and the next tranche target.
+4. **Net:** on today's data the two heads are near-equivalent. The transformer is a modest,
+   consistent improvement on novel strings and on credits, at ~10× the serving cost of a
+   65 MB linear model. The kill criteria were written when the gap was expected to be large;
+   they should be re-cut around the general-level and novel-merchant gains, or the hybrid,
+   before the promotion decision — but not re-cut *by* this result to make it pass.
+
+### What would change the picture
+- Scale pretraining (22M sentences, 2–3 epochs, 44–66M encoder on a GCP L4/A100): the
+  encoder's edge is on unseen text, exactly where more domain pretraining acts. Cost £10–30.
+- Row-level silver from the full 77M rows for the first fine-tune pass (the dictionary in
+  context, tens of millions of examples), which is the Uncapped-scale data the hinge cannot
+  exploit but the encoder can.
+- T6-bound risk tranche + rules for card-issuer inflows / overdraft narratives — moves both.

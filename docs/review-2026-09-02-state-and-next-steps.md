@@ -443,3 +443,15 @@ vs 58.0 is the miss). The seen/unseen split on the residual (iteration 3) is the
 58.0; T6-bound risk 80.8 vs 77.5; credit bar 31.8 vs 17.8; full pipeline 81.5 vs 81.3). The
 transformer is a confirmed T5b candidate. Section 5's Stage 3 is therefore passed on the
 accuracy side; promotion now waits on the Week 2–3 data items and a serving design.
+
+## Week 2 outcome (2026-09-03) — credit tranche
+
+Done in one day: 30,380 rows sampled (stratified, merchant-disjoint from every eval set), labelled
+(Gemini+Sonnet 75.9% agree; Opus tiebreak 4,930; agent adjudication 2,179 of 2,322 splits; Carlos
+513 flagged + 300 blind + 1,495 convention remaps; **blind agreement 84.3%**), applied (`data/production_labels_credit_tranche.csv`,
+`gold_credit_eval.csv` 2,000, `gold_transactions_risk_t6bound.csv` 400, `tuning_credit_topup.csv`
+27,979). Conventions A–I accepted, J = invoice cue → income. Retrains: hinge v7 credit eval 62 → **85%**;
+transformer 3 seeds vs v7: +3.7pp novel merchants, +2.4pp credits (CIs exclude zero), ties elsewhere,
+**T6-bound risk 47–51% for both on 400 rows**. §2.1 is fixed on the data side; §5's transformer is
+near-equivalent to the hinge on today's data. Next: T6-bound risk tranche + issuer/overdraft rules;
+decide GCP pretraining scale-up.
