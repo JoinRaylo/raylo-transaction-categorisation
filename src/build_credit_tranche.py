@@ -419,11 +419,49 @@ def sheet():
     print(f"Wrote {REVIEW_XLSX}: {len(flagged)} flagged + {len(blind)} blind", file=sys.stderr)
 
 
+# Who filled the review workbook. The credit tranche was Carlos (human_reviewed);
+# the risk tranche workbook was filled by an agent on Carlos's behalf and he
+# accepted it (REVIEW_TIER=agent_review). Never call agent work human_reviewed.
+REVIEW_TIER = os.environ.get("REVIEW_TIER", "human_reviewed")
+REVIEWER_ID = "carlos" if REVIEW_TIER == "human_reviewed" else ""
+REVIEW_SOURCE = "carlos" if REVIEW_TIER == "human_reviewed" else "agent_review_workbook"
+
+# Risk-tranche conventions 1-13 (Carlos accepted all 14 on 3 Sep, 7/8 reworded) applied to
+# the ACCEPTED rows too, not just the adjudicated splits. (pattern on description|merchant,
+# only-if-current-leaf-in, new leaf, note)
+RISK_ACCEPTED_REMAPS = [
+    (r"zettle_?\*|\bsumup\b", {"transfer_p2p", "unclassified_other"}, "retail_small_independent", "conv 1 Zettle/SumUp unknown trader"),
+    (r"debit\s*finance\s*coll|\bdfc\b", {"debt_collection"}, "unclassified_recurring", "conv 6 DFC is a DD bureau"),
+    (r"aci\s*uk|aciukltd", None, "debt_collection", "conv 5 ACI UK Ltd"),
+    (r"case:\s*drs", None, "debt_collection", "conv 4 collections portal card payment"),
+    (r"payment[\s-]*assist", None, "bnpl", "conv 10 Payment Assist -> bnpl"),
+    (r"fair\s*for\s*you|fairforyou", None, "personal_loan_repayment", "conv 10 Fair for You"),
+    (r"hme\s*rtl\s*grp|home\s*retail\s*group\s*card", None, "revolving_credit_repayment", "conv 8 (reworded) Argos card = revolving"),
+    (r"travl\s*(plus|pck)\s*fee|service\s*charges\s*ref", None, "account_charge", "conv 3 packaged-account fee"),
+    (r"\bcashplus\b|aps\s*financial", None, "prepaid_card", "conv 13 Cashplus"),
+    (r"\bsecurus\b", None, "broadband_tv_phone", "conv 13 Securus"),
+    (r"ooodles", None, "retail_finance_repayment", "conv 12 Ooodles"),
+]
+
+
 def apply_review(path=None):
     path = pathlib.Path(path) if path else REVIEW_COMPLETED_XLSX
     rows = {r["row_id"]: r for r in csv.DictReader(open(LABELS_CSV))}
     from confusion_analysis import load_taxonomy
     gen_of, _ = load_taxonomy()
+    if TRANCHE == "risk":
+        import re as _re
+        n_remap = Counter()
+        for r in rows.values():
+            if r["tier"] not in ("agent_consensus", "agent_tiebreak", "agent_review"):
+                continue
+            text = f"{r.get('merchant_raw', '')} {r.get('description_raw', '')}".lower()
+            for pat, only_if, leaf, note in RISK_ACCEPTED_REMAPS:
+                if _re.search(pat, text) and (only_if is None or r["final_leaf"] in only_if) and r["final_leaf"] != leaf:
+                    r.update(final_leaf=leaf, tier="agent_review", resolution_source=f"convention: {note}",
+                             general_category=gen_of[leaf]); n_remap[note] += 1
+                    break
+        print(f"accepted-row convention remaps: {dict(n_remap)}", file=sys.stderr)
     if path.exists():
         flagged = pd.read_excel(path, sheet_name="Flagged", dtype=str).fillna("")
         n_set = 0
@@ -436,26 +474,35 @@ def apply_review(path=None):
             if leaf:
                 if leaf not in gen_of:
                     sys.exit(f"row {rid}: {leaf!r} is not a taxonomy leaf")
-                rows[rid].update(final_leaf=leaf, tier="human_reviewed", resolution_source="carlos",
-                                 reviewer_id="carlos", general_category=gen_of[leaf]); n_set += 1
+                rows[rid].update(final_leaf=leaf, tier=REVIEW_TIER, resolution_source=REVIEW_SOURCE,
+                                 reviewer_id=REVIEWER_ID, general_category=gen_of[leaf]); n_set += 1
             else:
                 rows[rid].update(final_leaf="", tier="dropped", resolution_source="carlos_drop")
                 n_drop += 1
         blind = pd.read_excel(path, sheet_name="Blind_300", dtype=str).fillna("")
         key = pd.read_excel(path, sheet_name="Blind_300_key", dtype=str).fillna("")
         merged = blind.merge(key, on="row_id")
+        if "final_agreed_leaf" in merged.columns:
+            # A post-blind adjudication column exists: the blind labels are the measurement,
+            # final_agreed_leaf is the label that ships.
+            raw = merged[merged["carlos_leaf"].str.strip() != ""]
+            if len(raw):
+                print(f"BLIND SLICE (raw, {REVIEW_TIER}): agreement with key {(raw['carlos_leaf'].str.strip() == raw['final_leaf']).mean():.1%} "
+                      f"on {len(raw)}; adjudicated final vs key {(raw['final_agreed_leaf'].str.strip() == raw['final_leaf']).mean():.1%}",
+                      file=sys.stderr)
+            merged["carlos_leaf"] = merged["final_agreed_leaf"]
         done = merged[merged["carlos_leaf"].str.strip() != ""]
         if len(done):
             agree = (done["carlos_leaf"].str.strip() == done["final_leaf"]).mean()
-            print(f"BLIND SLICE: Carlos vs agent final agreement {agree:.1%} on {len(done)} rows "
+            print(f"BLIND SLICE: {REVIEW_TIER} labels vs key agreement {agree:.1%} on {len(done)} rows "
                   f"(label-noise ceiling for this tranche)", file=sys.stderr)
             for _, r in done.iterrows():
                 rid = str(r["row_id"]).strip()
                 leaf = r["carlos_leaf"].strip()
                 if leaf not in gen_of:
                     sys.exit(f"Blind_300 row {rid}: {leaf!r} is not a taxonomy leaf")
-                rows[rid].update(final_leaf=leaf, tier="human_reviewed",
-                                 resolution_source="carlos", reviewer_id="carlos",
+                rows[rid].update(final_leaf=leaf, tier=REVIEW_TIER,
+                                 resolution_source=REVIEW_SOURCE, reviewer_id=REVIEWER_ID,
                                  general_category=gen_of[leaf])
         print(f"applied {n_set} flagged labels from {path.name} (dropped {n_drop})", file=sys.stderr)
         # Carlos-approved retargets of agent labels (conventions A/E/G/T1 etc.).
@@ -470,7 +517,8 @@ def apply_review(path=None):
             leaf = str(r.get("new_leaf", "")).strip()
             if not rid or not leaf or rid not in rows:
                 continue
-            if rows[rid].get("tier") in ("human_reviewed", "dropped"):
+            if rows[rid].get("tier") in ("human_reviewed", "dropped") or (
+                    REVIEW_TIER != "human_reviewed" and rows[rid].get("resolution_source") == REVIEW_SOURCE):
                 continue
             if leaf not in gen_of:
                 sys.exit(f"Accepted_remaps row {rid}: {leaf!r} is not a taxonomy leaf")
