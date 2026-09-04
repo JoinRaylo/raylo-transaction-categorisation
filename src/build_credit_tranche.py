@@ -62,6 +62,8 @@ TRANCHE = os.environ.get("TRANCHE", "credit")   # "credit" (2 Sep) or "risk" (3 
 N_CREDIT = 30_000
 N_RISK_DEBIT = 400
 N_RISK_TRANCHE = 5_000          # TRANCHE=risk: T6-bound risk-looking debits for TRAINING
+N_DISTIL = 500_000              # TRANCHE=distil: most frequent distinct Plaid texts (80.7% of live rows)
+SHARD = os.environ.get("SHARD")  # "i/N" -> label only every N-th row (parallel labelling); merged by gate
 RISK_FLOOR = 300                # per proxy bucket (gambling / debt collection / high-cost / savings / cards / overdraft)
 MAX_PER_TEXT = 5          # rows per normalised (merchant, description)
 OVERSAMPLE = 3            # rows fetched per stratum quota before dedupe/exclusion
@@ -69,7 +71,9 @@ SEED = 20260902
 
 _P = f"{TRANCHE}_tranche"
 SAMPLE_CSV = OUT_DIR / f"{_P}_sample.csv"
-PRED = {k: OUT_DIR / f"{_P}_predictions_{k}.csv" for k in ("gemini", "sonnet", "opus")}
+_SH = f"_shard{SHARD.replace('/', 'of')}" if SHARD else ""
+PRED = {k: OUT_DIR / f"{_P}_predictions_{k}{_SH}.csv" for k in ("gemini", "sonnet", "opus")}
+DISTIL_OUT = ROOT / "data" / "distillation_labels_consensus.parquet"
 TIEBREAK_SAMPLE = OUT_DIR / f"{_P}_tiebreak_sample.csv"
 LABELS_CSV = OUT_DIR / f"{_P}_labels.csv"
 NEEDS_REVIEW_CSV = OUT_DIR / f"{_P}_needs_review.csv"
@@ -255,6 +259,58 @@ def fetch_risk_tranche():
           file=sys.stderr)
 
 
+def _distil_sql() -> str:
+    return f"""
+WITH t AS (
+  SELECT LOWER(TRIM(IFNULL(merchant_name, ''))) AS merchant,
+         LOWER(TRIM(IFNULL(COALESCE(original_description, transaction_name), ''))) AS description,
+         IF(amount < 0, 'credit', 'debit') AS direction,
+         ANY_VALUE(merchant_name) AS merchant_raw,
+         ANY_VALUE(COALESCE(original_description, transaction_name)) AS description_raw,
+         APPROX_QUANTILES(ABS(amount), 2)[OFFSET(1)] AS amount,
+         APPROX_TOP_COUNT(credit_category_detailed, 1)[OFFSET(0)].value AS native_category,
+         COUNT(*) AS n
+  FROM {PLAID}
+  GROUP BY 1, 2, 3
+  HAVING merchant != '' OR description != ''
+)
+SELECT * FROM t ORDER BY n DESC LIMIT {int(N_DISTIL * 1.6)}
+"""
+
+
+def fetch_distil():
+    """TRANCHE=distil: the N_DISTIL most frequent distinct (merchant, description, direction)
+    texts on live Plaid, with a representative amount and Plaid category per text. Excludes
+    eval-set merchants and every exact eval text; does NOT exclude training/dictionary
+    merchants (memorising the head is the point). Labelled by Gemini+Sonnet; consensus only."""
+    from google.cloud import bigquery
+    client = bigquery.Client(project="raylo-production")
+    # Merchant-level exclusion only where the eval is merchant-disjoint (holdout, risk gold,
+    # credit eval, T6-bound risk gold). The unified/v3/v4/v6 gold files are row-disjoint evals,
+    # so their merchants (Tesco, Amazon...) stay — only their exact texts are excluded.
+    excluded = frozen_holdout_merchants() | load_risk_merchants()
+    eval_texts = set()
+    for fname in list(_V6_GOLD_FILES) + ["gold_v2_slm_eval_holdout.csv", "gold_transactions_risk_categories.csv"]:
+        pth = ROOT / "data" / fname
+        if pth.exists():
+            g = pd.read_csv(pth, dtype=str).fillna("")
+            if "description_raw" in g.columns:
+                eval_texts |= set(g["merchant_raw"].map(_norm) + "||" + g["description_raw"].map(_norm))
+    df = client.query(_distil_sql()).to_dataframe(create_bqstorage_client=True)
+    before = len(df)
+    key = df["merchant"] + "||" + df["description"]
+    df = df[~df["merchant"].isin(excluded) & ~key.isin(eval_texts)].head(N_DISTIL).reset_index(drop=True)
+    df["stratum"] = "distil"
+    df["provider"] = "plaid"
+    df.insert(0, "row_id", range(len(df)))
+    OUT_DIR.mkdir(exist_ok=True)
+    df.to_csv(SAMPLE_CSV, index=False)
+    tot = int(df["n"].sum())
+    print(f"Wrote {SAMPLE_CSV}: {len(df):,} texts (from {before:,}); {tot:,} live rows covered; "
+          f"credit share {(df.direction == 'credit').mean():.1%}; blank merchant {(df.merchant == '').mean():.1%}",
+          file=sys.stderr)
+
+
 def fetch():
     from google.cloud import bigquery
     client = bigquery.Client(project="raylo-production")
@@ -328,8 +384,47 @@ def _v6_with(sample_csv, preds):
 
 
 def label(model_key):
-    v6 = _v6_with(SAMPLE_CSV, PRED)
+    sample = SAMPLE_CSV
+    if SHARD:
+        i, n = (int(x) for x in SHARD.split("/"))
+        df = pd.read_csv(SAMPLE_CSV, dtype=str).fillna("")
+        df = df[(df.index % n) == i]
+        sample = OUT_DIR / f"{_P}_sample{_SH}.csv"
+        df.to_csv(sample, index=False)
+        print(f"shard {SHARD}: {len(df):,} rows", file=sys.stderr)
+    v6 = _v6_with(sample, PRED)
     v6.label(model_key)
+
+
+def gate_distil():
+    """Consensus only: keep rows where Gemini == Sonnet (95.3% leaf accuracy vs Carlos on the
+    credit tranche; tiebreak-accepted rows were 63.8% and are NOT used). Merges shards."""
+    rows = pd.read_csv(SAMPLE_CSV, dtype=str).fillna("")
+    preds = {}
+    for k in ("gemini", "sonnet"):
+        parts = sorted(OUT_DIR.glob(f"{_P}_predictions_{k}*.csv"))
+        if not parts:
+            sys.exit(f"no predictions for {k}")
+        p = pd.concat([pd.read_csv(x, dtype=str).fillna("") for x in parts]).drop_duplicates("row_id")
+        preds[k] = p.set_index("row_id")["llm_leaf"]
+        print(f"{k}: {len(p):,} predictions from {len(parts)} file(s)", file=sys.stderr)
+    rows["gemini_leaf"] = rows["row_id"].map(preds["gemini"]).fillna("")
+    rows["sonnet_leaf"] = rows["row_id"].map(preds["sonnet"]).fillna("")
+    both = (rows.gemini_leaf != "") & (rows.sonnet_leaf != "")
+    agree = both & (rows.gemini_leaf == rows.sonnet_leaf)
+    from confusion_analysis import load_taxonomy
+    gen_of, _ = load_taxonomy()
+    keep = rows[agree & rows.gemini_leaf.isin(gen_of)].copy()
+    keep["final_leaf"] = keep["gemini_leaf"]; keep["tier"] = "agent_consensus"
+    keep["general_category"] = keep["final_leaf"].map(gen_of)
+    keep["amount"] = pd.to_numeric(keep["amount"], errors="coerce")
+    keep["n"] = pd.to_numeric(keep["n"], errors="coerce")
+    DISTIL_OUT.parent.mkdir(exist_ok=True)
+    keep.to_parquet(DISTIL_OUT, index=False)
+    print(f"labelled by both: {int(both.sum()):,} / {len(rows):,}; agree {int(agree.sum()):,} "
+          f"({100 * agree.sum() / max(both.sum(), 1):.1f}%); kept {len(keep):,} -> {DISTIL_OUT}", file=sys.stderr)
+    print(f"live rows covered by kept texts: {int(keep['n'].sum()):,}; credit share {(keep.direction == 'credit').mean():.1%}; "
+          f"leaves {keep.final_leaf.nunique()}; top: {keep.final_leaf.value_counts().head(8).to_dict()}", file=sys.stderr)
 
 
 def tiebreak():
@@ -574,7 +669,9 @@ if __name__ == "__main__":
         sys.exit(__doc__)
     cmd = args[0]
     if cmd == "fetch":
-        fetch_risk_tranche() if TRANCHE == "risk" else fetch()
+        {"risk": fetch_risk_tranche, "distil": fetch_distil}.get(TRANCHE, fetch)()
+    elif cmd == "gate" and TRANCHE == "distil":
+        gate_distil()
     elif cmd == "label":
         label(args[1])
     elif cmd == "tiebreak":
