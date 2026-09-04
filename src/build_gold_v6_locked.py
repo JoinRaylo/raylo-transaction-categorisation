@@ -209,7 +209,10 @@ def label(model_key):
         from google import genai
         from google.genai import types
 
-        client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"], vertexai=False)
+        # Per-request timeout: without it a hung connection blocks a shard forever
+        # (all four distillation shards froze at the same minute on 4 Sep).
+        client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"], vertexai=False,
+                              http_options=types.HttpOptions(timeout=120_000))
         leaf_list = sorted(leaves)
         index_addendum = "\n\n## Category index (output this number, not the name)\n" + "\n".join(
             f"{i + 1}. {leaf}" for i, leaf in enumerate(leaf_list))
