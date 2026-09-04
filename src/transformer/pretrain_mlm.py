@@ -200,19 +200,38 @@ def train(args):
     t0 = time.time()
     run_loss, run_n = 0.0, 0
     step = start_step
-    while step < total:
-        i = (step % steps_per_epoch) * args.batch
-        batch_texts = [texts[j] for j in order[i:i + args.batch]]
-        if not batch_texts:
-            step += 1
-            continue
-        enc = tokenizer(batch_texts, truncation=True, max_length=args.max_len,
-                        padding="longest", return_tensors="pt")
-        input_ids = enc["input_ids"].to(dev)
-        attn = enc["attention_mask"].to(dev)
+
+    # Tokenise in background worker processes (the L4 run was CPU-bound at 423 sent/s
+    # with in-loop tokenisation) and use bf16 autocast on CUDA.
+    use_amp = dev.type == "cuda"
+    from torch.utils.data import DataLoader, Dataset
+
+    class _Batches(Dataset):
+        def __init__(self, first_step):
+            self.first = first_step
+        def __len__(self):
+            return max(total - self.first, 0)
+        def __getitem__(self, k):
+            st = self.first + k
+            i = (st % steps_per_epoch) * args.batch
+            bt = [texts[j] for j in order[i:i + args.batch]]
+            if not bt:
+                bt = [texts[order[0]]]
+            enc = tokenizer(bt, truncation=True, max_length=args.max_len, padding="longest", return_tensors="pt")
+            return enc["input_ids"], enc["attention_mask"]
+
+    loader = DataLoader(_Batches(start_step), batch_size=None, shuffle=False,
+                        num_workers=args.workers, prefetch_factor=4 if args.workers else None,
+                        persistent_workers=bool(args.workers))
+    for input_ids, attn in loader:
+        if step >= total:
+            break
+        input_ids = input_ids.to(dev, non_blocking=True)
+        attn = attn.to(dev, non_blocking=True)
         masked, labels = whole_word_mask(input_ids, attn, tokenizer)
-        out = model(input_ids=masked, attention_mask=attn, labels=labels)
-        loss = out.loss
+        with torch.autocast(device_type="cuda", dtype=torch.bfloat16, enabled=use_amp):
+            out = model(input_ids=masked, attention_mask=attn, labels=labels)
+            loss = out.loss
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         opt.step()
@@ -253,6 +272,7 @@ def main():
     ap.add_argument("--lr", type=float, default=5e-5)
     ap.add_argument("--new-tokens", type=int, default=4000)
     ap.add_argument("--ckpt-every", type=int, default=2000)
+    ap.add_argument("--workers", type=int, default=0, help="tokenisation worker processes (0 = in-loop)")
     ap.add_argument("--fresh", action="store_true")
     ap.add_argument("--probe", action="store_true")
     args = ap.parse_args()
