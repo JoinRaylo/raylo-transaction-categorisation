@@ -195,7 +195,10 @@ def label(model_key):
                 return {}
             by_idx = {j + 1: r for j, r in enumerate(batch)}
             out = {}
-            for res in tool_use.input.get("results", []):
+            results = tool_use.input.get("results", []) if isinstance(tool_use.input, dict) else []
+            for res in results if isinstance(results, list) else []:
+                if not isinstance(res, dict):
+                    continue  # malformed item (a string / list) — skip; the retry loop re-asks for missing rows
                 r = by_idx.get(res.get("index"))
                 if not r:
                     continue
@@ -268,7 +271,10 @@ def label(model_key):
                 return {}
             by_idx = {j + 1: r for j, r in enumerate(batch)}
             out = {}
-            for res in data.get("results", []):
+            results = data.get("results", []) if isinstance(data, dict) else []
+            for res in results if isinstance(results, list) else []:
+                if not isinstance(res, dict):
+                    continue
                 cat_idx = res.get("category_index")
                 r = by_idx.get(res.get("index"))
                 if not r or not (isinstance(cat_idx, int) and 1 <= cat_idx <= len(leaf_list)):
@@ -286,12 +292,18 @@ def label(model_key):
         num = i // BATCH + 1
         if num % 5 == 1:
             print(f"[{model_key}] batch {num}/{n_batches}", file=sys.stderr)
-        predictions.update(classify_batch(batch, f"b{num:03d}"))
+        def _safe(fn, *a):
+            try:
+                return fn(*a)
+            except Exception as e:  # noqa: BLE001 — a malformed model response must not kill a 100k-row shard
+                print(f"  [{a[1]}] batch parse error {type(e).__name__}: {e}", file=sys.stderr)
+                return {}
+        predictions.update(_safe(classify_batch, batch, f"b{num:03d}"))
         for attempt in (1, 2):
             missing = [r for r in batch if r["row_id"] not in predictions]
             if not missing:
                 break
-            predictions.update(classify_batch(missing, f"b{num:03d}_r{attempt}"))
+            predictions.update(_safe(classify_batch, missing, f"b{num:03d}_r{attempt}"))
         if num % 10 == 0:
             flush()
     flush()
