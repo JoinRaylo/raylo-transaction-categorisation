@@ -199,3 +199,49 @@ credit bar is saturated at ~88–89% for both). **Verdict under the rule: keep h
   were set when a large gap was expected; they are not met, and they should not be re-cut by
   this result. A GPU pretraining scale-up is the one lever left that acts on the transformer's
   edge (unseen text) rather than on both models equally.
+
+## Iteration 7 — DistilBERT encoder, full-corpus pretraining (2026-09-05)
+
+Encoder test as pre-declared on 4 Sep: swap BERT-small (29M) for `distilbert-base-uncased` (66M),
+same 4,000 domain tokens, MLM on the **full 21.5M-sentence corpus for 2 epochs** (GCP L4,
+6.5 h GPU, MLM loss 7.2 → 1.45; encoder `outputs/distill_models/txn_encoder_mlm_distilbert_full`,
+tgz in `gs://raylo-txn-categorisation-scratch/transformer/`). Same silver pass (val 79.5% vs
+BERT-small 78%), same uncapped gold pass, best epoch by Tier-B val (epoch 1 all seeds, 81.2–81.6%
+vs BERT-small 77–78%), seeds 42 / 7 / 123, scored against **hinge v8** on the current rules.
+
+| cut | hinge v8 | BERT-small (3 seeds) | **DistilBERT (3 seeds)** | Δ vs hinge [95% CI] | Δ vs BERT-small [95% CI] |
+|---|---:|---:|---:|---:|---:|
+| holdout T6-bound leaf (n=416) | 59.4% | 62.5% | **63.5%** | +4.2pp [+0.5, +7.9] | +1.0pp [−1.6, +3.7] |
+| pipeline residual leaf (n=478) | 59.8% | 61.7% | **63.1%** | +3.3pp [−0.1, +6.7] | +1.4pp [−1.2, +4.0] |
+| credit eval leaf (n=2,000) | 85.9% | 87.8% | **87.9%** | +2.1pp [+0.9, +3.3] | +0.1pp [−0.7, +0.9] |
+| risk T6-bound gold, all 400 | 67.2% | 69.4% | **74.0%** | +6.7pp [+3.1, +10.7] | **+4.6pp [+2.1, +7.1]** |
+| risk T6-bound gold, risk-leaf rows (n=174) | 75.9% | 79.5% | **83.7%** | +7.9pp [+3.8, +12.5] | **+4.2pp [+1.0, +7.5]** |
+| full pipeline T1–T5 then model (n=2,000) | 82.2% | 82.7% | **83.0%** | — | — |
+| general-level accuracy | | +2 to +8pp | **+5.5 to +11pp** | | |
+| CPU throughput (one process) | — | ~1,050 rows/s | **360 rows/s** | | |
+
+Per seed (leaf): holdout 63.7 / 62.3 / 64.7; residual 63.0 / 62.3 / 64.0; risk-leaf 84.5 / 82.2 / 84.5.
+
+### Read against the pre-declared rule
+- Pre-declared: "< +1pp over BERT-small closes the architecture question; ≥ +3pp keeps the bigger
+  encoder". Result: **+1.0 / +1.4pp on the two novel-merchant cuts (CIs include zero) and
+  +4.2 to +4.6pp on the T6-bound risk set (CIs exclude zero)**, with general-level accuracy up
+  3–4pp further across the board. So the bigger encoder + full pretraining is a real but
+  selective gain: it buys most on the risk leaves and at general level, little on generic novel
+  strings and nothing on credits (saturated ~88%).
+- Against the hinge, DistilBERT is now clear on every accuracy cut; three of the four accuracy
+  criteria pass on the seed mean (holdout +4.2, residual +3.3, risk +7.9), and the credit bar is
+  unreachable for either model. **The one hard miss is throughput: 360 rows/s vs 1,000.** That
+  is an engineering item (int8 dynamic quantisation / ONNX Runtime typically gives 2–3× on
+  CPU; or distil this encoder into the 29M BERT-small), not a modelling one — the 66M model is
+  simply 3× the FLOPs.
+- Note the risk gold "T6-bound" subset is now 333/400 (the 3 Sep rules resolve 67 rows before
+  the classifier) and the old 711-row risk set's T6-bound slice is down to 68 rows; quote the
+  400-row set.
+
+### Where this leaves the decision
+On today's data the best classifier we have is DistilBERT + full pretraining: **+3–4pp leaf and
++6–11pp general over hinge v8 on every residual cut, +8pp on T6-bound risk leaves**, at 1/3 the
+hinge's CPU speed. The next lever — distillation from the Gemini/Sonnet consensus labels (500k
+texts, labelling in progress) — acts on the same knowledge gap and should be applied to this
+encoder. Throughput must be solved before promotion regardless of which encoder wins.

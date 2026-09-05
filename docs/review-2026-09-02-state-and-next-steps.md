@@ -492,3 +492,11 @@ is now ahead on every cut. `data/classifier_v8_risk_report.md`,
 `data/transformer_classifier_report.md` (iteration 6). The serving dump (v5) is now far
 behind both: +24pp on credits, +28pp on T6-bound risk. Next decisions: serving path and
 whether to promote v8 / the transformer; GPU pretraining scale-up.
+
+**5 Sep — encoder test (DistilBERT + full 21.5M-sentence MLM, GCP L4 6.5 h, £7 all-in incl. a
+spot→on-demand rebuild).** 3 seeds vs hinge v8: holdout T6-bound 63.5 (+4.2, CI excl. 0),
+residual 63.1 (+3.3), credit eval 87.9 (+2.1, CI excl. 0), **T6-bound risk leaves 83.7 (+7.9,
+CI excl. 0)**, general +5.5–11pp; vs BERT-small +1.0 / +1.4 on novel merchants (n.s.) but
+**+4.2–4.6 on the risk set (CI excl. 0)**. Keep the bigger encoder for the distillation run.
+Hard miss: CPU 360 rows/s vs 1,000 → quantise/ONNX or distil back to 29M before promotion.
+All GCP compute deleted. `data/transformer_classifier_report.md` iteration 7.
