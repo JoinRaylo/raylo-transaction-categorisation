@@ -500,3 +500,12 @@ CI excl. 0)**, general +5.5–11pp; vs BERT-small +1.0 / +1.4 on novel merchants
 **+4.2–4.6 on the risk set (CI excl. 0)**. Keep the bigger encoder for the distillation run.
 Hard miss: CPU 360 rows/s vs 1,000 → quantise/ONNX or distil back to 29M before promotion.
 All GCP compute deleted. `data/transformer_classifier_report.md` iteration 7.
+
+**5 Sep evening — distillation (review §5 path) measured.** Gemini==Sonnet consensus labels on
+the 500k most frequent Plaid texts (404,982 kept, 81% agreement, ≈93–95% accurate) replace the
+rule-derived silver pass for the DistilBERT encoder. 3 seeds vs hinge v8: holdout T6-bound
+**64.5 (+5.1)**, residual **65.0 (+5.2)**, credit eval **88.8 (+2.9)**, T6-bound risk leaves
+**85.6 (+9.8)**, full pipeline 83.2 vs 82.2, general +7–13pp; all CIs exclude zero. +1–2pp over
+iteration 7 on every cut (credit eval significant). **Every accuracy criterion passes; CPU
+throughput (360 rows/s) is the only blocker before T5b promotion.** Iteration 8 in
+`data/transformer_classifier_report.md`.

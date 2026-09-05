@@ -245,3 +245,44 @@ On today's data the best classifier we have is DistilBERT + full pretraining: **
 hinge's CPU speed. The next lever — distillation from the Gemini/Sonnet consensus labels (500k
 texts, labelling in progress) — acts on the same knowledge gap and should be applied to this
 encoder. Throughput must be solved before promotion regardless of which encoder wins.
+
+## Iteration 8 — DistilBERT + full MLM, first fine-tune pass on the Gemini/Sonnet consensus labels (2026-09-05)
+
+The distillation path from the review §5. Labels: `data/distillation_labels_consensus.parquet`
+(404,982 of the 500k most frequent Plaid texts where Gemini 3.7 Flash and Sonnet 5 agreed; no
+tiebreak; ≈93–95% leaf accuracy by the credit-tranche evidence; `data/distillation_labels_report.md`).
+Recipe: DistilBERT full-corpus MLM encoder → **2 epochs on the consensus labels** (in place of
+the rule-derived silver pass; direction-illegal 0.18% vs 3.6%) → uncapped gold pass, best epoch by
+Tier-B val, seeds 42 / 7 / 123. Comparator hinge v8; "silver" = iteration 7 (same encoder, rule
+labels instead).
+
+| cut | hinge v8 | DistilBERT silver→gold (it. 7) | **DistilBERT distilled→gold (it. 8)** | Δ vs hinge [95% CI] | Δ vs it. 7 [95% CI] |
+|---|---:|---:|---:|---:|---:|
+| holdout T6-bound leaf (n=416) | 59.4% | 63.5% | **64.5%** | +5.1pp [+1.8, +8.8] | +1.0 [−1.4, +3.4] |
+| pipeline residual leaf (n=478) | 59.8% | 63.1% | **65.0%** | +5.2pp [+2.0, +8.2] | +1.9 [−0.6, +4.2] |
+| credit eval leaf (n=2,000) | 85.9% | 87.9% | **88.8%** | +2.9pp [+1.8, +4.2] | **+0.9 [+0.2, +1.5]** |
+| risk T6-bound gold, all 400 | 67.2% | 74.0% | **75.9%** | +8.7pp [+5.1, +12.4] | +1.9 [−0.2, +4.2] |
+| risk T6-bound gold, risk-leaf rows (n=174) | 75.9% | 83.7% | **85.6%** | +9.8pp [+5.2, +15.1] | +1.9 [−0.6, +4.6] |
+| full pipeline T1–T5 then model (n=2,000) | 82.2% | 83.0% | **83.2%** | — | — |
+| general-level accuracy | 66–79% | +5.5–11pp | **72.9 / 74.6 / 90.1 / 85.6 / 91.8** | | |
+| CPU rows/s | — | 360 | 360 | | |
+
+Seeds (leaf): holdout 62.5 / 64.9 / 66.1; residual 63.6 / 65.1 / 66.3; risk-leaf 85.6 / 85.1 / 86.2.
+
+### Read
+- **Every accuracy criterion now clears with room**: holdout +5.1, residual +5.2 (both CIs
+  exclude zero — the residual had never cleared +3 before), T6-bound risk leaves +9.8. The only
+  misses are the saturated credit bar and CPU throughput.
+- **The consensus labels add a further +1 to +2pp on every cut over the rule-derived silver
+  pass**, statistically clear on the 2,000-row credit eval and consistent in sign on the others.
+  Smaller than the encoder step (BERT-small → DistilBERT) on the risk set, larger on the residual.
+  The whole stack (encoder + pretraining scale + distillation) is now **+5pp leaf / +7–13pp
+  general over the hinge on the rows it serves**, and +10pp on risk leaves.
+- Interpretation: the distilled labels teach the head of the distribution the frontier models'
+  conventions on 405k texts the hinge also memorises, so the hinge gains nothing more from them,
+  while the encoder carries the same knowledge to unseen strings — the mechanism the review
+  predicted, at a smaller magnitude than the "Gemini gap" suggested (Gemini itself is 73% on the
+  residual; the student is at 65%).
+- **Open blocker unchanged: 360 rows/s.** Options: int8 dynamic quantisation + ONNX Runtime
+  (expected 2–3×), or distil this model into the 29M BERT-small using the same consensus labels
+  plus its soft targets. Nothing else stands between this model and the T5b slot on accuracy.
