@@ -176,8 +176,18 @@ def gold_frame():
     return df[["text", "leaf", "is_credit"]]
 
 
-def silver_frame():
-    df = pd.read_parquet(SILVER_PARQUET, columns=["text", "leaf", "direction"])
+def silver_frame(path=None):
+    """T1-T5 silver labels (default) or any parquet with merchant/description/direction/amount +
+    a leaf column — e.g. `data/distillation_labels_consensus.parquet` (Gemini==Sonnet consensus
+    on the 500k most frequent Plaid texts, 5 Sep)."""
+    path = pathlib.Path(path) if path else SILVER_PARQUET
+    df = pd.read_parquet(path)
+    if "leaf" not in df.columns and "final_leaf" in df.columns:
+        df = df.rename(columns={"final_leaf": "leaf"})
+    if "text" not in df.columns:
+        df["text"] = [sentence(d, amt_bucket_py(a), m, s) for d, a, m, s in
+                      zip(df["direction"], df["amount"].fillna(0), df["merchant_raw"].fillna(""),
+                          df["description_raw"].fillna(""))]
     df["is_credit"] = (df["direction"] == "credit").astype(int)
     return df[["text", "leaf", "is_credit"]]
 
@@ -326,6 +336,8 @@ def main():
     ap.add_argument("--max-len", type=int, default=48)
     ap.add_argument("--from", dest="from_", choices=["mlm", "silver"], default=None)
     ap.add_argument("--max-silver", type=int, default=None)
+    ap.add_argument("--silver-parquet", default=None,
+                    help="alternative labelled parquet for the silver stage (e.g. the distillation consensus set)")
     ap.add_argument("--ckpt-every", type=int, default=2000)
     ap.add_argument("--cap", type=int, default=None, help="per-leaf row cap per epoch (default: silver 25k / gold 20k; 0 = no cap)")
     ap.add_argument("--floor", type=int, default=None, help="per-leaf min rows per epoch (default: silver 200 / gold 300)")
@@ -347,7 +359,7 @@ def main():
         val = v[["text", "leaf", "is_credit"]]
 
     if args.stage in ("silver", "all"):
-        df = silver_frame()
+        df = silver_frame(args.silver_parquet)
         if args.max_silver:
             df = df.sample(min(args.max_silver, len(df)), random_state=42)
         cap = 25_000 if args.cap is None else (10**9 if args.cap == 0 else args.cap)
