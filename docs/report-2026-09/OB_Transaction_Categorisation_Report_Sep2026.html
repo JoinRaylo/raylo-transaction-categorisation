@@ -328,7 +328,7 @@ li{margin-bottom:3pt}
 </table>
 <figure id="fig-seq"></figure>
 <p>The pattern is clear in hindsight. Without categories the sequence model plateaued at about 0.47 regardless of data or epochs. Given our leaf as an input, it jumped to the level of the 50-feature taxonomy XGBoost. Every further lever, fine-tuning, attention pooling and tripling the size, moved it a little, and the best configuration is statistically level with the champion but below it on both metrics. The bigger model overfitted within two epochs because there are only 2,200 bad outcomes to learn from; label scarcity, not model capacity, capped every configuration.</p>
-<p>The stacking results in this section were measured against the uncapped champion, refit on that repository's population (GINI 0.616). They will be re-run against the 50-feature capped champion now that it is the reference; a smaller base model leaves more residual for a text score to explain, so the deltas are expected to hold or grow.</p>
+<p>The sequence-model results in this section were measured against the uncapped champion, refit on that repository's population (GINI 0.616). The text-score stacking was then re-run against the 50-feature capped champion once it became the reference; those results are at the end of the section.</p>
 <p>Stacked on the champion as an extra feature, the sequence model added nothing significant. The champion's thousands of leaf-level columns already contain what the sequence model had learned from categories. It is parked, with its data pipeline and training recipes intact, and its natural re-entry point is when Plaid outcomes are several times more numerous.</p>
 <h3>What did add value: one text score</h3>
 <p>What remains in the raw text after the categories are accounted for is small but real, and the simplest extraction captures it. A frozen sentence encoder embeds each description, the vectors are averaged per applicant, and a small logistic model turns the average into one risk score, added to the champion as a single column. That single number beat 32 compressed columns, and it is far easier to monitor.</p>
@@ -341,6 +341,17 @@ li{margin-bottom:3pt}
 <tr class="hl"><td>Champion + bge-base text score (locked recipe)</td><td class="n">0.302 (+0.012 [+0.002, +0.023])</td><td class="n">0.625 (+0.009 [+0.001, +0.018])</td></tr>
 <tr><td>Champion + our domain-pretrained encoder score</td><td class="n">0.307 (+0.017 [+0.004, +0.030])</td><td class="n">0.626 (+0.010 [+0.000, +0.019])</td></tr>
 <tr><td>Champion + sequence transformer score</td><td class="n">not significant</td><td class="n">not significant</td></tr>
+</tbody>
+</table>
+<h3>The text score on the capped champion</h3>
+<p>A smaller base model leaves more in the free text for a score to explain, and that is what the re-run shows. On the 50-feature capped champion, refit on the same population, the bge-base text score adds +0.033 PR-AUC and +0.025 GINI, roughly three times its lift on the uncapped champion, with both intervals well clear of zero. The capped champion plus one text column, 51 features in all, matches the uncapped champion on PR-AUC (0.294 against 0.290) and recovers two thirds of its GINI gap (0.604 against 0.616). The encoder ordering is unchanged: bge-base and our domain-pretrained encoder are level, and the category-fine-tuned encoder is weaker.</p>
+<table>
+<thead><tr><th>Six-month outcome, 6,252 applicants, 397 bad</th><th class="n">PR-AUC</th><th class="n">GINI</th></tr></thead>
+<tbody>
+<tr><td>Capped champion, 50 features, refit</td><td class="n">0.261</td><td class="n">0.580</td></tr>
+<tr class="hl"><td>Capped champion + bge-base text score (51 columns)</td><td class="n">0.294 (+0.033 [+0.017, +0.049])</td><td class="n">0.604 (+0.025 [+0.014, +0.035])</td></tr>
+<tr><td>Capped champion + our domain-pretrained encoder score</td><td class="n">0.294 (+0.034 [+0.016, +0.051])</td><td class="n">0.605 (+0.025 [+0.013, +0.037])</td></tr>
+<tr><td>Uncapped champion, refit, for reference</td><td class="n">0.290</td><td class="n">0.616</td></tr>
 </tbody>
 </table>
 <p class="small">PR-AUC is the area under the precision-recall curve, a second ranking metric that weights the rare bad outcomes more heavily than GINI does. Both are reported because on a few hundred bad outcomes they can move independently.</p>
@@ -383,7 +394,7 @@ li{margin-bottom:3pt}
 <section class="section">
 <h2>13. Status, caveats and next steps</h2>
 <h3>Where things stand</h3>
-<p>The taxonomy, pipeline, dictionary and evaluation methodology are complete. The linear classifier at v8 and the transformer at its eighth iteration are both measured against honest, merchant-disjoint evaluation sets, with the transformer clearing every accuracy criterion. The 50-feature capped champion is the reference credit model, with the uncapped champion kept as the ceiling; the text-score recipe is locked and will be re-measured against the capped model. Nothing is referenced by a production dbt model or scheduled job.</p>
+<p>The taxonomy, pipeline, dictionary and evaluation methodology are complete. The linear classifier at v8 and the transformer at its eighth iteration are both measured against honest, merchant-disjoint evaluation sets, with the transformer clearing every accuracy criterion. The 50-feature capped champion is the reference credit model, with the uncapped champion kept as the ceiling; the text-score recipe is locked and has been re-measured against the capped model, where it is worth +0.025 GINI. Nothing is referenced by a production dbt model or scheduled job.</p>
 <h3>Caveats to carry into any decision</h3>
 <ul>
 <li>The champion's 0.583 (capped) and 0.618 (uncapped) are development numbers. Their test windows were used in earlier work, and the like-for-like uplift over the live model is the whole bundle of taxonomy, features and learner; a same-feature-count ablation was inconclusive.</li>
