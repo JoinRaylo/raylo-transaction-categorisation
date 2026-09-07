@@ -1,6 +1,6 @@
 % Edit this section directly. Styling is in raylo-report.sty.
 \section{Why these architectures and not others}
-Two different problems sit in this work and they want different tools. The first is reading text: turning a merchant string and narrative into one of 275 categories. The second is ranking applicants: turning a table of per-applicant numbers into a default probability. The choices were made for each separately, and each was tested against the simpler alternative before being kept.
+Two different problems sit in this work and they want different tools: reading text (a merchant string and narrative into one of 275 categories) and ranking applicants (a table of per-applicant numbers into a default probability). Each choice was tested against the simpler alternative before being kept.
 
 \subsection{For reading text}
 
@@ -40,8 +40,8 @@ Off-the-shelf rules engine & Could a purpose-built product host the tiers? & Rep
 Logistic regression & The classic scorecard form; shows how much signal the categories carry alone. & 0.33 GINI. Useful for reading feature strength; not the production learner. \\ \addlinespace[4pt]
 XGBoost on 50 taxonomy features & The live model is an XGBoost, so this isolates the value of our categories with the learner held constant. & 0.56 against 0.39 live. The August headline. \\ \addlinespace[4pt]
 XGBoost + LightGBM blend on leaf-level features & Does giving the trees every leaf beat 50 aggregated features? & 0.62 uncapped as a blend; 0.59 held to 50 features as a single XGBoost, which matched the blend at every cap. The capped single model is carried forward, pending the prospective test. \\ \addlinespace[4pt]
-Sequence transformer over transactions & The foundation-model thesis: order and timing may carry signal the counts lose. & Level with the taxonomy XGBoost once given our categories; nothing on top of the uncapped champion; +0.031 GINI as one column on the 50-feature champion. Challenger for the prospective test. \\ \addlinespace[4pt]
-Frozen text embedding as one score & One calibrated, monitorable number is a better feature than 32 opaque columns. & +0.012 PR-AUC on the champion, CI excludes zero. Locked recipe. \\ \addlinespace[4pt]
+Sequence transformer over transactions & The foundation-model thesis: order and timing may carry signal the counts lose. & Level with the taxonomy XGBoost once given our categories; nothing on top of the uncapped champion; +0.029 GINI as one column on the 50-feature champion. Challenger for the prospective test. \\ \addlinespace[4pt]
+Frozen text embedding as one score & One calibrated, monitorable number is a better feature than 32 opaque columns. & +0.034 PR-AUC and +0.024 GINI on the 50-feature champion, both CIs excluding zero. Locked recipe. \\ \addlinespace[4pt]
 \bottomrule
 \end{longtable}}
 \textbf{Why gradient-boosted trees and not a neural network?} On tabular data with a few thousand bad outcomes, boosted trees remain the strongest and most explainable learner, and the live model is one, so the comparison is clean. The neural option was tested properly, as a sequence model, and did not beat the trees once both saw the same categories. Where it does earn a place is as one learned column feeding the trees, not as their replacement.

@@ -49,10 +49,10 @@ Both approaches in this section end the same way: as a single number per applica
 What this means for the risk model: the trees already see how much, how often and in how many months each category appears. The text score adds what the words say beyond the category, for instance that an ``unclassified transfer'' narrative reads like a loan repayment. The sequence score adds order and timing, which counts lose. Neither replaces the trees; each supplies one column the trees could not compute for themselves, and the results below show how much each column is worth.
 
 \subsection{Stage one: do text embeddings carry credit signal at all}
-The cheapest test first. Each distinct bank narrative (2.9 million strings) was turned into a vector by a frozen off-the-shelf sentence encoder, the vectors were averaged per applicant, and a logistic regression was fitted on the average. With no categories and no hand-built features, that probe matched the production-spec GBM refit on the same population. The text does carry signal. Compressed to 32 columns and added to the taxonomy model, it gave a small and unstable lift.
+The cheapest test first. The text-encoder probe described above, built over 2.9 million distinct narratives with no categories and no hand-built features, matched the production-spec GBM refit on the same population. The text does carry signal. Compressed to 32 columns and added to the taxonomy model, it gave a small and unstable lift.
 
 \subsection{Stage two: a sequence transformer over transactions}
-A transformer was then built to read up to 1,024 transactions per applicant, each represented by its amount bucket, timing, direction and text vector. It was pretrained with a masked-event objective, the sequence equivalent of fill-in-the-blank, on 48,000 applicants' histories, and read out first with a linear probe and later with fine-tuning. The versions are worth listing because each was built to test one thing.
+The sequence transformer described above was then built and read out first with a linear probe and later with fine-tuning. The versions are worth listing because each was built to test one thing.
 
 
 {\small
@@ -78,44 +78,26 @@ Champion, refit on the same population &  &  & 0.616 \\ \addlinespace[4pt]
 \centering
 \ChartTitle{Figure 9. Sequence transformer versions against the champion, six-month GINI on 6,252 applicants}
 \includegraphics[width=\linewidth]{charts/fig-seq.pdf}
-\caption*{The step from v3 to v4 is the category token. Everything after it is inside the noise of 397 bad outcomes. Stacked on the champion, no version added a significant gain.}
+\caption*{The step from v3 to v4 is the category token. Everything after it is inside the noise of 397 bad outcomes.}
 \end{figure}
-The pattern is clear in hindsight. Without categories the sequence model plateaued at about 0.47 regardless of data or epochs. Given our leaf as an input, it jumped to the level of the 50-feature taxonomy XGBoost. Every further lever, fine-tuning, attention pooling and tripling the size, moved it a little, and the best configuration is statistically level with the champion but below it on both metrics. The bigger model overfitted within two epochs because there are only 2,200 bad outcomes to learn from; label scarcity, not model capacity, capped every configuration.
-
-The sequence-model results in this section were measured against the uncapped champion, refit on that repository's population (GINI 0.616). The text-score stacking was then re-run against the 50-feature capped champion once it became the reference; those results are at the end of the section.
-
-Stacked on the uncapped champion as an extra feature, the sequence model added nothing significant. The champion's thousands of leaf-level columns already contain what the sequence model had learned from categories, and at that point it was parked. The picture changed once the 50-feature capped champion became the reference, as the last part of this section shows.
+The pattern is clear in hindsight. Without categories the sequence model plateaued at about 0.47 regardless of data or epochs. Given our leaf as an input, it jumped to the level of the 50-feature taxonomy XGBoost. Every further lever moved it a little, and the best configuration is statistically level with the champion but below it on both metrics. The bigger model overfitted within two epochs because there are only 2,200 bad outcomes to learn from: label scarcity, not capacity, capped every configuration. Stacked on the uncapped champion as an extra feature it added nothing significant, because the champion's thousands of leaf-level columns already hold what the sequence model learned from categories. It was parked at that point; the picture changed once the 50-feature champion became the reference, as the end of this section shows.
 
 \subsection{What did add value: one text score}
-What remains in the raw text after the categories are accounted for is small but real, and the simplest extraction captures it. A frozen sentence encoder embeds each description, the vectors are averaged per applicant, and a small logistic model turns the average into one risk score, added to the champion as a single column. That single number beat 32 compressed columns, and it is far easier to monitor.
+What remains in the raw text after the categories are accounted for is small but real, and the simplest extraction captures it: the text score described at the start of this section, added to the champion as a single column. That single number beat 32 compressed columns and is far easier to monitor.
 
-Eight encoders were compared in that role, from 22 million to 568 million parameters, including our own domain-pretrained DistilBERT from section 9. All landed in one narrow band of roughly +0.01 PR-AUC on the champion. Encoder size and family do not matter here, which is itself informative: the lift is a property of the residual free text, not of the encoder. bge-base was chosen because both of its deltas exclude zero and it runs on a laptop CPU. Our own encoder was fractionally ahead on the point estimate and half the cost to run, but not distinguishably better, and it had seen the test period's text during unsupervised pretraining, so it is recorded as the preferred replacement candidate pending the prospective test.
+Eight encoders were compared in that role, from 22 million to 568 million parameters, including our own domain-pretrained DistilBERT from section 9. On the uncapped champion all landed in one narrow band of roughly +0.01 PR-AUC (bge-base: 0.302 / 0.625 against 0.290 / 0.616 alone). Encoder size and family do not matter here, which is itself informative: the lift is a property of the residual free text, not of the encoder. bge-base was chosen because both of its deltas exclude zero and it runs on a laptop CPU.
 
 \begin{figure}[H]
 \centering
 \ChartTitle{Figure 10. PR-AUC lift from one text score, on the uncapped and the 50-feature champion (95\% CIs)}
 \includegraphics[width=\linewidth]{charts/fig-stack.pdf}
-\caption*{On the uncapped champion, eight encoders spanning a 25-fold range in size land in one band: the lift is a property of the free text the taxonomy misses, not of the encoder. On the 50-feature single-XGBoost champion the same scores are worth two to three times as much and every GINI interval excludes zero, with the ordering unchanged: bge-base, e5-large and our domain-pretrained encoder share the top, the 568M encoder buys nothing over them, and the category-fine-tuned encoder is weakest.}
+\caption*{Eight encoders spanning a 25-fold range in size land in one band on both bases. On the 50-feature champion the lifts are two to three times larger and every GINI interval excludes zero. The category-fine-tuned encoder is weakest on both.}
 \end{figure}
 
-{\small
-\setlength{\TableWidth}{\dimexpr\linewidth-6\tabcolsep\relax}
-\begin{longtable}{>{\raggedright\arraybackslash}p{0.4\TableWidth}>{\raggedright\arraybackslash}p{0.28\TableWidth}>{\raggedright\arraybackslash}p{0.32\TableWidth}}
-\rowcolor{BlueTint}
-\bfseries Six-month outcome, 6,252 applicants, 397 bad & \bfseries PR-AUC & \bfseries GINI \\ \midrule
-\endfirsthead
-\rowcolor{BlueTint}
-\bfseries Six-month outcome, 6,252 applicants, 397 bad & \bfseries PR-AUC & \bfseries GINI \\ \midrule
-\endhead
-Champion alone & 0.290 & 0.616 \\ \addlinespace[4pt]
-\rowcolor{PeachTint}
-Champion + bge-base text score (locked recipe) & 0.302 (+0.012 [+0.002, +0.023]) & 0.625 (+0.009 [+0.001, +0.018]) \\ \addlinespace[4pt]
-Champion + our domain-pretrained encoder score & 0.307 (+0.017 [+0.004, +0.030]) & 0.626 (+0.010 [+0.000, +0.019]) \\ \addlinespace[4pt]
-Champion + sequence transformer score & not significant & not significant \\ \addlinespace[4pt]
-\bottomrule
-\end{longtable}}
 \subsection{Both scores on the capped champion}
-The figures in this subsection are measured against the single-XGBoost 50-feature champion adopted in section 10, refit on that repository's population. A smaller base model leaves more for a learned score to explain, and that is what the re-run against the capped champion shows. Two scores were tested, each one column. The text score is the bge-base recipe above. The encoder score is the sequence transformer in its lightest deployable form: the 15-million-parameter pretrained encoder kept frozen, with only a small attention-pooling head trained on outcomes, so one model and one head would run in production rather than the five-fold ensemble used to produce honest training scores.
+The figures below are measured against the single-XGBoost 50-feature champion adopted in section 10, refit on that repository's population. A smaller base model leaves more for a learned score to explain. The text score is the bge-base recipe above. The encoder score is the sequence transformer in its lightest deployable form: the 15-million-parameter encoder kept frozen, with one small attention-pooling head trained on outcomes, so one model and one head would run in production.
+
+{\small\color{Muted} PR-AUC is the area under the precision-recall curve, a second ranking metric that weights the rare bad outcomes more heavily than GINI does. Both are reported because on a few hundred bad outcomes they can move independently.\par}
 
 
 {\small
@@ -136,8 +118,8 @@ Capped champion + text score + encoder score (52 columns) & 0.322 & 0.629 & +0.0
 Uncapped champion, refit, for reference & 0.290 & 0.616 &  &  \\ \addlinespace[4pt]
 \bottomrule
 \end{longtable}}
-Three things follow. The text score is worth about three times what it was on the uncapped champion (+0.024 GINI against +0.009), because the smaller base leaves the free text unexplained. The sequence model, which added nothing on the uncapped champion, adds a clear +0.029 GINI on the capped one for the same reason: its value was always category dynamics at the leaf level, which 3,150 columns held directly and 50 do not. And the two scores are additive. Fifty engineered features plus two learned columns reach 0.322 / 0.629, above the uncapped champion on both metrics, with each column nameable and monitorable.
+Three things follow. The text score is worth about three times what it was on the uncapped champion (+0.024 GINI against +0.009), because the smaller base leaves the free text unexplained. The sequence model, which added nothing on the uncapped champion, adds a clear +0.029 GINI on the capped one for the same reason: its value was always category dynamics at the leaf level, which 3,150 columns held directly and 50 do not. And the two scores are additive: fifty engineered features plus two learned columns reach 0.322 / 0.629, above the uncapped champion on both metrics, with each column nameable and monitorable.
 
-The cost is in the serving path rather than the feature count. The text score needs one text encoder over every description. The encoder score needs a second text encoder for its inputs, the sequence model itself, and our categoriser's leaf on every transaction. That is why the text-only recipe stays locked as the primary and the two-score version goes to the prospective test as the challenger: both have now been evaluated many times against the same 397 bad outcomes, and a cohort nobody has touched is the only clean arbiter left. Substituting our own domain-pretrained encoder for bge-base in the text score gives near-identical results (0.296 / 0.613 against 0.299 / 0.611) at about half the serving cost and with no third-party model in the decision path. The decision taken is to keep bge-base as the locked encoder and to register ours as the named alternative for the prospective test. The reason is evidential rather than technical: our encoder's pretraining corpus included the test period's transactions (no labels, vocabulary exposure only), while bge-base has none, so the cleaner comparison is the one to carry until a cohort nobody has touched can score both once. If ours holds level there, the cost and ownership case decides it.
+The cost is in the serving path rather than the feature count. The text score needs one text encoder over every description. The encoder score needs a second text encoder for its inputs, the sequence model itself, and our categoriser's leaf on every transaction. The text-only recipe therefore stays locked as the primary and the two-score version goes to the prospective test as the challenger. Both have now been evaluated many times against the same 397 bad outcomes, and a cohort nobody has touched is the only clean arbiter left.
 
-{\small\color{Muted} PR-AUC is the area under the precision-recall curve, a second ranking metric that weights the rare bad outcomes more heavily than GINI does. Both are reported because on a few hundred bad outcomes they can move independently.\par}
+On the choice of text encoder: substituting our own domain-pretrained DistilBERT for bge-base gives near-identical results (0.296 / 0.613 against 0.299 / 0.611) at about half the serving cost and with no third-party model in the decision path. bge-base stays locked and ours is registered as the named alternative for the prospective test. The reason is evidential rather than technical: our encoder's pretraining corpus included the test period's transactions (no labels, vocabulary exposure only), while bge-base has none. If ours holds level on an untouched cohort, the cost and ownership case decides it.

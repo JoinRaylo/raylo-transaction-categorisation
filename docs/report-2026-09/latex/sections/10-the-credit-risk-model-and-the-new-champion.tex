@@ -14,30 +14,16 @@ Then a stricter search was run for a stronger recipe. Where the 50-feature model
 Selection used three rolling validation windows that all sit before the published out-of-time window, and touched that window once, after the recipe was chosen. The final model is a blend of the two tree libraries, averaged over three seeds, with a calibration step so that its probabilities can be read as probabilities.
 
 
-{\small
-\setlength{\TableWidth}{\dimexpr\linewidth-6\tabcolsep\relax}
-\begin{longtable}{>{\raggedright\arraybackslash}p{0.29\TableWidth}>{\raggedright\arraybackslash}p{0.26\TableWidth}>{\raggedright\arraybackslash}p{0.45\TableWidth}}
-\rowcolor{BlueTint}
-\bfseries Model, scored out of time & \bfseries 3-month arrears, Mar to Apr 2026 & \bfseries 6-month, 3+ missed, Nov 2025 to Jan 2026 \\ \midrule
-\endfirsthead
-\rowcolor{BlueTint}
-\bfseries Model, scored out of time & \bfseries 3-month arrears, Mar to Apr 2026 & \bfseries 6-month, 3+ missed, Nov 2025 to Jan 2026 \\ \midrule
-\endhead
-Live model, XGBoost on Plaid-category features, fair refit & 0.382 & 0.385 \\ \addlinespace[4pt]
-Taxonomy features, XGBoost, 50-feature cap (August headline) & 0.477 & 0.562 \\ \addlinespace[4pt]
-Champion: XGBoost + LightGBM blend on all leaf-level features (1,654 to 3,150 columns) & 0.533 & 0.618 \\ \addlinespace[4pt]
-Champion uplift over the 50-feature model, 95\% CI & +0.056 [+0.030, +0.081] & +0.054 [+0.025, +0.084] \\ \addlinespace[4pt]
-Champion uplift over the live model, 95\% CI & +0.138 [+0.097, +0.179] & +0.200 [+0.158, +0.245] \\ \addlinespace[4pt]
-\bottomrule
-\end{longtable}}
-What the champion tells us is consistent with the second half of section 3. Given every column, the taxonomy's detail is worth something to the six-month model, and the champion's per-leaf shares and averages are the form in which it is worth most. Persistence remains the dominant feature form: how many distinct months a category appears in matters more than how much was spent. Debt-structure features built from the priority-debt flag remain among the strongest.
+Out of time, the champion scores 0.533 on the three-month outcome and 0.618 on the six-month one: +0.056 [+0.030, +0.081] and +0.054 [+0.025, +0.084] over the 50-feature model, and +0.138 [+0.097, +0.179] and +0.200 [+0.158, +0.245] over the live model.
+This is consistent with section 3: given every column, the taxonomy's detail is worth something to the six-month model, and per-leaf shares and averages are the form in which it is worth most. Persistence remains the dominant feature form (how many distinct months a category appears in matters more than how much was spent), and debt-structure features built from the priority-debt flag remain among the strongest.
 
 \subsection{Holding the champion to 50 features}
-The uncapped champion uses between 1,654 and 3,150 input columns, of which 700 to 1,450 carry non-zero weight in the fitted trees. That is a different governance proposition from the 50-feature model the August report deliberately made its headline: every one of 50 columns can be named, monitored for drift and explained to a reviewer. So the champion recipe was re-run under hard caps of 50, 100 and 200 features. Features were ranked by their average contribution across both tree libraries and all three seeds, using the training window only, and both components share the same column set so the cap means what it says. Nothing else was re-tuned.
+The uncapped champion uses between 1,654 and 3,150 input columns, of which 700 to 1,450 carry weight in the fitted trees. That is a different governance proposition from a 50-feature model, where every column can be named, monitored for drift and explained to a reviewer. So the champion recipe was re-run under hard caps of 50, 100 and 200 features, ranking features by their average contribution across both tree libraries and all three seeds on the training window only. Nothing else was re-tuned.
 
-The blend itself was also re-examined at each cap. Its weight had been chosen on the uncapped models; on the capped folds a single XGBoost matched or beat the blend on both outcomes, and LightGBM on its own fell away at 50 features (0.559 on the six-month outcome). The blend was therefore dropped. It is recorded here as tried, and the carried-forward model is a single XGBoost, which also keeps the learner identical to the live model's.
+The blend was re-examined at each cap. On the capped folds a single XGBoost matched or beat it on both outcomes, and LightGBM alone fell away at 50 features (0.559 on the six-month outcome). The blend was therefore dropped; the carried-forward model is a single XGBoost, which also keeps the learner identical to the live model's.
 
 
+\Needspace{200pt}
 {\small
 \setlength{\TableWidth}{\dimexpr\linewidth-10\tabcolsep\relax}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.34\TableWidth}>{\raggedright\arraybackslash}p{0.1\TableWidth}>{\raggedright\arraybackslash}p{0.15\TableWidth}>{\raggedright\arraybackslash}p{0.15\TableWidth}>{\raggedright\arraybackslash}p{0.26\TableWidth}}
@@ -61,11 +47,11 @@ Champion, uncapped & 1,654 to 3,150 & 0.533 & 0.618 &  \\ \addlinespace[4pt]
 \centering
 \ChartTitle{Figure 8. Out-of-time GINI: live model, August taxonomy model, and the champion at each feature cap}
 \includegraphics[width=\linewidth]{charts/fig-gini.pdf}
-\caption*{Both windows are entirely Plaid. The live model is refit on the full training window exactly as ours are. From the 50-feature rows upward the recipe is identical and only the number of columns and the use of a second tree library change. All champion rows are development recipes pending a prospective test.}
+\caption*{Both windows are entirely Plaid. From the 50-feature rows upward the recipe is identical; only the number of columns and the use of a second tree library change.}
 \end{figure}
-The cap has a real cost and the curve has no convenient knee: on the six-month outcome the model is still improving at 200 features. Roughly a third of the champion's gain over the August model is the recipe, which survives a cap, and two thirds is the width, which does not. At 50 features the single-XGBoost champion recipe beats the August model by a clear margin on the three-month outcome (+0.031, interval excluding zero) and by +0.024 on the six-month one, where the interval just touches zero.
+The cap has a real cost and no convenient knee: on the six-month outcome the model is still improving at 200 features. Roughly a third of the champion's gain over the August model is the recipe, which survives a cap, and two thirds is the width, which does not. At 50 features the single-XGBoost recipe beats the August model by +0.031 on the three-month outcome (interval excluding zero) and by +0.024 on the six-month one (interval touching zero).
 
-The decision taken is to carry the 50-feature single-XGBoost champion forward as the reference for the prospective test and for anything that approaches production. Its uplift over the live model, 0.13 GINI on the three-month outcome and 0.20 on the six-month, is what a lending decision would act on, and that barely changes with the cap. What the cap gives up is the last two to four points, in exchange for a model whose every input can be named. The uncapped champion is kept as the ceiling reference. If the business later wants those points back, the table above shows what each step of width buys.
+The 50-feature single-XGBoost champion is carried forward as the reference for the prospective test and for anything that approaches production. Its uplift over the live model, 0.13 GINI on the three-month outcome and 0.20 on the six-month, is what a lending decision would act on, and that barely changes with the cap. The cap gives up the last two to four points in exchange for a model whose every input can be named. The uncapped champion is kept as the ceiling reference; the table above shows what each step of width would buy back.
 
 \begin{tcolorbox}[colback=BlueTint,colframe=Blue,boxrule=0pt,leftrule=2pt,arc=3mm]
 Both champions are development recipes. Their out-of-time windows had been used in earlier experiment work, so 0.588 and 0.618 should be read as upper estimates until the prospective test in section 13 is run on a window nobody has touched.

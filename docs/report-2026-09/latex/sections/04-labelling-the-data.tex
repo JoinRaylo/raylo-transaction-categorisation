@@ -1,9 +1,9 @@
 % Edit this section directly. Styling is in raylo-report.sty.
 \section{Labelling the data}
-A taxonomy is only useful with labelled examples behind it, and the labelling has to be trustworthy enough to serve as ground truth. The approach settled on has four parts.
+A taxonomy is only useful with labelled examples behind it, and the labelling has to be trustworthy enough to serve as ground truth.
 
 \subsection{Two models must agree}
-Before committing to a large build, a cheap gating experiment had two large language models independently label the 2,300 merchants both providers cover. Raw agreement with Equifax's labels looked poor, but the benchmark itself was the problem: Equifax's "truth" is its own dictionary conventions, some of which our taxonomy rejects on purpose (Equifax files Netflix under broadband and Boots under beauty). Human review of the disputes gave a corrected accuracy of 96\% at leaf level, and set two standing rules. Two models must agree, with the option to abstain rather than guess. And no language model ever runs at decision time; they label offline, and small fast models are trained from those labels.
+Before committing to a large build, a cheap gating experiment had two large language models independently label the 2,300 merchants both providers cover. Raw agreement with Equifax's labels looked poor, but the benchmark was the problem: Equifax's ``truth'' is its own dictionary conventions, some of which our taxonomy rejects on purpose (Equifax files Netflix under broadband and Boots under beauty). Human review of the disputes gave a corrected accuracy of 96\% at leaf level and set two standing rules. Two models must agree, with the option to abstain rather than guess. And no language model ever runs at decision time: they label offline, and small fast models are trained from those labels.
 
 The production committee is Gemini Flash and Claude Sonnet, chosen from a six-model benchmark, with Claude Opus as a tiebreak where a human will review the result. When we later measured the committee's output against Carlos's own labels on the credit tranche, rows where the two models agreed were 95\% correct at leaf level. Rows accepted through the tiebreak were only 64\% correct, so tiebreaks are now used only for tranches that go to human review, never for training data.
 
