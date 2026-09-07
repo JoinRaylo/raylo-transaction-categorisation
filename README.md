@@ -4,7 +4,8 @@ Research repo for a single transaction taxonomy across Raylo's Open Banking prov
 
 **Status: research. Nothing here is in production.** No dbt model or scheduled job references this repo, and it must stay that way until work is explicitly promoted.
 
-- **Agent context (read first):** [`CLAUDE.md`](CLAUDE.md) — includes a **2026-08-26 current-state** block
+- **Agent context (read first):** [`CLAUDE.md`](CLAUDE.md) — includes **2026-09-07 and 2026-09-02 current-state** blocks
+- **Stakeholder report (Sep 2026):** [`docs/report-2026-09/OB_Transaction_Categorisation_Report_Sep2026.pdf`](docs/report-2026-09/OB_Transaction_Categorisation_Report_Sep2026.pdf) (HTML source alongside)
 - **Stakeholder overview + progress log:** [`docs/project-summary.md`](docs/project-summary.md)
 - **Design rationale:** [Notion — Unified Transaction Taxonomy](https://app.notion.com/p/3bf5bb4b4a6581b6807add39671e56c2)
 - **Labelling conventions (review closed):** [`AGENT_RULES.md`](AGENT_RULES.md)
@@ -33,6 +34,7 @@ src/
   build_tuning_dataset.py         Tier A gold + Tier B production_labels_tranche4.csv
   compare_classifier_versions.py  holdout + risk gold scorer (logreg and hinge)
   score_frontier_vs_classifier.py Gemini 3.7 / Sonnet 5 vs hinge (framing; full prompt)
+  score_gemini38_vs_37.py Gemini 3.8 vs saved 3.7 (keep 3.7; data/gemini38_vs_37_report.md)
   confusion_analysis.py           standing risk-category bar
 tests/
   test_taxonomy_integrity.py      run after every taxonomy / dictionary / T2 / T5 edit
@@ -50,7 +52,7 @@ pytest tests/ -q          # must pass before and after any taxonomy edit
 
 BigQuery project is `raylo-production`, read-only. Write experiment output to a scratch dataset, never `dbt_production`.
 
-## Current state (2026-08-27)
+## Current state (2026-09-07)
 
 | Item | Status |
 |---|---|
@@ -58,10 +60,11 @@ BigQuery project is `raylo-production`, read-only. Write experiment output to a 
 | T4 dictionary | **91,824** keys (Trading 212 / `trading212` → `investment_trading`) |
 | T1–T5 waterfall | Wired; Plaid live T4 **56.5%** of all transactions (89% of filled-merchant rows); T1–T4 **57.0%** on a 20% sample |
 | Production labels | `data/production_labels_tranche4.csv` (100k; review **closed**; `human_reviewed` = Carlos only) |
-| Classifier | Serving head is still the **v5 hinge SVM** dump. Reference hinge for measurement is **v7** (de-leaked + credit tranche, jsonl 409,417): holdout 56.6%, **credit eval 85.0%** (v6 62.2%), holdout credits 61.2% (v6 43.7%), risk bar 63.0%, **T6-bound risk 48% on 400 rows** (honest; FAIL vs 70%). In-house transformer (`src/transformer/`, BERT-small + domain MLM): 3 seeds vs v7 — novel merchants **60.9 vs 57.2**, credit eval **87.4 vs 85.0**, residual/risk/full pipeline tie, general accuracy +1–6pp; **verdict keep hinge, near-equivalent heads**. `data/classifier_v7_credit_report.md`, `data/transformer_classifier_report.md`. Do not quote the leaked 86.1% risk bar |
+| Classifier | Serving head is still the **v5 hinge SVM** dump (stale: 24pp behind on credits, 28pp on T6-bound risk). Reference hinge is **v8** (de-leaked + credit tranche + risk tranche, jsonl 414,400): credit eval **85.9%**, T6-bound risk-leaf acc **75.9%** on the 400-row set (first honest pass of the 70% bar; rules R33–R37 took it 48→59%, the 5k risk tranche to 76%). **Best T5b candidate: in-house DistilBERT** (domain MLM on 21.5M sentences, distilled from 405k Gemini==Sonnet consensus labels, gold pass; 3 seeds vs v8): novel merchants **64.5 vs 59.4**, residual **65.0 vs 59.8**, credit eval **88.8 vs 85.9**, T6-bound risk leaves **85.6 vs 75.9**, full pipeline **83.2 vs 82.2**, general +7–13pp, all CIs exclude zero; 360 rows/s CPU (accepted). `data/classifier_v8_risk_report.md`, `data/transformer_classifier_report.md` (iter 8). Do not quote the leaked 86.1% risk bar |
 | Locked eval | v5 retired. v6 applied (**1,100** rows; Carlos labelled the 8 flags 27 Aug). Do not score until go/no-go |
-| Full pipeline | **Re-measured 2 Sep** after the risk-gold de-leak, T4 purge and Python/SQL tier-order fix: T1–T5 then hinge **81.8%** leaf / 87.3% general on **2,004** row-disjoint gold rows (rules-only 73.0%). Split that matters: **debit 84.2% / credit 57.8%** (n=1,824 / 180); human-adjudicated v2 rows **77.7%** vs LLM-drafted agent-adjudicated rows **86.1%**. Python eval waterfall now equals the BigQuery SQL on all 2,004 rows (`src/check_waterfall_parity.py`). Provider-native category alone through T6 was 31.8% leaf on the earlier 1,884-row set. v5b/v5c/v5d retrains and MiniLM / residual-only experiments still rejected (see `data/`) |
-| Experiment 3 | Rebuilt 27 Aug (T1–T7 + screened XGB); **re-run 2 Sep with an Equifax as-of filter and a full-refit live comparator** (`data/experiment3_xgb_report.md` 2 Sep addendum). The live OB model is an XGBoost on Plaid-category features; our reconstruction of it, refit on the full Plaid window, scores **0.382 / 0.385** (single seed; 3-seed 0.392 / 0.411). Like-for-like headline = **Plaid-train-only, 50-feature cap: month3 0.445 vs live 0.382; month6 0.504 vs 0.385.** Pooled Equifax+Plaid capped: 0.477 / 0.562 (as-of filter did not move it). The uplift is the whole feature/model bundle — the same-20-feature taxonomy-only ablation is inconclusive (`data/experiment3_granularity_stress_test_report.md`). **Granularity (1 Sep, 3-seed stress test):** 275, the current 69 and 29 groups are statistically indistinguishable; 17 is close but may lose month-6 signal (−0.026, CI −0.051 to −0.003); 9 and below degrade; the smallest-rung uplift over live is not conclusive on month3. `data/experiment3_granularity_ladder_report.md` |
+| Full pipeline | **2,000** row-disjoint gold rows: T1–T5 then hinge v8 **82.2%** leaf, then transformer **83.2%**; rules-only T1–T7 **74.2%**; provider's own category alone **29.9%** leaf / 41.6% general (45% on provider-labelled rows). Residual (480 rows rules miss): transformer 65.0 / hinge 59.8 / provider 26.2. Direction split still matters (debit ~84% / credit ~57% with the de-leaked hinge; credits now served far better by v8/transformer). Python eval waterfall equals the BigQuery SQL on all rows (`src/check_waterfall_parity.py`). `data/waterfall_pipeline_report.md` |
+| Experiment 3 | Live OB XGB reconstruction, full refit: **0.382 / 0.385** (month3 / month6). August 50-feature taxonomy XGB **0.477 / 0.562** (as-of filter applied). Development champion (0.7 XGB + 0.3 LGB, 1,654–3,150 leaf-level columns) **0.533 / 0.618**. **Same recipe capped at 50 features: 0.508 / 0.583** (100: 0.520 / 0.589; 200: 0.529 / 0.600) — **the 50-feature capped champion is the reference carried forward (7 Sep)**; uncapped kept as ceiling. All development numbers; prospective test on the Feb–Apr 2026 cohort is the gate. `data/experiment3_champion_model_report.md`, `data/experiment3_champion_capped_report.md`. Granularity (1 Sep): 275 / 69 / 29 groups indistinguishable, 17 close, ≤9 degrade; 287-leaf expansion no gain. `docs/taxonomy-granularity-conclusion.md` |
+| Text / sequence scores on the risk model (OB-transformer repo) | On the 50-feature capped champion (refit 0.261 PR-AUC / 0.580 Gini): + bge-base text score **+0.033 / +0.025** (locked recipe); + frozen 15M sequence-encoder score +0.032 / +0.031; **both 0.316 / 0.621**, above the uncapped champion, 52 columns — registered challenger. Our domain-pretrained DistilBERT is level with bge-base as the text encoder at half the cost |
 | Equifax extra tranche | **Rejected** — 6,518 vendors; unmatched filled = 4.4% of dump |
 | LLM at runtime | Forbidden. Labelling is offline (Gemini 3.7 + Sonnet, Opus tiebreak) |
 
@@ -69,7 +72,8 @@ Full numbers and “do not” list: `CLAUDE.md` current-state block. Classifier 
 
 ## Key numbers (do not mix dates)
 
-- **Now (26 Aug 2026):** Plaid T4 **56.5%** of 4.28M rows; T1–T4 **57.0%** on a 20% sample. Equifax T4 37.4%.
+- **Now (7 Sep 2026):** pipeline **83.2%** leaf on 2,000 rows (transformer) vs provider-native **29.9%**; risk model month6 Gini live **0.385** / August 50-feature **0.562** / capped champion **0.583** / uncapped **0.618** / capped + text + encoder **0.621**.
+- **Coverage (26 Aug 2026):** Plaid T4 **56.5%** of 4.28M rows; T1–T4 **57.0%** on a 20% sample. Equifax T4 37.4%.
 - **History:** 321-entry dictionary hit 47.8% of Plaid merchant volume; 21 Aug T4 was 39.1%. Those are superseded.
 - Cross-provider conflict (unchanged finding): applying both crosswalks gives different leaves for 45.2% of shared-merchant volume — this is why T4 must override provider categories.
 - Equifax: **65.8%** well-resolved from provider categories alone; 6,518 distinct vendors; **dead dump**.
