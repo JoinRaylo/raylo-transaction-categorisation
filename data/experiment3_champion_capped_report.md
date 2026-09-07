@@ -137,3 +137,14 @@ Top 50 features by pre-OOT gain:
 48. `leaf__credit_card_repayment__credit_amt` (0.0027)
 49. `leaf__transfer_own_account__credit_amt` (0.0027)
 50. `gen_home_garden_months` (0.0027)
+
+## Single XGBoost at the 50-feature cap (2026-09-07, later) — adopted as the reference
+
+Carlos: for comparison against other models a single library is cleaner. The blend weight was chosen on the uncapped models; re-choosing it on the capped folds picks pure XGBoost for month6 (weight 1.0). Numbers below are the XGBoost component of the cap-50 run above (same 50 columns, same 3 seeds), scored on the same OOT rows; deltas are paired bootstraps on identical rows.
+
+| Target | XGBoost alone | Blend 0.7/0.3 | LightGBM alone | Δ XGB vs blend (95% CI) | Δ XGB vs published 50 (95% CI) | Δ XGB vs live (95% CI) |
+|---|---:|---:|---:|---:|---:|---:|
+| month3 | **0.508** | 0.508 | 0.500 | +0.000 (-0.000 to +0.001) | +0.031 (+0.005 to +0.058) | +0.114 (+0.071 to +0.157) |
+| month6 | **0.588** | 0.583 | 0.559 | +0.005 (-0.000 to +0.011) | +0.024 (-0.000 to +0.049) | +0.170 (+0.129 to +0.211) |
+
+**Decision:** the single-XGBoost 50-feature model (`outputs/experiment3_champion_capped_xgb_{month3,month6}_50.joblib`) is the reference carried forward. Same learner family as the live model, one artefact, one library. The blend was tried, matched or trailed a single XGBoost within noise at every cap, and is dropped for simplicity; the uncapped blend (0.533 / 0.618) remains the ceiling reference.
