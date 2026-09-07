@@ -345,7 +345,7 @@ li{margin-bottom:3pt}
 </table>
 <h3>Both scores on the capped champion</h3>
 <p>A smaller base model leaves more for a learned score to explain, and that is what the re-run against the 50-feature capped champion shows. Two scores were tested, each one column. The text score is the bge-base recipe above. The encoder score is the sequence transformer in its lightest deployable form: the 15-million-parameter pretrained encoder kept frozen, with only a small attention-pooling head trained on outcomes, so one model and one head would run in production rather than the five-fold ensemble used to produce honest training scores.</p>
-<table>
+<table style="break-inside:auto">
 <thead><tr><th>Six-month outcome, 6,252 applicants, 397 bad</th><th class="n">PR-AUC</th><th class="n">GINI</th><th class="n">ΔPR-AUC [95% CI]</th><th class="n">ΔGINI [95% CI]</th></tr></thead>
 <tbody>
 <tr><td>Capped champion, 50 features, refit</td><td class="n">0.261</td><td class="n">0.580</td><td class="n"></td><td class="n"></td></tr>
@@ -440,6 +440,7 @@ li{margin-bottom:3pt}
       const lines=Array.isArray(r.label)?r.label:[r.label];
       lines.forEach((ln,k)=>svg.appendChild(el('text',{x:0,y:y+barH*ng/2+gap*(ng-1)/2+3-(lines.length-1)*5.5+k*11,'font-size':9,fill:C.ink},ln)));
       r.groups.forEach((g,j)=>{
+        if(g.v==null) return;
         const by=y+j*(barH+gap);
         svg.appendChild(el('rect',{x:scale(Math.min(0,g.v)),y:by,width:Math.abs(scale(g.v)-scale(0)),height:barH,fill:g.color}));
         svg.appendChild(el('text',{x:scale(g.ci?g.ci[1]:g.v)+4,y:by+barH-3.5,'font-size':8,fill:C.ink,'font-weight':g.bold?600:400},g.text||opts.fmt(g.v)));
@@ -533,17 +534,18 @@ li{margin-bottom:3pt}
       {label:'Champion, refit on this population',groups:[{v:0.616,color:C.ours,bold:true}]}],
     caption:'The step from v3 to v4 is the category token. Everything after it is inside the noise of 397 bad outcomes. Stacked on the champion, no version added a significant gain.'});
 
-  hbars('fig-stack',{title:'Figure 9. Lift in PR-AUC from adding one text score to the champion, with 95% confidence intervals',
-    labW:260,min:-0.015,max:0.04,ticks:[-0.01,0,0.01,0.02,0.03],tickFmt:t=>(t<0?'':'+')+t.toFixed(2),fmt:v=>'+'+v.toFixed(3),
+  hbars('fig-stack',{title:'Figure 9. PR-AUC lift from one text score, on the uncapped and the 50-feature champion (95% CIs)',
+    labW:260,min:-0.015,max:0.06,ticks:[-0.01,0,0.01,0.02,0.03,0.04,0.05],tickFmt:t=>(t<0?'':'+')+t.toFixed(2),fmt:v=>'+'+v.toFixed(3),
+    legend:[{color:C.ours2,text:'on uncapped champion (1,654 to 3,150 features)'},{color:C.ours,text:'on capped champion (50 features)'}],
     rows:[
-      {label:'all-MiniLM-L6 (22M)',groups:[{v:0.007,color:C.ours2,ci:[-0.003,0.017]}]},
-      {label:'bge-small (33M)',groups:[{v:0.012,color:C.ours2,ci:[0.003,0.022]}]},
-      {label:'bge-base (110M), locked recipe',groups:[{v:0.012,color:C.ours,ci:[0.002,0.023],bold:true}]},
-      {label:'e5-large (335M)',groups:[{v:0.016,color:C.ours2,ci:[0.004,0.028]}]},
-      {label:'bge-m3 (568M)',groups:[{v:0.012,color:C.ours2,ci:[0.001,0.024]}]},
-      {label:'Our DistilBERT, domain-pretrained (66M)',groups:[{v:0.017,color:C.good,ci:[0.004,0.030]}]},
-      {label:'Our DistilBERT, category fine-tuned (66M)',groups:[{v:0.004,color:C.live,ci:[-0.012,0.020]}]}],
-    caption:'Seven encoders spanning a 25-fold range in size land in one band. The lift is a property of the free text the taxonomy misses, not of the encoder. Fine-tuning our encoder to predict categories removed the residual the stack benefits from.'});
+      {label:'all-MiniLM-L6 (22M)',groups:[{v:0.007,color:C.ours2,ci:[-0.003,0.017]},{v:null}]},
+      {label:'bge-small (33M)',groups:[{v:0.012,color:C.ours2,ci:[0.003,0.022]},{v:0.018,color:C.ours,ci:[0.005,0.030]}]},
+      {label:'bge-base (110M), locked recipe',groups:[{v:0.012,color:C.ours2,ci:[0.002,0.023]},{v:0.033,color:C.ours,ci:[0.017,0.049],bold:true}]},
+      {label:'e5-large (335M)',groups:[{v:0.016,color:C.ours2,ci:[0.004,0.028]},{v:null}]},
+      {label:'bge-m3 (568M)',groups:[{v:0.012,color:C.ours2,ci:[0.001,0.024]},{v:null}]},
+      {label:'Our DistilBERT, domain-pretrained (66M)',groups:[{v:0.017,color:C.ours2,ci:[0.004,0.030]},{v:0.034,color:C.ours,ci:[0.016,0.051]}]},
+      {label:'Our DistilBERT, category fine-tuned (66M)',groups:[{v:0.004,color:C.live,ci:[-0.012,0.020]},{v:0.018,color:C.live,ci:[-0.002,0.037]}]}],
+    caption:'On the uncapped champion, seven encoders spanning a 25-fold range in size land in one band: the lift is a property of the free text the taxonomy misses, not of the encoder. On the 50-feature capped champion the same scores are worth two to three times as much, and the ordering holds: bge-base and our domain-pretrained encoder are level, the category-fine-tuned encoder is weaker. Three encoders were not re-run on the capped base.'});
 })();
 </script>
 </body>
