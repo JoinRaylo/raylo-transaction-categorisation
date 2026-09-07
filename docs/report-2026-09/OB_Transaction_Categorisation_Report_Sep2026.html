@@ -79,7 +79,7 @@ li{margin-bottom:3pt}
     <h4>Abstract</h4>
     <p>Raylo's live Open Banking risk model reads Plaid's category names directly, which leaves a core model input outside our control. This report describes the taxonomy built to replace that dependency (275 detailed categories rolling up to 29 general ones), the seven-tier pipeline that applies it, and the two rounds of modelling work completed since the August report.</p>
     <p>On 2,000 held-out transactions the full pipeline now assigns the correct detailed category 83% of the time. The provider's own category, which is what the live model consumes, is right 30% of the time on the same rows. For the machine-learning tier that handles the transactions rules cannot, a transformer pretrained on 21.5 million bank narratives and taught from 405,000 consensus-labelled texts beats the linear classifier by five points on never-seen merchants and by ten points on high-risk categories, with confidence intervals that exclude zero.</p>
-    <p>On the credit side, a champion model built on leaf-level taxonomy features reaches a GINI of 0.62 on the six-month arrears outcome against 0.39 for the live model, up from the 0.56 quoted in August. A separate programme tested whether a sequence transformer over raw transactions could beat it. It could not, but a single score from a text encoder adds a small, statistically clear lift when stacked on the champion, and that is the recipe now locked for the prospective test.</p>
+    <p>On the credit side, a champion model built on leaf-level taxonomy features reaches a GINI of 0.62 on the six-month arrears outcome against 0.39 for the live model, up from the 0.56 quoted in August. Most of that gain comes from the model seeing thousands of leaf-level columns; held to a governable 50 features, the same recipe scores 0.58, and that capped model is the one carried forward. A separate programme tested whether a sequence transformer over raw transactions could beat it. It could not, but a single score from a text encoder adds a small, statistically clear lift when stacked on the champion, and that is the recipe now locked for the prospective test.</p>
   </div>
   <div class="foot"><span>Confidential, internal use only</span><span>raylo.com</span></div>
 </div>
@@ -281,14 +281,29 @@ li{margin-bottom:3pt}
 <tbody>
 <tr><td>Live model, XGBoost on Plaid-category features, fair refit</td><td class="n">0.382</td><td class="n">0.385</td></tr>
 <tr><td>Taxonomy features, XGBoost, 50-feature cap (August headline)</td><td class="n">0.477</td><td class="n">0.562</td></tr>
-<tr class="hl"><td>Champion: XGBoost + LightGBM blend on leaf-level features</td><td class="n">0.533</td><td class="n">0.618</td></tr>
+<tr><td>Champion: XGBoost + LightGBM blend on all leaf-level features (1,654 to 3,150 columns)</td><td class="n">0.533</td><td class="n">0.618</td></tr>
 <tr><td>Champion uplift over the 50-feature model, 95% CI</td><td class="n">+0.056 [+0.030, +0.081]</td><td class="n">+0.054 [+0.025, +0.084]</td></tr>
 <tr><td>Champion uplift over the live model, 95% CI</td><td class="n">+0.138 [+0.097, +0.179]</td><td class="n">+0.200 [+0.158, +0.245]</td></tr>
 </tbody>
 </table>
-<figure id="fig-gini"></figure>
 <p>What the champion tells us is consistent with section 3. The taxonomy's detail is worth something to the model when the model is allowed to see it directly, but the gain is in how the leaves are used, not in adding more of them. Persistence remains the dominant feature form: how many distinct months a category appears in matters more than how much was spent. Debt-structure features built from the priority-debt flag remain among the strongest.</p>
-<div class="callout">The champion is a development recipe. Its out-of-time windows had been used in earlier experiment work, so the 0.618 should be read as an upper estimate until the prospective test in section 13 is run on a window nobody has touched.</div>
+<h3>Holding the champion to 50 features</h3>
+<p>The uncapped champion uses between 1,654 and 3,150 input columns, of which 700 to 1,450 carry non-zero weight in the fitted trees. That is a different governance proposition from the 50-feature model the August report deliberately made its headline: every one of 50 columns can be named, monitored for drift and explained to a reviewer. So the champion recipe was re-run under hard caps of 50, 100 and 200 features. Features were ranked by their average contribution across both tree libraries and all three seeds, using the training window only, and both components share the same column set so the cap means what it says. Nothing else was re-tuned.</p>
+<table>
+<thead><tr><th>Champion recipe, scored out of time</th><th class="n">Features</th><th class="n">3-month</th><th class="n">6-month</th><th class="n">6-month gap to uncapped, 95% CI</th></tr></thead>
+<tbody>
+<tr><td>Live model, fair refit</td><td class="n"></td><td class="n">0.382</td><td class="n">0.385</td><td class="n"></td></tr>
+<tr><td>August model, single XGBoost</td><td class="n">50</td><td class="n">0.477</td><td class="n">0.562</td><td class="n"></td></tr>
+<tr class="hl"><td>Capped champion, carried forward</td><td class="n">50</td><td class="n">0.508</td><td class="n">0.583</td><td class="n">−0.035 [−0.057, −0.014]</td></tr>
+<tr><td>Capped champion</td><td class="n">100</td><td class="n">0.520</td><td class="n">0.589</td><td class="n">−0.029 [−0.047, −0.010]</td></tr>
+<tr><td>Capped champion</td><td class="n">200</td><td class="n">0.529</td><td class="n">0.600</td><td class="n">−0.018 [−0.032, −0.004]</td></tr>
+<tr><td>Champion, uncapped</td><td class="n">1,654 to 3,150</td><td class="n">0.533</td><td class="n">0.618</td><td class="n"></td></tr>
+</tbody>
+</table>
+<figure id="fig-gini"></figure>
+<p>The cap has a real cost and the curve has no convenient knee: on the six-month outcome the model is still improving at 200 features. Roughly a third of the champion's gain over the August model is the recipe, which survives a cap, and two thirds is the width, which does not. At 50 features the champion recipe beats the August model by a clear margin on the three-month outcome (+0.031, interval excluding zero) but not distinguishably on the six-month one (+0.019, interval including zero).</p>
+<p>The decision taken is to carry the 50-feature capped champion forward as the reference for the prospective test and for anything that approaches production. Its uplift over the live model, 0.13 GINI on the three-month outcome and 0.20 on the six-month, is what a lending decision would act on, and that barely changes with the cap. What the cap gives up is the last two to four points, in exchange for a model whose every input can be named. The uncapped champion is kept as the ceiling reference. If the business later wants those points back, the table above shows what each step of width buys.</p>
+<div class="callout">Both champions are development recipes. Their out-of-time windows had been used in earlier experiment work, so 0.583 and 0.618 should be read as upper estimates until the prospective test in section 13 is run on a window nobody has touched.</div>
 </section>
 
 <!-- ============================ 11 ============================ -->
@@ -313,6 +328,7 @@ li{margin-bottom:3pt}
 </table>
 <figure id="fig-seq"></figure>
 <p>The pattern is clear in hindsight. Without categories the sequence model plateaued at about 0.47 regardless of data or epochs. Given our leaf as an input, it jumped to the level of the 50-feature taxonomy XGBoost. Every further lever, fine-tuning, attention pooling and tripling the size, moved it a little, and the best configuration is statistically level with the champion but below it on both metrics. The bigger model overfitted within two epochs because there are only 2,200 bad outcomes to learn from; label scarcity, not model capacity, capped every configuration.</p>
+<p>The stacking results in this section were measured against the uncapped champion, refit on that repository's population (GINI 0.616). They will be re-run against the 50-feature capped champion now that it is the reference; a smaller base model leaves more residual for a text score to explain, so the deltas are expected to hold or grow.</p>
 <p>Stacked on the champion as an extra feature, the sequence model added nothing significant. The champion's thousands of leaf-level columns already contain what the sequence model had learned from categories. It is parked, with its data pipeline and training recipes intact, and its natural re-entry point is when Plaid outcomes are several times more numerous.</p>
 <h3>What did add value: one text score</h3>
 <p>What remains in the raw text after the categories are accounted for is small but real, and the simplest extraction captures it. A frozen sentence encoder embeds each description, the vectors are averaged per applicant, and a small logistic model turns the average into one risk score, added to the champion as a single column. That single number beat 32 compressed columns, and it is far easier to monitor.</p>
@@ -355,7 +371,7 @@ li{margin-bottom:3pt}
 <tbody>
 <tr><td>Logistic regression</td><td>The classic scorecard form; shows how much signal the categories carry alone.</td><td>0.33 GINI. Useful for reading feature strength; not the production learner.</td></tr>
 <tr><td>XGBoost on 50 taxonomy features</td><td>The live model is an XGBoost, so this isolates the value of our categories with the learner held constant.</td><td>0.56 against 0.39 live. The August headline.</td></tr>
-<tr><td>XGBoost + LightGBM blend on leaf-level features</td><td>Does giving the trees every leaf beat 50 aggregated features?</td><td>0.62. The champion, pending the prospective test.</td></tr>
+<tr><td>XGBoost + LightGBM blend on leaf-level features</td><td>Does giving the trees every leaf beat 50 aggregated features?</td><td>0.62 uncapped; 0.58 held to 50 features. The capped version is carried forward, pending the prospective test.</td></tr>
 <tr><td>Sequence transformer over transactions</td><td>The foundation-model thesis: order and timing may carry signal the counts lose.</td><td>Level with the taxonomy XGBoost once given our categories; nothing on top of the champion. Parked.</td></tr>
 <tr><td>Frozen text embedding as one score</td><td>One calibrated, monitorable number is a better feature than 32 opaque columns.</td><td>+0.012 PR-AUC on the champion, CI excludes zero. Locked recipe.</td></tr>
 </tbody>
@@ -367,10 +383,10 @@ li{margin-bottom:3pt}
 <section class="section">
 <h2>13. Status, caveats and next steps</h2>
 <h3>Where things stand</h3>
-<p>The taxonomy, pipeline, dictionary and evaluation methodology are complete. The linear classifier at v8 and the transformer at its eighth iteration are both measured against honest, merchant-disjoint evaluation sets, with the transformer clearing every accuracy criterion. The champion credit model and the text-score recipe are locked. Nothing is referenced by a production dbt model or scheduled job.</p>
+<p>The taxonomy, pipeline, dictionary and evaluation methodology are complete. The linear classifier at v8 and the transformer at its eighth iteration are both measured against honest, merchant-disjoint evaluation sets, with the transformer clearing every accuracy criterion. The 50-feature capped champion is the reference credit model, with the uncapped champion kept as the ceiling; the text-score recipe is locked and will be re-measured against the capped model. Nothing is referenced by a production dbt model or scheduled job.</p>
 <h3>Caveats to carry into any decision</h3>
 <ul>
-<li>The champion's 0.618 is a development number. Its test windows were used in earlier work, and the like-for-like uplift over the live model is the whole bundle of taxonomy, features and learner; a same-feature-count ablation was inconclusive.</li>
+<li>The champion's 0.583 (capped) and 0.618 (uncapped) are development numbers. Their test windows were used in earlier work, and the like-for-like uplift over the live model is the whole bundle of taxonomy, features and learner; a same-feature-count ablation was inconclusive.</li>
 <li>Each out-of-time window rests on a few hundred bad outcomes. The gaps to the live model are far larger than that noise; the text-score lift is not, and needs a second cohort.</li>
 <li>The 400-row risk evaluation set is unseen rows of a known population, not an unseen population. Two risk leaves (debt collection, casino) remain thin.</li>
 <li>Half of all transactions resolve through provider-derived tiers, so no feature built from categories is fully provider-blind. Transfer from Equifax history to Plaid traffic is verified empirically rather than assumed.</li>
@@ -479,14 +495,17 @@ li{margin-bottom:3pt}
       {label:'High-risk categories (n=174)',groups:[{v:9.8,color:C.good,ci:[5.2,15.1],bold:true}]}],
     caption:'Leaf-level accuracy, mean of three seeds, paired bootstrap on the same rows. Every interval sits above zero. General-level gains are larger still, at 7 to 13 points.'});
 
-  hbars('fig-gini',{title:'Figure 7. Out-of-time GINI: live model, August taxonomy model, and the champion',
+  hbars('fig-gini',{title:'Figure 7. Out-of-time GINI: live model, August taxonomy model, and the champion at each feature cap',
     labW:250,max:0.7,ticks:[0,0.2,0.4,0.6],tickFmt:t=>t.toFixed(1),fmt:v=>v.toFixed(3),
     legend:[{color:C.ours,text:'3-month arrears (n=4,855, 465 bad)'},{color:C.ours2,text:'6-month, 3+ missed (n=6,652, 410 bad)'}],
     rows:[
       {label:['Live model: XGBoost on','Plaid-category features'],groups:[{v:0.382,color:C.live},{v:0.385,color:C.live}]},
-      {label:['Taxonomy features, XGBoost,','50-feature cap (August)'],groups:[{v:0.477,color:C.ours},{v:0.562,color:C.ours2}]},
-      {label:['Champion: tree blend on','leaf-level taxonomy features'],groups:[{v:0.533,color:C.ours,bold:true},{v:0.618,color:C.ours2,bold:true}]}],
-    caption:'Both windows are entirely Plaid. The live model is refit on the full training window exactly as ours are. The champion is a development recipe pending a prospective test.'});
+      {label:['August model: single XGBoost,','50 features'],groups:[{v:0.477,color:C.ours},{v:0.562,color:C.ours2}]},
+      {label:['Champion recipe, 50 features','(carried forward)'],groups:[{v:0.508,color:C.ours,bold:true},{v:0.583,color:C.ours2,bold:true}]},
+      {label:['Champion recipe, 100 features'],groups:[{v:0.520,color:C.ours},{v:0.589,color:C.ours2}]},
+      {label:['Champion recipe, 200 features'],groups:[{v:0.529,color:C.ours},{v:0.600,color:C.ours2}]},
+      {label:['Champion, uncapped','(1,654 to 3,150 features)'],groups:[{v:0.533,color:C.ours},{v:0.618,color:C.ours2}]}],
+    caption:'Both windows are entirely Plaid. The live model is refit on the full training window exactly as ours are. From the 50-feature row upward the recipe is identical and only the number of columns changes. All champion rows are development recipes pending a prospective test.'});
 
   hbars('fig-seq',{title:'Figure 8. Sequence transformer versions against the champion, six-month GINI on 6,252 applicants',
     labW:250,max:0.7,ticks:[0,0.2,0.4,0.6],tickFmt:t=>t.toFixed(1),fmt:v=>v.toFixed(3),
