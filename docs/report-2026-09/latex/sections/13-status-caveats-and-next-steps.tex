@@ -1,0 +1,21 @@
+% Edit this section directly. Styling is in raylo-report.sty.
+\section{Status, caveats and next steps}
+\subsection{Where things stand}
+The taxonomy, pipeline, dictionary and evaluation methodology are complete. The linear classifier at v8 and the transformer at its eighth iteration are both measured against honest, merchant-disjoint evaluation sets, with the transformer clearing every accuracy criterion. The 50-feature capped champion is the reference credit model, with the uncapped champion kept as the ceiling; the text-score recipe is locked and worth +0.024 GINI on the capped model; the two-score version (text plus sequence encoder, 0.629) is the registered challenger. Nothing is referenced by a production dbt model or scheduled job.
+
+\subsection{Caveats to carry into any decision}
+\begin{itemize}
+\item The champion's 0.588 (capped, single XGBoost) and 0.618 (uncapped blend) are development numbers. Their test windows were used in earlier work, and the like-for-like uplift over the live model is the whole bundle of taxonomy, features and learner; a same-feature-count ablation was inconclusive.
+\item Each out-of-time window rests on a few hundred bad outcomes. The gaps to the live model are far larger than that noise; the text-score and encoder-score lifts are not, and both recipes have been evaluated repeatedly against this one window. The prospective cohort is the only clean arbiter left.
+\item The 400-row risk evaluation set is unseen rows of a known population, not an unseen population. Two risk leaves (debt collection, casino) remain thin.
+\item Half of all transactions resolve through provider-derived tiers, so no feature built from categories is fully provider-blind. Transfer from Equifax history to Plaid traffic is verified empirically rather than assumed.
+\end{itemize}
+\subsection{Next steps, in order}
+\begin{enumerate}
+\item \textbf{Promote the machine-learning tier.} Hinge v8 now, as a zero-risk step; the transformer once a serving artefact exists. Either needs a scheduled per-row categorisation job keyed by transaction id.
+\item \textbf{Score the locked confirmation set once,} at go/no-go, and never again.
+\item \textbf{Run the prospective test.} Freeze taxonomy, dictionary, classifier, feature SQL and the champion recipe with an effective date, then score the next matured cohort (February to April 2026 outcomes, mature by about November) a single time against pre-agreed bars. Register two recipes: capped champion plus text score as the primary, plus both learned scores as the challenger, each scored with bge-base and with our own encoder as the text model. This is the gate for the champion, both scores, and the encoder swap.
+\item \textbf{Close the remaining data gaps:} thin risk leaves, and a human blind slice on the risk tranche.
+\item \textbf{Fix the 90-day history request.} Every Plaid Asset Report since go-live asks for exactly 90 days. That is a Raylo-side parameter, not a Plaid limit, and it caps every history-based feature. Probably the cheapest uplift available, and it belongs to whoever owns the Plaid integration.
+\end{enumerate}
+{\small\color{Muted} Evidence base: dated experiment reports in the repository's data directory, the programme review of 2 September, the programme summary of 5 September, and the OB-transformer repository's phase-one and phase-two write-ups.\par}

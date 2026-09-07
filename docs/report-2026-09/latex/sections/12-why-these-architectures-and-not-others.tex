@@ -1,0 +1,48 @@
+% Edit this section directly. Styling is in raylo-report.sty.
+\section{Why these architectures and not others}
+Two different problems sit in this work and they want different tools. The first is reading text: turning a merchant string and narrative into one of 275 categories. The second is ranking applicants: turning a table of per-applicant numbers into a default probability. The choices were made for each separately, and each was tested against the simpler alternative before being kept.
+
+\subsection{For reading text}
+
+{\small
+\setlength{\TableWidth}{\dimexpr\linewidth-6\tabcolsep\relax}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.29\TableWidth}>{\raggedright\arraybackslash}p{0.26\TableWidth}>{\raggedright\arraybackslash}p{0.45\TableWidth}}
+\rowcolor{BlueTint}
+\bfseries Approach & \bfseries Why it was tested & \bfseries Outcome \\ \midrule
+\endfirsthead
+\rowcolor{BlueTint}
+\bfseries Approach & \bfseries Why it was tested & \bfseries Outcome \\ \midrule
+\endhead
+Dictionary and rules & Deterministic, explainable, free at runtime, and the only way to encode facts one row cannot reveal. & Resolve 58\% of live rows at about 90\% accuracy. Live. \\ \addlinespace[4pt]
+Character TF-IDF + linear SVM & The standard baseline for short noisy text. Anything fancier must beat it. & Serving since August; v8 is the reference. Logistic regression and an exact SVM solver both lost to it. \\ \addlinespace[4pt]
+Frontier language models & Set the ceiling and produce labels. Gemini reads unseen merchants at 84\%. & Used offline as a two-model committee. Too slow, costly and unauditable per transaction. \\ \addlinespace[4pt]
+Fine-tuned small generative models & Could a small generative model match the frontier and be served locally? & 50 to 54\% on unseen merchants. Rejected. \\ \addlinespace[4pt]
+Generic sentence encoder + classifier & Cheapest neural option; tests whether general English transfers. & Loses to the SVM, badly on risk categories. Rejected. \\ \addlinespace[4pt]
+Domain-pretrained encoder transformer & Encoder because the output is a closed choice; domain pretraining because the literature and our own failures both said that is where the gain is. & +5 points on novel merchants, +10 on risk categories over the SVM. Candidate for the ML tier. \\ \addlinespace[4pt]
+Off-the-shelf rules engine & Could a purpose-built product host the tiers? & Reproduces the dictionary and nothing else; two tiers inexpressible. Rejected. \\ \addlinespace[4pt]
+\bottomrule
+\end{longtable}}
+\textbf{Why not a larger encoder still?} Moving from 29 to 66 million parameters bought four points on the risk set; that was the scale lever. Larger models cost throughput, already a third of the SVM's, and the encoder sweep in section 11 showed that size stops mattering once the domain is covered. If the classifier needs another step, more consensus labels are cheaper than more parameters.
+
+\textbf{Why not use the language model at decision time?} Cost and latency per transaction, non-deterministic outputs (identical calls disagreed on 12\% of rows), no audit trail beyond the model's say-so, and a vendor dependency inside a credit decision.
+
+\subsection{For ranking applicants}
+
+{\small
+\setlength{\TableWidth}{\dimexpr\linewidth-6\tabcolsep\relax}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.29\TableWidth}>{\raggedright\arraybackslash}p{0.26\TableWidth}>{\raggedright\arraybackslash}p{0.45\TableWidth}}
+\rowcolor{BlueTint}
+\bfseries Approach & \bfseries Why it was tested & \bfseries Outcome \\ \midrule
+\endfirsthead
+\rowcolor{BlueTint}
+\bfseries Approach & \bfseries Why it was tested & \bfseries Outcome \\ \midrule
+\endhead
+Logistic regression & The classic scorecard form; shows how much signal the categories carry alone. & 0.33 GINI. Useful for reading feature strength; not the production learner. \\ \addlinespace[4pt]
+XGBoost on 50 taxonomy features & The live model is an XGBoost, so this isolates the value of our categories with the learner held constant. & 0.56 against 0.39 live. The August headline. \\ \addlinespace[4pt]
+XGBoost + LightGBM blend on leaf-level features & Does giving the trees every leaf beat 50 aggregated features? & 0.62 uncapped as a blend; 0.59 held to 50 features as a single XGBoost, which matched the blend at every cap. The capped single model is carried forward, pending the prospective test. \\ \addlinespace[4pt]
+Sequence transformer over transactions & The foundation-model thesis: order and timing may carry signal the counts lose. & Level with the taxonomy XGBoost once given our categories; nothing on top of the uncapped champion; +0.031 GINI as one column on the 50-feature champion. Challenger for the prospective test. \\ \addlinespace[4pt]
+Frozen text embedding as one score & One calibrated, monitorable number is a better feature than 32 opaque columns. & +0.012 PR-AUC on the champion, CI excludes zero. Locked recipe. \\ \addlinespace[4pt]
+\bottomrule
+\end{longtable}}
+\textbf{Why gradient-boosted trees and not a neural network?} On tabular data with a few thousand bad outcomes, boosted trees remain the strongest and most explainable learner, and the live model is one, so the comparison is clean. The neural option was tested properly, as a sequence model, and did not beat the trees once both saw the same categories. Where it does earn a place is as one learned column feeding the trees, not as their replacement.
+

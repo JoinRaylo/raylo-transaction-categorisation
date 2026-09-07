@@ -1,0 +1,12 @@
+% Edit this section directly. Styling is in raylo-report.sty.
+\section{Measuring honestly}
+A programme review at the start of September found four measurement problems. Fixing them changed some headline numbers downward before the modelling work lifted them again, and the corrected figures are the ones used throughout this report.
+
+\begin{itemize}
+\item \textbf{The risk evaluation set had leaked into training.} Three quarters of its merchants were also in the training file through a second labelling pass. The classifier's accuracy on high-risk categories had been quoted at 86\%; measured honestly it was 63\%. Every evaluation set's merchants are now excluded from every training source, and the risk number rebuilt from that floor is reported in section 8.
+\item \textbf{Money-in transactions were almost absent from training.} Credits are 25\% of live Plaid rows and 50\% of the money that moves, but were 0.65\% of the training data. The pipeline was 84\% accurate on debits and 58\% on credits. All scorers now report both directions separately.
+\item \textbf{The credit-risk experiment had no as-of filter on Equifax history.} Five percent of Equifax proposals carried transactions dated after the proposal was made. Removing them did not change the headline, which confirmed the uplift was real, but it had to be checked.
+\item \textbf{The Python and SQL versions of the pipeline applied tiers in a different order.} Fixed, and guarded by the parity check described above.
+\end{itemize}
+Two further habits apply to every comparison in sections 8 to 11. Model decisions are run with three random seeds and reported as the mean. Differences between models are given with a paired bootstrap confidence interval, and a difference counts only when that interval excludes zero.
+

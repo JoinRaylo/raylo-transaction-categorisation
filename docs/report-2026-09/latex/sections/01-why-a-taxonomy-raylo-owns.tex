@@ -1,0 +1,10 @@
+% Edit this section directly. Styling is in raylo-report.sty.
+\section{Why a taxonomy Raylo owns}
+Raylo's live Open Banking risk model is an XGBoost trained on features derived from Plaid's category names. That is fragile in two ways.
+
+First, we do not control the definitions. Plaid shipped a new taxonomy version in December 2025, months after Raylo went live on Plaid in August 2025. The same transaction can be relabelled between versions, which silently changes what the model's features mean without anything failing a test.
+
+Second, providers disagree with each other. We hold two sources: Equifax (through its AccountScore engine), a closed one-time dump of 73 million transactions covering July 2022 to September 2025, and Plaid, live since August 2025 with 4.3 million transactions and growing. For the roughly 2,300 merchants both providers cover, their categorisations give different answers for 72\% of merchants and 45\% of volume. Uber Eats is a takeaway in one and a restaurant in the other. Marks and Spencer is a credit-card repayment in Equifax, because Equifax matched M\&S Bank, and a department store in Plaid. A crosswalk that simply maps one scheme onto the other carries every one of those conflicts through, and any model trained on Equifax history and served on Plaid traffic inherits them.
+
+The aim is therefore a taxonomy that Raylo defines and governs, where the providers' categories are treated as one piece of evidence rather than as the definition. Everything else in this report follows from that decision.
+

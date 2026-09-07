@@ -1,0 +1,1092 @@
+{
+  "fig-ladder": {
+    "title": "Figure 1. Risk-model GINI by number of category groups, August recipe (same cohort, same learner, 3 seeds)",
+    "labW": 150,
+    "max": 0.65,
+    "ticks": [
+      0,
+      0.2,
+      0.4,
+      0.6
+    ],
+    "legend": [
+      {
+        "color": "#1F5F8B",
+        "text": "3-month arrears"
+      },
+      {
+        "color": "#5A93BD",
+        "text": "6-month, 3+ missed"
+      }
+    ],
+    "rows": [
+      {
+        "label": "275 leaves",
+        "groups": [
+          {
+            "v": 0.485,
+            "color": "#1F5F8B",
+            "text": "0.485"
+          },
+          {
+            "v": 0.571,
+            "color": "#5A93BD",
+            "text": "0.571"
+          }
+        ]
+      },
+      {
+        "label": "69 groups (today's features)",
+        "groups": [
+          {
+            "v": 0.482,
+            "color": "#1F5F8B",
+            "text": "0.482"
+          },
+          {
+            "v": 0.571,
+            "color": "#5A93BD",
+            "text": "0.571"
+          }
+        ]
+      },
+      {
+        "label": "29 general categories",
+        "groups": [
+          {
+            "v": 0.479,
+            "color": "#1F5F8B",
+            "text": "0.479"
+          },
+          {
+            "v": 0.56,
+            "color": "#5A93BD",
+            "text": "0.560"
+          }
+        ]
+      },
+      {
+        "label": "17 budget groups",
+        "groups": [
+          {
+            "v": 0.479,
+            "color": "#1F5F8B",
+            "text": "0.479"
+          },
+          {
+            "v": 0.545,
+            "color": "#5A93BD",
+            "text": "0.545"
+          }
+        ]
+      },
+      {
+        "label": "9 macro groups",
+        "groups": [
+          {
+            "v": 0.468,
+            "color": "#1F5F8B",
+            "text": "0.468"
+          },
+          {
+            "v": 0.495,
+            "color": "#5A93BD",
+            "text": "0.495"
+          }
+        ]
+      },
+      {
+        "label": "4 broad groups",
+        "groups": [
+          {
+            "v": 0.431,
+            "color": "#1F5F8B",
+            "text": "0.431"
+          },
+          {
+            "v": 0.472,
+            "color": "#5A93BD",
+            "text": "0.472"
+          }
+        ]
+      }
+    ],
+    "caption": "August recipe: a single XGBoost on rung-level counts and amounts, uncapped, 3 seeds. Collapsing the 275 leaves to 69 or 29 groups costs nothing measurable; 17 begins to lose the six-month signal; 9 and fewer degrade clearly. Predates the September as-of rebuild; directional.",
+    "tickLabels": [
+      "0.0",
+      "0.2",
+      "0.4",
+      "0.6"
+    ]
+  },
+  "fig-ladder-champ": {
+    "title": "Figure 2. The same ladder with the champion recipe, six-month GINI, single XGBoost",
+    "labW": 150,
+    "max": 0.65,
+    "ticks": [
+      0,
+      0.2,
+      0.4,
+      0.6
+    ],
+    "legend": [
+      {
+        "color": "#5A93BD",
+        "text": "given every column at that rung"
+      },
+      {
+        "color": "#1F5F8B",
+        "text": "capped at 50 features by gain"
+      }
+    ],
+    "rows": [
+      {
+        "label": "275 leaves",
+        "groups": [
+          {
+            "v": 0.612,
+            "color": "#5A93BD",
+            "bold": true,
+            "text": "0.612"
+          },
+          {
+            "v": 0.511,
+            "color": "#1F5F8B",
+            "text": "0.511"
+          }
+        ]
+      },
+      {
+        "label": "69 groups (today's features)",
+        "groups": [
+          {
+            "v": 0.586,
+            "color": "#5A93BD",
+            "text": "0.586"
+          },
+          {
+            "v": 0.548,
+            "color": "#1F5F8B",
+            "bold": true,
+            "text": "0.548"
+          }
+        ]
+      },
+      {
+        "label": "29 general categories",
+        "groups": [
+          {
+            "v": 0.582,
+            "color": "#5A93BD",
+            "text": "0.582"
+          },
+          {
+            "v": 0.547,
+            "color": "#1F5F8B",
+            "text": "0.547"
+          }
+        ]
+      },
+      {
+        "label": "17 budget groups",
+        "groups": [
+          {
+            "v": 0.575,
+            "color": "#5A93BD",
+            "text": "0.575"
+          },
+          {
+            "v": 0.546,
+            "color": "#1F5F8B",
+            "text": "0.546"
+          }
+        ]
+      },
+      {
+        "label": "9 macro groups",
+        "groups": [
+          {
+            "v": 0.542,
+            "color": "#5A93BD",
+            "text": "0.542"
+          },
+          {
+            "v": 0.531,
+            "color": "#1F5F8B",
+            "text": "0.531"
+          }
+        ]
+      },
+      {
+        "label": "4 broad groups",
+        "groups": [
+          {
+            "v": 0.51,
+            "color": "#5A93BD",
+            "text": "0.510"
+          },
+          {
+            "v": 0.503,
+            "color": "#1F5F8B",
+            "text": "0.503"
+          }
+        ]
+      }
+    ],
+    "caption": "Champion recipe with its richer per-category features, rebuilt at each rung on a recipe-neutral base so only granularity changes. Given every column, finer is better on the six-month outcome. Capped at 50, the 275-leaf rung is worst because its 2,900 thin candidates crowd the strongest broad features out of the selection. The three-month outcome shows no gain from detail in either setting; 69 groups is its peak.",
+    "tickLabels": [
+      "0.0",
+      "0.2",
+      "0.4",
+      "0.6"
+    ]
+  },
+  "fig-threeways": {
+    "title": "Figure 3. The same 2,000 held-out transactions scored four ways",
+    "labW": 250,
+    "max": 100,
+    "ticks": [
+      0,
+      25,
+      50,
+      75,
+      100
+    ],
+    "rows": [
+      {
+        "label": [
+          "Rules and dictionary, then",
+          "our transformer classifier"
+        ],
+        "groups": [
+          {
+            "v": 83.2,
+            "color": "#1F5F8B",
+            "bold": true,
+            "text": "83.2%"
+          }
+        ]
+      },
+      {
+        "label": [
+          "Rules and dictionary, then",
+          "our linear classifier v8"
+        ],
+        "groups": [
+          {
+            "v": 82.2,
+            "color": "#1F5F8B",
+            "text": "82.2%"
+          }
+        ]
+      },
+      {
+        "label": [
+          "Rules and dictionary, then the",
+          "provider's own category"
+        ],
+        "groups": [
+          {
+            "v": 74.2,
+            "color": "#C4643A",
+            "text": "74.2%"
+          }
+        ]
+      },
+      {
+        "label": [
+          "Provider's own category only",
+          "(the status quo)"
+        ],
+        "groups": [
+          {
+            "v": 29.9,
+            "color": "#C4643A",
+            "bold": true,
+            "text": "29.9%"
+          }
+        ]
+      }
+    ],
+    "caption": "Leaf-level accuracy on the same rows. Each step down removes one of our layers. The provider's own category is what the live risk model consumes today. Rows with no provider category are counted as wrong; on provider-labelled rows alone the status quo reaches 45%. At general level the rules-plus-classifier pipeline is 87% and the status quo 42%.",
+    "tickLabels": [
+      "0%",
+      "25%",
+      "50%",
+      "75%",
+      "100%"
+    ]
+  },
+  "fig-t14": {
+    "title": "Figure 4. Rows our dictionary and early rules resolve, where the provider also supplies a category",
+    "labW": 210,
+    "max": 100,
+    "ticks": [
+      0,
+      25,
+      50,
+      75,
+      100
+    ],
+    "legend": [
+      {
+        "color": "#1F5F8B",
+        "text": "Our dictionary and rules (T1 to T4)"
+      },
+      {
+        "color": "#C4643A",
+        "text": "Provider's own category"
+      }
+    ],
+    "rows": [
+      {
+        "label": "Plaid rows (n=484)",
+        "groups": [
+          {
+            "v": 91.9,
+            "color": "#1F5F8B",
+            "text": "91.9%"
+          },
+          {
+            "v": 31.8,
+            "color": "#C4643A",
+            "text": "31.8%"
+          }
+        ]
+      },
+      {
+        "label": "Equifax rows (n=389)",
+        "groups": [
+          {
+            "v": 90.2,
+            "color": "#1F5F8B",
+            "text": "90.2%"
+          },
+          {
+            "v": 79.4,
+            "color": "#C4643A",
+            "text": "79.4%"
+          }
+        ]
+      }
+    ],
+    "caption": "Leaf-level accuracy. Plaid is where live traffic comes from and where the dictionary has most to fix; Equifax's vendor field is already a curated entity.",
+    "tickLabels": [
+      "0%",
+      "25%",
+      "50%",
+      "75%",
+      "100%"
+    ]
+  },
+  "fig-residual": {
+    "title": "Figure 5. The residual: 478 rows the rules cannot place, served three ways",
+    "labW": 210,
+    "max": 100,
+    "ticks": [
+      0,
+      25,
+      50,
+      75,
+      100
+    ],
+    "rows": [
+      {
+        "label": "Our transformer classifier",
+        "groups": [
+          {
+            "v": 65,
+            "color": "#1F5F8B",
+            "bold": true,
+            "text": "65.0%"
+          }
+        ]
+      },
+      {
+        "label": "Our linear classifier v8",
+        "groups": [
+          {
+            "v": 59.8,
+            "color": "#1F5F8B",
+            "text": "59.8%"
+          }
+        ]
+      },
+      {
+        "label": "Provider's own category",
+        "groups": [
+          {
+            "v": 26.2,
+            "color": "#C4643A",
+            "text": "26.2%"
+          }
+        ]
+      }
+    ],
+    "caption": "This is where the machine-learning tier earns its place. Roughly half of Plaid's volume lands on catch-all buckets, and 203 of our 275 leaves have no Plaid source at all.",
+    "tickLabels": [
+      "0%",
+      "25%",
+      "50%",
+      "75%",
+      "100%"
+    ]
+  },
+  "fig-stair": {
+    "title": "Figure 6. Linear classifier accuracy on the two September targets, step by step",
+    "labW": 250,
+    "max": 100,
+    "ticks": [
+      0,
+      25,
+      50,
+      75,
+      100
+    ],
+    "legend": [
+      {
+        "color": "#5A93BD",
+        "text": "Money-in transactions (n=2,000)"
+      },
+      {
+        "color": "#1F5F8B",
+        "text": "High-risk categories reaching the ML tier (n=174)"
+      }
+    ],
+    "rows": [
+      {
+        "label": [
+          "August model, honest",
+          "measurement (de-leaked)"
+        ],
+        "groups": [
+          {
+            "v": 62.2,
+            "color": "#5A93BD",
+            "text": "62.2%"
+          },
+          {
+            "v": 48.9,
+            "color": "#1F5F8B",
+            "text": "48.9%"
+          }
+        ]
+      },
+      {
+        "label": [
+          "+ credit tranche (v7)"
+        ],
+        "groups": [
+          {
+            "v": 85,
+            "color": "#5A93BD",
+            "text": "85.0%"
+          },
+          {
+            "v": 48.3,
+            "color": "#1F5F8B",
+            "text": "48.3%"
+          }
+        ]
+      },
+      {
+        "label": [
+          "+ five card and overdraft rules"
+        ],
+        "groups": [
+          {
+            "v": 85,
+            "color": "#5A93BD",
+            "text": "85.0%"
+          },
+          {
+            "v": 58.6,
+            "color": "#1F5F8B",
+            "text": "58.6%"
+          }
+        ]
+      },
+      {
+        "label": [
+          "+ risk tranche (v8)"
+        ],
+        "groups": [
+          {
+            "v": 85.9,
+            "color": "#5A93BD",
+            "bold": true,
+            "text": "85.9%"
+          },
+          {
+            "v": 75.9,
+            "color": "#1F5F8B",
+            "bold": true,
+            "text": "75.9%"
+          }
+        ]
+      },
+      {
+        "label": [
+          "Transformer on the same data"
+        ],
+        "groups": [
+          {
+            "v": 88.8,
+            "color": "#2E7D5B",
+            "text": "88.8%"
+          },
+          {
+            "v": 85.6,
+            "color": "#2E7D5B",
+            "text": "85.6%"
+          }
+        ]
+      }
+    ],
+    "caption": "The same linear model throughout; only the training data and the rules in front of it changed. The 70% bar for risk categories is cleared honestly for the first time at v8. The transformer row is section 9's result on identical data.",
+    "tickLabels": [
+      "0%",
+      "25%",
+      "50%",
+      "75%",
+      "100%"
+    ]
+  },
+  "fig-transformer": {
+    "title": "Figure 7. Transformer minus linear classifier v8, percentage points, with 95% confidence intervals",
+    "labW": 240,
+    "max": 18,
+    "ticks": [
+      0,
+      4,
+      8,
+      12,
+      16
+    ],
+    "rows": [
+      {
+        "label": "Never-seen merchants (n=416)",
+        "groups": [
+          {
+            "v": 5.1,
+            "color": "#2E7D5B",
+            "ci": [
+              1.8,
+              8.8
+            ],
+            "text": "+5.1"
+          }
+        ]
+      },
+      {
+        "label": "Pipeline residual (n=478)",
+        "groups": [
+          {
+            "v": 5.2,
+            "color": "#2E7D5B",
+            "ci": [
+              2,
+              8.2
+            ],
+            "text": "+5.2"
+          }
+        ]
+      },
+      {
+        "label": "Money-in transactions (n=2,000)",
+        "groups": [
+          {
+            "v": 2.9,
+            "color": "#2E7D5B",
+            "ci": [
+              1.8,
+              4.2
+            ],
+            "text": "+2.9"
+          }
+        ]
+      },
+      {
+        "label": "High-risk categories (n=174)",
+        "groups": [
+          {
+            "v": 9.8,
+            "color": "#2E7D5B",
+            "ci": [
+              5.2,
+              15.1
+            ],
+            "bold": true,
+            "text": "+9.8"
+          }
+        ]
+      }
+    ],
+    "caption": "Leaf-level accuracy, mean of three seeds, paired bootstrap on the same rows. Every interval sits above zero. General-level gains are larger still, at 7 to 13 points.",
+    "tickLabels": [
+      "+0",
+      "+4",
+      "+8",
+      "+12",
+      "+16"
+    ]
+  },
+  "fig-gini": {
+    "title": "Figure 8. Out-of-time GINI: live model, August taxonomy model, and the champion at each feature cap",
+    "labW": 250,
+    "max": 0.7,
+    "ticks": [
+      0,
+      0.2,
+      0.4,
+      0.6
+    ],
+    "legend": [
+      {
+        "color": "#1F5F8B",
+        "text": "3-month arrears (n=4,855, 465 bad)"
+      },
+      {
+        "color": "#5A93BD",
+        "text": "6-month, 3+ missed (n=6,652, 410 bad)"
+      }
+    ],
+    "rows": [
+      {
+        "label": [
+          "Live model: XGBoost on",
+          "Plaid-category features"
+        ],
+        "groups": [
+          {
+            "v": 0.382,
+            "color": "#8A939C",
+            "text": "0.382"
+          },
+          {
+            "v": 0.385,
+            "color": "#8A939C",
+            "text": "0.385"
+          }
+        ]
+      },
+      {
+        "label": [
+          "August model: single XGBoost,",
+          "50 features"
+        ],
+        "groups": [
+          {
+            "v": 0.477,
+            "color": "#1F5F8B",
+            "text": "0.477"
+          },
+          {
+            "v": 0.562,
+            "color": "#5A93BD",
+            "text": "0.562"
+          }
+        ]
+      },
+      {
+        "label": [
+          "Champion recipe, single XGBoost,",
+          "50 features (carried forward)"
+        ],
+        "groups": [
+          {
+            "v": 0.508,
+            "color": "#1F5F8B",
+            "bold": true,
+            "text": "0.508"
+          },
+          {
+            "v": 0.588,
+            "color": "#5A93BD",
+            "bold": true,
+            "text": "0.588"
+          }
+        ]
+      },
+      {
+        "label": [
+          "Champion recipe, blend, 50 features"
+        ],
+        "groups": [
+          {
+            "v": 0.508,
+            "color": "#1F5F8B",
+            "text": "0.508"
+          },
+          {
+            "v": 0.583,
+            "color": "#5A93BD",
+            "text": "0.583"
+          }
+        ]
+      },
+      {
+        "label": [
+          "Champion recipe, blend, 100 features"
+        ],
+        "groups": [
+          {
+            "v": 0.52,
+            "color": "#1F5F8B",
+            "text": "0.520"
+          },
+          {
+            "v": 0.589,
+            "color": "#5A93BD",
+            "text": "0.589"
+          }
+        ]
+      },
+      {
+        "label": [
+          "Champion recipe, blend, 200 features"
+        ],
+        "groups": [
+          {
+            "v": 0.529,
+            "color": "#1F5F8B",
+            "text": "0.529"
+          },
+          {
+            "v": 0.6,
+            "color": "#5A93BD",
+            "text": "0.600"
+          }
+        ]
+      },
+      {
+        "label": [
+          "Champion, uncapped",
+          "(1,654 to 3,150 features)"
+        ],
+        "groups": [
+          {
+            "v": 0.533,
+            "color": "#1F5F8B",
+            "text": "0.533"
+          },
+          {
+            "v": 0.618,
+            "color": "#5A93BD",
+            "text": "0.618"
+          }
+        ]
+      }
+    ],
+    "caption": "Both windows are entirely Plaid. The live model is refit on the full training window exactly as ours are. From the 50-feature rows upward the recipe is identical and only the number of columns and the use of a second tree library change. All champion rows are development recipes pending a prospective test.",
+    "tickLabels": [
+      "0.0",
+      "0.2",
+      "0.4",
+      "0.6"
+    ]
+  },
+  "fig-seq": {
+    "title": "Figure 9. Sequence transformer versions against the champion, six-month GINI on 6,252 applicants",
+    "labW": 250,
+    "max": 0.7,
+    "ticks": [
+      0,
+      0.2,
+      0.4,
+      0.6
+    ],
+    "rows": [
+      {
+        "label": "v1, raw fields, 5M parameters",
+        "groups": [
+          {
+            "v": 0.45,
+            "color": "#8A939C",
+            "text": "0.450"
+          }
+        ]
+      },
+      {
+        "label": "v3, more data and epochs",
+        "groups": [
+          {
+            "v": 0.473,
+            "color": "#8A939C",
+            "text": "0.473"
+          }
+        ]
+      },
+      {
+        "label": "v4, + our taxonomy leaf as input",
+        "groups": [
+          {
+            "v": 0.546,
+            "color": "#5A93BD",
+            "text": "0.546"
+          }
+        ]
+      },
+      {
+        "label": "v5, provider-blind leaf",
+        "groups": [
+          {
+            "v": 0.561,
+            "color": "#5A93BD",
+            "text": "0.561"
+          }
+        ]
+      },
+      {
+        "label": "v6, 15M parameters, fine-tuned ensemble",
+        "groups": [
+          {
+            "v": 0.586,
+            "color": "#5A93BD",
+            "text": "0.586"
+          }
+        ]
+      },
+      {
+        "label": "Champion, refit on this population",
+        "groups": [
+          {
+            "v": 0.616,
+            "color": "#1F5F8B",
+            "bold": true,
+            "text": "0.616"
+          }
+        ]
+      }
+    ],
+    "caption": "The step from v3 to v4 is the category token. Everything after it is inside the noise of 397 bad outcomes. Stacked on the champion, no version added a significant gain.",
+    "tickLabels": [
+      "0.0",
+      "0.2",
+      "0.4",
+      "0.6"
+    ]
+  },
+  "fig-stack": {
+    "title": "Figure 10. PR-AUC lift from one text score, on the uncapped and the 50-feature champion (95% CIs)",
+    "labW": 260,
+    "min": -0.015,
+    "max": 0.06,
+    "ticks": [
+      -0.01,
+      0,
+      0.01,
+      0.02,
+      0.03,
+      0.04,
+      0.05
+    ],
+    "legend": [
+      {
+        "color": "#5A93BD",
+        "text": "on uncapped champion (1,654 to 3,150 features)"
+      },
+      {
+        "color": "#1F5F8B",
+        "text": "on capped champion (single XGBoost, 50 features)"
+      }
+    ],
+    "rows": [
+      {
+        "label": "all-MiniLM-L6 (22M)",
+        "groups": [
+          {
+            "v": 0.007,
+            "color": "#5A93BD",
+            "ci": [
+              -0.003,
+              0.017
+            ],
+            "text": "+0.007"
+          },
+          {
+            "v": 0.017,
+            "color": "#1F5F8B",
+            "ci": [
+              0.004,
+              0.029
+            ],
+            "text": "+0.017"
+          }
+        ]
+      },
+      {
+        "label": "bge-small (33M)",
+        "groups": [
+          {
+            "v": 0.012,
+            "color": "#5A93BD",
+            "ci": [
+              0.003,
+              0.022
+            ],
+            "text": "+0.012"
+          },
+          {
+            "v": 0.017,
+            "color": "#1F5F8B",
+            "ci": [
+              0.005,
+              0.029
+            ],
+            "text": "+0.017"
+          }
+        ]
+      },
+      {
+        "label": "bge-base (110M), locked recipe",
+        "groups": [
+          {
+            "v": 0.012,
+            "color": "#5A93BD",
+            "ci": [
+              0.002,
+              0.023
+            ],
+            "text": "+0.012"
+          },
+          {
+            "v": 0.034,
+            "color": "#1F5F8B",
+            "ci": [
+              0.018,
+              0.051
+            ],
+            "bold": true,
+            "text": "+0.034"
+          }
+        ]
+      },
+      {
+        "label": "e5-base (110M)",
+        "groups": [
+          {
+            "v": 0.008,
+            "color": "#5A93BD",
+            "ci": [
+              -0.002,
+              0.021
+            ],
+            "text": "+0.008"
+          },
+          {
+            "v": 0.024,
+            "color": "#1F5F8B",
+            "ci": [
+              0.008,
+              0.042
+            ],
+            "text": "+0.024"
+          }
+        ]
+      },
+      {
+        "label": "e5-large (335M)",
+        "groups": [
+          {
+            "v": 0.016,
+            "color": "#5A93BD",
+            "ci": [
+              0.004,
+              0.028
+            ],
+            "text": "+0.016"
+          },
+          {
+            "v": 0.033,
+            "color": "#1F5F8B",
+            "ci": [
+              0.014,
+              0.052
+            ],
+            "text": "+0.033"
+          }
+        ]
+      },
+      {
+        "label": "bge-m3 (568M)",
+        "groups": [
+          {
+            "v": 0.012,
+            "color": "#5A93BD",
+            "ci": [
+              0.001,
+              0.024
+            ],
+            "text": "+0.012"
+          },
+          {
+            "v": 0.026,
+            "color": "#1F5F8B",
+            "ci": [
+              0.011,
+              0.043
+            ],
+            "text": "+0.026"
+          }
+        ]
+      },
+      {
+        "label": "Our DistilBERT, domain-pretrained (66M)",
+        "groups": [
+          {
+            "v": 0.017,
+            "color": "#5A93BD",
+            "ci": [
+              0.004,
+              0.03
+            ],
+            "text": "+0.017"
+          },
+          {
+            "v": 0.031,
+            "color": "#1F5F8B",
+            "ci": [
+              0.013,
+              0.049
+            ],
+            "text": "+0.031"
+          }
+        ]
+      },
+      {
+        "label": "Our DistilBERT, category fine-tuned (66M)",
+        "groups": [
+          {
+            "v": 0.004,
+            "color": "#8A939C",
+            "ci": [
+              -0.012,
+              0.02
+            ],
+            "text": "+0.004"
+          },
+          {
+            "v": 0.018,
+            "color": "#8A939C",
+            "ci": [
+              -0.002,
+              0.038
+            ],
+            "text": "+0.018"
+          }
+        ]
+      }
+    ],
+    "caption": "On the uncapped champion, eight encoders spanning a 25-fold range in size land in one band: the lift is a property of the free text the taxonomy misses, not of the encoder. On the 50-feature single-XGBoost champion the same scores are worth two to three times as much and every GINI interval excludes zero, with the ordering unchanged: bge-base, e5-large and our domain-pretrained encoder share the top, the 568M encoder buys nothing over them, and the category-fine-tuned encoder is weakest.",
+    "tickLabels": [
+      "-0.01",
+      "+0.00",
+      "+0.01",
+      "+0.02",
+      "+0.03",
+      "+0.04",
+      "+0.05"
+    ]
+  }
+}

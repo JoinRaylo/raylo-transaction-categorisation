@@ -1,0 +1,48 @@
+% Edit this section directly. Styling is in raylo-report.sty.
+\section{Labelling the data}
+A taxonomy is only useful with labelled examples behind it, and the labelling has to be trustworthy enough to serve as ground truth. The approach settled on has four parts.
+
+\subsection{Two models must agree}
+Before committing to a large build, a cheap gating experiment had two large language models independently label the 2,300 merchants both providers cover. Raw agreement with Equifax's labels looked poor, but the benchmark itself was the problem: Equifax's "truth" is its own dictionary conventions, some of which our taxonomy rejects on purpose (Equifax files Netflix under broadband and Boots under beauty). Human review of the disputes gave a corrected accuracy of 96\% at leaf level, and set two standing rules. Two models must agree, with the option to abstain rather than guess. And no language model ever runs at decision time; they label offline, and small fast models are trained from those labels.
+
+The production committee is Gemini Flash and Claude Sonnet, chosen from a six-model benchmark, with Claude Opus as a tiebreak where a human will review the result. When we later measured the committee's output against Carlos's own labels on the credit tranche, rows where the two models agreed were 95\% correct at leaf level. Rows accepted through the tiebreak were only 64\% correct, so tiebreaks are now used only for tranches that go to human review, never for training data.
+
+\subsection{Targeted human review}
+Human review is spent where it pays most: on disputes between the models, on high-risk categories, and on blind slices that measure the committee's accuracy. The conventions that come out of that review (Creditspring is not payday lending, an in-store cash machine is a cash withdrawal, a bookmaker credit is winnings) are written down and applied to every later tranche.
+
+\subsection{What was labelled}
+
+{\small
+\setlength{\TableWidth}{\dimexpr\linewidth-6\tabcolsep\relax}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.29\TableWidth}>{\raggedright\arraybackslash}p{0.26\TableWidth}>{\raggedright\arraybackslash}p{0.45\TableWidth}}
+\rowcolor{BlueTint}
+\bfseries Dataset & \bfseries Size & \bfseries Purpose \\ \midrule
+\endfirsthead
+\rowcolor{BlueTint}
+\bfseries Dataset & \bfseries Size & \bfseries Purpose \\ \midrule
+\endhead
+Merchant labels, four tranches & 100,000 merchants & Source of the merchant dictionary and of classifier training data. Provenance is tagged: human, model consensus, tiebreak. \\ \addlinespace[4pt]
+Credit tranche (September) & 30,379 rows & Money-in transactions were 0.65\% of the training data and a quarter of live traffic. Carlos reviewed 813 rows; blind-slice agreement with the committee was 84\%. \\ \addlinespace[4pt]
+Risk tranche (September) & 4,998 rows & Debits that look like high-risk categories (card repayments, overdraft fees, loan repayments) and that reach the ML tier. \\ \addlinespace[4pt]
+Distillation labels (September) & 404,982 texts & The 500,000 most frequent distinct Plaid texts, labelled by both models; the 81\% where they agreed are kept as training signal for the transformer. Never served, never used as an evaluation set. \\ \addlinespace[4pt]
+\bottomrule
+\end{longtable}}
+\subsection{How performance is measured}
+
+{\small
+\setlength{\TableWidth}{\dimexpr\linewidth-6\tabcolsep\relax}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.29\TableWidth}>{\raggedright\arraybackslash}p{0.26\TableWidth}>{\raggedright\arraybackslash}p{0.45\TableWidth}}
+\rowcolor{BlueTint}
+\bfseries Evaluation set & \bfseries Rows & \bfseries Question it answers \\ \midrule
+\endfirsthead
+\rowcolor{BlueTint}
+\bfseries Evaluation set & \bfseries Rows & \bfseries Question it answers \\ \midrule
+\endhead
+Merchant-disjoint holdout & 1,055 & How does the classifier cope with a merchant it has never seen? Every merchant here is excluded from all training data. \\ \addlinespace[4pt]
+Risk-category gold set & 711 & Can it be trusted on gambling, debt repayment and high-cost credit? Stratified at about 20 rows per category, because volume-weighted samples starve exactly these categories. \\ \addlinespace[4pt]
+Full-pipeline evaluation set & 2,000 & What accuracy does a real transaction experience end to end? Disjoint by row from training. \\ \addlinespace[4pt]
+Credit evaluation set & 2,000 & Accuracy on money-in transactions specifically, merchant-disjoint. \\ \addlinespace[4pt]
+Risk debits reaching the ML tier & 400 & The honest risk number: rows that look like risk categories and that the rules do not catch. \\ \addlinespace[4pt]
+Locked confirmation set (v6) & 1,100 & Never scored during development. Used once, at go/no-go, so its verdict stays unbiased. \\ \addlinespace[4pt]
+\bottomrule
+\end{longtable}}
