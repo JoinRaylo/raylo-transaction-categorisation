@@ -114,3 +114,10 @@ the way category months are.
 ## 6. Spend this sprint
 LLM labelling ≈ £600–900 (credit tranche, risk tranche, 500k-text distillation with two models);
 GCP GPU ≈ £7; everything else local.
+
+## Addendum, 7 September
+
+- Champion capped at 50 features (`data/experiment3_champion_capped_report.md`): 0.508 / 0.583 vs uncapped 0.533 / 0.618; 100 and 200 features 0.520 / 0.589 and 0.529 / 0.600. About two thirds of the champion's gain is width. Decision: the 50-feature capped champion is the reference carried forward, uncapped kept as ceiling.
+- Text score re-measured on the capped champion (OB-transformer `docs/phase1-benchmark.md`): bge-base +0.033 PR-AUC / +0.025 Gini, all eight encoders in one band with CIs excluding zero. Frozen 15M sequence-encoder score +0.032 / +0.031; both scores together 0.316 / 0.621, above the uncapped champion with 52 columns. Text-only recipe locked as primary; text plus encoder is the registered challenger.
+- Text encoder decision: keep bge-base; our domain-pretrained DistilBERT is level at half the cost but its pretraining corpus included the OOT period, so it is the named alternative for the prospective test rather than the lock.
+- Stakeholder report: `docs/report-2026-09/OB_Transaction_Categorisation_Report_Sep2026.pdf` (22 pages).
