@@ -133,6 +133,13 @@ li{margin-bottom:3pt}
 <p>Expanding: three well-supported parents (streaming, general marketplace, payment intermediary) were split into 15 shadow children, a simulated move from 275 to 287 leaves, with the rules frozen before any outcome was inspected. Against a control that received the exact parent totals, the split features changed GINI by between minus 0.002 and minus 0.011, with every confidence interval including zero. Payment intermediary on its own produced a small but clear loss. This was not a thin-data result: the shadow categories appeared in 54,000 of 64,000 modelling rows.</p>
 <figure id="fig-ladder"></figure>
 <figure id="fig-ladder-champ"></figure>
+<h3>Reconciling the two results</h3>
+<p>The two ladders look contradictory and are not. They answer different questions, and the same three facts hold across both.</p>
+<ol>
+<li><strong>Whether detail helps depends on what the model can do with it.</strong> The August model built one count and one amount per category. At that level of description, 275 leaves carried no more usable signal than 29 groups, because most of what a leaf adds over its parent is in how the spending is distributed, not in its total. The champion builds per-leaf shares and averages, and with those in hand the six-month model finds real signal in the fine leaves. The three-month horizon is noisier and shorter, and does not, under either recipe.</li>
+<li><strong>A hard feature cap is a selection problem, not a taxonomy problem.</strong> Ranking 2,900 candidate columns by gain and keeping 50 is unreliable: thin per-leaf columns outnumber the handful of broad, strong features by a hundred to one, and the strong ones are squeezed out. That is why the 275-leaf rung scores worst when capped from the raw pool. The capped champion in section 10 avoids this by selecting from a base that already contains the broad features alongside the leaf-level ones, and reaches 0.588 where the raw-pool rung reaches 0.511.</li>
+<li><strong>The taxonomy decision is the same under every reading.</strong> Categories are stored at 275 leaves because a leaf can always be rolled up at feature-build time and a rollup can never be split back. Which rollup or feature pool a given model consumes is a modelling choice, made per model and per outcome, and validated the way the capped champion was.</li>
+</ol>
 <div class="callout">Keep 275 leaves as the governed source of truth. Detail is reversible, since a leaf can be rolled up at feature-build time, while deletion is not, and the stronger the model, the more the six-month outcome rewards that detail. Let each model consume a validated rollup or a curated feature pool, and keep proposed new categories in shadow until they show stable value.</div>
 </section>
 
