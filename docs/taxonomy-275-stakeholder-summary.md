@@ -2,178 +2,130 @@
 
 ## Executive recommendation
 
-**Keep 275 leaves as Raylo's governed source-of-truth taxonomy.** Keep the
-29-group view as a benchmark and reporting rollup, while allowing each
-credit-risk model to consume detailed leaves when time validation supports it.
+**Keep 275 leaves as Raylo's governed production taxonomy.** Let each risk
+model consume validated rollups or selected leaves, and keep proposed finer
+categories in a shadow field until they show stable incremental value.
 
-The evidence does not show that 275 leaves hurt model performance. It shows that
-the risk model can safely aggregate the leaves when it needs to. Keeping the
-detailed source preserves information, explainability and important risk
-distinctions; collapsing the source taxonomy would destroy information that
-cannot be recovered later.
+The current evidence supports both sides of that decision:
+
+- collapsing too far loses information;
+- a corrected, controlled pilot found no risk-GINI benefit from moving from
+  275 to 287 leaves.
+
+This is not a claim that 275 is a mathematical optimum forever. It is the
+best-supported production boundary with today's data.
 
 ## The decision in one table
 
-The same transactions, outcome windows and XGBoost design were rerun at seven
-levels of category granularity. Results below are mean signed GINI across three
-model seeds; the models retain Raylo's orthogonal attributes such as essential
-spend, priority debt and high-cost-credit flags.
+| Question | Evidence | Decision |
+|---|---|---|
+| Does the Raylo taxonomy/feature approach beat the live model? | Corrected as-of capped model: **0.477 / 0.562** month-3/month-6 GINI. Like-for-like Plaid-only: **0.445 / 0.504** vs full-refit live **0.382 / 0.385**. | Keep the Raylo-owned categorisation and feature layer. |
+| Can the source taxonomy be rolled up? | Historical three-seed sensitivity found 275, current 69 and 29 statistically indistinguishable; 17 was close, while 9 and below degraded. This ladder predates the 2 Sep as-of rebuild and is directional, not a promotion result. | Keep rollups as model choices; do not delete source detail. |
+| Do three plausible splits beyond 275 help? | Corrected as-of rolling test: lean split **−0.0045 / −0.0068**; rich split **−0.0020 / −0.0111** vs exact parent controls. Every combined 95% CI included zero. | Do not expand to 287 on current evidence. |
+| Is the categorisation itself reliable enough to govern? | Current 2,004-row pipeline audit: **81.8% leaf / 87.3% general**. The fresh de-leaked risk-category classifier bar is **62.7%**, so risk leaves still require explicit controls. | Retain detailed monitoring and category-level risk gates. |
 
-| Category view | Month-3 GINI | Month-6 GINI | Decision read |
-|---|---:|---:|---|
-| 275 detailed leaves | **0.485** | **0.571** | No performance penalty from detail |
-| Current 69-feature grouping | 0.482 | **0.571** | Statistically tied with 275 |
-| 29 general categories | 0.479 | 0.560 | Statistically tied with current 69 |
-| 17 budget groups | 0.479 | 0.545 | Close; small month-6 penalty remains possible |
-| 9 macro groups | 0.468 | 0.495 | Material month-6 loss |
-| 7 cash-flow groups | 0.438 | 0.474 | Clear loss on both outcomes |
-| 4 minimal groups | 0.431 | 0.472 | Clear loss on both outcomes |
+## The direct test of going beyond 275
 
-Applicant-level paired bootstrap tests confirm the important boundaries:
+Three high-support parents were split in shadow only:
 
-- **275 vs current 69:** month 3 +0.003 GINI (95% CI −0.016 to +0.021);
-  month 6 −0.001 (−0.017 to +0.016). There is no measurable difference.
-- **29 vs current 69:** month 3 −0.004 (−0.019 to +0.012); month 6 −0.010
-  (−0.028 to +0.009). There is no measurable difference.
-- **9 vs 17:** month 6 loses **0.050 GINI** (−0.069 to −0.031).
-- **7 vs 17:** month 3 loses **0.042** (−0.069 to −0.018) and month 6
-  loses **0.072** (−0.106 to −0.038).
+- `streaming` into video subscription, audio/books, transactional video,
+  sports and fallback;
+- `marketplace_general` into resale/auction, Amazon, social commerce,
+  low-cost import and fallback;
+- `payment_intermediary` into wallet, collection network, marketplace escrow,
+  merchant processor and fallback.
 
-The conclusion is therefore not “the model needs all 275 leaves.” It is:
-**the detailed taxonomy is free at the source layer, while the model can choose
-the aggregation it needs.**
+That creates 15 mutually exclusive buckets, or 12 net extra leaves: a simulated
+275 → 287 expansion. The rules used only merchant and description text and
+were frozen before outcomes were inspected. The existing production leaf was
+left untouched.
 
-## The deeper model search found real value in the detailed leaves
+The crucial control was to give both models the exact totals for the three
+existing parents. Only the challenger received composition inside each parent.
+This distinguishes a true split benefit from merely exposing an existing leaf.
 
-The follow-up champion search was deliberately selected on three rolling Plaid
-validation windows before the published OOT. Holding the XGBoost recipe fixed,
-adding the detailed leaf blocks improved mean pre-OOT GINI as follows:
+### Primary rolling Plaid validation
 
-| Target | Current feature view | Detailed-leaf view | Gain |
-|---|---:|---:|---:|
-| Month 3 | 0.521 | **0.544** | **+0.022** |
-| Month 6 | 0.548 | **0.581** | **+0.033** |
+| Target | Current | + exact parent controls | + lean split | + rich split | Lean delta vs parent (95% CI) | Rich delta vs parent (95% CI) |
+|---|---:|---:|---:|---:|---:|---:|
+| Month 3 | 0.518 | 0.513 | 0.508 | 0.511 | **−0.0045** (−0.0103 to +0.0010) | **−0.0020** (−0.0080 to +0.0034) |
+| Month 6 | 0.569 | 0.571 | 0.564 | 0.560 | **−0.0068** (−0.0206 to +0.0067) | **−0.0111** (−0.0248 to +0.0023) |
 
-The final recipe then blended XGBoost and LightGBM and averaged three seeds. On
-the saved historical OOT it achieved:
+No combined split improved pooled rolling GINI. One-parent-at-a-time deltas
+were also non-positive on both horizons. Payment-intermediary alone produced a
+small, statistically clear month-3 loss: **−0.0061** (95% CI −0.0117 to
+−0.0005).
 
-| Target | Published capped taxonomy model | New development champion | Paired uplift (95% CI) |
-|---|---:|---:|---:|
-| Month 3 | 0.477 | **0.533** | **+0.056** (+0.030 to +0.081) |
-| Month 6 | 0.564 | **0.618** | **+0.054** (+0.025 to +0.084) |
+The already-used development OOT was essentially flat: lean **−0.0013 / +0.0024**
+and rich **−0.0006 / +0.0003** for month 3 / month 6, all intervals spanning
+zero. It is secondary confirmation, not a fresh promotion test.
 
-This is the clearest modelling evidence for preserving the 275-leaf source:
-once the search was allowed to use all detailed leaves, it found stable extra
-signal that the smaller hand-selected view had left behind. It still does not
-mean every leaf belongs in every production model—the trees choose useful
-splits—but that is a reason to preserve the detailed inputs, not delete them.
+## This was not a low-support failure
 
-These are development results, not a promotion test. Earlier work had already
-used the same historical OOT windows, so the recipe must be frozen and tested
-once on a new prospective outcome window before deployment.
+The affected shadow features appeared in **54,369 of 64,209** modelling rows.
+The largest child groups had substantial transaction volume:
 
-## The new categorisation is materially better than provider categories
+| Parent | Largest child | Transactions | Share of parent |
+|---|---|---:|---:|
+| Marketplace | Resale/auction | 307,331 | 55.9% |
+| Payment intermediary | Digital wallet | 220,363 | 76.7% |
+| Streaming | Video subscription | 234,123 | 72.2% |
 
-On the same 1,884 row-disjoint labelled transactions:
+All child counts and amounts reconciled exactly to the current parents. There
+were 15 frozen child buckets; only sports streaming was genuinely thin at 946
+transactions. A 51-feature lean composition overlay was tested after the rich
+156-feature overlay to rule out the obvious overfitting objection. It did not
+recover a rolling gain.
 
-| Categorisation method | Leaf accuracy | General accuracy |
-|---|---:|---:|
-| Provider category alone | **31.8%** | 44.1% |
-| Raylo rules/dictionary, provider only as backup | **72.0%** | 79.8% |
-| Raylo rules/dictionary + serving hinge classifier | **80.5%** | 86.4% |
+## Why keep 275 rather than collapse the source taxonomy?
 
-The improvement is especially clear on Plaid rows already resolved by Raylo's
-T1–T4 logic: **91.9% leaf accuracy vs 31.8% for Plaid-native categories**.
-This is evidence for owning the categorisation layer rather than allowing a
-provider's changing labels to define model features.
+1. **Detail is reversible; deletion is not.** A detailed leaf can be rolled up
+   at feature-build time. A stored general label cannot be split later without
+   recategorising history.
+2. **Coarse model GINI can hide category-specific risk.** The historical
+   analysis found lottery IV **0.0498** versus combined gambling-months IV
+   **0.0053**. Governance still needs subtype monitoring even where a model can
+   tolerate aggregation.
+3. **Different consumers need different rollups.** Credit risk, affordability,
+   operations and customer support need not share one destructive aggregation.
+4. **The corrected model result remains positive.** On the as-of rebuild, the
+   Plaid-only taxonomy model remains ahead of the full-refit live reconstruction
+   by **+0.063 month 3** and **+0.119 month 6** GINI.
 
-## Why not replace 275 leaves with 29?
+## What would justify adding leaves later?
 
-### 1. Detail can always be aggregated; lost detail cannot be recreated
+Use the same shadow-overlay approach. A proposed split should meet all of the
+following before production adoption:
 
-A transaction stored as `gambling_lottery` can be rolled up to `gambling` at
-feature-build time. A transaction stored only as `gambling` cannot later be
-split reliably into lottery, casino, betting or bingo without recategorising
-the raw transaction history.
+1. semantic definitions and precedence frozen before outcome inspection;
+2. sufficient volume in every child and an explicit parent fallback;
+3. human-labelled child precision/recall, especially for risk-sensitive leaves;
+4. positive rolling incremental GINI versus an exact parent control, with the
+   paired interval excluding zero on the primary horizon;
+5. stability across time, provider, seed and protected/fairness slices;
+6. one untouched future outcome vintage for the final promotion decision.
 
-The 29-group model view therefore gives the modelling simplicity stakeholders
-want without deleting information from the governed taxonomy.
+This process does **not** require redoing the whole 275-leaf categorisation.
+Only transactions in the selected parent need a shadow child assignment; the
+existing parent remains valid for all historical labels and fallbacks.
 
-### 2. Aggregate model GINI hides important category-level risk
+## Stakeholder-safe wording
 
-The combined `gambling_months` feature had IV **0.0053**, while lottery alone
-had IV **0.0498**—more than nine times larger. A multivariate XGBoost can recover
-some of that signal from correlated features, which is why aggregate GINI looks
-flat, but the subtype remains important for transparent screening, monitoring
-and explanation.
-
-This same principle applies to payday lending, cash advances, debt-management
-plans, revolving credit and returned payments. These are not interchangeable
-merely because a headline GINI can remain similar after aggregation.
-
-### 3. Direct coarse classification has already shown a risk regression
-
-A dedicated 29-way transaction classifier improved parent accuracy on the
-novel-merchant holdout from **60.3% to 63.4%**, but reduced risk-gold parent
-accuracy from **85.5% to 83.4%**. High-cost-distress parent recall fell from
-**92.4% to 81.9%**—a 10.5 percentage-point loss hidden by the aggregate result.
-
-That is exactly why the source taxonomy and its per-risk-category validation
-should remain detailed even if the downstream risk model consumes rollups.
-
-### 4. The detailed taxonomy is a governance asset, not just a model input
-
-The 275 leaves provide:
-
-- stable Raylo-owned definitions across Plaid and Equifax;
-- traceable merchant/rule decisions for each transaction;
-- monitoring at the level of specific credit and gambling behaviours;
-- the ability to build different rollups for credit risk, affordability,
-  customer support or future products without relabelling the raw history.
-
-Reducing the source taxonomy would trade away those capabilities without a
-demonstrated model-performance benefit.
-
-## What the risk-model uplift does—and does not—prove
-
-The richer taxonomy feature/model bundle beats the reconstructed live-feature
-XGBoost within the saved OOT sample. For the current capped grouping, the paired
-uplift is:
-
-- month 3: **+0.088 GINI** (95% CI +0.048 to +0.129);
-- month 6: **+0.148 GINI** (+0.104 to +0.191).
-
-This is strong evidence that the new overall feature approach is better in the
-retrospective experiment. It is not evidence that taxonomy labels alone caused
-the entire uplift: a strict same-20-feature ablation was inconclusive and changed
-direction by outcome. The uplift also includes better engineered features,
-feature selection and additional training history.
-
-The stakeholder-safe wording is:
-
-> Raylo's new categorisation and feature-engineering approach produces a large,
-> statistically robust retrospective GINI uplift. Within that approach, keeping
-> 275 source leaves has no measurable model cost, while collapsing below roughly
-> 17 groups destroys signal. We should therefore preserve the detailed governed
-> taxonomy and let individual models consume validated rollups.
-
-## Decision and safeguards
-
-1. Keep `taxonomy/taxonomy.csv` at 275 leaves.
-2. Keep the 29 general categories as the benchmark/reporting rollup; use the
-   validated detailed-leaf views in the new development champion.
-3. Keep 17 groups as a coarse experimental challenger; do not move to 9 or fewer.
-4. Continue to enforce category-level risk bars for gambling, credit repayments
-   and high-cost/distress credit.
-5. Validate the final model prospectively using a taxonomy, dictionary and
-   classifier frozen before the outcome window. Locked v6 remains untouched
-   until the model design and promotion rule are final.
+> Raylo should keep the 275-leaf taxonomy as its governed source of truth. The
+> corrected risk experiment still outperforms the live reconstruction, and
+> earlier granularity tests show that collapsing too far destroys signal. We
+> also tested a targeted expansion to 287 leaves on the corrected cohort. It
+> produced no stable incremental GINI after controlling for the existing
+> parent leaves, so there is currently no evidence-based case for adding those
+> categories. Future splits can be tested cheaply in shadow without relabelling
+> the full history.
 
 ## Evidence base
 
-- `data/experiment3_champion_model_report.md`
-- `data/experiment3_granularity_stress_test_report.md`
-- `data/experiment3_granularity_ladder_report.md`
+- `data/experiment3_subleaf_pilot_report.md`
+- `outputs/experiment3_subleaf_results.json`
+- `taxonomy/experimental_subleaf_pilot.csv`
+- `data/experiment3_xgb_report.md` (2 Sep as-of addendum)
+- `data/experiment3_granularity_stress_test_report.md` (historical pre-as-of sensitivity)
 - `data/waterfall_pipeline_report.md`
-- `data/classifier_general_bakeoff_report.md`
-- `data/experiment3_xgb_report.md`
+- `data/classifier_v6_deleaked_report.md`

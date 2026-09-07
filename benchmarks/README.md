@@ -18,6 +18,8 @@ regenerable from the local Mac fine-tuning runbook (`docs/`), not source data.
   `data/gold_v2_slm_eval_holdout.csv`, at increasing levels of taxonomy
   grounding (bare hint → full enum-constrained taxonomy → final production
   prompt with worked examples).
+- `score_gemini38_vs_37.py` — 3 Sep 2026 drop-in of `gemini-3.8-flash` vs the
+  saved 3.7 frontier cache. Verdict: keep 3.7 (`data/gemini38_vs_37_report.md`).
 - `score_vanilla_baseline.py`, `score_local_taxonomy.py`, `score_gold_eval.py`,
   `score_checkpoint_full.py`, `scan_checkpoints.py` — local MLX
   (vanilla/fine-tuned Gemma) scoring and checkpoint sweep.

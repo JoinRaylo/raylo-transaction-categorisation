@@ -129,3 +129,27 @@ python src/experiment3_granularity_ladder.py train       # ~4 min, 56 fits
 
 Artefacts: `outputs/experiment3_ladder_long.parquet` (6.4M rows),
 `outputs/experiment3_ladder_results.json` (every run, with selected features).
+
+## Addendum (3 Sep) — clarifying "69"
+
+A stakeholder question flagged this as ambiguous: **"current 69" is not a
+69-leaf taxonomy, and not "69 of the 275 leaves in use."** It is today's
+model-*feature* grouping — 40 of the 275 leaves (`KEY_LEAVES`) each get their
+own dedicated feature block, and the remaining 235 leaves are rolled into
+their 29 general categories before a feature block is built. 40 + 29 = 69
+distinct feature groups. All 275 leaves are still classified by the taxonomy;
+none are dropped. The taxonomy itself remains 275 leaves rolling up to 29
+general categories, unchanged by this exercise.
+
+## Addendum (7 Sep) — superseded as the "current best model" reference
+
+A materially stronger recipe now exists: the champion (blended XGBoost +
+LightGBM, richer leaf-level features — shares, per-leaf averages/CVs, not
+just more leaves) scores 0.508/0.583 at the same 50-feature cap and
+0.533/0.618 uncapped, against this report's 0.477/0.564
+(`data/experiment3_champion_capped_report.md`). This ladder's rung sweep was
+never re-run on the champion's feature recipe — see
+`docs/taxonomy-granularity-conclusion.md` for the open question this leaves
+(the champion's own pre-OOT selection shows leaf-level share/ratio features
+beating a 69-rung-equivalent view by +0.02–0.04 GINI at fixed algorithm,
+which is a different result from "rolling up categories doesn't cost much").

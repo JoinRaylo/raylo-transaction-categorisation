@@ -161,3 +161,20 @@ to the taxonomy alone.
   “275, 69 and 29 are indistinguishable; 17 is close but may lose month-6
   signal; 9 and below degrade, and the smallest-rung uplift is not conclusive
   on month 3.”
+
+## Addendum (3 Sep) — clarifying "69"
+
+Flagging the same ambiguity for this report: every "current 69" / "69 groups"
+reference above means today's model-*feature* grouping (40 individually
+tracked leaves + the other 235 rolled into 29 generals = 69 feature groups),
+not a 69-leaf taxonomy and not a claim that only 69 of the 275 leaves are
+used. All 275 leaves are still classified; the taxonomy itself is unchanged.
+
+## Addendum (7 Sep) — superseded as the "current best model" reference
+
+Same note as the ladder report: the 7 Sep champion recipe (0.508/0.583
+capped at 50 features, 0.533/0.618 uncapped) is now the stronger reference,
+not the 0.477–0.485 range quoted throughout this report. The rung sweep here
+was run on the plain-XGBoost recipe only and has not been repeated on the
+champion's richer leaf-level features. See
+`docs/taxonomy-granularity-conclusion.md` for detail.
