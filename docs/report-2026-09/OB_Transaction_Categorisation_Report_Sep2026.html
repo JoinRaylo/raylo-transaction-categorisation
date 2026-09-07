@@ -332,7 +332,7 @@ li{margin-bottom:3pt}
 <p>Stacked on the uncapped champion as an extra feature, the sequence model added nothing significant. The champion's thousands of leaf-level columns already contain what the sequence model had learned from categories, and at that point it was parked. The picture changed once the 50-feature capped champion became the reference, as the last part of this section shows.</p>
 <h3>What did add value: one text score</h3>
 <p>What remains in the raw text after the categories are accounted for is small but real, and the simplest extraction captures it. A frozen sentence encoder embeds each description, the vectors are averaged per applicant, and a small logistic model turns the average into one risk score, added to the champion as a single column. That single number beat 32 compressed columns, and it is far easier to monitor.</p>
-<p>Seven encoders were compared in that role, from 22 million to 568 million parameters, including our own domain-pretrained DistilBERT from section 9. All landed in one narrow band of roughly +0.01 PR-AUC on the champion. Encoder size and family do not matter here, which is itself informative: the lift is a property of the residual free text, not of the encoder. bge-base was chosen because both of its deltas exclude zero and it runs on a laptop CPU. Our own encoder was fractionally ahead on the point estimate and half the cost to run, but not distinguishably better, and it had seen the test period's text during unsupervised pretraining, so it is recorded as the preferred replacement candidate pending the prospective test.</p>
+<p>Eight encoders were compared in that role, from 22 million to 568 million parameters, including our own domain-pretrained DistilBERT from section 9. All landed in one narrow band of roughly +0.01 PR-AUC on the champion. Encoder size and family do not matter here, which is itself informative: the lift is a property of the residual free text, not of the encoder. bge-base was chosen because both of its deltas exclude zero and it runs on a laptop CPU. Our own encoder was fractionally ahead on the point estimate and half the cost to run, but not distinguishably better, and it had seen the test period's text during unsupervised pretraining, so it is recorded as the preferred replacement candidate pending the prospective test.</p>
 <figure id="fig-stack"></figure>
 <table>
 <thead><tr><th>Six-month outcome, 6,252 applicants, 397 bad</th><th class="n">PR-AUC</th><th class="n">GINI</th></tr></thead>
@@ -538,14 +538,15 @@ li{margin-bottom:3pt}
     labW:260,min:-0.015,max:0.06,ticks:[-0.01,0,0.01,0.02,0.03,0.04,0.05],tickFmt:t=>(t<0?'':'+')+t.toFixed(2),fmt:v=>'+'+v.toFixed(3),
     legend:[{color:C.ours2,text:'on uncapped champion (1,654 to 3,150 features)'},{color:C.ours,text:'on capped champion (50 features)'}],
     rows:[
-      {label:'all-MiniLM-L6 (22M)',groups:[{v:0.007,color:C.ours2,ci:[-0.003,0.017]},{v:null}]},
+      {label:'all-MiniLM-L6 (22M)',groups:[{v:0.007,color:C.ours2,ci:[-0.003,0.017]},{v:0.019,color:C.ours,ci:[0.006,0.031]}]},
       {label:'bge-small (33M)',groups:[{v:0.012,color:C.ours2,ci:[0.003,0.022]},{v:0.018,color:C.ours,ci:[0.005,0.030]}]},
       {label:'bge-base (110M), locked recipe',groups:[{v:0.012,color:C.ours2,ci:[0.002,0.023]},{v:0.033,color:C.ours,ci:[0.017,0.049],bold:true}]},
-      {label:'e5-large (335M)',groups:[{v:0.016,color:C.ours2,ci:[0.004,0.028]},{v:null}]},
-      {label:'bge-m3 (568M)',groups:[{v:0.012,color:C.ours2,ci:[0.001,0.024]},{v:null}]},
+      {label:'e5-base (110M)',groups:[{v:0.008,color:C.ours2,ci:[-0.002,0.021]},{v:0.027,color:C.ours,ci:[0.010,0.045]}]},
+      {label:'e5-large (335M)',groups:[{v:0.016,color:C.ours2,ci:[0.004,0.028]},{v:0.030,color:C.ours,ci:[0.012,0.048]}]},
+      {label:'bge-m3 (568M)',groups:[{v:0.012,color:C.ours2,ci:[0.001,0.024]},{v:0.023,color:C.ours,ci:[0.008,0.039]}]},
       {label:'Our DistilBERT, domain-pretrained (66M)',groups:[{v:0.017,color:C.ours2,ci:[0.004,0.030]},{v:0.034,color:C.ours,ci:[0.016,0.051]}]},
       {label:'Our DistilBERT, category fine-tuned (66M)',groups:[{v:0.004,color:C.live,ci:[-0.012,0.020]},{v:0.018,color:C.live,ci:[-0.002,0.037]}]}],
-    caption:'On the uncapped champion, seven encoders spanning a 25-fold range in size land in one band: the lift is a property of the free text the taxonomy misses, not of the encoder. On the 50-feature capped champion the same scores are worth two to three times as much, and the ordering holds: bge-base and our domain-pretrained encoder are level, the category-fine-tuned encoder is weaker. Three encoders were not re-run on the capped base.'});
+    caption:'On the uncapped champion, eight encoders spanning a 25-fold range in size land in one band: the lift is a property of the free text the taxonomy misses, not of the encoder. On the 50-feature capped champion the same scores are worth two to three times as much and every interval excludes zero, with the ordering unchanged: bge-base and our domain-pretrained encoder share the top, the 335M and 568M encoders buy nothing over them, and the category-fine-tuned encoder is weakest.'});
 })();
 </script>
 </body>
