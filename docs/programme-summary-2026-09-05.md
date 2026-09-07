@@ -121,3 +121,10 @@ GCP GPU ≈ £7; everything else local.
 - Text score re-measured on the capped champion (OB-transformer `docs/phase1-benchmark.md`): bge-base +0.033 PR-AUC / +0.025 Gini, all eight encoders in one band with CIs excluding zero. Frozen 15M sequence-encoder score +0.032 / +0.031; both scores together 0.316 / 0.621, above the uncapped champion with 52 columns. Text-only recipe locked as primary; text plus encoder is the registered challenger.
 - Text encoder decision: keep bge-base; our domain-pretrained DistilBERT is level at half the cost but its pretraining corpus included the OOT period, so it is the named alternative for the prospective test rather than the lock.
 - Stakeholder report: `docs/report-2026-09/OB_Transaction_Categorisation_Report_Sep2026.pdf` (22 pages).
+
+## Addendum, 7 September (later)
+
+- Reference credit model is now the champion recipe as a **single XGBoost** at 50 features: 0.508 / 0.588 (month3 / month6). The XGB+LGB blend was tried at every cap and matched or trailed it; dropped for simplicity. Uncapped blend 0.533 / 0.618 remains the ceiling.
+- Stacking re-run on that base (OB-transformer): bge-base text score +0.034 PR-AUC / +0.024 Gini; frozen sequence-encoder score +0.031 / +0.029; both together 0.322 / 0.629. Eight-encoder sweep: one band, all Gini CIs exclude zero.
+- Granularity with the champion recipe: uncapped, month6 rewards full leaf detail (275: 0.612 vs 69: 0.586); month3 does not. Capped at 50 from the raw rung pool, 275 leaves is the worst rung (cap crowding). The August-recipe "indistinguishable" finding is now quoted as August-recipe only.
+- Report re-rendered (23 pages): section 3 rewritten in two parts with a new Figure 2; section 11 and Figure 10 on the single-XGB base.

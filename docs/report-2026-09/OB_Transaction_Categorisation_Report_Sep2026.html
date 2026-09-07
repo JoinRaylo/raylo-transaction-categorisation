@@ -79,7 +79,7 @@ li{margin-bottom:3pt}
     <h4>Abstract</h4>
     <p>Raylo's live Open Banking risk model reads Plaid's category names directly, which leaves a core model input outside our control. This report describes the taxonomy built to replace that dependency (275 detailed categories rolling up to 29 general ones), the seven-tier pipeline that applies it, and the two rounds of modelling work completed since the August report.</p>
     <p>On 2,000 held-out transactions the full pipeline now assigns the correct detailed category 83% of the time. The provider's own category, which is what the live model consumes, is right 30% of the time on the same rows. For the machine-learning tier that handles the transactions rules cannot, a transformer pretrained on 21.5 million bank narratives and taught from 405,000 consensus-labelled texts beats the linear classifier by five points on never-seen merchants and by ten points on high-risk categories, with confidence intervals that exclude zero.</p>
-    <p>On the credit side, a champion model built on leaf-level taxonomy features reaches a GINI of 0.62 on the six-month arrears outcome against 0.39 for the live model, up from the 0.56 quoted in August. Most of that gain comes from the model seeing thousands of leaf-level columns; held to a governable 50 features and a single XGBoost, the same recipe scores 0.59, and that capped model is the one carried forward. A separate programme tested whether a sequence transformer over raw transactions could beat it. It could not on its own. Stacked on the 50-feature model, however, a single score from a text encoder and a single score from the sequence model each add a clear lift, and together take 50 engineered features plus two learned columns to 0.62, level with the uncapped champion. The text-score recipe is locked; the two-score version goes to the prospective test as the challenger.</p>
+    <p>On the credit side, a champion model built on leaf-level taxonomy features reaches a GINI of 0.62 on the six-month arrears outcome against 0.39 for the live model, up from the 0.56 quoted in August. Most of that gain comes from the model seeing thousands of leaf-level columns; held to a governable 50 features and a single XGBoost, the same recipe scores 0.59, and that capped model is the one carried forward. A separate programme tested whether a sequence transformer over raw transactions could beat it. It could not on its own. Stacked on the 50-feature model, however, a single score from a text encoder and a single score from the sequence model each add a clear lift, and together take 50 engineered features plus two learned columns to 0.63, above the uncapped champion. The text-score recipe is locked; the two-score version goes to the prospective test as the challenger.</p>
   </div>
   <div class="foot"><span>Confidential, internal use only</span><span>raylo.com</span></div>
 </div>
@@ -127,11 +127,13 @@ li{margin-bottom:3pt}
 <!-- ============================ 3 ============================ -->
 <section class="section flow">
 <h2>3. How many categories is the right number</h2>
-<p>Stakeholders asked whether 275 was too many, too few, or arbitrary. We tested both directions with the same credit-risk model, three seeds each, and bootstrap confidence intervals.</p>
-<p>Collapsing: the same features were rebuilt at seven levels of detail from 275 leaves down to 4 broad groups, and a risk model trained at each. The 275-leaf, 69-group and 29-group views are statistically indistinguishable. Seventeen groups is close but shows a small, real loss on the six-month outcome. Nine and fewer degrade clearly. The 69-group view is worth explaining because it causes confusion: it is today's model-feature grouping, in which 40 leaves each get their own feature block and the other 235 are rolled into their 29 general categories. All 275 leaves are still classified; none are dropped.</p>
+<p>Stakeholders asked whether 275 was too many, too few, or arbitrary. We tested both directions, and the answer turned out to depend on the model that consumes the categories, so it is given in two parts.</p>
+<p>Collapsing, with the simple August model: the same features were rebuilt at seven levels of detail from 275 leaves down to 4 broad groups, and the August XGBoost trained at each, three seeds with bootstrap intervals. The 275-leaf, 69-group and 29-group views were statistically indistinguishable. Seventeen groups was close but showed a small, real loss on the six-month outcome. Nine and fewer degraded clearly. The 69-group view is worth explaining because it causes confusion: it is today's model-feature grouping, in which 40 leaves each get their own feature block and the other 235 are rolled into their 29 general categories. All 275 leaves are still classified; none are dropped.</p>
+<p>Collapsing, with the champion recipe of section 10: the same ladder was re-run with the stronger recipe and its richer per-category features once that became the reference model. Given every column, the six-month outcome now rewards detail: 275 leaves scores 0.612 against 0.586 for today's 69 groups, falling steadily to 0.510 at 4 groups. The three-month outcome does not; its peak is the 69-group view and 275 sits marginally below it. Under a hard 50-feature cap the picture inverts. The 275-leaf rung becomes the worst on both outcomes, because roughly 2,900 thin per-leaf candidates crowd the handful of broad, information-dense features (priority-debt breadth, months with credit products) out of the 50 slots: only 2 of those 31 spine columns survive selection at 275 leaves, against 9 at 17 groups. That is a property of feature selection from a very wide pool, not of the taxonomy, and it is why the capped champion in section 10 selects from a base that keeps those spine features rather than from the raw leaf pool.</p>
 <p>Expanding: three well-supported parents (streaming, general marketplace, payment intermediary) were split into 15 shadow children, a simulated move from 275 to 287 leaves, with the rules frozen before any outcome was inspected. Against a control that received the exact parent totals, the split features changed GINI by between minus 0.002 and minus 0.011, with every confidence interval including zero. Payment intermediary on its own produced a small but clear loss. This was not a thin-data result: the shadow categories appeared in 54,000 of 64,000 modelling rows.</p>
 <figure id="fig-ladder"></figure>
-<div class="callout">Keep 275 leaves as the governed source of truth. Detail is reversible, since a leaf can be rolled up at feature-build time, while deletion is not. Let each model consume a validated rollup, and keep proposed new categories in shadow until they show stable value.</div>
+<figure id="fig-ladder-champ"></figure>
+<div class="callout">Keep 275 leaves as the governed source of truth. Detail is reversible, since a leaf can be rolled up at feature-build time, while deletion is not, and the stronger the model, the more the six-month outcome rewards that detail. Let each model consume a validated rollup or a curated feature pool, and keep proposed new categories in shadow until they show stable value.</div>
 </section>
 
 <!-- ============================ 4 ============================ -->
@@ -286,7 +288,7 @@ li{margin-bottom:3pt}
 <tr><td>Champion uplift over the live model, 95% CI</td><td class="n">+0.138 [+0.097, +0.179]</td><td class="n">+0.200 [+0.158, +0.245]</td></tr>
 </tbody>
 </table>
-<p>What the champion tells us is consistent with section 3. The taxonomy's detail is worth something to the model when the model is allowed to see it directly, but the gain is in how the leaves are used, not in adding more of them. Persistence remains the dominant feature form: how many distinct months a category appears in matters more than how much was spent. Debt-structure features built from the priority-debt flag remain among the strongest.</p>
+<p>What the champion tells us is consistent with the second half of section 3. Given every column, the taxonomy's detail is worth something to the six-month model, and the champion's per-leaf shares and averages are the form in which it is worth most. Persistence remains the dominant feature form: how many distinct months a category appears in matters more than how much was spent. Debt-structure features built from the priority-debt flag remain among the strongest.</p>
 <h3>Holding the champion to 50 features</h3>
 <p>The uncapped champion uses between 1,654 and 3,150 input columns, of which 700 to 1,450 carry non-zero weight in the fitted trees. That is a different governance proposition from the 50-feature model the August report deliberately made its headline: every one of 50 columns can be named, monitored for drift and explained to a reviewer. So the champion recipe was re-run under hard caps of 50, 100 and 200 features. Features were ranked by their average contribution across both tree libraries and all three seeds, using the training window only, and both components share the same column set so the cap means what it says. Nothing else was re-tuned.</p>
 <p>The blend itself was also re-examined at each cap. Its weight had been chosen on the uncapped models; on the capped folds a single XGBoost matched or beat the blend on both outcomes, and LightGBM on its own fell away at 50 features (0.559 on the six-month outcome). The blend was therefore dropped. It is recorded here as tried, and the carried-forward model is a single XGBoost, which also keeps the learner identical to the live model's.</p>
@@ -346,20 +348,20 @@ li{margin-bottom:3pt}
 </tbody>
 </table>
 <h3>Both scores on the capped champion</h3>
-<p>The figures in this subsection were measured against the 50-feature blended champion (0.583). The single-XGBoost version adopted in section 10 differs from it by half a GINI point, and the stacking is being re-run against that base; the deltas are not expected to move materially. A smaller base model leaves more for a learned score to explain, and that is what the re-run against the 50-feature capped champion shows. Two scores were tested, each one column. The text score is the bge-base recipe above. The encoder score is the sequence transformer in its lightest deployable form: the 15-million-parameter pretrained encoder kept frozen, with only a small attention-pooling head trained on outcomes, so one model and one head would run in production rather than the five-fold ensemble used to produce honest training scores.</p>
+<p>The figures in this subsection are measured against the single-XGBoost 50-feature champion adopted in section 10, refit on that repository's population. A smaller base model leaves more for a learned score to explain, and that is what the re-run against the capped champion shows. Two scores were tested, each one column. The text score is the bge-base recipe above. The encoder score is the sequence transformer in its lightest deployable form: the 15-million-parameter pretrained encoder kept frozen, with only a small attention-pooling head trained on outcomes, so one model and one head would run in production rather than the five-fold ensemble used to produce honest training scores.</p>
 <table style="break-inside:auto">
 <thead><tr><th>Six-month outcome, 6,252 applicants, 397 bad</th><th class="n">PR-AUC</th><th class="n">GINI</th><th class="n">ΔPR-AUC [95% CI]</th><th class="n">ΔGINI [95% CI]</th></tr></thead>
 <tbody>
-<tr><td>Capped champion, 50 features, refit</td><td class="n">0.261</td><td class="n">0.580</td><td class="n"></td><td class="n"></td></tr>
+<tr><td>Capped champion, single XGBoost, 50 features, refit</td><td class="n">0.265</td><td class="n">0.588</td><td class="n"></td><td class="n"></td></tr>
 <tr><td>Sequence transformer alone, single frozen model</td><td class="n">0.250</td><td class="n">0.576</td><td class="n">not significant</td><td class="n">not significant</td></tr>
-<tr><td>Capped champion + text score (locked recipe, 51 columns)</td><td class="n">0.294</td><td class="n">0.604</td><td class="n">+0.033 [+0.017, +0.049]</td><td class="n">+0.025 [+0.014, +0.035]</td></tr>
-<tr><td>Capped champion + encoder score</td><td class="n">0.292</td><td class="n">0.610</td><td class="n">+0.032 [+0.012, +0.050]</td><td class="n">+0.031 [+0.017, +0.044]</td></tr>
-<tr class="hl"><td>Capped champion + text score + encoder score (52 columns)</td><td class="n">0.316</td><td class="n">0.621</td><td class="n">+0.055 [+0.032, +0.076]</td><td class="n">+0.042 [+0.026, +0.058]</td></tr>
+<tr><td>Capped champion + text score (locked recipe, 51 columns)</td><td class="n">0.299</td><td class="n">0.611</td><td class="n">+0.034 [+0.018, +0.051]</td><td class="n">+0.024 [+0.012, +0.035]</td></tr>
+<tr><td>Capped champion + encoder score</td><td class="n">0.296</td><td class="n">0.617</td><td class="n">+0.031 [+0.011, +0.051]</td><td class="n">+0.029 [+0.016, +0.043]</td></tr>
+<tr class="hl"><td>Capped champion + text score + encoder score (52 columns)</td><td class="n">0.322</td><td class="n">0.629</td><td class="n">+0.056 [+0.033, +0.080]</td><td class="n">+0.042 [+0.025, +0.058]</td></tr>
 <tr><td>Uncapped champion, refit, for reference</td><td class="n">0.290</td><td class="n">0.616</td><td class="n"></td><td class="n"></td></tr>
 </tbody>
 </table>
-<p>Three things follow. The text score is worth about three times what it was on the uncapped champion (+0.025 GINI against +0.009), because the smaller base leaves the free text unexplained. The sequence model, which added nothing on the uncapped champion, adds a clear +0.031 GINI on the capped one for the same reason: its value was always category dynamics at the leaf level, which 3,150 columns held directly and 50 do not. And the two scores are additive. Fifty engineered features plus two learned columns reach 0.316 / 0.621, above the uncapped champion on both metrics, with each column nameable and monitorable.</p>
-<p>The cost is in the serving path rather than the feature count. The text score needs one text encoder over every description. The encoder score needs a second text encoder for its inputs, the sequence model itself, and our categoriser's leaf on every transaction. That is why the text-only recipe stays locked as the primary and the two-score version goes to the prospective test as the challenger: both have now been evaluated many times against the same 397 bad outcomes, and a cohort nobody has touched is the only clean arbiter left. Substituting our own domain-pretrained encoder for bge-base in the text score gives identical results (0.294 / 0.605) at about half the serving cost and with no third-party model in the decision path. The decision taken is to keep bge-base as the locked encoder and to register ours as the named alternative for the prospective test. The reason is evidential rather than technical: our encoder's pretraining corpus included the test period's transactions (no labels, vocabulary exposure only), while bge-base has none, so the cleaner comparison is the one to carry until a cohort nobody has touched can score both once. If ours holds level there, the cost and ownership case decides it.</p>
+<p>Three things follow. The text score is worth about three times what it was on the uncapped champion (+0.024 GINI against +0.009), because the smaller base leaves the free text unexplained. The sequence model, which added nothing on the uncapped champion, adds a clear +0.029 GINI on the capped one for the same reason: its value was always category dynamics at the leaf level, which 3,150 columns held directly and 50 do not. And the two scores are additive. Fifty engineered features plus two learned columns reach 0.322 / 0.629, above the uncapped champion on both metrics, with each column nameable and monitorable.</p>
+<p>The cost is in the serving path rather than the feature count. The text score needs one text encoder over every description. The encoder score needs a second text encoder for its inputs, the sequence model itself, and our categoriser's leaf on every transaction. That is why the text-only recipe stays locked as the primary and the two-score version goes to the prospective test as the challenger: both have now been evaluated many times against the same 397 bad outcomes, and a cohort nobody has touched is the only clean arbiter left. Substituting our own domain-pretrained encoder for bge-base in the text score gives near-identical results (0.296 / 0.613 against 0.299 / 0.611) at about half the serving cost and with no third-party model in the decision path. The decision taken is to keep bge-base as the locked encoder and to register ours as the named alternative for the prospective test. The reason is evidential rather than technical: our encoder's pretraining corpus included the test period's transactions (no labels, vocabulary exposure only), while bge-base has none, so the cleaner comparison is the one to carry until a cohort nobody has touched can score both once. If ours holds level there, the cost and ownership case decides it.</p>
 <p class="small">PR-AUC is the area under the precision-recall curve, a second ranking metric that weights the rare bad outcomes more heavily than GINI does. Both are reported because on a few hundred bad outcomes they can move independently.</p>
 </section>
 
@@ -400,7 +402,7 @@ li{margin-bottom:3pt}
 <section class="section">
 <h2>13. Status, caveats and next steps</h2>
 <h3>Where things stand</h3>
-<p>The taxonomy, pipeline, dictionary and evaluation methodology are complete. The linear classifier at v8 and the transformer at its eighth iteration are both measured against honest, merchant-disjoint evaluation sets, with the transformer clearing every accuracy criterion. The 50-feature capped champion is the reference credit model, with the uncapped champion kept as the ceiling; the text-score recipe is locked and worth +0.025 GINI on the capped model; the two-score version (text plus sequence encoder, 0.621) is the registered challenger. Nothing is referenced by a production dbt model or scheduled job.</p>
+<p>The taxonomy, pipeline, dictionary and evaluation methodology are complete. The linear classifier at v8 and the transformer at its eighth iteration are both measured against honest, merchant-disjoint evaluation sets, with the transformer clearing every accuracy criterion. The 50-feature capped champion is the reference credit model, with the uncapped champion kept as the ceiling; the text-score recipe is locked and worth +0.024 GINI on the capped model; the two-score version (text plus sequence encoder, 0.629) is the registered challenger. Nothing is referenced by a production dbt model or scheduled job.</p>
 <h3>Caveats to carry into any decision</h3>
 <ul>
 <li>The champion's 0.588 (capped, single XGBoost) and 0.618 (uncapped blend) are development numbers. Their test windows were used in earlier work, and the like-for-like uplift over the live model is the whole bundle of taxonomy, features and learner; a same-feature-count ablation was inconclusive.</li>
@@ -456,7 +458,7 @@ li{margin-bottom:3pt}
   }
   const pct=v=>v.toFixed(1)+'%';
 
-  hbars('fig-ladder',{title:'Figure 1. Risk-model GINI by number of category groups used as features (same cohort, same learner, 3 seeds)',
+  hbars('fig-ladder',{title:'Figure 1. Risk-model GINI by number of category groups, August recipe (same cohort, same learner, 3 seeds)',
     labW:150,max:0.65,ticks:[0,0.2,0.4,0.6],tickFmt:t=>t.toFixed(1),fmt:v=>v.toFixed(3),
     legend:[{color:C.ours,text:'3-month arrears'},{color:C.ours2,text:'6-month, 3+ missed'}],
     rows:[
@@ -466,9 +468,21 @@ li{margin-bottom:3pt}
       {label:'17 budget groups',groups:[{v:0.479,color:C.ours},{v:0.545,color:C.ours2}]},
       {label:'9 macro groups',groups:[{v:0.468,color:C.ours},{v:0.495,color:C.ours2}]},
       {label:'4 broad groups',groups:[{v:0.431,color:C.ours},{v:0.472,color:C.ours2}]}],
-    caption:'Collapsing the 275 leaves to 69 or 29 groups costs nothing measurable; 17 begins to lose the six-month signal; 9 and fewer degrade clearly. The ladder predates the September as-of rebuild and is directional.'});
+    caption:'August recipe: a single XGBoost on rung-level counts and amounts, uncapped, 3 seeds. Collapsing the 275 leaves to 69 or 29 groups costs nothing measurable; 17 begins to lose the six-month signal; 9 and fewer degrade clearly. Predates the September as-of rebuild; directional.'});
 
-  hbars('fig-threeways',{title:'Figure 2. The same 2,000 held-out transactions scored four ways',
+  hbars('fig-ladder-champ',{title:'Figure 2. The same ladder with the champion recipe, six-month GINI, single XGBoost',
+    labW:150,max:0.65,ticks:[0,0.2,0.4,0.6],tickFmt:t=>t.toFixed(1),fmt:v=>v.toFixed(3),
+    legend:[{color:C.ours2,text:'given every column at that rung'},{color:C.ours,text:'capped at 50 features by gain'}],
+    rows:[
+      {label:'275 leaves',groups:[{v:0.612,color:C.ours2,bold:true},{v:0.511,color:C.ours}]},
+      {label:'69 groups (today\'s features)',groups:[{v:0.586,color:C.ours2},{v:0.548,color:C.ours,bold:true}]},
+      {label:'29 general categories',groups:[{v:0.582,color:C.ours2},{v:0.547,color:C.ours}]},
+      {label:'17 budget groups',groups:[{v:0.575,color:C.ours2},{v:0.546,color:C.ours}]},
+      {label:'9 macro groups',groups:[{v:0.542,color:C.ours2},{v:0.531,color:C.ours}]},
+      {label:'4 broad groups',groups:[{v:0.510,color:C.ours2},{v:0.503,color:C.ours}]}],
+    caption:'Champion recipe with its richer per-category features, rebuilt at each rung on a recipe-neutral base so only granularity changes. Given every column, finer is better on the six-month outcome. Capped at 50, the 275-leaf rung is worst because its 2,900 thin candidates crowd the strongest broad features out of the selection. The three-month outcome shows no gain from detail in either setting; 69 groups is its peak.'});
+
+  hbars('fig-threeways',{title:'Figure 3. The same 2,000 held-out transactions scored four ways',
     labW:250,max:100,ticks:[0,25,50,75,100],tickFmt:t=>t+'%',fmt:pct,
     rows:[
       {label:['Rules and dictionary, then','our transformer classifier'],groups:[{v:83.2,color:C.ours,bold:true}]},
@@ -477,7 +491,7 @@ li{margin-bottom:3pt}
       {label:['Provider\'s own category only','(the status quo)'],groups:[{v:29.9,color:C.prov,bold:true}]}],
     caption:'Leaf-level accuracy on the same rows. Each step down removes one of our layers. The provider\'s own category is what the live risk model consumes today. Rows with no provider category are counted as wrong; on provider-labelled rows alone the status quo reaches 45%. At general level the rules-plus-classifier pipeline is 87% and the status quo 42%.'});
 
-  hbars('fig-t14',{title:'Figure 3. Rows our dictionary and early rules resolve, where the provider also supplies a category',
+  hbars('fig-t14',{title:'Figure 4. Rows our dictionary and early rules resolve, where the provider also supplies a category',
     labW:210,max:100,ticks:[0,25,50,75,100],tickFmt:t=>t+'%',fmt:pct,
     legend:[{color:C.ours,text:'Our dictionary and rules (T1 to T4)'},{color:C.prov,text:'Provider\'s own category'}],
     rows:[
@@ -485,7 +499,7 @@ li{margin-bottom:3pt}
       {label:'Equifax rows (n=389)',groups:[{v:90.2,color:C.ours},{v:79.4,color:C.prov}]}],
     caption:'Leaf-level accuracy. Plaid is where live traffic comes from and where the dictionary has most to fix; Equifax\'s vendor field is already a curated entity.'});
 
-  hbars('fig-residual',{title:'Figure 4. The residual: 478 rows the rules cannot place, served three ways',
+  hbars('fig-residual',{title:'Figure 5. The residual: 478 rows the rules cannot place, served three ways',
     labW:210,max:100,ticks:[0,25,50,75,100],tickFmt:t=>t+'%',fmt:pct,
     rows:[
       {label:'Our transformer classifier',groups:[{v:65.0,color:C.ours,bold:true}]},
@@ -493,7 +507,7 @@ li{margin-bottom:3pt}
       {label:'Provider\'s own category',groups:[{v:26.2,color:C.prov}]}],
     caption:'This is where the machine-learning tier earns its place. Roughly half of Plaid\'s volume lands on catch-all buckets, and 203 of our 275 leaves have no Plaid source at all.'});
 
-  hbars('fig-stair',{title:'Figure 5. Linear classifier accuracy on the two September targets, step by step',
+  hbars('fig-stair',{title:'Figure 6. Linear classifier accuracy on the two September targets, step by step',
     labW:250,max:100,ticks:[0,25,50,75,100],tickFmt:t=>t+'%',fmt:pct,
     legend:[{color:C.ours2,text:'Money-in transactions (n=2,000)'},{color:C.ours,text:'High-risk categories reaching the ML tier (n=174)'}],
     rows:[
@@ -504,7 +518,7 @@ li{margin-bottom:3pt}
       {label:['Transformer on the same data'],groups:[{v:88.8,color:C.good},{v:85.6,color:C.good}]}],
     caption:'The same linear model throughout; only the training data and the rules in front of it changed. The 70% bar for risk categories is cleared honestly for the first time at v8. The transformer row is section 9\'s result on identical data.'});
 
-  hbars('fig-transformer',{title:'Figure 6. Transformer minus linear classifier v8, percentage points, with 95% confidence intervals',
+  hbars('fig-transformer',{title:'Figure 7. Transformer minus linear classifier v8, percentage points, with 95% confidence intervals',
     labW:240,max:18,ticks:[0,4,8,12,16],tickFmt:t=>'+'+t,fmt:v=>'+'+v.toFixed(1),
     rows:[
       {label:'Never-seen merchants (n=416)',groups:[{v:5.1,color:C.good,ci:[1.8,8.8]}]},
@@ -513,7 +527,7 @@ li{margin-bottom:3pt}
       {label:'High-risk categories (n=174)',groups:[{v:9.8,color:C.good,ci:[5.2,15.1],bold:true}]}],
     caption:'Leaf-level accuracy, mean of three seeds, paired bootstrap on the same rows. Every interval sits above zero. General-level gains are larger still, at 7 to 13 points.'});
 
-  hbars('fig-gini',{title:'Figure 7. Out-of-time GINI: live model, August taxonomy model, and the champion at each feature cap',
+  hbars('fig-gini',{title:'Figure 8. Out-of-time GINI: live model, August taxonomy model, and the champion at each feature cap',
     labW:250,max:0.7,ticks:[0,0.2,0.4,0.6],tickFmt:t=>t.toFixed(1),fmt:v=>v.toFixed(3),
     legend:[{color:C.ours,text:'3-month arrears (n=4,855, 465 bad)'},{color:C.ours2,text:'6-month, 3+ missed (n=6,652, 410 bad)'}],
     rows:[
@@ -526,7 +540,7 @@ li{margin-bottom:3pt}
       {label:['Champion, uncapped','(1,654 to 3,150 features)'],groups:[{v:0.533,color:C.ours},{v:0.618,color:C.ours2}]}],
     caption:'Both windows are entirely Plaid. The live model is refit on the full training window exactly as ours are. From the 50-feature rows upward the recipe is identical and only the number of columns and the use of a second tree library change. All champion rows are development recipes pending a prospective test.'});
 
-  hbars('fig-seq',{title:'Figure 8. Sequence transformer versions against the champion, six-month GINI on 6,252 applicants',
+  hbars('fig-seq',{title:'Figure 9. Sequence transformer versions against the champion, six-month GINI on 6,252 applicants',
     labW:250,max:0.7,ticks:[0,0.2,0.4,0.6],tickFmt:t=>t.toFixed(1),fmt:v=>v.toFixed(3),
     rows:[
       {label:'v1, raw fields, 5M parameters',groups:[{v:0.450,color:C.live}]},
@@ -537,19 +551,19 @@ li{margin-bottom:3pt}
       {label:'Champion, refit on this population',groups:[{v:0.616,color:C.ours,bold:true}]}],
     caption:'The step from v3 to v4 is the category token. Everything after it is inside the noise of 397 bad outcomes. Stacked on the champion, no version added a significant gain.'});
 
-  hbars('fig-stack',{title:'Figure 9. PR-AUC lift from one text score, on the uncapped and the 50-feature champion (95% CIs)',
+  hbars('fig-stack',{title:'Figure 10. PR-AUC lift from one text score, on the uncapped and the 50-feature champion (95% CIs)',
     labW:260,min:-0.015,max:0.06,ticks:[-0.01,0,0.01,0.02,0.03,0.04,0.05],tickFmt:t=>(t<0?'':'+')+t.toFixed(2),fmt:v=>'+'+v.toFixed(3),
-    legend:[{color:C.ours2,text:'on uncapped champion (1,654 to 3,150 features)'},{color:C.ours,text:'on capped champion (50 features)'}],
+    legend:[{color:C.ours2,text:'on uncapped champion (1,654 to 3,150 features)'},{color:C.ours,text:'on capped champion (single XGBoost, 50 features)'}],
     rows:[
-      {label:'all-MiniLM-L6 (22M)',groups:[{v:0.007,color:C.ours2,ci:[-0.003,0.017]},{v:0.019,color:C.ours,ci:[0.006,0.031]}]},
-      {label:'bge-small (33M)',groups:[{v:0.012,color:C.ours2,ci:[0.003,0.022]},{v:0.018,color:C.ours,ci:[0.005,0.030]}]},
-      {label:'bge-base (110M), locked recipe',groups:[{v:0.012,color:C.ours2,ci:[0.002,0.023]},{v:0.033,color:C.ours,ci:[0.017,0.049],bold:true}]},
-      {label:'e5-base (110M)',groups:[{v:0.008,color:C.ours2,ci:[-0.002,0.021]},{v:0.027,color:C.ours,ci:[0.010,0.045]}]},
-      {label:'e5-large (335M)',groups:[{v:0.016,color:C.ours2,ci:[0.004,0.028]},{v:0.030,color:C.ours,ci:[0.012,0.048]}]},
-      {label:'bge-m3 (568M)',groups:[{v:0.012,color:C.ours2,ci:[0.001,0.024]},{v:0.023,color:C.ours,ci:[0.008,0.039]}]},
-      {label:'Our DistilBERT, domain-pretrained (66M)',groups:[{v:0.017,color:C.ours2,ci:[0.004,0.030]},{v:0.034,color:C.ours,ci:[0.016,0.051]}]},
-      {label:'Our DistilBERT, category fine-tuned (66M)',groups:[{v:0.004,color:C.live,ci:[-0.012,0.020]},{v:0.018,color:C.live,ci:[-0.002,0.037]}]}],
-    caption:'On the uncapped champion, eight encoders spanning a 25-fold range in size land in one band: the lift is a property of the free text the taxonomy misses, not of the encoder. On the 50-feature capped champion the same scores are worth two to three times as much and every interval excludes zero, with the ordering unchanged: bge-base and our domain-pretrained encoder share the top, the 335M and 568M encoders buy nothing over them, and the category-fine-tuned encoder is weakest.'});
+      {label:'all-MiniLM-L6 (22M)',groups:[{v:0.007,color:C.ours2,ci:[-0.003,0.017]},{v:0.017,color:C.ours,ci:[0.004,0.029]}]},
+      {label:'bge-small (33M)',groups:[{v:0.012,color:C.ours2,ci:[0.003,0.022]},{v:0.017,color:C.ours,ci:[0.005,0.029]}]},
+      {label:'bge-base (110M), locked recipe',groups:[{v:0.012,color:C.ours2,ci:[0.002,0.023]},{v:0.034,color:C.ours,ci:[0.018,0.051],bold:true}]},
+      {label:'e5-base (110M)',groups:[{v:0.008,color:C.ours2,ci:[-0.002,0.021]},{v:0.024,color:C.ours,ci:[0.008,0.042]}]},
+      {label:'e5-large (335M)',groups:[{v:0.016,color:C.ours2,ci:[0.004,0.028]},{v:0.033,color:C.ours,ci:[0.014,0.052]}]},
+      {label:'bge-m3 (568M)',groups:[{v:0.012,color:C.ours2,ci:[0.001,0.024]},{v:0.026,color:C.ours,ci:[0.011,0.043]}]},
+      {label:'Our DistilBERT, domain-pretrained (66M)',groups:[{v:0.017,color:C.ours2,ci:[0.004,0.030]},{v:0.031,color:C.ours,ci:[0.013,0.049]}]},
+      {label:'Our DistilBERT, category fine-tuned (66M)',groups:[{v:0.004,color:C.live,ci:[-0.012,0.020]},{v:0.018,color:C.live,ci:[-0.002,0.038]}]}],
+    caption:'On the uncapped champion, eight encoders spanning a 25-fold range in size land in one band: the lift is a property of the free text the taxonomy misses, not of the encoder. On the 50-feature single-XGBoost champion the same scores are worth two to three times as much and every GINI interval excludes zero, with the ordering unchanged: bge-base, e5-large and our domain-pretrained encoder share the top, the 568M encoder buys nothing over them, and the category-fine-tuned encoder is weakest.'});
 })();
 </script>
 </body>
