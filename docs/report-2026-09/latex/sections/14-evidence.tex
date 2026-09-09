@@ -1,0 +1,29 @@
+% Edit this section directly. Styling is in raylo-report.sty.
+\section{Evidence base}
+Every headline figure in this report is taken from a dated experiment report held in the repository. This map gives the source for each, so a number can be traced to the file, date and model version that produced it.
+
+{\small
+\setlength{\TableWidth}{\dimexpr\linewidth-6\tabcolsep\relax}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.27\TableWidth}>{\raggedright\arraybackslash}p{0.57\TableWidth}>{\raggedright\arraybackslash}p{0.16\TableWidth}}
+\rowcolor{BlueTint}
+\bfseries Result & \bfseries Source & \bfseries Date \\ \midrule
+\endfirsthead
+\rowcolor{BlueTint}
+\bfseries Result & \bfseries Source & \bfseries Date \\ \midrule
+\endhead
+Programme review and measurement fixes (section 6) & {\scriptsize\ttfamily docs/\allowbreak{}review-2026-09-02-state-and-next-steps.md}; {\scriptsize\ttfamily data/\allowbreak{}classifier\_\allowbreak{}v6\_\allowbreak{}deleaked\_\allowbreak{}report.md} & 2 Sep 2026 \\ \addlinespace[4pt]
+Pipeline accuracy against the providers (section 7) & {\scriptsize\ttfamily data/\allowbreak{}waterfall\_\allowbreak{}pipeline\_\allowbreak{}report.md}; {\scriptsize\ttfamily src/\allowbreak{}score\_\allowbreak{}waterfall\_\allowbreak{}pipeline.py} & 2 to 7 Sep 2026 \\ \addlinespace[4pt]
+Linear classifier v7 and v8 (section 8) & {\scriptsize\ttfamily data/\allowbreak{}classifier\_\allowbreak{}v7\_\allowbreak{}credit\_\allowbreak{}report.md}; {\scriptsize\ttfamily data/\allowbreak{}classifier\_\allowbreak{}v8\_\allowbreak{}risk\_\allowbreak{}report.md} & 3 Sep 2026 \\ \addlinespace[4pt]
+Transformer iterations 1 to 8 (section 9) & {\scriptsize\ttfamily data/\allowbreak{}transformer\_\allowbreak{}classifier\_\allowbreak{}report.md} and {\scriptsize\ttfamily \_\allowbreak{}iter\{1,2,3,4\}\_\allowbreak{}report.md}; models {\scriptsize\ttfamily txn\_\allowbreak{}classifier\_\allowbreak{}gold\_\allowbreak{}distilled\_\allowbreak{}s\{42,7,123\}} & 2 to 5 Sep 2026 \\ \addlinespace[4pt]
+Consensus labelling run (sections 4 and 9) & {\scriptsize\ttfamily data/\allowbreak{}distillation\_\allowbreak{}labels\_\allowbreak{}report.md}; {\scriptsize\ttfamily data/\allowbreak{}distillation\_\allowbreak{}labels\_\allowbreak{}consensus.parquet} & 5 Sep 2026 \\ \addlinespace[4pt]
+Granularity ladder, August recipe (section 3) & {\scriptsize\ttfamily data/\allowbreak{}experiment3\_\allowbreak{}granularity\_\allowbreak{}stress\_\allowbreak{}test\_\allowbreak{}report.md}; {\scriptsize\ttfamily docs/\allowbreak{}taxonomy-granularity-conclusion.md} & 1 Sep 2026 \\ \addlinespace[4pt]
+Granularity ladder, champion recipe (section 3) & {\scriptsize\ttfamily data/\allowbreak{}experiment3\_\allowbreak{}champion\_\allowbreak{}granularity\_\allowbreak{}report.md} and {\scriptsize\ttfamily \_\allowbreak{}uncapped\_\allowbreak{}report.md} & 7 Sep 2026 \\ \addlinespace[4pt]
+Sub-leaf expansion pilot (section 3) & {\scriptsize\ttfamily data/\allowbreak{}experiment3\_\allowbreak{}subleaf\_\allowbreak{}pilot\_\allowbreak{}report.md} & 1 to 2 Sep 2026 \\ \addlinespace[4pt]
+August 50-feature model, as-of rebuild (section 10) & {\scriptsize\ttfamily data/\allowbreak{}experiment3\_\allowbreak{}xgb\_\allowbreak{}report.md}, 2 Sep addendum & 27 Aug, 2 Sep 2026 \\ \addlinespace[4pt]
+Champion search and live reconstruction (section 10) & {\scriptsize\ttfamily data/\allowbreak{}experiment3\_\allowbreak{}champion\_\allowbreak{}model\_\allowbreak{}report.md}; {\scriptsize\ttfamily outputs/\allowbreak{}experiment3\_\allowbreak{}champion\_\allowbreak{}month\{3,6\}.joblib} & 5 Sep 2026 \\ \addlinespace[4pt]
+Capped champion and single-XGBoost decision (section 10) & {\scriptsize\ttfamily data/\allowbreak{}experiment3\_\allowbreak{}champion\_\allowbreak{}capped\_\allowbreak{}report.md}; {\scriptsize\ttfamily outputs/\allowbreak{}experiment3\_\allowbreak{}champion\_\allowbreak{}capped\_\allowbreak{}xgb\_\allowbreak{}month\{3,6\}\_\allowbreak{}50.joblib} & 7 Sep 2026 \\ \addlinespace[4pt]
+Text-encoder sweep and stacking (section 11) & OB-transformer repository, {\scriptsize\ttfamily docs/\allowbreak{}phase1-benchmark.md} & 4 to 7 Sep 2026 \\ \addlinespace[4pt]
+Sequence transformer versions and stacking (section 11) & OB-transformer repository, {\scriptsize\ttfamily docs/\allowbreak{}phase2-pretraining.md}; {\scriptsize\ttfamily docs/\allowbreak{}summary-comparison.md} & 3 to 7 Sep 2026 \\ \addlinespace[4pt]
+Programme summary & {\scriptsize\ttfamily docs/\allowbreak{}programme-summary-2026-09-05.md} & 5 to 7 Sep 2026 \\ \addlinespace[4pt]
+\bottomrule
+\end{longtable}}

@@ -10,12 +10,20 @@ The taxonomy, pipeline, dictionary and evaluation methodology are complete. Clas
 \item The 400-row risk evaluation set is unseen rows of a known population, not an unseen population. Two risk leaves (debt collection, casino) remain thin.
 \item Half of all transactions resolve through provider-derived tiers, so no feature built from categories is fully provider-blind. Transfer from Equifax history to Plaid traffic is verified empirically rather than assumed.
 \end{itemize}
-\subsection{Next steps, in order}
+\subsection{The validation gate}
+Every credit-model number in this report is a development result: the out-of-time windows were used in earlier experiment work, and the learned scores have been evaluated many times against the same 397 bad outcomes. One test settles what they are worth, and it is specified now so it cannot be tuned later.
+
+\begin{itemize}
+\item \textbf{What is frozen.} The taxonomy, the merchant dictionary, the rules, the T5b classifier, the feature SQL and the 50-feature champion recipe, all stamped with an effective date. Nothing in the path is retrained or edited after that date.
+\item \textbf{The cohort.} Applications from February to April 2026, none of which appear in any training or validation window. Their six-month outcomes mature around November 2026.
+\item \textbf{What is scored, once.} Two registered recipes: the 50-feature champion plus the text score as the primary, and the same plus the sequence-encoder score as the challenger. Each is scored with bge-base and with our own encoder as the text model. The uncapped champion and the live model are scored alongside for reference. GINI and PR-AUC with paired intervals, calibration against the observed bad rate, and recall on the risk categories.
+\item \textbf{What would justify promotion.} The pass bars (minimum GINI uplift over the live model, non-inferiority of the challenger to the primary, calibration tolerance) are to be agreed with the credit-risk team before the cohort matures, and are recorded as an open item. Whatever clears them is promoted as scored; nothing is re-tuned on the cohort.
+\end{itemize}
+The locked 1,100-row categorisation confirmation set is scored once at the same go/no-go, and never before.
+
+\subsection{Next steps}
 \begin{enumerate}
-\item \textbf{Promote the machine-learning tier.} Classifier v8 now, as a zero-risk step; the transformer once a serving artefact exists. Either needs a scheduled per-row categorisation job keyed by transaction id.
-\item \textbf{Score the locked confirmation set once,} at go/no-go, and never again.
-\item \textbf{Run the prospective test.} Freeze taxonomy, dictionary, classifier, feature SQL and the champion recipe with an effective date, then score the next matured cohort (February to April 2026 outcomes, mature by about November) once against pre-agreed bars. Two recipes are registered, the capped champion plus text score as primary and plus both learned scores as challenger, each scored with bge-base and with our own encoder. This is the gate for the champion, both scores and the encoder swap.
-\item \textbf{Close the remaining data gaps:} thin risk leaves, and a human blind slice on the risk tranche.
-\item \textbf{Fix the 90-day history request.} Every Plaid Asset Report since go-live asks for exactly 90 days. That is a Raylo-side parameter, not a Plaid limit, and it caps every history-based feature. Probably the cheapest uplift available, and it belongs to whoever owns the Plaid integration.
+\item \textbf{Work out how the service should run outside Taktile.} Put together plans for both the current machine-learning categoriser and the transformer categoriser, to help understand the challenges with each and which we want to deploy. For each, decide what should host it (including whether Google Cloud is the natural home), where the models, features and transaction data sit, and how it connects back into today's Taktile flows. The same design needs to cover ownership, fallbacks and monitoring: whether inputs are complete, categories and confidence are drifting, predictions are reaching Taktile, and performance holds once outcomes mature.
+\item \textbf{Start with the categories, then add complexity if it earns its place.} A sensible first stage is the governed taxonomy, deterministic tiers and current classifier as one categorisation service. Once that path is stable and measured in the live flow, the transformer categoriser and the text or sequence encoder scores can be added separately. Staging the work this way makes it possible to see what each layer adds and where each new operational risk comes from.
+\item \textbf{Keep the size of the gain in view.} Most of the improvement comes from giving the risk model Raylo's categories instead of the provider's. The transformer and encoder models add a smaller, but still worthwhile, lift. They also bring another serving path and more to monitor. That trade-off should decide how far the first deployment goes. In parallel, more labelled data and further domain pretraining are worth testing to see whether the learned models can earn a larger role.
 \end{enumerate}
-{\small\color{Muted} Evidence base: dated experiment reports in the repository's data directory, the programme review of 2 September, the programme summary of 5 September, and the OB-transformer repository's phase-one and phase-two write-ups.\par}

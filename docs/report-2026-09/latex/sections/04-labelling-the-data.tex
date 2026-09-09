@@ -3,7 +3,7 @@
 A taxonomy is only useful with labelled examples behind it, and the labelling has to be trustworthy enough to serve as ground truth.
 
 \subsection{Two models must agree}
-Before committing to a large build, a cheap gating experiment had two large language models independently label the 2,300 merchants both providers cover. Raw agreement with Equifax's labels looked poor, but the benchmark was the problem: Equifax's ``truth'' is its own dictionary conventions, some of which our taxonomy rejects on purpose (Equifax files Netflix under broadband and Boots under beauty). Human review of the disputes gave a corrected accuracy of 96\% at leaf level and set two standing rules. Two models must agree, with the option to abstain rather than guess. And no language model ever runs at decision time: they label offline, and small fast models are trained from those labels.
+Before committing to a large build, a cheap gating experiment had two large language models independently label the 2,300 merchants both providers cover. Raw agreement with Equifax's labels looked poor, but the benchmark was the problem: Equifax's ``truth'' is its own dictionary conventions, some of which our taxonomy rejects on purpose (Equifax files Netflix under broadband and Boots under beauty). Human review of the disputes gave a corrected accuracy of 96\% at leaf level and set two standing rules. Two models must agree, with the option to abstain rather than guess. And no external language-model call is made at decision time: the large models label offline, and small fast models are trained from those labels.
 
 The production committee is Gemini Flash and Claude Sonnet, chosen from a six-model benchmark, with Claude Opus as a tiebreak where a human will review the result. When we later measured the committee's output against Carlos's own labels on the credit tranche, rows where the two models agreed were 95\% correct at leaf level. Rows accepted through the tiebreak were only 64\% correct, so tiebreaks are now used only for tranches that go to human review, never for training data.
 
@@ -28,21 +28,22 @@ Distillation labels (September) & 404,982 texts & The 500,000 most frequent dist
 \bottomrule
 \end{longtable}}
 \subsection{How performance is measured}
+Six evaluation sets are used, and they nest. Most are separated from training by merchant, so no merchant in the set appears in any training source. The full-pipeline set is separated by row instead, deliberately: it samples production-shaped traffic, including merchants the dictionary already knows, because its job is to measure what a real transaction experiences. Several results are quoted on the subset of a set that the rules do not resolve, since that subset is what the machine-learning tier actually serves.
 
 {\small
-\setlength{\TableWidth}{\dimexpr\linewidth-6\tabcolsep\relax}
-\begin{longtable}{>{\raggedright\arraybackslash}p{0.29\TableWidth}>{\raggedright\arraybackslash}p{0.26\TableWidth}>{\raggedright\arraybackslash}p{0.45\TableWidth}}
+\setlength{\TableWidth}{\dimexpr\linewidth-10\tabcolsep\relax}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.19\TableWidth}>{\raggedright\arraybackslash}p{0.07\TableWidth}>{\raggedright\arraybackslash}p{0.31\TableWidth}>{\raggedright\arraybackslash}p{0.15\TableWidth}>{\raggedright\arraybackslash}p{0.28\TableWidth}}
 \rowcolor{BlueTint}
-\bfseries Evaluation set & \bfseries Rows & \bfseries Question it answers \\ \midrule
+\bfseries Evaluation set & \bfseries Rows & \bfseries Drawn from & \bfseries Separation & \bfseries Question it answers \\ \midrule
 \endfirsthead
 \rowcolor{BlueTint}
-\bfseries Evaluation set & \bfseries Rows & \bfseries Question it answers \\ \midrule
+\bfseries Evaluation set & \bfseries Rows & \bfseries Drawn from & \bfseries Separation & \bfseries Question it answers \\ \midrule
 \endhead
-Merchant-disjoint holdout & 1,055 & How does the classifier cope with a merchant it has never seen? Every merchant here is excluded from all training data. \\ \addlinespace[4pt]
-Risk-category gold set & 711 & Can it be trusted on gambling, debt repayment and high-cost credit? Stratified at about 20 rows per category, because volume-weighted samples starve exactly these categories. \\ \addlinespace[4pt]
-Full-pipeline evaluation set & 2,000 & What accuracy does a real transaction experience end to end? Disjoint by row from training. \\ \addlinespace[4pt]
-Credit evaluation set & 2,000 & Accuracy on money-in transactions specifically, merchant-disjoint. \\ \addlinespace[4pt]
-Risk debits reaching the ML tier & 400 & The honest risk number: rows that look like risk categories and that the rules do not catch. \\ \addlinespace[4pt]
-Locked confirmation set (v6) & 1,100 & Never scored during development. Used once, at go/no-go, so its verdict stays unbiased. \\ \addlinespace[4pt]
+Merchant-disjoint holdout & 1,055 & Plaid and Equifax rows, human-adjudicated; the 416 rows the rules do not resolve are the ``never-seen merchants'' cut & By merchant & How does the classifier cope with a merchant it has never seen? \\ \addlinespace[4pt]
+Risk-category gold set & 711 & Stratified at about 20 rows per gambling, debt-repayment and high-cost-credit leaf; human-reviewed & By merchant & Can it be trusted on the categories credit risk cares about most? \\ \addlinespace[4pt]
+Full-pipeline evaluation set & 2,000 & Random Plaid and Equifax rows; the 478 the rules do not resolve are the ``residual'' cut & By row & What accuracy does a real transaction experience end to end? \\ \addlinespace[4pt]
+Credit evaluation set & 2,000 & Live Plaid money-in rows; committee-labelled, human blind slice & By merchant & Accuracy on money-in transactions. \\ \addlinespace[4pt]
+Risk debits reaching the ML tier & 400 & Live Plaid debits that look like risk categories; the 174 rows whose true label is a risk leaf are the ``high-risk categories'' cut & By merchant text (79\% have a blank merchant, so this is unseen rows of a known population) & The honest risk number for the classifier. \\ \addlinespace[4pt]
+Locked confirmation set (v6) & 1,100 & Random Plaid and Equifax rows, human-adjudicated & By merchant; never scored & Final unbiased confirmation, used once at go/no-go. \\ \addlinespace[4pt]
 \bottomrule
 \end{longtable}}

@@ -15,5 +15,5 @@ For high-risk categories the honest starting point, after the leak was removed, 
 \includegraphics[width=\linewidth]{charts/fig-stair.pdf}
 \caption*{The same linear model throughout; only the training data and the rules in front of it changed. The transformer row is section 9's result on identical data.}
 \end{figure}
-The version in the serving artefact is still v5 from August. The gap between it and v8 is now 24 points on credits and 28 points on the risk debits that reach the classifier, so promoting v8 is the zero-risk interim step whatever is decided about the transformer.
+The version in the serving artefact is still v5 from August. The gap between it and v8 is now 24 points on credits and 28 points on the risk debits that reach the classifier, so promoting v8 is a low-risk interim step whatever is decided about the transformer: same model family, same serving path, only the weights change.
 

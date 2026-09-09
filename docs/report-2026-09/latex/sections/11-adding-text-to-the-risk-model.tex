@@ -55,6 +55,7 @@ The cheapest test first. The text-encoder probe described above, built over 2.9 
 The sequence transformer described above was then built and read out first with a linear probe and later with fine-tuning. The versions are worth listing because each was built to test one thing.
 
 
+\Needspace{300pt}
 {\small
 \setlength{\TableWidth}{\dimexpr\linewidth-8\tabcolsep\relax}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.16\TableWidth}>{\raggedright\arraybackslash}p{0.36\TableWidth}>{\raggedright\arraybackslash}p{0.33\TableWidth}>{\raggedright\arraybackslash}p{0.15\TableWidth}}
@@ -85,13 +86,13 @@ The pattern is clear in hindsight. Without categories the sequence model plateau
 \subsection{What did add value: one text score}
 What remains in the raw text after the categories are accounted for is small but real, and the simplest extraction captures it: the text score described at the start of this section, added to the champion as a single column. That single number beat 32 compressed columns and is far easier to monitor.
 
-Eight encoders were compared in that role, from 22 million to 568 million parameters, including our own domain-pretrained DistilBERT from section 9. On the uncapped champion all landed in one narrow band of roughly +0.01 PR-AUC (bge-base: 0.302 / 0.625 against 0.290 / 0.616 alone). Encoder size and family do not matter here, which is itself informative: the lift is a property of the residual free text, not of the encoder. bge-base was chosen because both of its deltas exclude zero and it runs on a laptop CPU.
+Eight encoders were compared in that role, from 22 million to 568 million parameters, including our own domain-pretrained DistilBERT from section 9. On the uncapped champion all landed in one narrow band of roughly +0.01 PR-AUC (bge-base: 0.302 / 0.625 against 0.290 / 0.616 alone). Larger or differently trained encoders showed no reliable advantage in these tests, which is itself informative: the lift appears to be a property of the residual free text rather than of the encoder. On the 50-feature champion every encoder's GINI interval excludes zero. bge-base was chosen because both of its deltas exclude zero and it runs on a laptop CPU.
 
 \begin{figure}[H]
 \centering
 \ChartTitle{Figure 10. PR-AUC lift from one text score, on the uncapped and the 50-feature champion (95\% CIs)}
 \includegraphics[width=\linewidth]{charts/fig-stack.pdf}
-\caption*{Eight encoders spanning a 25-fold range in size land in one band on both bases. On the 50-feature champion the lifts are two to three times larger and every GINI interval excludes zero. The category-fine-tuned encoder is weakest on both.}
+\caption*{PR-AUC lift from adding one text score, with 95\% paired-bootstrap intervals. On the uncapped champion several intervals cross zero; on the 50-feature champion the lifts are two to three times larger and every PR-AUC interval except the category-fine-tuned encoder's clears zero. Eight encoders spanning a 25-fold range in size land in one band on both bases.}
 \end{figure}
 
 \subsection{Both scores on the capped champion}
@@ -100,6 +101,7 @@ The figures below are measured against the single-XGBoost 50-feature champion ad
 {\small\color{Muted} PR-AUC is the area under the precision-recall curve, a second ranking metric that weights the rare bad outcomes more heavily than GINI does. Both are reported because on a few hundred bad outcomes they can move independently.\par}
 
 
+\Needspace{230pt}
 {\small
 \setlength{\TableWidth}{\dimexpr\linewidth-10\tabcolsep\relax}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.32\TableWidth}>{\raggedright\arraybackslash}p{0.1\TableWidth}>{\raggedright\arraybackslash}p{0.1\TableWidth}>{\raggedright\arraybackslash}p{0.24\TableWidth}>{\raggedright\arraybackslash}p{0.24\TableWidth}}

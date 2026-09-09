@@ -29,4 +29,4 @@ Texifier is configured to use the project-local `report.tpbuild` script. Press *
 
 The `texbin` directory is a minimal Tectonic compatibility adapter for Texifier's mandatory distribution check; it is not a full TeX Live distribution. Texifier's custom distribution path points there. Builds use `/opt/homebrew/bin/tectonic`. On another Mac, install Tectonic and select this project's `texbin` directory in Texifier, or use a full XeLaTeX installation. If this project is moved, update the custom distribution path.
 
-Final verification: 24 rendered pages inspected; all ten vector charts inspected for labels, legends and confidence intervals; 344 source paragraph/list/table blocks checked with no missing blocks; compiler log has no layout warnings or missing glyphs.
+Final verification: 26 rendered pages inspected; all ten vector charts inspected for labels, legends and confidence intervals; the original report text is retained except for the subsequently revised Next steps section; compiler log has no layout warnings or missing glyphs.

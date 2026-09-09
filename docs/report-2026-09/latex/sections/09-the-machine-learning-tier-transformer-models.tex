@@ -36,10 +36,10 @@ Figure 6a follows one transaction through the model. The raw Plaid row is rewrit
   \draw[arr] (enc) -- (vec); \draw[arr] (vec.east) -- ++(3,0) |- (heads.west); \draw[arr] (heads) -- (mask);
   \draw[arr] (mask.south) |- (res.east);
 \end{tikzpicture}}
-\caption*{The sentence format gives the model what the linear classifier sees plus amount and direction. The mask is applied after the heads, so an impossible category can never win. At serving time the whole path runs on CPU at about 360 transactions a second.}
+\caption*{The sentence format gives the model what the linear classifier sees plus amount and direction. The mask is applied after the heads, so an impossible category can never win. The scores and the attention description are illustrative of the mechanism rather than an inspected prediction. At serving time the whole path runs on CPU at about 360 transactions a second.}
 \end{figure}
 
-What this means in practice: the linear classifier can only recognise character patterns it has already seen, so a new gambling app or a new lender is invisible to it until someone labels it. The transformer has read millions of narratives and knows what the name of a bookmaker or a lender tends to look like in a bank statement, so it gets more of them right before any label exists. That is exactly where the pipeline's remaining errors sit, which is why its gain is concentrated on never-seen merchants and on the high-risk categories.
+What this means in practice: the linear classifier recognises character patterns, so it can place a new merchant only when its name happens to share fragments with ones already labelled. The transformer has read millions of narratives and has learned what the name of a bookmaker or a lender tends to look like in a bank statement, so it gets more of them right before any label exists. That is exactly where the pipeline's remaining errors sit, which is why its gain is concentrated on never-seen merchants and on the high-risk categories.
 
 \subsection{Why an encoder transformer, and why domain pretraining}
 The output of this task is a choice from a closed list of 275 categories, which points to an encoder model with a classification head (the BERT family) rather than a generative model that writes the answer out. A fine-tuned generative model had already been tested and scored 50 to 54\% on unseen merchants, below the linear model.
@@ -83,7 +83,7 @@ Throughput, one CPU process &  & \textasciitilde{}1,050 rows/s & 360 rows/s &  \
 \includegraphics[width=\linewidth]{charts/fig-transformer.pdf}
 \caption*{Leaf-level accuracy, mean of three seeds, paired bootstrap on the same rows. Every interval sits above zero. General-level gains are larger still, at 7 to 13 points.}
 \end{figure}
-Every accuracy criterion set at the start now clears with confidence intervals excluding zero. The remaining cost is speed: the transformer scores at about a third of the linear model's rate, roughly 70 CPU-minutes for the full Plaid table, which has been judged acceptable for now. Quantisation would recover a factor of two to three if it becomes a constraint.
+Every accuracy criterion set at the start now clears with confidence intervals excluding zero. The remaining cost is speed: the transformer scores at about a third of the linear model's rate. At 360 rows a second the 42\% of Plaid rows that reach the classifier take about 85 CPU-minutes, or about 200 minutes if every row in the 4.3 million-row table were scored. That has been judged acceptable for now. Quantisation would recover a factor of two to three if it becomes a constraint.
 
 The full-pipeline number moved by only one point, because 76\% of transactions never reach the classifier. The transformer's value is concentrated where the rules cannot help: merchants nobody has labelled, and the high-risk categories the credit model cares about most.
 

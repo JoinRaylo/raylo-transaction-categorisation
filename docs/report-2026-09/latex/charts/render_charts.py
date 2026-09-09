@@ -13,7 +13,7 @@ plt.rcParams.update({'font.family':family,'font.size':9,'pdf.fonttype':42,'text.
 colors={'#1F5F8B':'#4252FF','#5A93BD':'#97A0FF','#C4643A':'#ED7C7C','#E0A287':'#FFD1C8','#8A939C':'#ABABAB','#2E7D5B':'#21831C'}
 for id,d in json.loads((ROOT/'data.json').read_text()).items():
  n=len(d['rows']);ng=len(d['rows'][0]['groups']); legend=d.get('legend',[])
- height=n*(.39 if id in ('fig-ladder','fig-ladder-champ') else .48 if ng==2 else .45)+.38+len(legend)*.28
+ height=n*(.39 if id in ('fig-ladder','fig-ladder-champ') else .58 if id in ('fig-gini','fig-stack') else .48 if ng==2 else .45)+.38+len(legend)*.28
  fig=plt.figure(figsize=(6.60,height));left=.395
  ax=fig.add_axes([left,(.36+len(legend)*.28)/height,.545,1-(.52+len(legend)*.28)/height])
  low=d.get('min',0);high=d['max']; span=high-low
