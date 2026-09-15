@@ -906,6 +906,7 @@ eqx_resolved AS (
       WHEN LOWER(TRIM(r.vendor))='roadchef' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'whsmi') THEN 'convenience_store'
       WHEN LOWER(TRIM(r.vendor))='wembley park' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'expre') THEN 'convenience_store'
       WHEN LOWER(TRIM(r.vendor))='rbs-natwest w/end credit' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'recollection|monzo') THEN 'financial_services_other'
+      WHEN LOWER(TRIM(r.vendor))='waitrose' AND r.direction='credit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'^[ \t\r\n]*waitrose[ \t]+payroll[ \t\r\n]*$') THEN 'salary'
       -- T3: MECHANISM-OVERRIDE primaries (mechanism determines leaf regardless of merchant)
       WHEN r.pri='Identified Salary' THEN 'salary'
       WHEN r.pri='Refund' THEN 'refund_received'
@@ -1179,6 +1180,7 @@ eqx_resolved AS (
       WHEN LOWER(TRIM(r.vendor))='roadchef' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'whsmi') THEN 'T2_compound_roadchef_whsmith'
       WHEN LOWER(TRIM(r.vendor))='wembley park' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'expre') THEN 'T2_compound_wembley_park_express'
       WHEN LOWER(TRIM(r.vendor))='rbs-natwest w/end credit' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'recollection|monzo') THEN 'T2_compound_natwest_westend_recollection'
+      WHEN LOWER(TRIM(r.vendor))='waitrose' AND r.direction='credit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'^[ \t\r\n]*waitrose[ \t]+payroll[ \t\r\n]*$') THEN 'T2_compound_waitrose_explicit_payroll'
       WHEN r.pri IN ('Identified Salary','Refund','Benefits','Welfare','Pension Payout','Tax Refund',
         'Cash Back','Cash Machine','Cash Deposit','Interest','Interests and Dividends',
         'Balance Transfers','Adjustments') THEN 'T3_mechanism_override'
@@ -1453,6 +1455,7 @@ plaid_resolved AS (
       WHEN LOWER(TRIM(r.merchant_raw))='roadchef' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'whsmi') THEN 'convenience_store'
       WHEN LOWER(TRIM(r.merchant_raw))='wembley park' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'expre') THEN 'convenience_store'
       WHEN LOWER(TRIM(r.merchant_raw))='rbs-natwest w/end credit' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'recollection|monzo') THEN 'financial_services_other'
+      WHEN LOWER(TRIM(r.merchant_raw))='waitrose' AND r.direction='credit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'^[ \t\r\n]*waitrose[ \t]+payroll[ \t\r\n]*$') THEN 'salary'
       WHEN r.direction='credit' AND d.leaf IN ('gambling_betting', 'gambling_casino', 'gambling_bingo', 'gambling_lottery') THEN 'gambling_unspecified'
       WHEN r.direction='credit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\brefund(ed)?\b') AND (d.leaf IS NULL OR d.leaf NOT IN ('gambling_betting', 'gambling_casino', 'gambling_bingo', 'gambling_lottery')) THEN 'refund_received'
       WHEN r.direction='credit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'returned\s+(direct\s+debit|standing\s+order)|direct\s+debit\s+reversal|\breversal of\b') THEN 'returned_payment'
@@ -1707,6 +1710,7 @@ plaid_resolved AS (
       WHEN LOWER(TRIM(r.merchant_raw))='roadchef' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'whsmi') THEN 'T2_compound_roadchef_whsmith'
       WHEN LOWER(TRIM(r.merchant_raw))='wembley park' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'expre') THEN 'T2_compound_wembley_park_express'
       WHEN LOWER(TRIM(r.merchant_raw))='rbs-natwest w/end credit' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'recollection|monzo') THEN 'T2_compound_natwest_westend_recollection'
+      WHEN LOWER(TRIM(r.merchant_raw))='waitrose' AND r.direction='credit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'^[ \t\r\n]*waitrose[ \t]+payroll[ \t\r\n]*$') THEN 'T2_compound_waitrose_explicit_payroll'
       WHEN r.direction='credit' AND d.leaf IN ('gambling_betting', 'gambling_casino', 'gambling_bingo', 'gambling_lottery') THEN 'T1_direction_gambling_credit'
       WHEN r.direction='credit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\brefund(ed)?\b') AND (d.leaf IS NULL OR d.leaf NOT IN ('gambling_betting', 'gambling_casino', 'gambling_bingo', 'gambling_lottery')) THEN 'T2_compound_refund'
       WHEN r.direction='credit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'returned\s+(direct\s+debit|standing\s+order)|direct\s+debit\s+reversal|\breversal of\b') THEN 'T2_compound_returned_payment'
