@@ -18,13 +18,22 @@ updated scores in this repo and the app monorepo. Read
 [score history](docs/waterfall-changes/README.md) before editing classification
 behaviour. Keep v5 retired and v6 reserved for final go/no-go. The [fresh complete baseline](docs/waterfall-changes/baseline-2026-09-15/RECORD.md)
 now covers 15 permitted datasets plus seven synthetic examples across 92 views.
-The mirrored research runner reproduced all results with zero changes; 1,163 app/
-library tests and 36 research tests passed. See [RUNNING.md](docs/waterfall-changes/RUNNING.md).
-Current seed-123 serving Plaid specific accuracy: holdout 77.51% (627), credits
-89.25% (2,000), targeted risk 72.25% (400). Mixed-provider research exact accuracy
-is 83.80% on 2,000 rows for this seed; the older 83.2% headline below is a three-seed
-result, not a directly comparable previous baseline. No waterfall, mask, model
-or staging change was made; the Waitrose payroll defect remains open.
+The [latest candidate, CREDIT-PAYROLL-001](docs/waterfall-changes/credit-payroll-001/RECORD.md),
+adds exactly one Waitrose + complete PAYROLL narrative + credit collision to T2.
+All 15 permitted datasets and both heads have identical real-data scores to the
+baseline, with zero regressions; the explicit synthetic payroll changes groceries
+T4 to salary T2 (5/7 synthetic cases now pass, previously 4/7). Bare credits remain
+ambiguous and unchanged. There are no exact-merchant Waitrose credits in existing
+evaluation sets, so the result does not establish generalisation. Research replay
+is identical; 1,201 app/library and 74 research tests passed. SQL was regenerated;
+four added predicates passed local RE2 checks, not a new live BigQuery execution.
+See [RUNNING.md](docs/waterfall-changes/RUNNING.md) and the candidate reproduction guide.
+Current seed-123 serving Plaid specific accuracy remains: holdout 77.51% (627),
+credits 89.25% (2,000), targeted risk 72.25% (400). Mixed-provider research exact
+accuracy remains 83.80% on 2,000 rows for this seed; the older 83.2% headline below
+is a three-seed result. The candidate source/SQL is local research code, not a
+production promotion. Models/masks and staging are unchanged; retain the original
+staging bundle until a separate release decision.
 
 ## Current state (2026-09-07) — read this first
 

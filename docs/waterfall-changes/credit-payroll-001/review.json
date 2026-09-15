@@ -1,0 +1,144 @@
+{
+  "baseline_summary_sha256": "dd2c3413513d4c2d28139947b360eb2cdd2bcdfb7434003cad743b626c3f3a1a",
+  "candidate_rows_sha256": "946147a4d6efbb2e8058fe767752b64deaa5cd1ee7e8954690020a8bdc693dc2",
+  "candidate_summary_sha256": "0e769c428a413e0e7a8b837b322446704252d76b30a6d4dbf5bdd1719eabced2",
+  "change_id": "CREDIT-PAYROLL-001",
+  "changed_non_synthetic_records": 0,
+  "changed_per_view_records": 5,
+  "correct_to_wrong": 0,
+  "fixed_baseline_residual_metrics_identical": true,
+  "paired_per_view_records": 134227,
+  "promotion": "not deployed; retain baseline staging release",
+  "quality_limit": "No Waitrose credits in real repeatable data; synthetic behaviour is not generalisation evidence.",
+  "raw_head_outputs_identical": true,
+  "research_replay_checks": {
+    "app_library_tests": {
+      "command": [
+        "/private/tmp/txncat-c2-env/bin/python",
+        "-m",
+        "pytest",
+        "apps/ob-txn-categoriser/tests",
+        "lib/raylo-txncat/tests",
+        "-q",
+        "-o",
+        "cache_dir=/private/tmp/txncat-payroll-research-replay-v1/checks/pytest-cache"
+      ],
+      "cwd": "/private/tmp/txncat-d2-worktree",
+      "exit_code": 0,
+      "log_sha256": "d6f51f9ade1a9719850c85c76b9b7d6a8363a596d056beeeec4a2e3ed2b2661f",
+      "status": "passed"
+    },
+    "deterministic_parity": {
+      "command": [
+        "/private/tmp/txncat-c2-env/bin/python",
+        "lib/raylo-txncat/scripts/verify_deterministic.py",
+        "/private/tmp/txncat-payroll-candidate-bundles/ad825a7ad1f5ef5060fe282d1b4c864c55d142982d78a3387350e1bedac3cc41",
+        "--research-root",
+        "/Users/carlosnoblejesus/Repos/raylo-transaction-categorisation",
+        "--report",
+        "/private/tmp/txncat-payroll-research-replay-v1/checks/parity.json"
+      ],
+      "cwd": "/private/tmp/txncat-d2-worktree",
+      "exit_code": 0,
+      "log_sha256": "f79ea83c634ffedad2692f6ad49c38b7858e495da196b81fc7275075928bc67a",
+      "status": "passed"
+    },
+    "lint": {
+      "command": [
+        "/private/tmp/txncat-c2-env/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "--no-cache",
+        "apps/ob-txn-categoriser",
+        "lib/raylo-txncat"
+      ],
+      "cwd": "/private/tmp/txncat-d2-worktree",
+      "exit_code": 0,
+      "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "status": "passed"
+    },
+    "real_model_startup": {
+      "command": [
+        "/private/tmp/txncat-c2-env/bin/python",
+        "apps/ob-txn-categoriser/scripts/verify_startup.py",
+        "/private/tmp/txncat-payroll-candidate-bundles/ad825a7ad1f5ef5060fe282d1b4c864c55d142982d78a3387350e1bedac3cc41",
+        "--report",
+        "/private/tmp/txncat-payroll-research-replay-v1/checks/startup.json"
+      ],
+      "cwd": "/private/tmp/txncat-d2-worktree",
+      "exit_code": 0,
+      "log_sha256": "fd834ff22a3dbda4c584078e26af4c729b8f94e469af42fec5ad99fbb95cece3",
+      "status": "passed"
+    },
+    "research_tests": {
+      "command": [
+        "/Users/carlosnoblejesus/Repos/raylo-transaction-categorisation/.venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/",
+        "-q",
+        "-o",
+        "cache_dir=/private/tmp/txncat-payroll-research-replay-v1/checks/research-pytest-cache"
+      ],
+      "cwd": "/Users/carlosnoblejesus/Repos/raylo-transaction-categorisation",
+      "exit_code": 0,
+      "log_sha256": "32778ca2257d390e4b17c49389baa54c055e3978d664551461de1489b9ff1a87",
+      "status": "passed"
+    },
+    "schemas": {
+      "command": [
+        "/private/tmp/txncat-c2-env/bin/python",
+        "apps/ob-txn-categoriser/scripts/export_schema.py",
+        "--check"
+      ],
+      "cwd": "/private/tmp/txncat-d2-worktree",
+      "exit_code": 0,
+      "log_sha256": "f44295d5e192f943475026cd1fe8b10387b721a7a100171573fc104f52f4f1d6",
+      "status": "passed"
+    }
+  },
+  "research_replay_command": [
+    "/private/tmp/txncat-c2-env/bin/python",
+    "tools/waterfall-evaluation/run_evaluations.py",
+    "--monorepo-root",
+    "/private/tmp/txncat-d2-worktree",
+    "--research-root",
+    "/Users/carlosnoblejesus/Repos/raylo-transaction-categorisation",
+    "--research-python",
+    "/Users/carlosnoblejesus/Repos/raylo-transaction-categorisation/.venv/bin/python",
+    "--bundle",
+    "/private/tmp/txncat-payroll-candidate-bundles/ad825a7ad1f5ef5060fe282d1b4c864c55d142982d78a3387350e1bedac3cc41",
+    "--bundle-sha",
+    "ad825a7ad1f5ef5060fe282d1b4c864c55d142982d78a3387350e1bedac3cc41",
+    "--output",
+    "/private/tmp/txncat-payroll-research-replay-v1",
+    "--baseline",
+    "/private/tmp/txncat-waterfall-baseline-20260915-v2"
+  ],
+  "research_replay_identical": true,
+  "research_replay_independent_validation": {
+    "methods": [
+      "original research analyse (AST-only, no module I/O)",
+      "independent specific counts",
+      "sklearn precision/recall/F1",
+      "slice totals"
+    ],
+    "metric_checks": 39984,
+    "research_analyser_sha256": "8192fd82881c98f2f934d66baf98d988704482ef6bc76dbaf4d1bdb07cc014cf",
+    "status": "passed",
+    "verifier_sha256": "3608c00be65239707dabbe43aafd61e9addaf96d6e7760e886b8be08a7cc0218",
+    "views_recounted": 92
+  },
+  "research_replay_rows_sha256": "946147a4d6efbb2e8058fe767752b64deaa5cd1ee7e8954690020a8bdc693dc2",
+  "research_replay_summary_sha256": "7fb082d34ba7cbabbcb805fda6609a741ff0ca81944fb0128efff707049c56f6",
+  "residual_membership_identical": true,
+  "reviewer_sha256": "8ba0f331a8d769b2dea1fe4954bc4717021c5413233cacc18119e3bdadf36555",
+  "status": "passed",
+  "transitions_per_view": {
+    "wrong_to_correct": 5
+  },
+  "unchanged_non_synthetic_evaluation_views": 85,
+  "unique_changed_synthetic_inputs": 1,
+  "wrong_to_different_wrong": 0
+}

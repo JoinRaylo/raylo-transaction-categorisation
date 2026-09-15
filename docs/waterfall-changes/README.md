@@ -6,12 +6,14 @@ are mirrored in the research repository at `docs/waterfall-changes/`.
 
 ## Current status — 15 September 2026
 
-The complete repeatable evaluation runner and a fresh baseline are now available.
-See [the running guide](RUNNING.md), [baseline record](baseline-2026-09-15/RECORD.md)
-and [full scores](baseline-2026-09-15/README.md). All 15 permitted datasets and seven
-synthetic examples were evaluated across 92 views; unsupported full-waterfall
-inputs retain their appropriate dictionary/head evaluations. No retailer-credit
-correction, model change or staging deployment has occurred.
+The latest evaluation is [CREDIT-PAYROLL-001](credit-payroll-001/RECORD.md): one
+exact Waitrose payroll-credit collision. All 15 permitted datasets and both heads
+were evaluated and replayed from research. Real-data scores are unchanged, with
+zero regressions; the explicit synthetic payroll case now resolves to salary.
+No existing dataset contains an exact-merchant Waitrose credit, so this is a
+verified narrow behaviour, not evidence of generalisation. Staging retains the
+original bundle; promotion is deferred. See the [baseline](baseline-2026-09-15/RECORD.md)
+and [running guide](RUNNING.md).
 
 The 14 September policy comparison remains historical baseline evidence for three
 development sets. The new baseline reproduces those scores exactly. The identical
@@ -26,6 +28,7 @@ monorepo; importing these results is not a fresh research execution.
 | BASELINE-2026-09-14 | Historical three-set comparison; T7 policy retained, no runtime change | [Report](baseline-2026-09-14/README.md), [scores](baseline-2026-09-14/summary.json), [validation](baseline-2026-09-14/validation.json), [origin and hashes](baseline-2026-09-14/origin.json) |
 | PROCESS-2026-09-15 | Documentation only; no candidate scored | [Policy](POLICY.md) |
 | BASELINE-2026-09-15 | Fresh complete inventory; current policy retained, no candidate change | [Record](baseline-2026-09-15/RECORD.md), [scores](baseline-2026-09-15/summary.json), [validation](baseline-2026-09-15/validation.json), [research replay](baseline-2026-09-15/replay.json) |
+| CREDIT-PAYROLL-001 | Evaluated; offline criteria pass, promotion deferred; zero real-data changes | [Record](credit-payroll-001/RECORD.md), [scores](credit-payroll-001/summary.json), [validation](credit-payroll-001/validation.json), [paired review and research replay](credit-payroll-001/review.json) |
 
 Append a new row for each candidate revision, including rejected changes. Do not
 overwrite earlier scores or describe a proposed change as implemented.
@@ -45,8 +48,8 @@ The intended explicit scenarios are refund and salary respectively; the bare
 merchant and amount alone cannot reliably distinguish them. No amount threshold
 or blanket credit-mask change has been adopted.
 
-Evaluate a narrow contextual override separately from broader dictionary/mask
-changes. Include independent labelled retailer-credit coverage: 1,924 of the
+The exact payroll override is evaluated in CREDIT-PAYROLL-001; broader dictionary/mask
+changes remain separate, untested candidates. Include independent labelled retailer-credit coverage: 1,924 of the
 2,000 existing credit-evaluation rows have blank merchants. Preserve bookmaker,
 returned-payment and other documented exceptions. Candidate acceptance remains
 subject to the complete evaluation and mirroring process.
