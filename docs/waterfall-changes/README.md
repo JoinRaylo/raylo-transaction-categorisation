@@ -6,6 +6,11 @@ are mirrored in the research repository at `docs/waterfall-changes/`.
 
 ## Current status — 15 September 2026
 
+The [master benchmark design](../benchmark-design/master-v1/DESIGN.md) records the
+coverage audit, proposed fresh cohorts and durable training/evaluation separation.
+This is a design with an implementation/acceptance plan, not a new scored dataset
+or deployed exclusion gate. Existing score history and locked-set rules remain.
+
 The latest evaluation is [CREDIT-PAYROLL-001](credit-payroll-001/RECORD.md): one
 exact Waitrose payroll-credit collision. All 15 permitted datasets and both heads
 were evaluated and replayed from research. Real-data scores are unchanged, with

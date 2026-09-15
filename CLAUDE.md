@@ -35,6 +35,19 @@ is a three-seed result. The candidate source/SQL is local research code, not a
 production promotion. Models/masks and staging are unchanged; retain the original
 staging bundle until a separate release decision.
 
+## Master benchmark design (2026-09-15)
+
+Read [the design](docs/benchmark-design/master-v1/DESIGN.md),
+[identity/separation contract](docs/benchmark-design/master-v1/DATA_CONTRACT.md) and
+[implementation plan](docs/benchmark-design/master-v1/IMPLEMENTATION_PLAN.md) before
+creating new evaluation or training datasets. Proposed master-v1 has core/challenge/
+sealed confirmation cohorts and permanent event/customer/effective-input exclusions
+covering supervised learning, MLM, distillation, fitted preprocessing and enrichment.
+The current suite remains development evidence; historical non-exposure is not yet
+certified. This is a design, not implemented enforcement or permission to open v6.
+Start with source/exposure inventory and the shared identity/admission contract,
+then integrate all consumers before reserving and labelling the final master.
+
 ## Current state (2026-09-07) — read this first
 
 Headline numbers as of 7 Sep. Everything below this block (2 Sep, 27 Aug) is still accurate history unless contradicted here. Stakeholder report: `docs/report-2026-09/OB_Transaction_Categorisation_Report_Sep2026.{html,pdf}` (Chrome-rendered; edit the HTML, re-print). Programme summary: `docs/programme-summary-2026-09-05.md`.
