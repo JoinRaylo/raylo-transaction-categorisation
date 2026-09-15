@@ -1,5 +1,12 @@
 # AGENT_RULES.md — labelling conventions
 
+**Waterfall change process (Carlos, 15 Sep 2026):** follow
+[POLICY.md](docs/waterfall-changes/POLICY.md) for every behavioural change. Document
+the hypothesis, rerun the complete permitted evaluation suite, mirror the app and
+research implementations, and record baseline/candidate scores and regressions
+in both repos. See [score history](docs/waterfall-changes/README.md). Locked-set
+restrictions below still apply. No change is complete without this evidence.
+
 **Review status (2026-08-26): CLOSED.** The tranche-4 / 100k merchant review is finished. Snapshot: `data/production_labels_tranche4.csv` (`needs_review` = 0). Two dual-model abstain recovery passes ran; **do not start a third** (`pack_abstain3_*` leftover agents were force-stopped). Do not re-open review packs unless Carlos asks.
 
 This file is still the **locked product/entity convention list** for any future T2/T4/T5 work or a later tranche. UK English. Closed taxonomy: `taxonomy/taxonomy.csv` `detailed_category` only. Never invent a leaf.

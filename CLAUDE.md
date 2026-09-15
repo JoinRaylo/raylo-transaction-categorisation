@@ -9,6 +9,23 @@ Owner: Carlos (AI Engineer, AI Acceleration team). This is **research**, not pro
 
 **Reading order for a new agent:** the 7 Sep block, then the 2 Sep block → `docs/project-summary.md` §8 + 27 Aug progress-log lines → `data/classifier_v5_retrain_report.md` if touching the classifier → `AGENT_RULES.md` for locked product conventions (the 100k review itself is closed). Do not treat `docs/architecture-remediation-handoff.md` as live coverage numbers (25 Aug proposal). Do not score `data/gold_transactions_v5_LOCKED.csv` (retired) or `data/gold_transactions_v6_LOCKED.csv` (locked; Carlos labelled the 8 flags 27 Aug; `apply` written). Do not score v6 until go/no-go.
 
+## Standing waterfall change process (2026-09-15)
+
+Carlos requires conservative, individually documented waterfall changes, a full
+repeatable evaluation run after every candidate revision, and mirrored code plus
+updated scores in this repo and the app monorepo. Read
+[the change policy](docs/waterfall-changes/POLICY.md) and
+[score history](docs/waterfall-changes/README.md) before editing classification
+behaviour. Keep v5 retired and v6 reserved for final go/no-go. The [fresh complete baseline](docs/waterfall-changes/baseline-2026-09-15/RECORD.md)
+now covers 15 permitted datasets plus seven synthetic examples across 92 views.
+The mirrored research runner reproduced all results with zero changes; 1,163 app/
+library tests and 36 research tests passed. See [RUNNING.md](docs/waterfall-changes/RUNNING.md).
+Current seed-123 serving Plaid specific accuracy: holdout 77.51% (627), credits
+89.25% (2,000), targeted risk 72.25% (400). Mixed-provider research exact accuracy
+is 83.80% on 2,000 rows for this seed; the older 83.2% headline below is a three-seed
+result, not a directly comparable previous baseline. No waterfall, mask, model
+or staging change was made; the Waitrose payroll defect remains open.
+
 ## Current state (2026-09-07) — read this first
 
 Headline numbers as of 7 Sep. Everything below this block (2 Sep, 27 Aug) is still accurate history unless contradicted here. Stakeholder report: `docs/report-2026-09/OB_Transaction_Categorisation_Report_Sep2026.{html,pdf}` (Chrome-rendered; edit the HTML, re-print). Programme summary: `docs/programme-summary-2026-09-05.md`.

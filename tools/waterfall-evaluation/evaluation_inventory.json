@@ -1,0 +1,42 @@
+{
+  "schema_version": "waterfall-evaluation-inventory-v1",
+  "base_registry_sha256": "e0220c7199711f91f649ffd010ba844ae490e6cb3ab0a1e7de384477275ca11b",
+  "tasks": {
+    "gold_credit_eval": "transactions",
+    "gold_merchant_labels": "merchant_dictionary",
+    "gold_tail_labels": "merchant_dictionary",
+    "gold_transactions": "transactions",
+    "gold_transactions_risk_categories": "head_and_t5",
+    "gold_transactions_risk_t6bound": "transactions",
+    "gold_transactions_v2": "transactions",
+    "gold_transactions_v2_batch2": "transactions",
+    "gold_transactions_v3_volume": "transactions",
+    "gold_transactions_v4_slm_volume": "v4_context_join",
+    "gold_v2_slm_eval_holdout": "transactions",
+    "gold_v3_eyeball": "transactions",
+    "gold_v4_eyeball": "transactions",
+    "tuning_validation": "head_validation",
+    "gold_pipeline_eval": "transactions"
+  },
+  "additional_entries": [
+    {
+      "dataset_id": "gold_pipeline_eval",
+      "path": "outputs/gold_pipeline_eval.csv",
+      "sha256": "e5c97ee9f187232e9a9311cfe104e69739305b830e205016ab39e406c7bcc498",
+      "role": "development",
+      "format": "csv",
+      "transaction_id_columns": [],
+      "merchant_columns": [
+        "merchant_raw"
+      ],
+      "exclude_from": [
+        "supervised_training",
+        "dictionary_candidates",
+        "prompt_examples",
+        "evidence_retrieval"
+      ],
+      "confirmation_max_uses": 0
+    }
+  ],
+  "additional_entry_note": "Existing historical development benchmark from src/score_waterfall_pipeline.py; preserve its materialised bytes, do not rebuild from current training data. Consumer exclusions apply to the union of the frozen registry and these additional entries."
+}

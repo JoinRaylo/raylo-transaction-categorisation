@@ -1,0 +1,21 @@
+{
+  "assessment": "share_with_caveats",
+  "policy_metric_cross_checks": 24,
+  "research_confusion_analyser_parity": true,
+  "independent_specific_accuracy_and_coverage_counts": true,
+  "risk_unknown_gold_separated_from_known_nonrisk": true,
+  "all_subtotals_and_rescue_deltas_match": true,
+  "source_hashes_match": true,
+  "metric_unit_tests_passed": 4,
+  "confusion_analyser_sha256": "8192fd82881c98f2f934d66baf98d988704482ef6bc76dbaf4d1bdb07cc014cf",
+  "summary_sha256": "a05d1a67a60a56d3c4f484ff1378c1b74edd9fbf2da1a3daa247a2e87bef2210",
+  "local_diagnostics_sha256": "4ee5f138992c7eeddd557f39a6858ce983e8328509a5780be3c760c454409f8e",
+  "caveats": [
+    "Development data previously used in model/rule selection; not independent confirmation.",
+    "Three differently sampled populations are not a representative pooled accuracy estimate.",
+    "Gold labels include unclassified outcomes and varying human/agent provenance.",
+    "Credit set has 12 exact-input groups with conflicting gold; unique-input sensitivity excludes those groups.",
+    "Blank merchant and related narrative templates limit claims of merchant-family independence.",
+    "Quality-only offline execution; not a latency, payload integration or deployed-container test."
+  ]
+}

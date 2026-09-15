@@ -4,6 +4,8 @@ Research repo for a single transaction taxonomy across Raylo's Open Banking prov
 
 **Status: research. Nothing here is in production.** No dbt model or scheduled job references this repo, and it must stay that way until work is explicitly promoted.
 
+- **Fresh waterfall baseline (15 Sep):** [Results and verification](docs/waterfall-changes/baseline-2026-09-15/RECORD.md), [run/compare guide](docs/waterfall-changes/RUNNING.md), [required process](docs/waterfall-changes/POLICY.md) and [score history](docs/waterfall-changes/README.md). All 15 permitted datasets plus seven synthetic examples ran; the research replay produced zero differences. No classification policy changed.
+
 - **Agent context (read first):** [`CLAUDE.md`](CLAUDE.md) — includes **2026-09-07 and 2026-09-02 current-state** blocks
 - **Stakeholder report (Sep 2026):** [`docs/report-2026-09/OB_Transaction_Categorisation_Report_Sep2026.pdf`](docs/report-2026-09/OB_Transaction_Categorisation_Report_Sep2026.pdf) (HTML source alongside)
 - **Stakeholder overview + progress log:** [`docs/project-summary.md`](docs/project-summary.md)
