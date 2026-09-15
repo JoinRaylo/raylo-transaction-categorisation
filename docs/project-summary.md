@@ -34,6 +34,8 @@ The human review found the models were right or acceptably right on ~70% of disp
 
 ## 8. Where we are now
 
+**15 September 2026 — curation foundation.** The [three-view contract and local checks](benchmark-implementation/b02-initial/README.md) now distinguish representative future transactions, unseen model inputs and unfamiliar merchants. Source identities remain protected in all three; recurring inputs are permitted only where the declared view allows them. A synthetic profiling command and the report-ID extractor source fix are verified. Real candidate eligibility, durable reservation and labelling remain future work. Existing accuracy scores and staging are unchanged.
+
 **15 September 2026 — benchmark audit addendum.** [B01](benchmark-audits/b01-2026-09-15/REPORT.md) confirms that the preserved pretraining corpus contains every input in the 2,000-row credit and 400-row targeted-risk evaluations. Selection validation also overlaps reconstructed supervised distillation inputs. Older held-out claims do not certify an untouched engine benchmark; retain the scores as development evidence, without claiming this audit measures their inflation. The current Plaid source has 35.55M rows, but only 56.49% resolves to users/customers and all stored asset-report IDs are null. Preserve/fix identity and enforce ancestry-wide admission before collecting the proposed master. No categorisation behaviour, model or staging deployment changed.
 
 **As of 2 September 2026.** A full review of the programme (`docs/review-2026-09-02-state-and-next-steps.md`) confirmed the design but found the measurements were flattering, and the first week of fixes has landed. Three numbers changed meaning:
@@ -65,6 +67,8 @@ Side-findings still outstanding outside this repo: every Plaid Asset Report stil
 ---
 
 ## Progress log
+
+- **2026-09-15 (B02 initial curation foundation)** — Added the approved three-view amendment, one shared hash-pinned policy implementation, mirrored profiling adapter and synthetic fixtures. App/library tests: 1,298 passed; payload-extractor: 93 passed. Actual retained tokenizer confirms truncation-collision checks. Report-ID parsing corrected in app source; deployment/backfill remain pending. No real benchmark candidates reserved or labelled. [Evidence and next steps](benchmark-implementation/b02-initial/README.md).
 
 - **2026-09-15 (B01 historical exposure and source identity audit)** — Inventoried 95 local paths, independently verified five key pretraining-overlap counts and reconstructed both classifier sampling stages; profiled warehouse sources with seven aggregate SELECTs. Mirrored report, hashes, scripts and receipts in the app/research repos. Clean master admission remains unestablished; source identity repairs and B02 controls are next. [Evidence](benchmark-audits/b01-2026-09-15/REPORT.md).
 

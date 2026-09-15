@@ -65,6 +65,23 @@ does not quantify accuracy inflation, certify a clean cohort or change any model
 The old risk/sequence-model experiments have separate ancestry and are not certified
 by this categorizer audit. No v5/v6 content was opened, and staging is unchanged.
 
+## Benchmark curation foundation (2026-09-15)
+
+The approved [three-view amendment](docs/benchmark-implementation/b02-initial/CONTRACT_AMENDMENT.md)
+supersedes master-v1's universal input-novelty requirement: representative new events
+may naturally repeat historical model inputs; strict unseen-input and unfamiliar-family
+views keep their additional exclusions. All views protect event/customer/account
+separation. Views may overlap within a partition; they are not independent datasets.
+The canonical local preflight code is in the monorepo `raylo_txncat.benchmark`.
+Run the mirrored `tools/benchmark/benchmark_preflight.py` with that checkout and
+the hash-pinned implementation manifest; do not fork the exclusion algorithm here.
+[Evidence](docs/benchmark-implementation/b02-initial/README.md): 1,298 app/library
+and 93 payload-extractor tests passed; synthetic app/research profiling is checked
+against the same source. Every result has `authorizes_consumption=false`. These are
+local checks, not B03 reservation receipts or B04 consumer enforcement. Source identity
+repair/backfill, complete historical projections/indexes and a real candidate export
+remain pending. No labels, training, model scores, waterfall or deployment changed.
+
 ## Current state (2026-09-07) — read this first
 
 Headline numbers as of 7 Sep. Everything below this block (2 Sep, 27 Aug) is still accurate history unless contradicted here. Stakeholder report: `docs/report-2026-09/OB_Transaction_Categorisation_Report_Sep2026.{html,pdf}` (Chrome-rendered; edit the HTML, re-print). Programme summary: `docs/programme-summary-2026-09-05.md`.

@@ -1,0 +1,79 @@
+{
+  "completed_scope": [
+    "strict private subject/index schema and HMAC helper",
+    "view-specific snapshot comparisons and permanent lifecycle policy",
+    "aggregate profiling CLI with source pins, duplicate guards and output protection",
+    "report-level asset ID extraction source fix"
+  ],
+  "environment_setup_notes": [
+    "Initial combined importlib-mode collection failed on existing sibling-test imports and absent BigQuery dependency; app suite used its normal import mode.",
+    "Research environment lacked google-cloud-storage; payload suite used the existing complete workspace environment. No dependency installation or source workaround was needed.",
+    "Broader lint found 18 pre-existing style issues in hash-pinned master-v1/audit/audit.py. Its bytes were preserved; a single-path Ruff exclusion marks that historical artifact."
+  ],
+  "files_sha256": {
+    "apps/ob-txn-categoriser/scripts/benchmark_preflight.py": "fb97ea69fa47c2d6bdc399f792e110fd13590d79b280660924483173176235dc",
+    "apps/ob-txn-categoriser/tests/unit/test_benchmark_preflight.py": "e37e855870e8c68c74ac236ebb152a5d9a77c0ede3e350b6b4ebaec2e2f449d2",
+    "apps/payload-extractor/src/payload_extractor/parsers.py": "d02a92fc1ab24267f99dbc2785c7bd1bf7df69031f5a2ceca032b003126a8cbe",
+    "apps/payload-extractor/tests/unit/test_plaid_report_identity.py": "98c1a1f26a6f154f755a66718cbcc487d39f26088b16ff2d51a48c96bf8c251a",
+    "lib/raylo-txncat/src/raylo_txncat/benchmark.py": "4595f5d5fa0a0bc92fcdf1316af91f6f3659628f82152aa5730a7ebd532a2bb3",
+    "lib/raylo-txncat/tests/test_benchmark.py": "6e18accc46324cdf7e4b34557c2030e97969c5b217759e17f8c52daddd30e8d8",
+    "pyproject.toml": "4558018e39665458722d9595bf106eae8d902b4e89a01934337ec25cfb1e9a9c"
+  },
+  "not_performed": [
+    "training",
+    "model scoring",
+    "waterfall changes",
+    "deployment",
+    "BigQuery mutations",
+    "benchmark reservation",
+    "real transaction export",
+    "locked evaluation reads"
+  ],
+  "policy_version": "three-views-v1",
+  "remaining": [
+    "Original source/alias/projection evidence and scalable exposure indexes",
+    "Full research legacy parsing/MLM chunk/teacher/sparse vectorizer projections",
+    "B03 durable atomic reservation, key/alias migration and authenticated receipt issuance",
+    "B04 actual consumers and independent promotion admission",
+    "Source fix deployment and reconciled historical repair",
+    "Private real candidate extract and per-view eligibility counts",
+    "Sampling, 500-row pilot, labels, sealed access and first baseline"
+  ],
+  "research_replay": {
+    "adapter": "tools/benchmark/benchmark_preflight.py",
+    "canonical_source": "same manifest-pinned monorepo implementation",
+    "interpreter": "research .venv Python 3.14",
+    "profile_sha256": "943d0dc69fa76ee1e5821f392fff360c6c7b4d04bc5c1dd0a36cec33d1b11c73",
+    "status": "byte_identical"
+  },
+  "safety_boundary": "All local decisions explicitly authorizes_consumption=false; callers cannot use them as authority receipts.",
+  "status": "passed_local_foundation",
+  "synthetic_profile": {
+    "eligible_by_view": {
+      "representative": 4,
+      "unfamiliar_merchant": 1,
+      "unseen_input": 3
+    },
+    "real_data_count": false,
+    "rows": 6
+  },
+  "tests": {
+    "actual_tokenizer_projection": "projection-verification.json",
+    "app_library_suite": {
+      "command": "PYTHONPATH=apps/ob-txn-categoriser/src:lib/raylo-txncat/src:lib/raylo-config/src:lib/raylo-objectstore/src /private/tmp/txncat-c2-env/bin/python -m pytest lib/raylo-txncat/tests apps/ob-txn-categoriser/tests -q",
+      "passed": 1298,
+      "warning": "Existing Starlette/httpx deprecation warning"
+    },
+    "full_touched_project_lint": "passed; one immutable pre-existing master-v1 audit snapshot is explicitly excluded in root Ruff configuration",
+    "lint_and_changed_file_format": "passed",
+    "new_boundary_cases": {
+      "benchmark_policy": 91,
+      "profiling_cli": 6,
+      "report_extraction": 9
+    },
+    "payload_extractor_suite": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=apps/payload-extractor/src:lib/raylo-logging/src /Users/carlosnoblejesus/Repos/internal-services-monorepo/.venv/bin/python -m pytest apps/payload-extractor/tests -q",
+      "passed": 93
+    }
+  }
+}

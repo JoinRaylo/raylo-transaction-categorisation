@@ -1,0 +1,11 @@
+{
+  "files_sha256": {
+    "lib/raylo-txncat/src/raylo_txncat/__init__.py": "40344ce3bfa44b8f3e4359e080bba310ca04a82b9a6d3497a472f1d9e69d463b",
+    "lib/raylo-txncat/src/raylo_txncat/benchmark.py": "4595f5d5fa0a0bc92fcdf1316af91f6f3659628f82152aa5730a7ebd532a2bb3",
+    "lib/raylo-txncat/src/raylo_txncat/classifier_types.py": "a2115a8bce44a8c401927f64eeac364165892bbd59bd984500ec7b2aa6eaca03",
+    "lib/raylo-txncat/src/raylo_txncat/hashing.py": "0a2ec7606f4b6f44db1145c59acabc828f1c50f8663d2c2d71a2759b9f4aade1",
+    "lib/raylo-txncat/src/raylo_txncat/head_hinge.py": "5dc21d11f89f96124d09534d63d2a478be7176bce1058ee6526645778cc700fd",
+    "lib/raylo-txncat/src/raylo_txncat/types.py": "8c78aa184a30f96ed4eb305d8d2c9585d98aa5e588eb000b93aced73f52086b3"
+  },
+  "policy_version": "three-views-v1"
+}
