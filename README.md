@@ -4,6 +4,8 @@ Research repo for a single transaction taxonomy across Raylo's Open Banking prov
 
 **Status: research. Nothing here is in production.** No dbt model or scheduled job references this repo, and it must stay that way until work is explicitly promoted.
 
+- **B01 exposure/source-identity audit (15 Sep):** [Findings and evidence](docs/benchmark-audits/b01-2026-09-15/REPORT.md). Exact pretraining matches cover all 2,000 credit and 400 targeted-risk evaluation inputs; selection validation also overlaps supervised distillation. Current Plaid data is large but only 56.49% links to users/customers, and all stored asset-report IDs are null. Existing scores remain development evidence; no clean master is certified and no pipeline changed.
+
 - **Master benchmark design (15 Sep):** [Design](docs/benchmark-design/master-v1/DESIGN.md), [identity/separation contract](docs/benchmark-design/master-v1/DATA_CONTRACT.md) and [implementation plan](docs/benchmark-design/master-v1/IMPLEMENTATION_PLAN.md). Proposed 20,000-row core/challenge/confirmation benchmark with permanent training/pretraining/enrichment exclusions. Design only: no new dataset collected or admission enforcement deployed.
 
 - **Latest evaluated correction (15 Sep):** [CREDIT-PAYROLL-001](docs/waterfall-changes/credit-payroll-001/RECORD.md) adds one exact Waitrose payroll-credit collision. Both heads and all 15 permitted datasets passed with unchanged real-data scores; the synthetic explicit payroll case is fixed. There are no exact-merchant Waitrose credits in the existing datasets. Research replay is identical; staging promotion is deferred.

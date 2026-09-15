@@ -1,0 +1,271 @@
+{
+  "account_report_completeness": {
+    "dry_run_bytes": 3500798481,
+    "ended_at_unix_ms": "1789496820224",
+    "executed": true,
+    "job_id": "txncat_b01_account_report_completeness_06ad646cce26",
+    "job_reference": {
+      "jobId": "txncat_b01_account_report_completeness_06ad646cce26",
+      "location": "EU",
+      "projectId": "raylo-production"
+    },
+    "maximum_bytes_billed": 20000000000,
+    "query_name": "account_report_completeness",
+    "query_statistics": {
+      "cacheHit": false,
+      "referencedTables": [
+        {
+          "datasetId": "landing_external_requests",
+          "projectId": "raylo-production",
+          "tableId": "external_requests_taktile_plaid_transactions"
+        },
+        {
+          "datasetId": "landing_external_requests",
+          "projectId": "raylo-production",
+          "tableId": "external_requests_taktile_plaid_asset_reports"
+        },
+        {
+          "datasetId": "landing_external_requests",
+          "projectId": "raylo-production",
+          "tableId": "external_requests_taktile_plaid_accounts"
+        }
+      ],
+      "statementType": "SELECT",
+      "totalBytesBilled": "3501195264",
+      "totalBytesProcessed": "3500798481",
+      "totalSlotMs": "544728"
+    },
+    "result_rows": 1,
+    "result_sha256": "aac1fb7bf74acf9a13f74215ac977766cb607d42bffefa5aa0914b86550d25da",
+    "sql_sha256": "b8f68126a99f1df732ad88938f0d8362d1759dcae47d409c8630134099ab9881",
+    "started_at_unix_ms": "1789496818018",
+    "statement_type": "SELECT"
+  },
+  "current_profile": {
+    "dry_run_bytes": 8619466519,
+    "ended_at_unix_ms": "1789496234038",
+    "executed": true,
+    "job_id": "txncat_b01_current_profile_15c4acc80b3e",
+    "job_reference": {
+      "jobId": "txncat_b01_current_profile_15c4acc80b3e",
+      "location": "EU",
+      "projectId": "raylo-production"
+    },
+    "maximum_bytes_billed": 20000000000,
+    "query_name": "current_profile",
+    "query_statistics": {
+      "cacheHit": false,
+      "referencedTables": [
+        {
+          "datasetId": "dbt_production",
+          "projectId": "raylo-production",
+          "tableId": "intermediate_credit_plaid_transactions"
+        }
+      ],
+      "statementType": "SELECT",
+      "totalBytesBilled": "8620343296",
+      "totalBytesProcessed": "8619466519",
+      "totalSlotMs": "274032"
+    },
+    "result_rows": 17,
+    "result_sha256": "ce02ab64246329cfbdeb77cfe65a56919046862df71956a29f8a23999fb95087",
+    "sql_sha256": "c33f04a9f31f119ab56472c5d8a65a5786ce293ba790735a92f15bc06cb9c3d1",
+    "started_at_unix_ms": "1789496230550",
+    "statement_type": "SELECT"
+  },
+  "customer_linkage": {
+    "dry_run_bytes": 3391718978,
+    "ended_at_unix_ms": "1789496242842",
+    "executed": true,
+    "job_id": "txncat_b01_customer_linkage_d80474de7106",
+    "job_reference": {
+      "jobId": "txncat_b01_customer_linkage_d80474de7106",
+      "location": "EU",
+      "projectId": "raylo-production"
+    },
+    "maximum_bytes_billed": 20000000000,
+    "query_name": "customer_linkage",
+    "query_statistics": {
+      "cacheHit": false,
+      "referencedTables": [
+        {
+          "datasetId": "dbt_production",
+          "projectId": "raylo-production",
+          "tableId": "intermediate_core_aggregated_identities"
+        },
+        {
+          "datasetId": "dbt_production",
+          "projectId": "raylo-production",
+          "tableId": "intermediate_credit_plaid_transactions"
+        },
+        {
+          "datasetId": "dbt_production",
+          "projectId": "raylo-production",
+          "tableId": "credit_plaid_open_banking_transactions"
+        }
+      ],
+      "statementType": "SELECT",
+      "totalBytesBilled": "3392143360",
+      "totalBytesProcessed": "3391718978",
+      "totalSlotMs": "361257"
+    },
+    "result_rows": 1,
+    "result_sha256": "d0d37fc003229c3b57c6c5b79a8f362f778322d772aa0604463a46d74ae591a8",
+    "sql_sha256": "1f533c1633de3793453191b27447d0fa355d047f8b194f585bc939e4f0d0ffbc",
+    "started_at_unix_ms": "1789496237847",
+    "statement_type": "SELECT"
+  },
+  "direct_user_linkage": {
+    "dry_run_bytes": 4042283973,
+    "ended_at_unix_ms": "1789496609716",
+    "executed": true,
+    "job_id": "txncat_b01_direct_user_linkage_725121d5e12e",
+    "job_reference": {
+      "jobId": "txncat_b01_direct_user_linkage_725121d5e12e",
+      "location": "EU",
+      "projectId": "raylo-production"
+    },
+    "maximum_bytes_billed": 20000000000,
+    "query_name": "direct_user_linkage",
+    "query_statistics": {
+      "cacheHit": false,
+      "referencedTables": [
+        {
+          "datasetId": "dbt_production",
+          "projectId": "raylo-production",
+          "tableId": "intermediate_raylo_production__checkout_risk_assessment_results_latest"
+        },
+        {
+          "datasetId": "dbt_production",
+          "projectId": "raylo-production",
+          "tableId": "intermediate_credit_plaid_transactions"
+        },
+        {
+          "datasetId": "airbyte_raylo_prod",
+          "projectId": "raylo-production",
+          "tableId": "users"
+        },
+        {
+          "datasetId": "airbyte_raylo_prod",
+          "projectId": "raylo-production",
+          "tableId": "checkouts"
+        },
+        {
+          "datasetId": "dbt_production",
+          "projectId": "raylo-production",
+          "tableId": "credit_plaid_open_banking_transactions"
+        }
+      ],
+      "statementType": "SELECT",
+      "totalBytesBilled": "4043309056",
+      "totalBytesProcessed": "4042283973",
+      "totalSlotMs": "1396737"
+    },
+    "result_rows": 2,
+    "result_sha256": "48298edf5b0cbf59a7a846b76d3e6afafde0bac8aeb360f91976bbe7c65270ae",
+    "sql_sha256": "bebce3153f694b69293e6501853adc3a64fde719c201208b76767eafe993a9e3",
+    "started_at_unix_ms": "1789496600344",
+    "statement_type": "SELECT"
+  },
+  "historical_input_proxy": {
+    "dry_run_bytes": 3585922873,
+    "ended_at_unix_ms": "1789496260349",
+    "executed": true,
+    "job_id": "txncat_b01_historical_input_proxy_9b8adde3f740",
+    "job_reference": {
+      "jobId": "txncat_b01_historical_input_proxy_9b8adde3f740",
+      "location": "EU",
+      "projectId": "raylo-production"
+    },
+    "maximum_bytes_billed": 20000000000,
+    "query_name": "historical_input_proxy",
+    "query_statistics": {
+      "cacheHit": false,
+      "referencedTables": [
+        {
+          "datasetId": "dbt_production",
+          "projectId": "raylo-production",
+          "tableId": "credit_plaid_open_banking_transactions"
+        },
+        {
+          "datasetId": "dbt_production",
+          "projectId": "raylo-production",
+          "tableId": "intermediate_credit_plaid_transactions"
+        }
+      ],
+      "statementType": "SELECT",
+      "totalBytesBilled": "3586129920",
+      "totalBytesProcessed": "3585922873",
+      "totalSlotMs": "150538"
+    },
+    "result_rows": 68,
+    "result_sha256": "0649d5be64a4c760e4dced07992cfb6ce9dd31967893fd2215e2147a6d5bf47a",
+    "sql_sha256": "b1f7ffb313515d8abec2b5e3a015bc4e0146b5fa2208166f8f4c19bf11928b37",
+    "started_at_unix_ms": "1789496258473",
+    "statement_type": "SELECT"
+  },
+  "legacy_identity": {
+    "dry_run_bytes": 1238535762,
+    "ended_at_unix_ms": "1789496226698",
+    "executed": true,
+    "job_id": "txncat_b01_legacy_identity_18649d741b5f",
+    "job_reference": {
+      "jobId": "txncat_b01_legacy_identity_18649d741b5f",
+      "location": "EU",
+      "projectId": "raylo-production"
+    },
+    "maximum_bytes_billed": 20000000000,
+    "query_name": "legacy_identity",
+    "query_statistics": {
+      "cacheHit": false,
+      "referencedTables": [
+        {
+          "datasetId": "dbt_production",
+          "projectId": "raylo-production",
+          "tableId": "credit_plaid_open_banking_transactions"
+        }
+      ],
+      "statementType": "SELECT",
+      "totalBytesBilled": "1239416832",
+      "totalBytesProcessed": "1238535762",
+      "totalSlotMs": "199302"
+    },
+    "result_rows": 1,
+    "result_sha256": "5f395e649741e6e096ea2c2f2b5c2c1e41f4bed9a9ffab044b480f9aa0ec6316",
+    "sql_sha256": "2163292370ab4e8b0dbb1bcac261bee493b89abeaaaa624b7dd57e92c8521199",
+    "started_at_unix_ms": "1789496222308",
+    "statement_type": "SELECT"
+  },
+  "repeated_observations": {
+    "dry_run_bytes": 11053718420,
+    "ended_at_unix_ms": "1789496254072",
+    "executed": true,
+    "job_id": "txncat_b01_repeated_observations_e2d8e18006ec",
+    "job_reference": {
+      "jobId": "txncat_b01_repeated_observations_e2d8e18006ec",
+      "location": "EU",
+      "projectId": "raylo-production"
+    },
+    "maximum_bytes_billed": 20000000000,
+    "query_name": "repeated_observations",
+    "query_statistics": {
+      "cacheHit": false,
+      "referencedTables": [
+        {
+          "datasetId": "landing_external_requests",
+          "projectId": "raylo-production",
+          "tableId": "external_requests_taktile_plaid_transactions"
+        }
+      ],
+      "statementType": "SELECT",
+      "totalBytesBilled": "11054088192",
+      "totalBytesProcessed": "11053718420",
+      "totalSlotMs": "908999"
+    },
+    "result_rows": 1,
+    "result_sha256": "9d5225cd2283478cdb49442286d264d95bda970174d8fe8a15921c9c665753dc",
+    "sql_sha256": "93bbeb37c83a97c5619e2365b5aa1f8fc9eb068821518a15633e27371003ad54",
+    "started_at_unix_ms": "1789496246964",
+    "statement_type": "SELECT"
+  }
+}

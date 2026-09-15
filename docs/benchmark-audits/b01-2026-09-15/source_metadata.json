@@ -1,0 +1,1184 @@
+{
+  "account_source": {
+    "creationTime": "1785349812483",
+    "id": "raylo-production:landing_external_requests.external_requests_taktile_plaid_accounts",
+    "lastModifiedTime": "1789490399033",
+    "numBytes": "239659698",
+    "numRows": "685371",
+    "original_metadata_sha256": "32e7fa2279a7f9a0faf8fa64fed9d2602d6f7be2e2fc024e99d4bbc6472c0ada",
+    "schema": {
+      "fields": [
+        {
+          "mode": "REQUIRED",
+          "name": "external_request_id",
+          "type": "STRING"
+        },
+        {
+          "name": "resource_type",
+          "type": "STRING"
+        },
+        {
+          "name": "resource_id",
+          "type": "STRING"
+        },
+        {
+          "name": "external_request_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "external_request_updated_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "checkout_risk_assessment_result_id",
+          "type": "STRING"
+        },
+        {
+          "name": "account_id",
+          "type": "STRING"
+        },
+        {
+          "name": "account_name",
+          "type": "STRING"
+        },
+        {
+          "name": "account_mask",
+          "type": "STRING"
+        },
+        {
+          "name": "account_subtype",
+          "type": "STRING"
+        },
+        {
+          "name": "account_currency_code",
+          "type": "STRING"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "ingested_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "gcs_dt",
+          "type": "DATE"
+        },
+        {
+          "name": "gcs_uri",
+          "type": "STRING"
+        },
+        {
+          "name": "file_part",
+          "type": "INTEGER"
+        }
+      ]
+    },
+    "timePartitioning": {
+      "field": "external_request_created_at",
+      "type": "DAY"
+    },
+    "type": "TABLE"
+  },
+  "assessments": {
+    "creationTime": "1789491942358",
+    "id": "raylo-production:dbt_production.intermediate_raylo_production__checkout_risk_assessment_results_latest",
+    "lastModifiedTime": "1789491943350",
+    "numBytes": "455078696",
+    "numRows": "2886524",
+    "original_metadata_sha256": "00c73a159bbc97d73789f0dda9fcf9dd5386d0c0d2d6a914c7d63e8e2aaf1ad7",
+    "schema": {
+      "fields": [
+        {
+          "description": "Checkout risk assessment result id",
+          "name": "checkout_risk_assessment_result_id",
+          "type": "STRING"
+        },
+        {
+          "name": "checkout_id",
+          "type": "STRING"
+        },
+        {
+          "name": "partner_id",
+          "type": "STRING"
+        },
+        {
+          "name": "state",
+          "type": "STRING"
+        },
+        {
+          "name": "external_state",
+          "type": "STRING"
+        },
+        {
+          "name": "next_action_type",
+          "type": "STRING"
+        },
+        {
+          "name": "next_action_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMP"
+        }
+      ]
+    },
+    "type": "TABLE"
+  },
+  "checkouts": {
+    "creationTime": "1789491841977",
+    "id": "raylo-production:dbt_production.stg_raylo_production__checkouts",
+    "lastModifiedTime": "1789491842660",
+    "numBytes": "0",
+    "numRows": "0",
+    "original_metadata_sha256": "39bcd4e019bd2f703af86c606c974fac7acae9c6c3cb6e35c09aac588b4e9900",
+    "schema": {
+      "fields": [
+        {
+          "description": "The primary key for this table",
+          "name": "checkout_id",
+          "type": "STRING"
+        },
+        {
+          "name": "user_id",
+          "type": "STRING"
+        },
+        {
+          "name": "address_id",
+          "type": "STRING"
+        },
+        {
+          "name": "expires_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "invitation_id",
+          "type": "STRING"
+        },
+        {
+          "name": "privacy_policy_accepted_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "terms_and_conditions_accepted_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "state",
+          "type": "STRING"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "checkout_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "checkout_updated_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "friendly_reference",
+          "type": "STRING"
+        },
+        {
+          "name": "recent_change_of_address",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "recent_change_of_country",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "previous_address_id",
+          "type": "STRING"
+        },
+        {
+          "name": "merchant_id",
+          "type": "STRING"
+        },
+        {
+          "name": "organization_id",
+          "type": "STRING"
+        },
+        {
+          "name": "for_organization",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "is_business_checkout",
+          "type": "BOOLEAN"
+        }
+      ]
+    },
+    "type": "VIEW"
+  },
+  "current_plaid_raw": {
+    "creationTime": "1785349820096",
+    "id": "raylo-production:landing_external_requests.external_requests_taktile_plaid_transactions",
+    "lastModifiedTime": "1789490414239",
+    "numBytes": "84354369279",
+    "numRows": "163914746",
+    "original_metadata_sha256": "f5937b73b678b8548d3ec7457fbdeea5d8cfc422f004c4f7b99b44355ab51889",
+    "schema": {
+      "fields": [
+        {
+          "mode": "REQUIRED",
+          "name": "external_request_id",
+          "type": "STRING"
+        },
+        {
+          "name": "resource_type",
+          "type": "STRING"
+        },
+        {
+          "name": "resource_id",
+          "type": "STRING"
+        },
+        {
+          "name": "external_request_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "external_request_updated_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "checkout_risk_assessment_result_id",
+          "type": "STRING"
+        },
+        {
+          "name": "account_id",
+          "type": "STRING"
+        },
+        {
+          "name": "transaction_id",
+          "type": "STRING"
+        },
+        {
+          "name": "transaction_date",
+          "type": "STRING"
+        },
+        {
+          "name": "date_transacted",
+          "type": "STRING"
+        },
+        {
+          "name": "amount",
+          "type": "STRING"
+        },
+        {
+          "name": "transaction_name",
+          "type": "STRING"
+        },
+        {
+          "name": "merchant_name",
+          "type": "STRING"
+        },
+        {
+          "name": "description",
+          "type": "STRING"
+        },
+        {
+          "name": "reference_number",
+          "type": "STRING"
+        },
+        {
+          "name": "payment_method",
+          "type": "STRING"
+        },
+        {
+          "mode": "REPEATED",
+          "name": "category",
+          "type": "STRING"
+        },
+        {
+          "name": "primary_credit_category",
+          "type": "STRING"
+        },
+        {
+          "name": "detailed_credit_category",
+          "type": "STRING"
+        },
+        {
+          "name": "location_address",
+          "type": "STRING"
+        },
+        {
+          "name": "location_city",
+          "type": "STRING"
+        },
+        {
+          "name": "location_country",
+          "type": "STRING"
+        },
+        {
+          "name": "location_region",
+          "type": "STRING"
+        },
+        {
+          "name": "location_postal_code",
+          "type": "STRING"
+        },
+        {
+          "name": "location_lat",
+          "type": "STRING"
+        },
+        {
+          "name": "location_lon",
+          "type": "STRING"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "ingested_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "location_store_number",
+          "type": "STRING"
+        },
+        {
+          "name": "gcs_dt",
+          "type": "DATE"
+        },
+        {
+          "name": "gcs_uri",
+          "type": "STRING"
+        },
+        {
+          "name": "file_part",
+          "type": "INTEGER"
+        }
+      ]
+    },
+    "timePartitioning": {
+      "field": "external_request_created_at",
+      "type": "DAY"
+    },
+    "type": "TABLE"
+  },
+  "current_plaid_stage": {
+    "creationTime": "1789436073842",
+    "id": "raylo-production:dbt_production.stg_landing_external_requests__external_requests_taktile_plaid_transactions",
+    "lastModifiedTime": "1789436074648",
+    "numBytes": "0",
+    "numRows": "0",
+    "original_metadata_sha256": "eba138f647ccdb9dd8f8c51849f252f82687958d6f4563e1ba6345125b0286ba",
+    "schema": {
+      "fields": [
+        {
+          "description": "External requests row (the asset_report response) this transaction came from",
+          "name": "external_request_id",
+          "type": "STRING"
+        },
+        {
+          "name": "checkout_risk_assessment_result_id",
+          "type": "STRING"
+        },
+        {
+          "name": "account_id",
+          "type": "STRING"
+        },
+        {
+          "description": "Plaid transaction id",
+          "name": "transaction_id",
+          "type": "STRING"
+        },
+        {
+          "name": "transaction_date",
+          "type": "STRING"
+        },
+        {
+          "name": "date_transacted",
+          "type": "STRING"
+        },
+        {
+          "name": "amount",
+          "type": "FLOAT"
+        },
+        {
+          "name": "transaction_name",
+          "type": "STRING"
+        },
+        {
+          "name": "merchant_name",
+          "type": "STRING"
+        },
+        {
+          "name": "description",
+          "type": "STRING"
+        },
+        {
+          "name": "reference_number",
+          "type": "STRING"
+        },
+        {
+          "name": "payment_method",
+          "type": "STRING"
+        },
+        {
+          "mode": "REPEATED",
+          "name": "category",
+          "type": "STRING"
+        },
+        {
+          "name": "primary_credit_category",
+          "type": "STRING"
+        },
+        {
+          "name": "detailed_credit_category",
+          "type": "STRING"
+        },
+        {
+          "name": "external_request_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "external_request_updated_at",
+          "type": "TIMESTAMP"
+        }
+      ]
+    },
+    "type": "VIEW"
+  },
+  "current_plaid_table": {
+    "creationTime": "1789436335157",
+    "id": "raylo-production:dbt_production.intermediate_credit_plaid_transactions",
+    "lastModifiedTime": "1789436336963",
+    "numBytes": "10193124360",
+    "numRows": "35553295",
+    "original_metadata_sha256": "4e2731dc7be124eccc44718fb2a9a71403ccbd0e7140ff7515357f9027933df9",
+    "schema": {
+      "fields": [
+        {
+          "name": "external_request_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "checkout_risk_assessment_result_id",
+          "type": "STRING"
+        },
+        {
+          "description": "The transaction ID that uniquely identifies the transaction. There may be duplicates where OB has been requested multiple times.",
+          "name": "transaction_id",
+          "type": "STRING"
+        },
+        {
+          "name": "transaction_date",
+          "type": "STRING"
+        },
+        {
+          "name": "date_transacted",
+          "type": "STRING"
+        },
+        {
+          "name": "amount",
+          "type": "FLOAT"
+        },
+        {
+          "name": "transaction_name",
+          "type": "STRING"
+        },
+        {
+          "name": "merchant_name",
+          "type": "STRING"
+        },
+        {
+          "name": "description",
+          "type": "STRING"
+        },
+        {
+          "name": "reference_number",
+          "type": "STRING"
+        },
+        {
+          "name": "payment_method",
+          "type": "STRING"
+        },
+        {
+          "mode": "REPEATED",
+          "name": "category",
+          "type": "STRING"
+        },
+        {
+          "name": "primary_credit_category",
+          "type": "STRING"
+        },
+        {
+          "name": "detailed_credit_category",
+          "type": "STRING"
+        },
+        {
+          "name": "account_id",
+          "type": "STRING"
+        }
+      ]
+    },
+    "timePartitioning": {
+      "field": "external_request_created_at",
+      "type": "DAY"
+    },
+    "type": "TABLE"
+  },
+  "equifax_source": {
+    "creationTime": "1760545427139",
+    "id": "raylo-production:equifax_data.open_banking_full_dump",
+    "lastModifiedTime": "1760545427139",
+    "numBytes": "20950748314",
+    "numRows": "73246476",
+    "original_metadata_sha256": "70dbe135af9ec82810654836cd98ed8f71c1023aff35928278eeda668d090470",
+    "schema": {
+      "fields": [
+        {
+          "mode": "NULLABLE",
+          "name": "ExternalReference",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "Signupdatetime",
+          "type": "TIMESTAMP"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "Firstname",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "Lastname",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "CustomerId",
+          "type": "INTEGER"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "ItemAccountId",
+          "type": "INTEGER"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "BankName",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "AccountHolder",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "AccountType",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "AccountSubType",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "SortCode",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "AccountNumber",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "CurrentBalance",
+          "type": "FLOAT"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "AvailableBalance",
+          "type": "FLOAT"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "TransactionId",
+          "type": "INTEGER"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "CreatedDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "TransactionTypeId",
+          "type": "INTEGER"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "Amount",
+          "type": "FLOAT"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "PostDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "Description",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "PrimaryCategoryDescription",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "SubCategoryDescription",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "VendorDescription",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "RecurrenceEventID",
+          "type": "FLOAT"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "RecurrenceType",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "RunningBalance",
+          "type": "FLOAT"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "IsAmberSalary",
+          "type": "FLOAT"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "IsRedSalary",
+          "type": "FLOAT"
+        }
+      ]
+    },
+    "timePartitioning": {
+      "field": "CreatedDate",
+      "type": "DAY"
+    },
+    "type": "TABLE"
+  },
+  "gcs_full_corpus": {
+    "crc32c_hash": "q+N7sA==",
+    "creation_time": "2026-09-04T08:47:08+0000",
+    "generation": "1788511628342952",
+    "original_metadata_sha256": "4bfeff426136f7ac4dc0a1df8103208296f494ed85483a278e37f78ee65631b6",
+    "size": 1477138874,
+    "storage_url": "gs://raylo-txn-categorisation-scratch/transformer/pretrain_corpus_full.parquet#1788511628342952",
+    "update_time": "2026-09-04T08:47:08+0000"
+  },
+  "identity_bridge": {
+    "creationTime": "1789491997698",
+    "id": "raylo-production:dbt_production.intermediate_core_aggregated_identities",
+    "lastModifiedTime": "1789491999176",
+    "numBytes": "2241391405",
+    "numRows": "6354728",
+    "original_metadata_sha256": "fc665b52e6fc3dc169a8b673bc82de4edbfe0278cd1db58a695db11a4fe70b01",
+    "schema": {
+      "fields": [
+        {
+          "description": "The primary key for this table",
+          "name": "checkout_item_id",
+          "type": "STRING"
+        },
+        {
+          "name": "checkout_item_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "checkout_item_updated_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "variant_id",
+          "type": "STRING"
+        },
+        {
+          "name": "price_plan_id",
+          "type": "STRING"
+        },
+        {
+          "name": "discarded_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "checkout_item_created_at_rank_asc",
+          "type": "INTEGER"
+        },
+        {
+          "name": "checkout_item_created_at_rank_desc",
+          "type": "INTEGER"
+        },
+        {
+          "name": "checkout_id",
+          "type": "STRING"
+        },
+        {
+          "name": "checkout_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "checkout_updated_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "checkout_state",
+          "type": "STRING"
+        },
+        {
+          "name": "checkout_expires_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "terms_and_conditions_accepted_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "financial_proposal_id",
+          "type": "STRING"
+        },
+        {
+          "name": "proposal_id",
+          "type": "STRING"
+        },
+        {
+          "name": "financial_proposal_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "financial_proposal_updated_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "financial_proposal_state",
+          "type": "STRING"
+        },
+        {
+          "name": "financial_proposal_decision_engine_origin",
+          "type": "STRING"
+        },
+        {
+          "name": "anchor_proposal_id",
+          "type": "STRING"
+        },
+        {
+          "name": "latest_taktile_decision_id",
+          "type": "STRING"
+        },
+        {
+          "name": "subscription_id",
+          "type": "STRING"
+        },
+        {
+          "name": "subscription_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "subscription_updated_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "subscription_state",
+          "type": "STRING"
+        },
+        {
+          "name": "agreement_id",
+          "type": "STRING"
+        },
+        {
+          "name": "agreement_started_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "agreement_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "order_id",
+          "type": "STRING"
+        },
+        {
+          "name": "order_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "order_updated_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "order_state",
+          "type": "STRING"
+        },
+        {
+          "name": "anchor_customer_id",
+          "type": "STRING"
+        },
+        {
+          "name": "customer_id",
+          "type": "STRING"
+        },
+        {
+          "name": "customer_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "customer_updated_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "description": "PII: Email address.",
+          "name": "customer_email",
+          "type": "STRING"
+        },
+        {
+          "name": "customer_mobile_phone_number",
+          "type": "STRING"
+        },
+        {
+          "name": "subscription_termination_id",
+          "type": "STRING"
+        },
+        {
+          "name": "subscription_termination_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "subscription_termination_updated_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "subscription_termination_state",
+          "type": "STRING"
+        },
+        {
+          "name": "subscription_termination_category",
+          "type": "STRING"
+        },
+        {
+          "name": "subscriptions_termination_notes",
+          "type": "STRING"
+        },
+        {
+          "name": "subscriptions_termination_reason",
+          "type": "STRING"
+        },
+        {
+          "name": "subscription_termination_reason_category",
+          "type": "STRING"
+        },
+        {
+          "name": "order_termination_id",
+          "type": "STRING"
+        },
+        {
+          "name": "order_termination_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "order_termination_category",
+          "type": "STRING"
+        },
+        {
+          "name": "order_termination_reason",
+          "type": "STRING"
+        },
+        {
+          "name": "merchant_id",
+          "type": "STRING"
+        },
+        {
+          "name": "anchor_customer_proposal_id",
+          "type": "INTEGER"
+        },
+        {
+          "name": "checkout_risk_assessment_result_id",
+          "type": "STRING"
+        }
+      ]
+    },
+    "type": "TABLE"
+  },
+  "legacy_plaid_table": {
+    "creationTime": "1761980868276",
+    "id": "raylo-production:dbt_production.credit_plaid_open_banking_transactions",
+    "lastModifiedTime": "1762135614343",
+    "numBytes": "2383725551",
+    "numRows": "4279707",
+    "original_metadata_sha256": "0bca86377287087ae88ef5aa42534ee63dd9dd126a0b0335f87ebd645d165ea6",
+    "schema": {
+      "fields": [
+        {
+          "name": "checkout_id",
+          "type": "STRING"
+        },
+        {
+          "name": "customer_id",
+          "type": "STRING"
+        },
+        {
+          "name": "checkout_risk_assessment_result_id",
+          "type": "STRING"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "asset_report_id",
+          "type": "STRING"
+        },
+        {
+          "name": "client_report_id",
+          "type": "STRING"
+        },
+        {
+          "name": "report_date_generated",
+          "type": "STRING"
+        },
+        {
+          "name": "days_requested",
+          "type": "INTEGER"
+        },
+        {
+          "name": "account_id",
+          "type": "STRING"
+        },
+        {
+          "name": "account_name",
+          "type": "STRING"
+        },
+        {
+          "name": "account_mask",
+          "type": "STRING"
+        },
+        {
+          "name": "account_subtype",
+          "type": "STRING"
+        },
+        {
+          "name": "account_currency_code",
+          "type": "STRING"
+        },
+        {
+          "name": "transaction_id",
+          "type": "STRING"
+        },
+        {
+          "name": "amount",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "iso_currency_code",
+          "type": "STRING"
+        },
+        {
+          "name": "transaction_date",
+          "type": "DATE"
+        },
+        {
+          "name": "merchant_name",
+          "type": "STRING"
+        },
+        {
+          "name": "transaction_name",
+          "type": "STRING"
+        },
+        {
+          "name": "original_description",
+          "type": "STRING"
+        },
+        {
+          "name": "transaction_type",
+          "type": "STRING"
+        },
+        {
+          "name": "category_id",
+          "type": "STRING"
+        },
+        {
+          "name": "category_path",
+          "type": "STRING"
+        },
+        {
+          "name": "credit_category_primary",
+          "type": "STRING"
+        },
+        {
+          "name": "credit_category_detailed",
+          "type": "STRING"
+        },
+        {
+          "name": "is_pending",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "payment_processor",
+          "type": "STRING"
+        },
+        {
+          "name": "location_city",
+          "type": "STRING"
+        },
+        {
+          "name": "location_country",
+          "type": "STRING"
+        },
+        {
+          "description": "The primary key for this table",
+          "name": "pk",
+          "type": "STRING"
+        }
+      ]
+    },
+    "timePartitioning": {
+      "field": "updated_at",
+      "type": "DAY"
+    },
+    "type": "TABLE"
+  },
+  "report_source": {
+    "creationTime": "1785349814981",
+    "id": "raylo-production:landing_external_requests.external_requests_taktile_plaid_asset_reports",
+    "lastModifiedTime": "1789490398336",
+    "numBytes": "146250292",
+    "numRows": "428949",
+    "original_metadata_sha256": "6a5e8e45d316d42ee8372304a065853b7988bf2e654e1325721bfb74a7e0c23b",
+    "schema": {
+      "fields": [
+        {
+          "mode": "REQUIRED",
+          "name": "external_request_id",
+          "type": "STRING"
+        },
+        {
+          "name": "resource_type",
+          "type": "STRING"
+        },
+        {
+          "name": "resource_id",
+          "type": "STRING"
+        },
+        {
+          "name": "external_request_created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "external_request_updated_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "checkout_risk_assessment_result_id",
+          "type": "STRING"
+        },
+        {
+          "name": "asset_report_id",
+          "type": "STRING"
+        },
+        {
+          "name": "client_report_id",
+          "type": "STRING"
+        },
+        {
+          "name": "report_date_generated",
+          "type": "STRING"
+        },
+        {
+          "name": "days_requested",
+          "type": "STRING"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "ingested_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "gcs_dt",
+          "type": "DATE"
+        },
+        {
+          "name": "gcs_uri",
+          "type": "STRING"
+        },
+        {
+          "name": "file_part",
+          "type": "INTEGER"
+        }
+      ]
+    },
+    "timePartitioning": {
+      "field": "external_request_created_at",
+      "type": "DAY"
+    },
+    "type": "TABLE"
+  },
+  "users": {
+    "creationTime": "1789491850406",
+    "id": "raylo-production:dbt_production.stg_raylo_production__users",
+    "lastModifiedTime": "1789491851079",
+    "numBytes": "0",
+    "numRows": "0",
+    "original_metadata_sha256": "ab38064cebaf20c7b54aa5aa7dd63d8565aefa02aa253a79400d50b2ae8501e7",
+    "schema": {
+      "fields": [
+        {
+          "description": "The primary key for this table",
+          "name": "user_id",
+          "type": "STRING"
+        },
+        {
+          "name": "customer_id",
+          "type": "STRING"
+        },
+        {
+          "name": "auth_id",
+          "type": "STRING"
+        },
+        {
+          "name": "intercom_id",
+          "type": "STRING"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMP"
+        }
+      ]
+    },
+    "type": "VIEW"
+  }
+}

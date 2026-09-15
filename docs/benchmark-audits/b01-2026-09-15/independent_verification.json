@@ -1,0 +1,78 @@
+{
+  "audit_type": "independent_counts_and_fit_input_reconstruction",
+  "independent_pretraining_overlap_counts": {
+    "gold_credit_eval": 2000,
+    "gold_pipeline_eval": 1970,
+    "gold_transactions_risk_t6bound": 400,
+    "gold_v2_slm_eval_holdout": 1030,
+    "tuning_validation": 4999
+  },
+  "limits": {
+    "cryptographic_fit_consumption_receipt": false,
+    "full_tokenized_or_near_duplicate_overlap_audit": false,
+    "locked_contents_read": false,
+    "models_scored": false,
+    "source_event_or_customer_identity_recovered_from_local_files": false
+  },
+  "local_inventory_sha256": "bb0c02de639d14a750ccef6fe89bc819a8261b41f1e3c87a05c731433934c423",
+  "local_overlap_sha256": "971564797e25f8c9d49db1b31c47768d2db7604f6ecfe355cb043c06efdd0e2c",
+  "reconstructed_stages": {
+    "distillation_parent": {
+      "distinct_row_positions_seen_any_epoch": 328227,
+      "distinct_row_positions_seen_by_retained_epoch": 328227,
+      "epochs": [
+        {
+          "distinct_row_positions": 308503,
+          "draws": 327509,
+          "epoch": 1
+        },
+        {
+          "distinct_row_positions": 308503,
+          "draws": 327509,
+          "epoch": 2
+        }
+      ],
+      "filtered_rows_match_metadata": 404264,
+      "per_epoch_matches_metadata": 327509,
+      "reconstruction_status": "consistent_with_available_snapshots_code_and_run_metadata_not_consumption_attestation",
+      "retained_best_epoch": 2,
+      "run_metadata_sha256": "75eef6cdcd90bb4c8d4c943a9c8f97c1f86b916750c75707bea756392e8b9560",
+      "validation_rows_matching_retained_epoch_sentence": 1885,
+      "validation_rows_with_same_label_in_matched_fit_inputs": 1741
+    },
+    "gold_selected_seed123": {
+      "distinct_row_positions_seen_any_epoch": 414196,
+      "distinct_row_positions_seen_by_retained_epoch": 414196,
+      "epochs": [
+        {
+          "distinct_row_positions": 414196,
+          "draws": 439204,
+          "epoch": 1
+        },
+        {
+          "distinct_row_positions": 414196,
+          "draws": 439204,
+          "epoch": 2
+        },
+        {
+          "distinct_row_positions": 414196,
+          "draws": 439204,
+          "epoch": 3
+        },
+        {
+          "distinct_row_positions": 414196,
+          "draws": 439204,
+          "epoch": 4
+        }
+      ],
+      "filtered_rows_match_metadata": 414196,
+      "per_epoch_matches_metadata": 439204,
+      "reconstruction_status": "consistent_with_available_snapshots_code_and_run_metadata_not_consumption_attestation",
+      "retained_best_epoch": 1,
+      "run_metadata_sha256": "5c1c44be9ce06d57c6667072ca4dc0e44ea66c4a438b3cf572ad24eafc102794",
+      "validation_rows_matching_retained_epoch_sentence": 8,
+      "validation_rows_with_same_label_in_matched_fit_inputs": 3
+    }
+  },
+  "verifier_sha256": "b55b7e002ab7754b11d35447adb02c299b7fd9455ecd070a73990a55c6ea172e"
+}

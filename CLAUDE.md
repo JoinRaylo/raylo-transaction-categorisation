@@ -48,6 +48,23 @@ certified. This is a design, not implemented enforcement or permission to open v
 Start with source/exposure inventory and the shared identity/admission contract,
 then integrate all consumers before reserving and labelling the final master.
 
+## Historical exposure and source-identity audit (2026-09-15)
+
+Read [B01 findings and evidence](docs/benchmark-audits/b01-2026-09-15/REPORT.md)
+before treating older held-out/merchant-disjoint claims as ancestry-wide separation.
+All 2,000 credit and 400 targeted-risk inputs match exact sentences in the preserved
+21.5M MLM corpus, although neither set matches the current supervised tuning file.
+Independent reconstruction of the distillation parent matches 1,885/5,000 selection
+validation inputs, 1,741 with matching labels. This is corroborated history, not an
+original fit-consumption receipt; full tokenized/near-duplicate exposure remains open.
+The 35,553,295-row current Plaid source resolves existing user/customer IDs for
+56.49% of rows; 43.51% remain unresolved. All 428,949 report IDs are null; source
+identity/context repairs and shared exposure admission precede master collection.
+Keep current scores as development evidence, with these limitations; this audit
+does not quantify accuracy inflation, certify a clean cohort or change any model.
+The old risk/sequence-model experiments have separate ancestry and are not certified
+by this categorizer audit. No v5/v6 content was opened, and staging is unchanged.
+
 ## Current state (2026-09-07) — read this first
 
 Headline numbers as of 7 Sep. Everything below this block (2 Sep, 27 Aug) is still accurate history unless contradicted here. Stakeholder report: `docs/report-2026-09/OB_Transaction_Categorisation_Report_Sep2026.{html,pdf}` (Chrome-rendered; edit the HTML, re-print). Programme summary: `docs/programme-summary-2026-09-05.md`.
