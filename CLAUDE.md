@@ -61,6 +61,24 @@ exports and B03/B04 enforcement still block fresh reservations and labelling. Se
 No v5/v6 contents, new-source predictions, waterfall/model changes or deployment.
 The adapters import the canonical monorepo package; do not fork their algorithms.
 
+## Applicant identity and transport review (2026-09-16)
+
+The fixed 49-checkout aggregate query found 49 nonblank canonical emails, 49 without
+user IDs, zero direct user/customer matches and zero exact matches to known customers;
+see [MEASUREMENTS.md](docs/benchmark-implementation/b02-applicant-identity-2026-09-16/MEASUREMENTS.md).
+This is scoped evidence only; no other anonymous checkouts were joined. Alias, ancestry,
+reviewed-family, B03 and B04 gates remain pending.
+
+Read [the applicant identity review](docs/benchmark-implementation/b02-applicant-identity-2026-09-16/README.md)
+before using applicant/customer identity in benchmark work. Assessment, checkout,
+provider, account and transaction identifiers support correlation and repeat-event
+grouping; anonymous applicant ownership remains unresolved. Use the assessment-first
+warehouse/sidecar join and authoritative User/Customer or separately reviewed link
+evidence where available. AIE-496 caller-context persistence is replay lineage work,
+not a solution to anonymous identity. No categoriser DTO, runtime, provider or
+auth-flow change is implied. Keep aggregate measurements in the separate
+`MEASUREMENTS.md` artifact for the fixed-cohort aggregate and its limitations.
+
 ## Master benchmark design (2026-09-15)
 
 Read [the design](docs/benchmark-design/master-v1/DESIGN.md),

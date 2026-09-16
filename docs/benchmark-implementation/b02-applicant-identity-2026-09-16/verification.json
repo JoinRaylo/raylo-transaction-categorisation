@@ -1,0 +1,27 @@
+{
+  "authorizes_consumption": false,
+  "content_sha256": {
+    "BACKEND_AND_TRANSPORT.md": "872a009f29f7dbe9090ffd33745165ea6109c39d6347a149b14dc7bfe7a2ee18",
+    "MEASUREMENTS.md": "01e8598acbe2a98b1272d1a9402355b3c2499cbef8cd09aa66cb2a0b08f61ef8",
+    "NEXT_STEP.md": "f23548ba656681e673cbade4a0f0217bc942fe1f73d03be935d01c2d3ad09fe6",
+    "README.md": "89a192dedabe86c5885b9515bb97fdf210982e00652e9c85bfcbde644c053017",
+    "RUNNING.md": "1531bb701a71e4b79a7b472faca8eff4bb3ccb40f6f07890f798135def2a9bce",
+    "applicant_identity_coverage.sql": "9c234256417af859f3a42e03c56e10bc8d54ed96c7db25b10872fc84ce433a16",
+    "executed_receipt.json": "ee2c8405c0410c32e4b78aa5b9037a2b07102a5036f71cebda83396afd14be9d",
+    "run_applicant_identity_coverage.py": "1275bd58136311d30c6a38fc57d8010d9a9a1199d15dff98ef4d4e299cdaa510",
+    "sources.json": "12454edf67952c5a3da1bd8c984892db0ff4a05f1ba243c0281bb0e3b52a42b1",
+    "verify_runner_offline.py": "f7c8c05def709e708722f219bb03406b93248c206ad0e7701a0100777de458a6"
+  },
+  "executed_query_and_runner_hashes_verified": true,
+  "fixed_cohort_and_candidate_count_reconciliation": "passed",
+  "git_diff_check": "passed",
+  "input_links_bytes_and_receipt_verified": true,
+  "offline_guard_tests_passed": 7,
+  "public_private_identifier_and_email_literal_screen": "passed",
+  "ruff": "passed with monorepo configuration",
+  "schema_version": "txncat-applicant-identity-verification-v1",
+  "scope": "Source review, aggregate identity probe and documentation only; no model inference, labels, learning, waterfall changes or benchmark admission.",
+  "source_file_hashes_verified": 15,
+  "source_metadata_before_after": "unchanged during final query",
+  "verified_at": "2026-09-16T12:08:29.442975+00:00"
+}

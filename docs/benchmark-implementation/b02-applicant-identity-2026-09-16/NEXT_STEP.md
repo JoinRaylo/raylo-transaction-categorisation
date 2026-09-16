@@ -1,0 +1,5 @@
+# Minimal next step
+
+Build a warehouse/sidecar relation keyed first by `checkout_risk_assessment_result_id` / assessment ID, then join to checkout and preserve existing authenticated `User.id` (which can precede `Customer`), plus dated claim/conversion bindings. Use an authoritative User/Customer relation or separately reviewed link evidence where available; report unresolved ownership separately. Do not change the categorisation DTO or create accounts early.
+
+AIE-496 should persist assessment context and the exact report/request snapshot in Rails, then thread the same values through Create/recreate and Taktile. That protects retries and replay, but does not manufacture anonymous applicant identity. Preserve checkout, risk/result, provider source IDs, and dated claim/conversion bindings alongside the User ID. If no authoritative or reviewed binding exists, anonymous records remain unknown. Any request for cross-checkout identity before such a binding is an owner decision requiring a separate approved identity contract; this audit does not require a runtime, API, provider, or auth-flow change.

@@ -1,0 +1,31 @@
+{
+  "sources": [
+    {
+      "repository": "https://github.com/JoinRaylo/api.git",
+      "commit": "1958895ae9785c40a5217021eadf15ccb0efcbde",
+      "files": {
+        "app/models/checkout.rb": "ff79773996e4dfeb64fe0ef438ada0c14522b3752740c672c8d5ede4f622b602",
+        "app/models/checkout_customer_info.rb": "54c5709471350b9fb08ffb18a3ad954881de8e0abf400139cff3966b488fa317",
+        "app/commands/public_graph_ql/extract_context_from_request_command.rb": "58b25c7814f848226106b280f452ccce932f9c21f8c716c6987b6e1bd782b56a",
+        "app/commands/create_order_command.rb": "b0f81b13f2768b2c1e71b2f56200e024de949aaa8a2cfe8bcf08c7c7a1eae664",
+        "app/commands/find_or_create_customer_command.rb": "2a3524ff5348683424de00c23f6876e648eb683079dc057d3f9554544936a483",
+        "app/mediators/banking_connections/plaid/construct_starting_data_command.rb": "c70aaa874a1b37e377870dbad009319502ee0fee90e9dd1b1a7fed82ab2dae24",
+        "app/mediators/banking_connections/plaid/construct_risk_assessment_data_command.rb": "9b87ccddfdc56abbebda88307de38797078c8c2ae248a310e3d2a0136c3ab8ae",
+        "app/mediators/banking_connections/plaid/fetch_account_data_command.rb": "01990bf6768fe195095cb4d4a6bee50e9ab9780020c8542b0284911c9dcafa71",
+        "app/mediators/proofs/sumsub/commands/create_or_find_applicant_command.rb": "3af4c9db1aa5fc1a77399768fd1203353dcf6e066c267ef6d99e010c2ce0dddb"
+      }
+    },
+    {
+      "repository": "https://github.com/JoinRaylo/internal-services-monorepo.git",
+      "commit": "de6efc790c79c6ff9726993c504b355bfcd2ca2e",
+      "files": {
+        "apps/payload-extractor/src/payload_extractor/parsers.py": "d02a92fc1ab24267f99dbc2785c7bd1bf7df69031f5a2ceca032b003126a8cbe",
+        "apps/payload-extractor/src/payload_extractor/models/rows.py": "5fcd219e1247c5a78cce386b6ead14e37ef784c51e616f69bb242f07cfd0ab7d",
+        "apps/ob-txn-categoriser/DISCOVERY_MAPPING.md": "9779c073030492bdfeca8760900179c2e4e0bf6c6c8040d9aad06a6e81544ba1",
+        "apps/ob-txn-categoriser/src/ob_txn_categoriser/discovery.py": "f1657241317f01433e2505bcd212c32aa8f6ae5611448cea4a81e842ea063853",
+        "lib/raylo-txncat/src/raylo_txncat/types.py": "8c78aa184a30f96ed4eb305d8d2c9585d98aa5e588eb000b93aced73f52086b3",
+        "lib/raylo-txncat/src/raylo_txncat/hashing.py": "0a2ec7606f4b6f44db1145c59acabc828f1c50f8663d2c2d71a2759b9f4aade1"
+      }
+    }
+  ]
+}
