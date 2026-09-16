@@ -59,7 +59,8 @@ as a combined path; one permissive layer invalidates the separation claim.
    boundary.
 3. Security/infra review confirms KMS custody, retention/deletion recovery,
    audit logs, Firestore transaction limits and cross-process identity tests.
-4. Synthetic emulator/fake tests pass, followed by a separately approved live
+4. The injected-port adapter and synthetic fake tests pass (recorded in the
+   companion adapter contract), followed by a separately approved live
    permission probe that writes no data and runs no candidate admission.
-5. Only then may the adapter be connected to B04 consumer gates or any real
-   candidate admission workflow.
+5. Only after the live proof and authenticated receipt review may the adapter be
+   connected to B04 consumer gates or any real candidate admission workflow.

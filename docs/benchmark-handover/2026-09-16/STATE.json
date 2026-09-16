@@ -25,11 +25,14 @@
     "B02 shared local preflight",
     "declared-source historical input indexes/screens",
     "linked population and training aggregate audits",
-    "historical regression cohort"
+    "historical regression cohort",
+    "B03-A synthetic reservation protocol",
+    "B03-B injected-port object/registry adapter and synthetic boundary tests"
   ],
-  "next_milestone": "B03-A synthetic reservation protocol; review before real authority/admission",
+  "next_milestone": "B03-B physical scope/IAM/KMS receipt review; then live permission proofs before real admission",
   "not_implemented": [
     "B03 managed reservation authority",
+    "B03 authenticated receipt and cross-process/IAM proofs",
     "B04 consumer and promotion enforcement",
     "certified real benchmark membership",
     "independent new labels",

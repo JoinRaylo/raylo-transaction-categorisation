@@ -59,8 +59,9 @@ residual actionable findings; current evidence is `verification-v2.json` and the
 original pre-correction snapshot remains unchanged. The in-memory store and
 `LocalReceipt` are explicitly non-authorizing; no labels, locked sets, training,
 scoring, cloud changes or consumer integration occurred. The scoped production
-GCS/Firestore/IAM boundary is prepared for review; keep all B03/B04,
-source-history, sampling and label gates open.
+GCS/Firestore boundary is now implemented behind injected ports with synthetic
+fake tests, while physical scope, IAM, authenticated receipts and all B03/B04,
+source-history, sampling and label gates remain open for review.
 
 ## B03-B linked-pool audit (2026-09-16)
 
@@ -72,7 +73,9 @@ observations and 20,474,043 unambiguous customer-linked observations across
 readiness snapshot only: zero repeats in the materialized transaction-ID table
 does not prove raw-event uniqueness or pending/posted/reconnect alias completeness.
 No raw rows were exported, and no reservation, label, model, locked set, training,
-score or cloud mutation occurred. Next is the scoped production boundary review,
+score or cloud mutation occurred. The adapter contract/evidence is mirrored at
+`docs/benchmark-implementation/b03-b-production-boundary-2026-09-16/`; next is
+review of the physical production boundary and authenticated receipt model,
 then complete-history candidate admission—not a local preflight allow.
 
 ## Joint benchmark and retraining data plan (2026-09-16)

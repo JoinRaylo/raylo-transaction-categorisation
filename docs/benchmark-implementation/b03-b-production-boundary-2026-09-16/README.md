@@ -1,9 +1,10 @@
 # B03-B production authority boundary
 
-Status: **design prepared; not applied**. This follows the approved B03-A
-protocol and the read-only linked-pool audit. It defines the production adapter
-and permission boundary without selecting physical resource names, creating
-cloud resources, changing IAM, or issuing an authority receipt.
+Status: **adapter implemented behind injected ports; cloud scope not applied**.
+The executable adapter remains canonical in the app monorepo; this research
+mirror records its contract and evidence without maintaining a second policy
+implementation. No physical resource names are selected, cloud resources are
+created, IAM is changed, or authority receipt is issued here.
 
 ## Adapter shape
 
@@ -34,32 +35,34 @@ must bind operation ID, purpose, committed epoch, object generations/digests,
 parent lineage and effective exclusions. The worker rechecks those claims before
 opening the exact object. Local receipts remain permanently non-authorizing.
 
-## Concrete implementation sequence
+## Implemented boundary and remaining sequence
 
-- Add lazy GCS and Firestore clients behind injected interfaces so ordinary app
-  startup does not import cloud SDKs or contact the network.
-- Store canonical JSON model bytes, not language-specific dict/list encodings;
-  parse with strict validation and reject non-canonical bytes.
-- Use GCS generation-zero preconditions, CRC32C transport checks and a second
-  SHA-256/content-length check. Never list a bucket to discover authority state.
-- Use a Firestore transaction for the epoch/operation/index-pointer CAS. Reads,
-  retry classification and changed-operation rejection remain inside that
-  transaction; object verification and joins remain outside it.
-- Put receipt signing behind a KMS asymmetric-sign operation or equivalent
-  authority-owned signer. A caller-provided boolean, local HMAC or cached allow
-  cannot become `authenticated=True`.
-- Add emulator/fake tests for concurrent reservation versus learning/selection,
-  stale epochs, upload/commit crashes, lost responses, changed bytes, key
-  rotation, unavailable authority, alias merges and permanent contamination.
-  The first live proof must additionally use the actual service identities.
+Implemented in isolation in the canonical app package:
+
+- explicit immutable-object and registry/CAS ports with lazy cloud SDK imports;
+- GCS generation-zero, CRC32C, prefix-scoped and SHA-256/content-length-checked
+  object operations;
+- strict canonical JSON Firestore envelopes and transactional epoch,
+  proposal, operation and index-pointer publication; and
+- alias CAS updates that preserve permanent contamination holds while leaving
+  failed next-index uploads unreachable.
+
+The companion [adapter contract and synthetic evidence](ADAPTER_CONTRACT.md)
+records the exact port shape and the fourteen passing fake-boundary tests. Receipt
+signing, real service identities, IAM/retention/KMS proof and B04 integration
+remain pending review.
+
+The exact post-review hashes and command results are pinned in
+[verification.json](verification.json).
 
 ## Explicit non-goals in this increment
 
 No resource is provisioned or mutated. No bucket, Firestore database, KMS key,
 service account, role binding, retention policy or network path is named as an
 approved deployment fact. No real membership, labels, candidate export, model,
-locked set, retraining or scoring is authorized by this document.
+locked set, retraining or scoring is authorized by this document. Local receipts
+and adapter test outcomes remain non-authorizing.
 
-The next review asks Carlos to approve the resource/IAM choices below. After
-approval, implement and test the adapter in isolation, then run the required
-cross-process and denied-access proofs before connecting B04 consumers.
+The next review asks Carlos to approve the resource/IAM choices below and the
+remaining receipt model. After approval, run the required cross-process and
+denied-access proofs before connecting B04 consumers.
