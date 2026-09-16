@@ -35,6 +35,32 @@ is a three-seed result. The candidate source/SQL is local research code, not a
 production promotion. Models/masks and staging are unchanged; retain the original
 staging bundle until a separate release decision.
 
+## Historical regression and identity/exposure increment (2026-09-16)
+
+Read [the frozen cohort and audit](docs/benchmark-implementation/b02-curation-audit-2026-09-16/README.md)
+before creating or consuming benchmark data. Historical-regression-v1 has 8,212
+transaction input cases (3,927 explicit training-origin diagnostics, 4,285 other
+historical cases), 641 head-only cases and 1,810 dictionary cases. Withhold the 28
+conflicting-label groups; preserve the existing 5,000-row selection-validation role.
+These are development cases with known/uncertain historical exposure, not independent
+master events. Reuse their fixed membership with `benchmark_score_legacy.py` after
+each complete permitted evaluation run. Baseline cached predictions give 85.10%
+specific leaf accuracy for seed-123 Plaid serving on the 3,704 other-historical cases;
+this new denominator is neither a performance gain nor a population accuracy claim.
+All 19 groups and original label/role provenance are preserved separately.
+
+The identity audit recovers 263 direct links in current checkout/user tables without
+changing the old extract. Remaining 39,110 observations / 38,498 account-event keys
+lack customer identity (mainly cancelled/abandoned checkouts). Do not substitute a
+checkout-customer-info ID for a stable person. Effective-token, sparse and lexical
+screens cover declared retained corpora/training/top-up/legacy inputs; exact known
+merchant presence covers retained dictionaries, collisions and merchant-label data.
+Unknown historical identity, aliases, reviewed merchant families, protected legacy
+exports and B03/B04 enforcement still block fresh reservations and labelling. See
+[FOLLOW_UP.md](docs/benchmark-implementation/b02-curation-audit-2026-09-16/FOLLOW_UP.md).
+No v5/v6 contents, new-source predictions, waterfall/model changes or deployment.
+The adapters import the canonical monorepo package; do not fork their algorithms.
+
 ## Master benchmark design (2026-09-15)
 
 Read [the design](docs/benchmark-design/master-v1/DESIGN.md),
