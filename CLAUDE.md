@@ -35,6 +35,37 @@ is a three-seed result. The candidate source/SQL is local research code, not a
 production promotion. Models/masks and staging are unchanged; retain the original
 staging bundle until a separate release decision.
 
+## Joint benchmark and retraining data plan (2026-09-16)
+
+Read [the full-pool profile and joint plan](docs/benchmark-implementation/b02-joint-data-plan-2026-09-16/README.md)
+before new curation or retraining. Current production materialization: 36,312,899
+rows, of which 20,473,397 have unambiguous existing customer links (46,049 customers,
+71,103 accounts). Linked credits are 22.85%; blank merchants are 35.22%, including
+90.26% of credits. These are already transaction-ID-deduplicated materialized rows,
+not proven unique economic events or clean benchmark examples. This clarifies the
+older “raw rows before deduplication” wording; original dated audit evidence stays
+unchanged. Anonymous recovery remains out of scope.
+
+The 414,400-row supervised file has 342,268 distinct exact input messages, 133
+conflicting-label groups, 7.31% credits and 7.91% blank merchants. Four taxonomy
+leaves are absent; 21 represented leaves have fewer than 20 distinct input/label
+examples. Old selection validation has nine credits and no blank merchants; keep
+its documented exposure limitations. The transformer also inherits the separate
+404,982-text consensus/MLM ancestry, so these proportions are not its total exposure.
+
+The proposed envelope retains the 20,000-row master and separate 500-row annotation
+pilot, and adds a new 5,000-row selection set plus up to 10,000 training additions.
+These are planning budgets, not reserved or labelled data. Implement B03/B04
+reservation/consumer admission, verify linked candidate ancestry and group blocks,
+then reserve the pilot. Protect evaluation/selection memberships before fitting
+either head; never use failed or unknown admission as a training fallback. Review
+the existing label conflicts without automatic relabelling. No new MLM/vocabulary
+extension is proposed for the final supervised retrain. Capture direction-mask
+changes explicitly and rerun/mirror the complete permitted evaluations after any
+real model/waterfall change. Models, current scores, v5/v6 restrictions and staging
+are unchanged. The scoped 39,427-event linked engineering exposure cross-profile
+does not certify the full 20.47M-row population.
+
 ## Historical regression and identity/exposure increment (2026-09-16)
 
 Read [the frozen cohort and audit](docs/benchmark-implementation/b02-curation-audit-2026-09-16/README.md)

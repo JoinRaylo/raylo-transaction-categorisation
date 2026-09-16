@@ -1,0 +1,16 @@
+{
+  "authorizes_consumption": false,
+  "scope": "retained_source_and_saved_metadata_evidence_not_original_fit_receipt",
+  "sha256": {
+    "outputs/distill_models/txn_classifier_distilled/train_meta.json": "75eef6cdcd90bb4c8d4c943a9c8f97c1f86b916750c75707bea756392e8b9560",
+    "outputs/distill_models/txn_classifier_gold_distilled_s123/train_meta.json": "5c1c44be9ce06d57c6667072ca4dc0e44ea66c4a438b3cf572ad24eafc102794",
+    "outputs/distill_models/txn_classifier_gold_distilled_s42/train_meta.json": "1d5e1c886c71e9f1dc6935df66cf50ed0715d275c6ddc86bc7de3109cab6f6c9",
+    "outputs/distill_models/txn_classifier_gold_distilled_s7/train_meta.json": "e80a162f04a9876f9ae81bbc4554fe01853839bb2d3a6860ca0a89fc98242e00",
+    "src/build_tuning_dataset.py": "9c748f6d0d7c3d1618a4cede49a2eedfb7d6b9b1a0cb941dab154d7e91510cc4",
+    "src/distillation_bakeoff.py": "38260a470bb71410978a89b308dc275453c4aa7754dd8af0e6b3a8972c4cceaa",
+    "src/retrain_corrected_heads.py": "277caa599ac3e389f4e44d592f459853e7f82dc5de593f47e9c313dd330bdbe5",
+    "src/transformer/train_classifier.py": "234f560bd9c637e767e58341e73042abd7305023851f723f5791c911f881d119",
+    "taxonomy/taxonomy.csv": "67df23954ac24015a2d617e164fff5906d86d89ab7be1e32e879332e31045e99"
+  },
+  "source_repo_revision": "bef5791"
+}

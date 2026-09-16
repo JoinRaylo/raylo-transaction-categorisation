@@ -1,0 +1,47 @@
+{
+  "adapter_sha256": "7d08981e05d1851ec461673d9d6f7c81dbfea270c5de9ccae7814f7404bb5a0a",
+  "artifact_sha256": {
+    "effective/event-exposure.jsonl": "e8a4ad705a16473ddc3d81f40ee7f50ef9f667c0aabd8284a0cc9443966737b1",
+    "identity/identity-sidecar.jsonl": "548fe996dae828558007d4842a8a77be4dc26bf38fb1d8c1fa3387d8e48f0426",
+    "merchants/merchant-exposure.jsonl": "d5602554a8fa560d2a073ce6d77e3aa6d5f5152d7ca559aa01eb4fc111a3c89f"
+  },
+  "authorizes_consumption": false,
+  "known_input_projection_counts": {
+    "hinge_sparse": 1369,
+    "surface_fold": 10518,
+    "token48": 10271
+  },
+  "known_input_union_count": 10527,
+  "known_input_vs_merchant": {
+    "known_input_union": {
+      "blank": 2764,
+      "known_name": 7689,
+      "unmatched_name": 74
+    },
+    "no_known_input": {
+      "blank": 10074,
+      "known_name": 13398,
+      "unmatched_name": 5428
+    }
+  },
+  "limitations": [
+    "100-request sample; not a population estimate or admission decision",
+    "unmatched is not proven unseen",
+    "no IDs or contact strings exported"
+  ],
+  "linked_distinct_events": 39427,
+  "linked_observations": 39427,
+  "linked_status_counts": {
+    "direct_customer_link": 39164,
+    "recovered_current_checkout_link": 263
+  },
+  "merchant_counts": {
+    "blank": 12838,
+    "known_name": 21087,
+    "unmatched_name": 5502
+  },
+  "scope": "identified_portion_of_private_100_request_engineering_sample",
+  "source_distinct_events": 77925,
+  "source_observations": 78537,
+  "source_sha256": "038006cdc28cebd2103b40316480eddf4a8229f3150a95715ca82dea5153d8f2"
+}
