@@ -47,6 +47,19 @@ to avoid conflicting with the ongoing app work; preserve this checkout's unrelat
 changes and unpublished history. The tested startup command passes 115 tests.
 No benchmark membership, labels, model, metrics or staging changed in the handover.
 
+## B03-A synthetic protocol (2026-09-16)
+
+The canonical app module is `lib/raylo-txncat/src/raylo_txncat/benchmark_authority.py`,
+with design/evidence mirrored at `docs/benchmark-implementation/b03-a-synthetic/`.
+It has 24 passing synthetic tests for reservation, learning and selection claims,
+object-generation/digest checks, stale epochs, operation retries, permanent
+identity protections, three-view novelty, alias contamination and authority
+outage. The in-memory store and `LocalReceipt` are explicitly non-authorizing;
+no real rows, labels, locked sets, training, scoring, cloud changes or consumer
+integration occurred. Request protocol review before the scoped production
+GCS/Firestore/IAM adapter; keep all B03/B04, source-history, sampling and label
+gates open.
+
 ## Joint benchmark and retraining data plan (2026-09-16)
 
 Read [the full-pool profile and joint plan](docs/benchmark-implementation/b02-joint-data-plan-2026-09-16/README.md)
