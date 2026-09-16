@@ -34,6 +34,8 @@ The human review found the models were right or acceptably right on ~70% of disp
 
 ## 8. Where we are now
 
+**16 September 2026 — private source and exposure index.** [The verified increment](benchmark-implementation/b02-source-index-2026-09-16/REPORT.md) preserves 78,537 engineering observations (77,925 account/transaction events) and indexes the full 21.5M-row MLM snapshot plus training/distillation/selection inputs. Raw report, Item, currency and pending fields are recoverable. Roughly half the sampled observations still lack customer linkage; this is not an eligible or representative benchmark count. All 40 historical overlap checks agree; 1,337 app/library tests passed. Identity/alias reconciliation and remaining exposure/consumer controls precede reservation or labelling. Accuracy scores and staging are unchanged.
+
 **15 September 2026 — curation foundation.** The [three-view contract and local checks](benchmark-implementation/b02-initial/README.md) now distinguish representative future transactions, unseen model inputs and unfamiliar merchants. Source identities remain protected in all three; recurring inputs are permitted only where the declared view allows them. A synthetic profiling command and the report-ID extractor source fix are verified. Real candidate eligibility, durable reservation and labelling remain future work. Existing accuracy scores and staging are unchanged.
 
 **15 September 2026 — benchmark audit addendum.** [B01](benchmark-audits/b01-2026-09-15/REPORT.md) confirms that the preserved pretraining corpus contains every input in the 2,000-row credit and 400-row targeted-risk evaluations. Selection validation also overlaps reconstructed supervised distillation inputs. Older held-out claims do not certify an untouched engine benchmark; retain the scores as development evidence, without claiming this audit measures their inflation. The current Plaid source has 35.55M rows, but only 56.49% resolves to users/customers and all stored asset-report IDs are null. Preserve/fix identity and enforce ancestry-wide admission before collecting the proposed master. No categorisation behaviour, model or staging deployment changed.
@@ -67,6 +69,8 @@ Side-findings still outstanding outside this repo: every Plaid Asset Report stil
 ---
 
 ## Progress log
+
+- **2026-09-16 (B02 source/index increment)** — Completed a bounded private source extract and disk-backed HMAC input-presence index, with source hashes before/after streaming, explicit incomplete-history flags, 40 matching historical overlap counts and 1,337 passing app/library tests (39 final targeted cases). Raw report/Item/currency/pending context is available; source identity/alias history and complete effective-input/family coverage remain open. Engineering sample only; no new benchmark membership, labels, predictions, model/score or staging changes. [Report](benchmark-implementation/b02-source-index-2026-09-16/REPORT.md).
 
 - **2026-09-15 (B02 initial curation foundation)** — Added the approved three-view amendment, one shared hash-pinned policy implementation, mirrored profiling adapter and synthetic fixtures. App/library tests: 1,298 passed; payload-extractor: 93 passed. Actual retained tokenizer confirms truncation-collision checks. Report-ID parsing corrected in app source; deployment/backfill remain pending. No real benchmark candidates reserved or labelled. [Evidence and next steps](benchmark-implementation/b02-initial/README.md).
 

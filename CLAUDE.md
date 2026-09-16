@@ -65,6 +65,25 @@ does not quantify accuracy inflation, certify a clean cohort or change any model
 The old risk/sequence-model experiments have separate ancestry and are not certified
 by this categorizer audit. No v5/v6 content was opened, and staging is unchanged.
 
+## Benchmark source/index increment (2026-09-16)
+
+Read [the source/index report](docs/benchmark-implementation/b02-source-index-2026-09-16/REPORT.md)
+and pinned reproduction manifest. The private 78,537-observation engineering sample
+recovers report ID, Item/institution, transaction currency and pending fields from raw
+Taktile/Plaid requests. These are present in the raw source despite the flattened
+schema gaps. The sample has 77,925 distinct account/transaction events, 612 repeat
+observations and 39,373 observations without an unambiguous user/customer link.
+The canonical `raylo_txncat.benchmark_exposure` index covers all 21,524,807 preserved
+MLM sentences, their vocabulary prefix, consensus, tuning and selection sources.
+All 40 B01 overlap checks agree after correcting the index adapter to use historical
+raw consensus text; full app/library suite 1,337 passed, final targeted checks 39 passed.
+The adapters in `tools/benchmark/` import the same monorepo package; private key,
+source rows and SQLite files are outside Git. Do not consume them for learning or
+labelling: no clean benchmark has been admitted. Identity/alias reconstruction,
+effective token/sparse/near-duplicate indexes, controlled merchant families,
+legacy memberships and B03/B04 enforcement remain pending. Current pipeline,
+model bytes, accuracy scores and staging are unchanged. No locked labels were read.
+
 ## Benchmark curation foundation (2026-09-15)
 
 The approved [three-view amendment](docs/benchmark-implementation/b02-initial/CONTRACT_AMENDMENT.md)
