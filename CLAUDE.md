@@ -61,6 +61,23 @@ exports and B03/B04 enforcement still block fresh reservations and labelling. Se
 No v5/v6 contents, new-source predictions, waterfall/model changes or deployment.
 The adapters import the canonical monorepo package; do not fork their algorithms.
 
+## Linked-customer population decision (2026-09-16)
+
+Read [the v1 scope decision](docs/benchmark-implementation/b02-linked-customer-scope-2026-09-16/DECISION.md)
+first. V1 benchmark candidates use the audited linked-customer Plaid pool with
+unambiguous existing assessment → checkout → user → customer links; unresolved or
+ambiguous rows are excluded from admission, with source records preserved. The last
+audited Plaid source had 20,084,276 of 35,553,295 raw rows linked (56.49%), covering
+45,617 users/customers; these raw counts precede deduplication/exposure checks, are
+not unique economic transactions, and are not admitted labelled examples. Other-
+provider and historical regression evaluation remains separate.
+The earlier requirement to recover anonymous identity before v1 is superseded.
+No new identity system is required.
+
+Next work profiles the linked pool and handles deduplication, aliases, and
+view-specific exposure before sampling. Category coverage needs independent labels;
+provider labels and model outputs are not category truth.
+
 ## Applicant identity and transport review (2026-09-16)
 
 The fixed 49-checkout aggregate query found 49 nonblank canonical emails, 49 without
