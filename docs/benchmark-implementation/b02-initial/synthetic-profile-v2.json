@@ -1,0 +1,70 @@
+{
+  "adapter_sha256": "fb97ea69fa47c2d6bdc399f792e110fd13590d79b280660924483173176235dc",
+  "authorizes_consumption": false,
+  "candidates_object_sha256": "10fe703051db83caa0cd143c0b01336354d78bc3e7f81f3762b1e63b9d1e0670",
+  "eligible_view_combinations": {
+    "none": 2,
+    "representative": 1,
+    "representative+unseen_input": 2,
+    "representative+unseen_input+unfamiliar_merchant": 1
+  },
+  "epoch": 1,
+  "implementation_sha256": "595f37b59384218cce8cb73fa0549ad1d8450d3f76745a472c077c6885667456",
+  "index_object_sha256": "cb75415b34e92a8cc07728b30e34df864bf7bf98ae3c5920d4b085edce873ccf",
+  "index_sha256": "09a4bba8a2890e73f63d80e47698589b30cdc82a449d4ba084b58130929c5990",
+  "note": "View and reason counts overlap; combinations reconcile to rows. Not a reservation or representative-traffic certificate.",
+  "rows": 6,
+  "schema_version": "benchmark-profile-v2",
+  "scope": "offline_preflight",
+  "views": {
+    "representative": {
+      "input_exposure": {
+        "not_found": 5,
+        "seen": 1
+      },
+      "reasons": {
+        "event_overlap": 1,
+        "unresolved_identity": 1
+      },
+      "status": {
+        "eligible_preflight": 4,
+        "quarantine": 1,
+        "reject": 1
+      }
+    },
+    "unfamiliar_merchant": {
+      "input_exposure": {
+        "not_found": 5,
+        "seen": 1
+      },
+      "reasons": {
+        "effective_input_overlap": 1,
+        "event_overlap": 1,
+        "merchant_family_overlap": 4,
+        "unresolved_identity": 1,
+        "unresolved_merchant_family": 1
+      },
+      "status": {
+        "eligible_preflight": 1,
+        "quarantine": 1,
+        "reject": 4
+      }
+    },
+    "unseen_input": {
+      "input_exposure": {
+        "not_found": 5,
+        "seen": 1
+      },
+      "reasons": {
+        "effective_input_overlap": 1,
+        "event_overlap": 1,
+        "unresolved_identity": 1
+      },
+      "status": {
+        "eligible_preflight": 3,
+        "quarantine": 1,
+        "reject": 2
+      }
+    }
+  }
+}

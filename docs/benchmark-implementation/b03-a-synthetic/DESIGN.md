@@ -1,6 +1,6 @@
 # B03-A synthetic reservation protocol design
 
-Status: **local synthetic milestone; review required**. This is not the B03
+Status: **local synthetic milestone; protocol review approved**. This is not the B03
 managed authority, does not admit data, and does not issue an authenticated
 receipt. The implementation uses only bytes created by the tests.
 
@@ -31,7 +31,7 @@ literal `False`. A future consumer or promotion gate must reject it with
 | `Preparation` | Fresh read and policy result | Records `snapshot_epoch` and named checks. Reject/quarantine/invalid results never enter the store. Re-preparation reads a new snapshot and reruns B02 policy. |
 | `AuthorityStorage` | Minimal durable boundary | Requires immutable upload/read, operation lookup, atomic compare-and-commit, worker access by committed operation, and append-only alias update. |
 | `OperationState` | Pending committed exposure | A committed reservation or `exposed` learning/selection member is added to the index before `worker_started`; worker start is not part of the claim. |
-| `LocalReceipt` / `CommitResult` | Local evidence only | Both are explicitly non-authorizing. Exact retry returns the retained operation without an epoch increment; changed content under an operation ID is invalid. |
+| `LocalReceipt` / `CommitResult` | Local evidence only | Both are explicitly non-authorizing. Exact retry returns the retained operation without an epoch increment; changed content under an operation ID is invalid. Worker reads additionally require a matching local receipt. |
 | `AliasUpdate` / `ContaminationIncident` | Append-only identity correction | Joining protected and learned groups increments the epoch, preserves old IDs, marks affected certification contaminated and holds certification. |
 
 ## Protocol sequence
@@ -93,7 +93,8 @@ bytes, then asserts exact status/reason strings. It covers:
 - retired, quarantined and spent membership protection;
 - representative recurrence versus strict input/family novelty and union views;
 - selection-to-training relabelling and non-authorizing local receipt rejection;
-- append-only alias contamination across protected and learning partitions; and
+- append-only alias contamination across protected/learning and protected partitions,
+  including alias-to-alias joins; and
 - unavailable authority with no cached allow.
 
 The thread-safe `InMemoryAuthorityStore` is a test double only. It is useful for

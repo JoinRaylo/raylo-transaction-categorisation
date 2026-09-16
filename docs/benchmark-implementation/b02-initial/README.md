@@ -35,10 +35,10 @@ From the app monorepo root, using its Python test environment:
 ```sh
 python apps/ob-txn-categoriser/scripts/benchmark_preflight.py \
   --monorepo-root "$PWD" \
-  --implementation apps/ob-txn-categoriser/research/benchmark-implementation/b02-initial/implementation.json \
+  --implementation apps/ob-txn-categoriser/research/benchmark-implementation/b02-initial/implementation-v2.json \
   --index apps/ob-txn-categoriser/research/benchmark-implementation/b02-initial/fixtures/index.json \
   --candidates apps/ob-txn-categoriser/research/benchmark-implementation/b02-initial/fixtures/candidates.jsonl \
-  --output /private/tmp/txncat-b02-new-profile.json
+  --output /private/tmp/txncat-b02-new-profile-v2.json
 ```
 
 The output must be new. Only synthetic opaque identifiers occur in these fixtures.
@@ -46,8 +46,14 @@ The app's ordinary environment suffices for profiling; projection construction n
 its existing NumPy/model extras and a verified tokenizer for encoded projections.
 The checked-in [synthetic profile](synthetic-profile.json) is not a real-data count.
 
+The historical `implementation.json` and `synthetic-profile.json` remain immutable.
+The B03-A correction to selection/input protection is recorded separately in
+`implementation-v2.json` and `synthetic-profile-v2.json`; use that pair for the
+current checkout.
+
 Research uses the byte-identical adapter at `tools/benchmark/benchmark_preflight.py`
-with the same explicit monorepo root and the mirrored `implementation.json`. That
+with the same explicit monorepo root and the mirrored current `implementation-v2.json`.
+That
 manifest pins the canonical source files; a different implementation refuses to run.
 No second exclusion algorithm is maintained in research.
 

@@ -51,7 +51,7 @@ No benchmark membership, labels, model, metrics or staging changed in the handov
 
 The canonical app module is `lib/raylo-txncat/src/raylo_txncat/benchmark_authority.py`,
 with design/evidence mirrored at `docs/benchmark-implementation/b03-a-synthetic/`.
-It has 24 passing synthetic tests for reservation, learning and selection claims,
+It has 29 passing synthetic tests for reservation, learning and selection claims,
 object-generation/digest checks, stale epochs, operation retries, permanent
 identity protections, three-view novelty, alias contamination and authority
 outage. The in-memory store and `LocalReceipt` are explicitly non-authorizing;
