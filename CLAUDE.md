@@ -54,11 +54,26 @@ with design/evidence mirrored at `docs/benchmark-implementation/b03-a-synthetic/
 It has 29 passing synthetic tests for reservation, learning and selection claims,
 object-generation/digest checks, stale epochs, operation retries, permanent
 identity protections, three-view novelty, alias contamination and authority
-outage. The in-memory store and `LocalReceipt` are explicitly non-authorizing;
-no real rows, labels, locked sets, training, scoring, cloud changes or consumer
-integration occurred. Request protocol review before the scoped production
-GCS/Firestore/IAM adapter; keep all B03/B04, source-history, sampling and label
-gates open.
+outage. Final independent `gpt-5.6-sol` protocol review is approved with no
+residual actionable findings; current evidence is `verification-v2.json` and the
+original pre-correction snapshot remains unchanged. The in-memory store and
+`LocalReceipt` are explicitly non-authorizing; no labels, locked sets, training,
+scoring, cloud changes or consumer integration occurred. The scoped production
+GCS/Firestore/IAM boundary is prepared for review; keep all B03/B04,
+source-history, sampling and label gates open.
+
+## B03-B linked-pool audit (2026-09-16)
+
+The new [aggregate-only live profile](docs/benchmark-implementation/b03b-linked-pool-audit-2026-09-16/README.md)
+used one pinned `raylo-production` EU `SELECT` and the existing assessment →
+checkout → user → customer linkage. It found 36,312,899 materialized source
+observations and 20,474,043 unambiguous customer-linked observations across
+46,051 customers, with 15,838,856 identity-excluded rows. This is a source
+readiness snapshot only: zero repeats in the materialized transaction-ID table
+does not prove raw-event uniqueness or pending/posted/reconnect alias completeness.
+No raw rows were exported, and no reservation, label, model, locked set, training,
+score or cloud mutation occurred. Next is the scoped production boundary review,
+then complete-history candidate admission—not a local preflight allow.
 
 ## Joint benchmark and retraining data plan (2026-09-16)
 

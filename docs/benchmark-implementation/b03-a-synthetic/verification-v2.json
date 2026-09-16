@@ -102,5 +102,5 @@
     "No real rows, labels, models, locked sets, cloud resources, consumer gates, retraining or scoring were accessed or changed.",
     "Production GCS/Firestore/IAM adapter, authenticated receipts, B04 consumer gates, candidate admission and the 500-row annotation pilot remain pending review."
   ],
-  "next_step": "After final protocol sign-off, prepare a scoped production object/transaction adapter and IAM plan for review; then perform only the approved read-only linked-only Plaid source audit before any real admission."
+  "next_step": "Review the scoped B03-B production object/transaction adapter and IAM plan; after approval, implement and test it in isolation before any real candidate admission."
 }
