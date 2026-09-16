@@ -34,6 +34,8 @@ The human review found the models were right or acceptably right on ~70% of disp
 
 ## 8. Where we are now
 
+**16 September 2026 — dataset continuation handover.** [Execution guide](benchmark-handover/2026-09-16/HANDOVER.md) and fresh-agent prompt preserve settled decisions, evidence/source pins and repo ownership. The first assignment is B03-A synthetic reservation/learning-claim semantics, with adversarial tests and review before real authority or admission. Startup instructions were executed: 115 tests passed. This transfers context; it does not collect data, fit models or deploy anything.
+
 **16 September 2026 — joint benchmark and final-retraining data plan.** [Measured profile and allocation](benchmark-implementation/b02-joint-data-plan-2026-09-16/README.md): current linked pool 20,473,397 materialized rows across 46,049 customers, with 22.85% credits and 35.22% blank merchants. Training has 342,268 distinct exact inputs from 414,400 rows, 133 conflicting-label groups, four absent taxonomy leaves and sparse credit/blank coverage; selection validation needs refresh. Proposed separate 20,000-row master, 500-row pilot, 5,000-row selection set and up to 10,000 shared training additions. Reserve and enforce purpose separation before new fitting; full ancestry/alias admission is still required. No new labels, models, scores or deployment.
 
 **16 September 2026 — historical regression and identity/exposure audit.** [Frozen cohort and findings](benchmark-implementation/b02-curation-audit-2026-09-16/README.md): 8,212 transaction input cases, 641 head-only and 1,810 dictionary cases retained with provenance; 28 conflicts withheld and 5,000 validation rows kept separate. Cached baseline rescoring supplies 19 diagnostic groups (seed-123 Plaid serving 85.10% on 3,704 other-historical cases, not unseen accuracy). Current joins recover 263 customer links; 38,498 distinct events remain unlinked. Scoped token/sparse/lexical and merchant-name exposure screens are complete for declared sources. Historical identities, aliases, reviewed families, protected legacy exports and B03/B04 remain admission prerequisites. No new labels, pipeline changes or staging deployment.
@@ -79,6 +81,8 @@ Side-findings still outstanding outside this repo: every Plaid Asset Report stil
 ---
 
 ## Progress log
+
+- **2026-09-16 (dataset handover)** — Prepared a self-contained continuation package with source hashes, source/role distinctions, exact first milestone, tested commands, acceptance cases and review/approval boundaries. A fresh Luna reviewed it without prior chat context. App/research copies are mirrored; dataset/membership/model/score/staging state is unchanged. [Handover](benchmark-handover/2026-09-16/HANDOVER.md).
 
 - **2026-09-16 (joint data profile and retraining plan)** — Executed one capped aggregate-only production SELECT; independently reconciled the current linked source and cached engineering exposure counts. Audited raw/distinct training support and label conflicts, checked saved hinge/transformer recipes, and planned shared training augmentation with protected evaluation/selection allocation. Root dbt manifest and source/result hashes retained; app/research evidence mirrored. Clarified that the population table already deduplicates transaction IDs. No anonymous recovery, new source labels/predictions, model fit, locked-set access, accuracy change or deployment. [Evidence](benchmark-implementation/b02-joint-data-plan-2026-09-16/README.md).
 

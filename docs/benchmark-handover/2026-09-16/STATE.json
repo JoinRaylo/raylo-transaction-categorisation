@@ -1,0 +1,94 @@
+{
+  "app_base_before_handover": "b83cc230a2491d95a52fb43d4082a13d59b0ed68",
+  "app_branch": "feat/ob-txn-categoriser-plan",
+  "app_reference_files_sha256": {
+    "apps/ob-txn-categoriser/research/benchmark-design/master-v1/DATA_CONTRACT.md": "8f2dc04cf1a3fc233a40f3efff474dcde4fa694ccd28108d45a965a702aecc6c",
+    "apps/ob-txn-categoriser/research/benchmark-design/master-v1/IMPLEMENTATION_PLAN.md": "2553ecd1dfc40d80dae80f6c157e45b34279bfcff9414bb4d3556542619c13c1",
+    "apps/ob-txn-categoriser/research/benchmark-implementation/b02-initial/CONTRACT_AMENDMENT.md": "9fddd6a056c426d5433352ac5cf11c245f5f60f0e9e0c84c771938afae1b69c4",
+    "apps/ob-txn-categoriser/research/benchmark-implementation/b02-initial/implementation.json": "2ba5256fbaa705ccf1b942248e24155115f45274193c49519181f514be0b9dae",
+    "apps/ob-txn-categoriser/research/benchmark-implementation/b02-joint-data-plan-2026-09-16/verification.json": "276c17f1c04a133150642b87735bc96548f00b6bf2629822ba2a5ae1f5e2f295",
+    "lib/raylo-txncat/src/raylo_txncat/benchmark.py": "4595f5d5fa0a0bc92fcdf1316af91f6f3659628f82152aa5730a7ebd532a2bb3",
+    "lib/raylo-txncat/src/raylo_txncat/benchmark_exposure.py": "9b0fd6dbcaa1276bd75605ea07966983101ff10ffec118f31c253bf517439ee4",
+    "lib/raylo-txncat/src/raylo_txncat/benchmark_regression.py": "48bf15b75f112289235ecc8bf881bef5b999e0dd69e05b5a63b36f3170752f2f",
+    "lib/raylo-txncat/src/raylo_txncat/hashing.py": "0a2ec7606f4b6f44db1145c59acabc828f1c50f8663d2c2d71a2759b9f4aade1"
+  },
+  "authorizes_consumption": false,
+  "captured_date": "2026-09-16",
+  "existing_app_pr": "https://github.com/JoinRaylo/internal-services-monorepo/pull/375",
+  "first_milestone_needs_cloud_credentials": false,
+  "first_milestone_needs_private_rows": false,
+  "handover_documents_sha256": {
+    "HANDOVER.md": "687dc2af6535111b7366fef5bb86884c023ae35fe5bbe8eb3551ecbc82f13856",
+    "NEXT_AGENT_PROMPT.md": "93d4887c986bdf294923e6383b7b416c7c91b82934546056436a36ddb5455959"
+  },
+  "implemented": [
+    "B02 shared local preflight",
+    "declared-source historical input indexes/screens",
+    "linked population and training aggregate audits",
+    "historical regression cohort"
+  ],
+  "next_milestone": "B03-A synthetic reservation protocol; review before real authority/admission",
+  "not_implemented": [
+    "B03 managed reservation authority",
+    "B04 consumer and promotion enforcement",
+    "certified real benchmark membership",
+    "independent new labels",
+    "new supervised retrain"
+  ],
+  "research_base_before_handover": "1687a589a005298a809e421ac8e54666b8227053",
+  "research_unrelated_starting_status": [
+    " M docs/report-2026-09/OB_Transaction_Categorisation_Report_Sep2026_LaTeX.zip",
+    " M docs/report-2026-09/latex/report.tex",
+    "?? .codex-build/",
+    "?? .codex-finalizer-weekly-2026-09-07/",
+    "?? .codex-finalizer/",
+    "?? data/experiment3_champion_xylo_gen2_report.md",
+    "?? docs/deployment-architecture.html",
+    "?? docs/deployment-architecture.md",
+    "?? docs/deployment-architecture/",
+    "?? docs/report-2026-09/latex/report.pdf",
+    "?? output/",
+    "?? src/experiment3_champion_xylo_gen2.py",
+    "?? tmp/",
+    "?? tools/compile_artefacts.py",
+    "?? tools/export_fixtures.py",
+    "?? tools/publish_bundle.sh",
+    "?? tools/select_seed.py"
+  ],
+  "schema_version": "txncat-dataset-handover-v1",
+  "validation": {
+    "base_ci": {
+      "deploy_stg": "SKIPPED",
+      "head": "b83cc230a2491d95a52fb43d4082a13d59b0ed68",
+      "passed": [
+        "ob-txn-categoriser / infra-test",
+        "ob-txn-categoriser / test (apps/ob-txn-categoriser)",
+        "ob-txn-categoriser / build-check (apps/ob-txn-categoriser)",
+        "ob-txn-categoriser / plan-stg",
+        "lib raylo-txncat"
+      ]
+    },
+    "cold_agent_review": {
+      "findings": [
+        "handover commits and research copy must exist before launch",
+        "exact implementation and mirror paths needed",
+        "deterministic outcomes and stale-epoch observation hooks needed",
+        "hash evidence must be defined beyond syntax/placeholder wording",
+        "STATE startup command must be executable"
+      ],
+      "milestone_and_forbidden_actions_understood": true,
+      "model": "gpt-5.6-luna",
+      "prior_chat_context": false,
+      "resolution": "Parent clarified commit discovery, file mapping, outcomes/hooks, digest verification and the executable command; commit/mirror finalization is checked at delivery."
+    },
+    "handover_link_checks": 12,
+    "model_evaluations_run_this_handover": false,
+    "reference_hashes_verified": 9,
+    "research_mirror": {
+      "local_links_verified_across_both_repos": 24,
+      "verified_byte_identical_files": 3
+    },
+    "startup_test_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/private/tmp/txncat-d2-worktree/lib/raylo-txncat/src:/private/tmp/txncat-d2-worktree/apps/ob-txn-categoriser/src /private/tmp/txncat-c2-env/bin/python -m pytest -q -m unit lib/raylo-txncat/tests/test_benchmark.py lib/raylo-txncat/tests/test_benchmark_exposure.py apps/ob-txn-categoriser/tests/unit/test_benchmark_preflight.py",
+    "startup_tests_passed": 115
+  }
+}

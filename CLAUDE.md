@@ -35,6 +35,18 @@ is a three-seed result. The candidate source/SQL is local research code, not a
 production promotion. Models/masks and staging are unchanged; retain the original
 staging bundle until a separate release decision.
 
+## Dataset continuation handover (2026-09-16)
+
+For dataset work, read [HANDOVER.md](docs/benchmark-handover/2026-09-16/HANDOVER.md)
+and [the initial assignment](docs/benchmark-handover/2026-09-16/NEXT_AGENT_PROMPT.md)
+first. They preserve the approved linked-only scope, three-view distinctions,
+training augmentation, exact repo/evidence state and open gates. B03-A is a bounded
+synthetic reservation-protocol milestone requiring review before real authority or
+dataset admission. It is not completion of B03/B04. Use dedicated worktrees/branches
+to avoid conflicting with the ongoing app work; preserve this checkout's unrelated
+changes and unpublished history. The tested startup command passes 115 tests.
+No benchmark membership, labels, model, metrics or staging changed in the handover.
+
 ## Joint benchmark and retraining data plan (2026-09-16)
 
 Read [the full-pool profile and joint plan](docs/benchmark-implementation/b02-joint-data-plan-2026-09-16/README.md)
