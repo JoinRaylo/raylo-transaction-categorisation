@@ -78,6 +78,30 @@ score or cloud mutation occurred. The adapter contract/evidence is mirrored at
 review of the physical production boundary and authenticated receipt model,
 then complete-history candidate admission—not a local preflight allow.
 
+## B03-C annotation-method pilot runner (2026-09-16)
+
+The provider runner is tools/benchmark/annotation_pilot.py; the strict item,
+manifest, attempt, vote and three-way comparison contract is canonical in the
+app monorepo at lib/raylo-txncat/src/raylo_txncat/benchmark_annotation.py.
+It supports one-request-per-item online calls plus explicit asynchronous
+batch-submit, batch-status and batch-collect modes. Anthropic uses its API
+batch route with deterministic short custom IDs; Gemini batch uses the
+API-key inline route because the Vertex batch route requires a GCS/BigQuery
+source. The runner records digest-only job state before submission, fails
+closed on uncertain operations, and never silently fills a label or chooses a
+majority.
+
+One synthetic item was sent through all three online routes and both
+asynchronous provider routes. The online outputs passed strict parsing; a
+valid Sonnet batch output was collected, while invalid batch fields were
+recorded as schema failures rather than labels. This is only annotation-method
+evidence. No real customer rows were downloaded or labelled, no 500-row pilot
+was admitted, and no B04 consumer is wired to these outputs. The runner's
+quarantine path is not a substitute for downstream gates; these artifacts
+cannot authorize evaluation, training, selection, scoring or promotion. Physical authority,
+authenticated receipts, complete linked-pool history/aliases, eligibility and
+B04 consumer gates remain open.
+
 ## Joint benchmark and retraining data plan (2026-09-16)
 
 Read [the full-pool profile and joint plan](docs/benchmark-implementation/b02-joint-data-plan-2026-09-16/README.md)
