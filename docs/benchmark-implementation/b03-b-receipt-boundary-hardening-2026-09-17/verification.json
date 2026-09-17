@@ -5,7 +5,7 @@
   "status": "implemented_synthetic_tested_live_proof_pending",
   "authorizes_consumption": false,
   "branch": "codex/txncat-b03a-research",
-  "base_commit": "c8822a5",
+  "base_commit": "d53eb60",
   "changed_files": [
     "lib/raylo-txncat/src/raylo_txncat/benchmark_authority.py",
     "lib/raylo-txncat/src/raylo_txncat/benchmark_authority_cloud.py",
@@ -24,8 +24,14 @@
       "command": "uv run pytest -q lib/raylo-txncat/tests/test_benchmark_authority.py lib/raylo-txncat/tests/test_benchmark_authority_cloud.py",
       "result": "53 passed"
     },
+    "handover_startup_suite": {
+      "result": "115 passed"
+    },
     "ruff": {
-      "result": "all checks passed"
+      "result": "all checks passed; 4 files already formatted"
+    },
+    "repository_wide_pytest": {
+      "result": "blocked during collection by 14 pre-existing duplicate flat test-module import mismatches"
     }
   },
   "mutations": {

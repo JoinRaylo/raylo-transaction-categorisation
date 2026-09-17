@@ -26,8 +26,11 @@ B04 integration.
 
 - `uv run pytest -q lib/raylo-txncat/tests/test_benchmark_authority.py lib/raylo-txncat/tests/test_benchmark_authority_cloud.py`
   → **53 passed**.
+- The handover startup command → **115 passed**.
 - `uv run ruff check` over the four changed source/test files → **all checks
   passed**.
+- Exact-config `ruff format --check` over the four changed files → **4 files
+  already formatted**.
 - Tests include forged authority/environment receipts, crossed claim prefixes,
   wrong audience and unknown unique IDs, immutable mapping mutation, verify-
   only capability inspection, and disabled KMS-version rejection.
@@ -44,3 +47,7 @@ with no customer-derived fixtures.
 The next safe step is a security review of the exact binding/resource packet,
 followed by separately approved empty-resource creation and read-back checks.
 No real authority data may be admitted until those checks and B04 gates pass.
+
+The repository-wide `pytest -q` was also attempted, but collection is blocked by
+pre-existing duplicate flat test-module names across unrelated apps (14 import
+mismatch/collection errors); it does not reach this package’s tests.
