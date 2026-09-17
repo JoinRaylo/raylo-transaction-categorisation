@@ -1,0 +1,55 @@
+{
+  "schema_version": "benchmark-physical-scope-review-v1",
+  "milestone": "B03-B-physical-scope-review",
+  "scope": "proposal_only_synthetic",
+  "status": "pending_physical_approval",
+  "authorizes_consumption": false,
+  "branch": "codex/txncat-b03a-research",
+  "parent_commit": "c5a3216",
+  "canonical_app_sources": {
+    "lib/raylo-txncat/src/raylo_txncat/benchmark_authority.py": "8e005938fe3542c9448848c511f5795c88acc654fe0a9b31d53d234f73d9cf66",
+    "lib/raylo-txncat/src/raylo_txncat/benchmark_authority_cloud.py": "fed4b225961bf89ccf2c5fbef5534838ef96aaaf436ddc5f5c1204a7cf265a25",
+    "lib/raylo-txncat/tests/test_benchmark_authority_cloud.py": "ae80c79ac4f3f0dc7f1cea0f17483d8d69826275e6bb9029a8f4cc1afe9ad872"
+  },
+  "mirror_sha256": {
+    "CLAUDE.md": "abe23edcd51b324a0f525e738e33b7e3ac7245615936ead08c8fc9595680a7bd",
+    "README.md": "74b8fcfcc4de6881418f097d0d3507fc9f55a805d77716454c299c4c171c9271",
+    "docs/project-summary.md": "c942d086cd38297b17a0e45eab67c13cbd8fade7bd60bdd17c9a5157c9abe865",
+    "docs/benchmark-implementation/b03-b-physical-scope-review-2026-09-17/README.md": "2864e8fd9445c9062780b615107a7fce614db32845567e26f16ab1c2a993ff34"
+  },
+  "checks": {
+    "prior_authenticated_receipt_review": "gpt-5.6-sol APPROVE",
+    "startup_synthetic": "115 passed",
+    "focused_authority_and_receipts": "49 passed",
+    "full_app_library_and_unit": "1385 passed, 1 warning",
+    "relevant_research_tests": "40 passed",
+    "research_full_suite": "85 passed, 1 environment-blocked (missing pandas in existing taxonomy-integrity import)",
+    "physical_permission_probe": "not run; pending approval",
+    "cross_process_live_probe": "not run; pending approval",
+    "cloud_calls": "none"
+  },
+  "review": {
+    "model": "gpt-6-astra",
+    "status": "APPROVE",
+    "scope": "read-only architecture/security review of proposal-only physical scope and staged proof packet"
+  },
+  "effects": {
+    "cloud": false,
+    "real_rows": false,
+    "labels": false,
+    "benchmark_membership": false,
+    "model_fit_or_retraining": false,
+    "locked_set_access_or_scoring": false,
+    "b04_consumer_integration": false
+  },
+  "remaining_gates": [
+    "approve concrete project/location, stores, identities, retention and KMS custody",
+    "resolve the worker public-key verification deployment design",
+    "run separately approved Stage 0 synthetic fixture/bootstrap",
+    "run Stage 1 no-write identity and direct-read deny/absence proof",
+    "run separately approved Stage 2 synthetic mutation and cross-process proof",
+    "run separately approved Stage 3 synthetic failure, retention and key-lifecycle proof",
+    "connect B04 consumers only after live proofs and a separate admission review",
+    "reserve or label no real candidates until B03/B04 acceptance is complete"
+  ]
+}
