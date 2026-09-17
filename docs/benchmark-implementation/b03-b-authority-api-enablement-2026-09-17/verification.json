@@ -1,0 +1,61 @@
+{
+  "schema_version": "benchmark-authority-api-enablement-v1",
+  "milestone": "B03-B-authority-api-enablement",
+  "scope": "control_plane_only_no_resources_or_data",
+  "status": "minimal_prerequisite_apis_enabled_iam_and_resources_pending",
+  "authorizes_consumption": false,
+  "branch": "codex/txncat-b03a-research",
+  "base_commit": "8e561ae",
+  "project": {
+    "id": "raylo-txncat-authority-prod",
+    "number": "357892832103",
+    "lifecycle_state": "ACTIVE",
+    "parent": "folders/45426850789"
+  },
+  "requested_apis": [
+    "cloudkms.googleapis.com",
+    "firestore.googleapis.com",
+    "storage.googleapis.com",
+    "iam.googleapis.com"
+  ],
+  "enabled_apis_after_operation": [
+    "cloudkms.googleapis.com",
+    "firebaserules.googleapis.com",
+    "firestore.googleapis.com",
+    "iam.googleapis.com",
+    "iamcredentials.googleapis.com",
+    "storage.googleapis.com"
+  ],
+  "automatic_dependencies": [
+    "firebaserules.googleapis.com",
+    "iamcredentials.googleapis.com"
+  ],
+  "post_enablement_inventory": {
+    "service_accounts": [],
+    "direct_project_iam_bindings": [
+      {
+        "member": "user:carlos.noblejesus@raylo.com",
+        "role": "roles/owner"
+      }
+    ],
+    "authority_resources_created": false,
+    "customer_data_accessed": false,
+    "objects_or_documents_written": false,
+    "labels_or_benchmark_membership_changed": false,
+    "training_retraining_or_scoring": false
+  },
+  "ancestor_audit": {
+    "parent_folder": "folders/45426850789",
+    "known_admin_trust_root": "group:team-infra-eng@raylo.com",
+    "org_level_iam_policy_read": "not available to current account",
+    "complete_effective_access_review": "pending security review"
+  },
+  "next_gates": [
+    "complete ancestor IAM and privileged-group audit",
+    "separately approve exact custom roles and IAM bindings",
+    "close caller-token, namespace, key-state and authority-binding code gaps",
+    "enable deployment APIs only when verifier deployment is ready",
+    "repeat synthetic Stage 0 through Stage 3 proofs",
+    "separate B04 admission review before real authority data"
+  ]
+}

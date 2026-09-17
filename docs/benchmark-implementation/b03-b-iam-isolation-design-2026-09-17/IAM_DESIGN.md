@@ -1,6 +1,6 @@
 # B03-B IAM and authority-isolation design
 
-Status: **project provisioned; IAM and authority resources pending**.
+Status: **minimal prerequisite APIs enabled; IAM and authority resources pending**.
 
 This packet records the next safe decision after the partially provisioned
 synthetic scope. It does not authorize customer-data reads, candidate
@@ -130,9 +130,12 @@ caller-authentication, namespace, key-lifecycle and effective-access
 specifications. The production-project inherited-access finding remains a
 hard stop for the old resources.
 
-The next decision is approval for minimal API enablement and the exact
-custom-role/resource-level binding packet. Only after those bindings are
-separately approved should the synthetic-only Stage 0 bootstrap be considered.
+Minimal prerequisite APIs are now enabled; see the separate
+`b03-b-authority-api-enablement-2026-09-17` packet for the exact post-operation
+inventory. Cloud Run and Artifact Registry remain disabled. The next decision
+is review and separate approval for the exact custom-role/resource-level
+binding packet. Only after those bindings are approved and the code gaps are
+closed should the synthetic-only Stage 0 bootstrap be considered.
 
 ### Evidence recorded
 
