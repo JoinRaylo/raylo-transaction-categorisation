@@ -17,6 +17,11 @@ def main():
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--sql", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--execute",
+        action="store_true",
+        help="Run the validated SELECT; otherwise retain a dry-run receipt only",
+    )
     args = parser.parse_args()
     import hashlib
 
@@ -62,44 +67,55 @@ def main():
     if dry.statement_type != "SELECT" or dry.total_bytes_processed > MAX_BYTES:
         raise ValueError("query exceeds read-only scope")
     print(f"Validated SELECT: {dry.total_bytes_processed:,} estimated bytes", flush=True)
-    config.dry_run = False
-    job = client.query(sql, job_config=config, location="EU", job_id_prefix="txncat_identity_")
-    rows = job.result(page_size=1000)
-    if rows.total_rows > 500_000:
-        raise ValueError("unexpected investigation size")
-    path = args.output / "rows.jsonl"
-    with path.open("x") as stream:
-        count = 0
-        for row in rows:
-            stream.write(encode(dict(row)))
-            count += 1
-    if count != rows.total_rows:
-        raise ValueError("incomplete query result")
     receipt = {
         "schema_version": "benchmark-identity-investigation-v1",
         "authorizes_consumption": False,
         "sql_sha256": digest(args.sql),
         "source_sha256": digest(source_path),
-        "result_sha256": digest(path),
         "runner_sha256": digest(Path(__file__)),
-        "job_id": job.job_id,
-        "result_rows": count,
         "project": "raylo-production",
         "location": "EU",
         "statement_type": "SELECT",
         "maximum_bytes_billed": MAX_BYTES,
         "dry_run_bytes": dry.total_bytes_processed,
-        "bytes_processed": job.total_bytes_processed,
-        "started_at": job.started,
-        "ended_at": job.ended,
         "parameter_counts": {k: len(v) for k, v in params.items()},
         "source_day": source_receipt["source_day"],
         "metadata_before": before,
-        "metadata_after": [metadata(client.get_table(t)) for t in tables],
+        "executed": False,
     }
+    if args.execute:
+        config.dry_run = False
+        job = client.query(sql, job_config=config, location="EU", job_id_prefix="txncat_identity_")
+        rows = job.result(page_size=1000)
+        if rows.total_rows > 500_000:
+            raise ValueError("unexpected investigation size")
+        path = args.output / "rows.jsonl"
+        with path.open("x") as stream:
+            count = 0
+            for row in rows:
+                stream.write(encode(dict(row)))
+                count += 1
+        if count != rows.total_rows:
+            raise ValueError("incomplete query result")
+        receipt.update(
+            executed=True,
+            result_sha256=digest(path),
+            result_rows=count,
+            job_id=job.job_id,
+            bytes_processed=job.total_bytes_processed,
+            started_at=job.started,
+            ended_at=job.ended,
+            metadata_after=[metadata(client.get_table(t)) for t in tables],
+        )
     with (args.output / "receipt.json").open("x") as stream:
         stream.write(encode(receipt))
-    print(f"Completed identity investigation: {count:,} private result rows", flush=True)
+    if args.execute:
+        print(
+            f"Completed identity investigation: {receipt['result_rows']:,} private result rows",
+            flush=True,
+        )
+    else:
+        print("Dry run complete; no private identity rows exported.", flush=True)
 
 
 if __name__ == "__main__":
