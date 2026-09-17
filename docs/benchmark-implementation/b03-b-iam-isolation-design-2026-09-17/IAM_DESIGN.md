@@ -101,23 +101,23 @@ to a selection object and vice versa before any live worker proof.
 
 ## Required code and proof gaps before mutation
 
-1. Add an injected Google ID-token verifier and immutable service-account
-   unique-ID mapping for `AuthorityWorkerIdentity`.
-2. Enforce authority/environment binding in the signed receipt (or an
-   equivalent test-only key/environment isolation that cannot replay in
-   production).
-3. Enforce claim-kind to object-prefix invariants; metadata alone is not
-   sufficient authorization.
-4. Make receipt verification code unable to issue receipts, in addition to
-   denying the signer permission at IAM. Verify-only deployment code must not
-   construct an authority signer.
-5. Check the referenced signing-key version state and define the current/
-   previous-version overlap and retirement behavior. A public-key fetch alone
-   is not a key-lifecycle check.
-6. Resolve retention/cleanup ownership and audit-log scope. The current
+The first five code controls are now implemented in the canonical adapter and
+covered by the synthetic B03 suite; see
+`b03-b-receipt-boundary-hardening-2026-09-17`. Live deployment wiring and
+permission proofs remain pending.
+
+1. Complete live Google ID-token/Cloud Run extraction and immutable
+   service-account unique-ID proof.
+2. Complete live authority/environment binding and claim-prefix configuration
+   proof against the exact production resource names.
+3. Prove verify-only deployment packaging cannot construct or receive an
+   authority signer.
+4. Define current/previous key-version overlap and retirement behavior, then
+   prove it with live KMS permissions and state transitions.
+5. Resolve retention/cleanup ownership and audit-log scope. The current
    30-day retention and 7-day soft-delete settings are not a claim of permanent
    exclusion-history retention.
-7. In the isolated project, verify the Cloud Storage service-agent CMEK grant,
+6. In the isolated project, verify the Cloud Storage service-agent CMEK grant,
    bucket policy, Firestore conditional policy, key policy, inherited access,
    group membership and service-account impersonation paths before any fixture
    write.
