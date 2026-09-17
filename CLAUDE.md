@@ -147,6 +147,19 @@ authority reservations, locked-set access, model fit, scoring or retraining
 occurred. The next real gate is effective IAM/security attestation followed by
 a fresh bounded linked-only admission profile and managed reservation.
 
+## B03-B effective IAM gate diagnosis (2026-09-17)
+
+The [read-only gate-resolution packet](docs/benchmark-implementation/b03-b-effective-iam-gate-resolution-2026-09-17/README.md)
+confirms Carlos's direct Owner grant on `raylo-txncat-authority-prod`, while the
+project inherits `team-infra-eng` as Owner from the shared
+`internal-services-monorepo` folder. Organization IAM, nested group membership,
+deny/PAB and impersonation paths are not certified. The recommended resolution
+is a dedicated clean folder with governed/JIT administration; the shared folder
+must not be changed casually. Cloud Identity and Policy Troubleshooter checks
+were unavailable because their APIs were disabled and were not enabled. No IAM
+mutation, API enablement, identity, fixture, BigQuery read, customer data,
+locked-set or B04 state changed.
+
 ## B03-B physical scope review (2026-09-17)
 
 The [physical scope review packet](docs/benchmark-implementation/b03-b-physical-scope-review-2026-09-17/README.md)
