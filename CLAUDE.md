@@ -102,6 +102,26 @@ cannot authorize evaluation, training, selection, scoring or promotion. Physical
 authenticated receipts, complete linked-pool history/aliases, eligibility and
 B04 consumer gates remain open.
 
+## B03-B authenticated receipt boundary (2026-09-17)
+
+The canonical app boundary now includes strict `AuthenticatedReceipt` and
+`ReceiptSignature` types, an injected `AuthorityReceiptSigner`, and a lazy
+`KMSAuthorityReceiptSigner`. `ProductionAuthorityStorage` issues and verifies
+one exact-object receipt only for a committed, held learning or selection claim;
+the receipt carries an authority-resolved audience and consumption rechecks the
+current worker principal and role. It rejects local/forged receipts, wrong
+worker scope, reservations, contaminated/stale operations and changed object
+bytes. The KMS adapter receives an already-configured client and key version,
+checks returned key identity, algorithm, 2048-bit key size and CRC32C fields;
+it creates no resources and makes no calls at import time. Synthetic evidence is mirrored at
+`docs/benchmark-implementation/b03-b-production-boundary-2026-09-16/`.
+
+This does not prove live KMS custody, IAM, retention, cross-process races or
+service-account denied-access behavior. No B04 consumer is connected, and no
+real rows, labels, benchmark membership, model fit, locked-set score or cloud
+state changed. The next gate is physical resource/IAM/KMS review and separately
+approved live permission proofs, followed by B04 consumer integration.
+
 ## Joint benchmark and retraining data plan (2026-09-16)
 
 Read [the full-pool profile and joint plan](docs/benchmark-implementation/b02-joint-data-plan-2026-09-16/README.md)

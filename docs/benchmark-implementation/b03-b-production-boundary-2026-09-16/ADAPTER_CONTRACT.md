@@ -26,10 +26,22 @@ and performs the epoch/operation/index-pointer CAS in a Firestore transaction.
 Both receive already-created clients; no project, resource, IAM, retention or
 KMS choice is embedded here.
 
-`read_for_worker` is deliberately unconditional deny until an authority-owned,
-authenticated receipt type is implemented and reviewed. Local receipts,
+`read_for_worker` accepts only an authority-issued `AuthenticatedReceipt` for the
+exact object and operation. It verifies the canonical signed payload, committed
+operation state, held certification, exposed lifecycle, purpose/worker-role
+pairing, authority-resolved audience against the current worker principal,
+operation digests, and object membership before reading bytes. Local receipts,
 preflight decisions, object pointers and cached state cannot authorize training,
 selection, enrichment, evaluation or promotion.
+
+The signing boundary is an injected `AuthorityReceiptSigner`. The production
+adapter supplied here is `KMSAuthorityReceiptSigner`, which signs the SHA-256
+digest using an injected RSA Cloud KMS key version and verifies with the current
+public key fetched from that same version. It checks the returned key version,
+algorithm, 2048-bit public-key size and KMS CRC32C integrity fields. A fake
+signer is used only by tests; it is not an authority or a production credential.
+Receipt payloads exclude the signature envelope and are bound by
+`payload_sha256`; the verifier separately checks the key version and algorithm.
 
 ## Synthetic evidence
 
@@ -43,12 +55,12 @@ PYTHONPATH=lib/raylo-txncat/src:lib/raylo-txncat/tests \
   lib/raylo-txncat/tests/test_benchmark_authority_cloud.py
 ```
 
-Result: **14 passed**. The tests include stale concurrent writers, an upload /
-commit failure with an unreferenced index, tampered bytes, a corrupt registry
-pointer, cross-partition alias contamination, alias retry idempotency, strict
-canonical-envelope rejection, generation-pinned object reuse and path/size
-guards.
+Result before the receipt increment: **14 passed**. The current focused adapter
+suite has **20 passed** and additionally covers synthetic KMS signing and
+verification, exact learning/selection receipt issuance, local/forged receipt
+denial, purpose/role/object scope, contamination denial and post-signature byte
+verification.
 
 This evidence does not prove Firestore emulator behavior, IAM isolation,
-cross-process concurrency, KMS signing, retention, source-history completeness
-or permission to admit real customer-linked examples.
+cross-process concurrency, KMS custody or live permissions, retention,
+source-history completeness or permission to admit real customer-linked examples.

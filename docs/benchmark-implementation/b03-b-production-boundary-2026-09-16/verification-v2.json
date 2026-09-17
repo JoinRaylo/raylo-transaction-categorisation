@@ -1,0 +1,46 @@
+{
+  "schema_version": "benchmark-authority-receipt-verification-v1",
+  "milestone": "B03-B-authenticated-receipts",
+  "scope": "synthetic_only",
+  "authorizes_consumption": false,
+  "branch": "codex/txncat-b03a-research",
+  "base_commit": "72a763bb42a2e06847b7ced435b19babf94fca84",
+  "canonical_app_sources": {
+    "lib/raylo-txncat/src/raylo_txncat/benchmark_authority.py": "8e005938fe3542c9448848c511f5795c88acc654fe0a9b31d53d234f73d9cf66",
+    "lib/raylo-txncat/src/raylo_txncat/benchmark_authority_cloud.py": "fed4b225961bf89ccf2c5fbef5534838ef96aaaf436ddc5f5c1204a7cf265a25",
+    "lib/raylo-txncat/tests/test_benchmark_authority_cloud.py": "ae80c79ac4f3f0dc7f1cea0f17483d8d69826275e6bb9029a8f4cc1afe9ad872"
+  },
+  "mirror_sha256": {
+    "CLAUDE.md": "5b9286f3ff8a798c324f4d85d329e87653c0c37c91dead84b3f69a0a5b5eebba",
+    "README.md": "dd1da92fe30ce3bfe02b74e4e7c4a13728ab50ac870604ba93db34cd99d6ce91",
+    "docs/project-summary.md": "238c9413ddab28790aeccf0381f993505d2c0022adab52b6c290a7d76d3dbf96",
+    "docs/benchmark-implementation/b03-b-production-boundary-2026-09-16/README.md": "93d577e07cb7496772c0de17742b833bc5ef579361b90c9513659298a0ba9580",
+    "docs/benchmark-implementation/b03-b-production-boundary-2026-09-16/ADAPTER_CONTRACT.md": "95457cc4540cdb2500d634721305cc0e7c67e93fbfc4e38e0d4ffb2020a96489"
+  },
+  "checks": {
+    "relevant_research_tests": "40 passed",
+    "research_full_suite": "85 passed, 1 environment-blocked (missing pandas in existing taxonomy-integrity import)",
+    "cloud_calls": "none"
+  },
+  "review": {
+    "model": "gpt-5.6-sol",
+    "status": "APPROVE",
+    "scope": "read-only security/protocol review after corrective revisions"
+  },
+  "effects": {
+    "cloud": false,
+    "real_rows": false,
+    "labels": false,
+    "benchmark_membership": false,
+    "model_fit_or_retraining": false,
+    "locked_set_access_or_scoring": false,
+    "b04_consumer_integration": false
+  },
+  "remaining_gates": [
+    "approve concrete physical resources, IAM, retention and KMS custody",
+    "run cross-process races and denied-access proofs with actual service identities",
+    "verify complete linked-pool event/customer/account aliases and ancestry",
+    "connect B04 consumers only after the live permission proofs",
+    "reserve or label no real candidates until B03/B04 acceptance is complete"
+  ]
+}

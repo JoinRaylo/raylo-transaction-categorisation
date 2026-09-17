@@ -30,10 +30,13 @@ writer for epoch N, preserves exact operation-ID retries, rejects changed
 proposal bytes, and publishes the N+1 pointer and operation atomically. A losing
 next-index upload remains an unreferenced orphan and grants no access.
 
-`read_for_worker` is not a broad bucket read. The eventual authenticated receipt
-must bind operation ID, purpose, committed epoch, object generations/digests,
-parent lineage and effective exclusions. The worker rechecks those claims before
-opening the exact object. Local receipts remain permanently non-authorizing.
+`read_for_worker` is not a broad bucket read. The authenticated receipt contract
+now binds operation ID, claim kind, purpose/worker role, an authority-resolved
+worker audience, committed epoch, intent and proposal digests, and one exact
+object generation/digest. The worker path rechecks the signed claims against the
+current committed operation, verifies the current caller principal and role, and
+then rechecks the exact object bytes. Local receipts remain permanently
+non-authorizing.
 
 ## Implemented boundary and remaining sequence
 
@@ -47,13 +50,24 @@ Implemented in isolation in the canonical app package:
 - alias CAS updates that preserve permanent contamination holds while leaving
   failed next-index uploads unreachable.
 
+The canonical app package now also exposes an injected
+`AuthorityReceiptSigner`, a lazy `KMSAuthorityReceiptSigner`, and exact-object
+authenticated receipt issuance/verification. The receipt path permits only
+committed held learning/selection claims with an authority-resolved audience;
+it rejects local/forged receipts, wrong purpose/role/audience, reservations,
+contaminated operations and changed bytes. The KMS adapter validates the
+returned key version, algorithm, 2048-bit public-key size and CRC32C integrity
+fields.
+
 The companion [adapter contract and synthetic evidence](ADAPTER_CONTRACT.md)
-records the exact port shape and the fourteen passing fake-boundary tests. Receipt
-signing, real service identities, IAM/retention/KMS proof and B04 integration
-remain pending review.
+records the exact port shape and the twenty passing fake-boundary tests. Real
+service identities, IAM/retention/KMS custody proof and B04 integration remain
+pending review.
 
 The exact post-review hashes and command results are pinned in
-[verification.json](verification.json).
+[verification-v2.json](verification-v2.json). The older
+[verification.json](verification.json) is retained as a historical adapter-only
+snapshot and is not the current receipt evidence.
 
 ## Explicit non-goals in this increment
 
@@ -64,5 +78,5 @@ locked set, retraining or scoring is authorized by this document. Local receipts
 and adapter test outcomes remain non-authorizing.
 
 The next review asks Carlos to approve the resource/IAM choices below and the
-remaining receipt model. After approval, run the required cross-process and
+synthetic receipt boundary. After approval, run the required cross-process and
 denied-access proofs before connecting B04 consumers.
