@@ -1,0 +1,60 @@
+{
+  "schema_version": "benchmark-iam-isolation-design-v1",
+  "milestone": "B03-B-iam-isolation-design",
+  "scope": "synthetic_only_read_only_design",
+  "status": "request_changes_current_resources_not_production_isolated",
+  "authorizes_consumption": false,
+  "branch": "codex/txncat-b03a-research",
+  "base_commit": "3627aee89ba9d85d2d0a681d1a6a90e6215dff49",
+  "project": {
+    "id": "raylo-production",
+    "number": "601576302267",
+    "location": "europe-west2",
+    "current_resources_are_synthetic_only": true
+  },
+  "artifacts": {
+    "iam_design_sha256": "950f24ae1ce25a538a17fc78216eccb253856977f22e67b45ca07a946467ff8b"
+  },
+  "read_only_evidence": {
+    "service_account_inventory": "bounded list; no txncat-* identities found",
+    "authority_bucket_iam": "legacy project-owner/project-editor/project-viewer bindings present",
+    "project_storage_access": "unrelated project-level roles/storage.admin and roles/storage.objectAdmin grants present",
+    "project_firestore_access": "unrelated project-level roles/datastore.user grants present",
+    "registry_state": "dedicated named database exists with approved safeguards and no documents written",
+    "object_state": "dedicated bucket exists with approved safeguards and no objects uploaded",
+    "iam_mutations": "none",
+    "customer_data_access": "none",
+    "benchmark_or_training_effects": "none"
+  },
+  "deployment_decision": {
+    "recommendation": "separate authority project beneath clean IAM ancestors",
+    "fallback": "exact deny-policy alternative only after security/infra review",
+    "current_production_project_approved_for_real_authority": false,
+    "receipt_verification": "private Cloud Run verifier; workers receive only roles/run.invoker; verifier performs fresh registry, key-state, signature and exact-generation checks"
+  },
+  "review": {
+    "model": "gpt-5.6-sol",
+    "agent": "Dewey",
+    "status": "APPROVE_REMEDY_REQUEST_CHANGES_CURRENT_STATE",
+    "scope": "read-only review of effective-access finding and proposed isolated-project matrix",
+    "findings": [
+      "Inherited allow permissions cannot be narrowed by adding conditional grants.",
+      "Current production-project resources are unsuitable for real authority data.",
+      "Custom no-list object and registry roles, explicit KMS key-state reads, clean IAM ancestors and immutable caller identity mapping are required."
+    ]
+  },
+  "remaining_gates": [
+    "explicit approval and provisioning of a separate authority project or separately reviewed deny-policy alternative",
+    "implement and synthetically test Google ID-token validation and immutable worker service-account mapping",
+    "enforce claim-kind to worker-prefix invariant and authority/environment binding",
+    "separate verify-only deployment code from receipt issuance",
+    "define signing-key version overlap, enabled-state and retirement behavior",
+    "resolve retention, cleanup and audit-log ownership",
+    "review exact custom-role definitions and resource-level bindings",
+    "run separately approved Stage 0 synthetic bootstrap",
+    "run separately approved Stage 1 identity and denied-access proof",
+    "run separately approved Stage 2 mutation and cross-process proof",
+    "run separately approved Stage 3 failure, retention and key-lifecycle proof",
+    "separate B04 admission review before any real candidate workflow"
+  ]
+}
