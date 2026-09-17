@@ -1,0 +1,33 @@
+{
+  "schema_version": "benchmark-authority-resource-bootstrap-v1",
+  "milestone": "B03-B-authority-resource-bootstrap",
+  "scope": "empty_resource_creation_attempt_blocked_before_creation",
+  "status": "blocked_billing_disabled",
+  "authorizes_consumption": false,
+  "branch": "codex/txncat-b03a-research",
+  "base_commit": "7d627eb",
+  "project": {
+    "id": "raylo-txncat-authority-prod",
+    "number": "357892832103",
+    "lifecycle_state": "ACTIVE",
+    "billing_account_name": null
+  },
+  "attempt": {
+    "command": "gcloud kms keyrings create txncat-benchmark-authority-europe-west2 --location=europe-west2 --project=raylo-txncat-authority-prod --quiet",
+    "result": "FAILED_PRECONDITION",
+    "reason": "BILLING_DISABLED",
+    "message": "Billing is disabled for project 357892832103"
+  },
+  "follow_on_operations_attempted": false,
+  "mutations": {
+    "keyring_or_keys_created": false,
+    "bucket_created": false,
+    "database_created": false,
+    "service_accounts_created": false,
+    "iam_bindings_changed": false,
+    "customer_data_accessed": false,
+    "objects_or_documents_written": false,
+    "training_retraining_or_scoring": false
+  },
+  "next_gate": "user-controlled approved billing account association and budget controls"
+}
