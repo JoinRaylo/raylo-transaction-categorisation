@@ -1,0 +1,151 @@
+{
+  "schema_version": "benchmark-authority-resource-provisioning-v1",
+  "milestone": "B03-B-authority-resource-provisioning",
+  "scope": "empty_synthetic_infrastructure_only",
+  "status": "resources_verified_effective_iam_gate_open",
+  "authorizes_consumption": false,
+  "branch": "codex/txncat-b03a-app",
+  "base_commit": "49b9f0932cd05b1f665fc67babf3cc2b4ba437c5",
+  "captured_at": "2026-09-17T15:55:36Z",
+  "project": {
+    "id": "raylo-txncat-authority-prod",
+    "number": "357892832103",
+    "location": "europe-west2",
+    "parent_folder": "folders/45426850789",
+    "parent_folder_display_name": "internal-services-monorepo",
+    "organization": "organizations/978952261329"
+  },
+  "billing": {
+    "account": "billingAccounts/012AD9-9C9BA6-3C2CAB",
+    "authority_enabled": true,
+    "raylo_production_enabled": true,
+    "same_account_verified": true,
+    "link_command": "gcloud billing projects link raylo-txncat-authority-prod --billing-account=012AD9-9C9BA6-3C2CAB --billing-project=raylo-txncat-authority-prod --quiet",
+    "readback_commands": [
+      "gcloud beta billing projects describe raylo-production --billing-project=raylo-txncat-authority-prod '--format=json(name,projectId,billingAccountName,billingEnabled)' --quiet",
+      "gcloud beta billing projects describe raylo-txncat-authority-prod '--format=json(name,projectId,billingAccountName,billingEnabled)' --billing-project=raylo-txncat-authority-prod --quiet"
+    ]
+  },
+  "resources": {
+    "keyring": "projects/raylo-txncat-authority-prod/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2",
+    "receipt_key": "projects/raylo-txncat-authority-prod/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-receipts",
+    "receipt_key_version": "projects/raylo-txncat-authority-prod/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-receipts/cryptoKeyVersions/1",
+    "storage_key": "projects/raylo-txncat-authority-prod/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-storage",
+    "storage_key_version": "projects/raylo-txncat-authority-prod/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-storage/cryptoKeyVersions/1",
+    "bucket": "gs://raylo-txncat-authority-prod-europe-west2",
+    "firestore_database": "projects/raylo-txncat-authority-prod/databases/txncat-benchmark-authority",
+    "firestore_encryption": "google-managed-default",
+    "firestore_create_time": "2026-09-17T15:44:37.256124Z",
+    "firestore_uid": "f2b7b450-e3b7-4d20-9145-7fab4864042c",
+    "firestore_operation": "projects/raylo-txncat-authority-prod/databases/txncat-benchmark-authority/operations/LARkSKt_RZEgTbfjULS38hAqMnRzZXctZXBvcnRlDCIFEHqQyOAQBtWwleUICwovGg"
+  },
+  "enabled_apis": [
+    "cloudbilling.googleapis.com",
+    "cloudkms.googleapis.com",
+    "firebaserules.googleapis.com",
+    "firestore.googleapis.com",
+    "iam.googleapis.com",
+    "iamcredentials.googleapis.com",
+    "storage.googleapis.com"
+  ],
+  "mutation_inventory": {
+    "authority_project_created_in_prior_packet": true,
+    "billing_linked": true,
+    "cloudbilling_api_enabled": true,
+    "keyring_and_two_hsm_keys_created": true,
+    "cloud_storage_service_identity_created": true,
+    "storage_key_service_agent_binding_changed": true,
+    "bucket_created": true,
+    "bucket_versioning_enabled": true,
+    "firestore_database_created": true,
+    "worker_or_authority_user_managed_service_accounts_created": false,
+    "project_custom_iam_bindings_changed": false,
+    "synthetic_objects_or_documents_written": false,
+    "customer_data_accessed": false,
+    "labels_or_benchmark_membership_changed": false,
+    "training_retraining_or_scoring": false,
+    "b04_consumer_integration": false
+  },
+  "readback_commands": [
+    {
+      "command": "gcloud services list --enabled --project=raylo-txncat-authority-prod '--format=value(config.name)' --quiet",
+      "result": "exactly seven APIs listed above; Cloud Run and Artifact Registry absent"
+    },
+    {
+      "command": "gcloud storage buckets describe gs://raylo-txncat-authority-prod-europe-west2 --project=raylo-txncat-authority-prod --format=json --quiet",
+      "result": "default HSM CMEK, UBLA, PAP enforced, versioning, 30-day retention and 7-day soft delete verified"
+    },
+    {
+      "command": "gcloud firestore databases describe --database=txncat-benchmark-authority --project=raylo-txncat-authority-prod --format=json --quiet",
+      "result": "Firestore Native Standard, europe-west2, PESSIMISTIC, PITR enabled, delete protection enabled, no CMEK override"
+    },
+    {
+      "command": "gcloud projects get-iam-policy raylo-txncat-authority-prod --project=raylo-txncat-authority-prod --format=json --quiet",
+      "result": "Carlos roles/owner plus firebaserules and firestore Google-managed service agents"
+    },
+    {
+      "command": "gcloud storage buckets get-iam-policy gs://raylo-txncat-authority-prod-europe-west2 --project=raylo-txncat-authority-prod --format=json --quiet",
+      "result": "default legacy projectOwner/projectEditor/projectViewer bucket bindings"
+    },
+    {
+      "command": "gcloud kms keys get-iam-policy txncat-benchmark-storage --location=europe-west2 --keyring=txncat-benchmark-authority-europe-west2 --project=raylo-txncat-authority-prod --format=json --quiet",
+      "result": "only service-357892832103@gs-project-accounts.iam.gserviceaccount.com with roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "command": "gcloud kms keys get-iam-policy txncat-benchmark-receipts --location=europe-west2 --keyring=txncat-benchmark-authority-europe-west2 --project=raylo-txncat-authority-prod --format=json --quiet",
+      "result": "no direct key-level bindings"
+    },
+    {
+      "command": "gcloud iam service-accounts list --project=raylo-txncat-authority-prod '--format=json(email,uniqueId,disabled)' --quiet",
+      "result": "[]; no user-managed worker or authority accounts"
+    },
+    {
+      "command": "gcloud resource-manager folders get-iam-policy 45426850789 --format=json --quiet",
+      "result": "team-infra-eng roles/owner; folder administration/viewing/project-creation grants also present"
+    },
+    {
+      "command": "gcloud organizations get-iam-policy 978952261329 --format=json --quiet",
+      "result": "permission denied for active account; organisation-level effective policy remains uncertified"
+    }
+  ],
+  "failed_attempts": [
+    {
+      "operation": "initial HSM keyring creation",
+      "result": "FAILED_PRECONDITION: Billing is disabled for project 357892832103",
+      "resolution": "linked the verified raylo-production billing account, then retried"
+    },
+    {
+      "operation": "initial HSM-CMEK bucket creation",
+      "result": "HTTP 403: Cloud Storage service account not authorised on the KMS key",
+      "resolution": "created the Google-managed Cloud Storage service identity, applied the exact key-level grant, then retried"
+    }
+  ],
+  "reviews": {
+    "prior_sol_binding_review": "APPROVE_WITH_CONTROL_PLANE_CONDITIONS",
+    "post_provisioning_sol_review": "CONDITIONAL",
+    "post_provisioning_sol_agent": "Dewey",
+    "post_provisioning_sol_conditions": [
+      "security/infra must provide an organisation-to-project effective-access export or attestation covering inherited roles, IAM Deny/principal access boundaries, impersonation roles and nested group membership",
+      "Carlos, team-infra-eng and the inherited Joaquim administration path must be recorded as governed control-plane principals, preferably via JIT/PAM",
+      "Firebase, Firestore and Storage service identities and exact roles must be inventoried and their impersonation paths checked",
+      "the bucket's default projectOwner/projectEditor/projectViewer legacy bindings must be removed through a separately approved change",
+      "exact custom roles/CEL conditions, immutable unique-ID mappings, key rotation overlap, audit logging and retention ownership must be approved",
+      "the prior raylo-production bucket, registry and keys must be formally superseded as synthetic-only/non-authoritative and excluded from the new verifier key set"
+    ],
+    "owner_approval": "Carlos approved the new authority project and same-billing-account linkage; this packet records no approval to consume data"
+  },
+  "hard_stop": [
+    "parent folder team-infra-eng Owner inheritance prevents a claim of effective isolation",
+    "organisation IAM policy read is denied for the active account",
+    "direct Carlos Owner governance/replacement remains unresolved",
+    "exact custom roles, resource conditions, immutable service-account IDs, receipt verification deployment, rotation overlap, retention ownership and audit scope remain pending"
+  ],
+  "next_gate": "security review and explicit approval of the effective IAM/identity design before worker or authority service-account bindings, synthetic fixture writes or live permission probes",
+  "source_evidence": {
+    "local_code_and_tests_unchanged": true,
+    "prior_startup_tests": "115 passed",
+    "prior_focused_authority_tests": "53 passed",
+    "raw_transaction_payloads": "not accessed",
+    "locked_sets": "not accessed"
+  }
+}

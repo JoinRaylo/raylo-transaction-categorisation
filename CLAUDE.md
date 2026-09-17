@@ -134,20 +134,31 @@ workers verify authority receipts; object-read permission must not be treated as
 KMS public-key permission, and verification must fail closed without a local or
 cached fallback.
 
-The Cloud KMS API, dedicated EU bucket, keyring, HSM keys and bucket default HSM
-CMEK are now verified. The encrypted dedicated Firestore registry create was
-attempted once but was blocked by provider `RESOURCE_EXHAUSTED` CMEK database
-quota/allowlisting, leaving no database. The revised registry design created a
-dedicated Google-managed-encryption Firestore database after the effective
-`constraints/gcp.restrictNonCmekServices` policy returned `allValues=ALLOW` and
-the task owner's explicit approval for Google-managed registry metadata was
-recorded in the packet. The database has pessimistic concurrency, PITR and
-delete protection, but no documents have been written. Service identities, IAM
-bindings and live permission/cross-process probes have not been created or run.
-The packet does not authorize customer-linked Plaid admission, labels,
-benchmark membership, B04 consumers, training or scoring. The remaining
-persistent registry/IAM mutations and live probes require their exact
-side-effect approval and named owners.
+The physical-scope packet is preserved as a historical record of the earlier
+`raylo-production` synthetic fixture decision; it is not an authority boundary.
+The current resource state is pinned in the [authority resource provisioning
+packet](docs/benchmark-implementation/b03-b-authority-resource-provisioning-2026-09-17/README.md).
+
+## B03-B authority resource provisioning (2026-09-17)
+
+The approved `raylo-txncat-authority-prod` project is linked to the same billing
+account as `raylo-production`. Its dedicated EU bucket has uniform
+bucket-level access, public-access prevention, versioning, 30-day retention,
+7-day soft delete and the authority-owned HSM storage CMEK. Its empty named
+Firestore Native registry uses Google's default encryption and has pessimistic
+concurrency, PITR and delete protection. The receipt and storage HSM keys are
+present with enabled version 1; the storage key has 90-day rotation. Cloud Run
+and Artifact Registry remain disabled.
+
+The post-creation audit found the parent folder's inherited
+`group:team-infra-eng` Owner grant, normal legacy project bindings on the empty
+bucket, and an organisation IAM policy that the active account cannot read.
+Effective isolation is therefore not certified. No worker or authority
+user-managed service account, custom IAM binding, synthetic object/document,
+customer row, label, benchmark membership, model fit, locked-set access, score
+or B04 consumer was added. The [current packet](docs/benchmark-implementation/b03-b-authority-resource-provisioning-2026-09-17/README.md)
+records the exact resource IDs and commands. Worker identity/IAM changes,
+synthetic fixtures and live permission proofs remain gated on security review.
 
 ## Joint benchmark and retraining data plan (2026-09-16)
 
