@@ -27,9 +27,10 @@
     "linked population and training aggregate audits",
     "historical regression cohort",
     "B03-A synthetic reservation protocol",
-    "B03-B injected-port object/registry adapter and synthetic boundary tests"
+    "B03-B injected-port object/registry adapter and synthetic boundary tests",
+    "B03-D synthetic candidate allocation contract and adversarial tests"
   ],
-  "next_milestone": "B03-B physical scope/IAM/KMS receipt review; then live permission proofs before real admission",
+  "next_milestone": "effective IAM/security attestation and live authority proofs; then fresh linked-only admission before real evaluation-set creation",
   "not_implemented": [
     "B03 managed reservation authority",
     "B03 authenticated receipt and cross-process/IAM proofs",
@@ -58,6 +59,21 @@
     "?? tools/publish_bundle.sh",
     "?? tools/select_seed.py"
   ],
+  "successor_record": {
+    "milestone": "B03-D",
+    "status": "complete_bounded_synthetic_only",
+    "app_base_before_milestone": "e0123a929aa6b7d7d2de925239ecb724659ff9cd",
+    "app_branch": "codex/txncat-b03a-app",
+    "app_implementation_commit": "bb9d57265e3b4d11781258a5afc7c6b0f81cd0c1",
+    "research_base_before_milestone": "4f139a973a74b4f26144beee00375a12abdaec52",
+    "research_branch": "codex/txncat-b03a-research",
+    "evidence_app": "apps/ob-txn-categoriser/research/benchmark-implementation/b03-d-synthetic-allocation-2026-09-17",
+    "evidence_research": "docs/benchmark-implementation/b03-d-synthetic-allocation-2026-09-17",
+    "authorizes_consumption": false,
+    "real_rows_exported": 0,
+    "real_rows_labelled": 0,
+    "next_gate": "security/infra effective-access attestation, then fresh bounded linked-only admission and managed authority reservation"
+  },
   "schema_version": "txncat-dataset-handover-v1",
   "validation": {
     "base_ci": {

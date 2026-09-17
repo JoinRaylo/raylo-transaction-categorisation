@@ -122,6 +122,31 @@ real rows, labels, benchmark membership, model fit, locked-set score or cloud
 state changed. The next gate is physical resource/IAM/KMS review and separately
 approved live permission proofs, followed by B04 consumer integration.
 
+## B03-D synthetic candidate allocation (2026-09-17)
+
+The canonical app module is
+`lib/raylo-txncat/src/raylo_txncat/benchmark_allocation.py`, with the mirrored
+design/evidence packet at
+`docs/benchmark-implementation/b03-d-synthetic-allocation-2026-09-17/`. It is
+a strict local planner for opaque synthetic candidate blocks, not source
+admission or authority. Candidate/request/result types are frozen, extra-field
+forbidden, limited to the named synthetic fixture and `three-views-v1`, and
+carry `scope="synthetic_only"`; results always have
+`authorizes_consumption=false`.
+
+It assigns whole precomputed blocks to a strict role vocabulary, reserves
+pilot/evaluation/selection roles before training, protects event aliases,
+accounts, customers, strict effective inputs and unfamiliar reviewed families,
+and preserves representative recurrence as an explicit dependence count.
+Existing assignments are revalidated and canonically digested. Exact capacity
+failures, non-exact shortfalls, contradictory blocks, strict novelty collisions,
+ineligible candidates and ID reuse fail closed. Sol and Astra conditionally
+approved the local direction after these hardening checks. The bounded
+backtracking helper is synthetic-only; no real rows, cloud calls, labels,
+authority reservations, locked-set access, model fit, scoring or retraining
+occurred. The next real gate is effective IAM/security attestation followed by
+a fresh bounded linked-only admission profile and managed reservation.
+
 ## B03-B physical scope review (2026-09-17)
 
 The [physical scope review packet](docs/benchmark-implementation/b03-b-physical-scope-review-2026-09-17/README.md)
