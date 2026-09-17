@@ -1,8 +1,8 @@
 {
   "schema_version": "benchmark-physical-scope-review-v1",
   "milestone": "B03-B-physical-scope-review",
-  "scope": "proposal_only_synthetic",
-  "status": "pending_physical_approval",
+  "scope": "synthetic_only_partial_cloud_scope",
+  "status": "partial_scope_provisioned_registry_iam_pending",
   "authorizes_consumption": false,
   "branch": "codex/txncat-b03a-research",
   "parent_commit": "c5a3216",
@@ -12,10 +12,23 @@
     "lib/raylo-txncat/tests/test_benchmark_authority_cloud.py": "ae80c79ac4f3f0dc7f1cea0f17483d8d69826275e6bb9029a8f4cc1afe9ad872"
   },
   "mirror_sha256": {
-    "CLAUDE.md": "abe23edcd51b324a0f525e738e33b7e3ac7245615936ead08c8fc9595680a7bd",
-    "README.md": "74b8fcfcc4de6881418f097d0d3507fc9f55a805d77716454c299c4c171c9271",
-    "docs/project-summary.md": "c942d086cd38297b17a0e45eab67c13cbd8fade7bd60bdd17c9a5157c9abe865",
-    "docs/benchmark-implementation/b03-b-physical-scope-review-2026-09-17/README.md": "2864e8fd9445c9062780b615107a7fce614db32845567e26f16ab1c2a993ff34"
+    "CLAUDE.md": "c8c03929a4a03b1e433d0180015d874a3f6d73462a03294bf5cc052f6fa4cb13",
+    "README.md": "c8618a5ad4b2e9e9187e9c4566c3a317613708bfa6f5610a071c2e082f3720e4",
+    "docs/project-summary.md": "d7a7d4ca2fb0de036294e41adbe0977cb33b2d6f67c0e59f130389ed781ef3d0",
+    "docs/benchmark-implementation/b03-b-physical-scope-review-2026-09-17/README.md": "25ea827e9f4ba9df794ebaa8e0e48237df9683883e6ac9a4fbd8c12b7b2917c7"
+  },
+  "cloud_scope": {
+    "project": "raylo-production",
+    "project_number": "601576302267",
+    "location": "europe-west2",
+    "cloudkms_api": "enabled",
+    "authority_bucket": "gs://raylo-production-txncat-benchmark-authority-europe-west2",
+    "authority_keyring": "projects/raylo-production/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2",
+    "receipt_key_version": "projects/raylo-production/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-receipts/cryptoKeyVersions/1",
+    "storage_key_version": "projects/raylo-production/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-storage/cryptoKeyVersions/1",
+    "firestore_database": "not_created",
+    "service_accounts": "none_created",
+    "iam_bindings": "none_changed"
   },
   "checks": {
     "prior_authenticated_receipt_review": "gpt-5.6-sol APPROVE",
@@ -24,17 +37,23 @@
     "full_app_library_and_unit": "1385 passed, 1 warning",
     "relevant_research_tests": "40 passed",
     "research_full_suite": "85 passed, 1 environment-blocked (missing pandas in existing taxonomy-integrity import)",
-    "physical_permission_probe": "not run; pending approval",
+    "physical_scope_provisioning": "bucket, keyring and two HSM keys verified; registry/IAM pending exact persistent-mutation confirmation",
+    "physical_permission_probe": "not run; registry/IAM pending",
     "cross_process_live_probe": "not run; pending approval",
-    "cloud_calls": "none"
+    "cloud_calls": "Cloud KMS API enabled; bucket, keyring and two HSM keys created; no customer data or objects uploaded"
   },
-  "review": {
+  "prior_proposal_review": {
     "model": "gpt-6-astra",
     "status": "APPROVE",
-    "scope": "read-only architecture/security review of proposal-only physical scope and staged proof packet"
+    "scope": "read-only architecture/security review of the proposal-only packet before partial provisioning"
+  },
+  "review": {
+    "model": "gpt-5.6-sol",
+    "status": "APPROVE",
+    "scope": "read-only evidence review of the verified partial cloud state and remaining mutation gate"
   },
   "effects": {
-    "cloud": false,
+    "cloud": true,
     "real_rows": false,
     "labels": false,
     "benchmark_membership": false,
@@ -43,7 +62,9 @@
     "b04_consumer_integration": false
   },
   "remaining_gates": [
-    "approve concrete project/location, stores, identities, retention and KMS custody",
+    "confirm the exact persistent Firestore registry and IAM mutations before proceeding",
+    "attach the reviewed storage CMEK to the authority bucket and create the encrypted Firestore registry",
+    "create distinct service identities and apply the approved least-privilege IAM matrix",
     "resolve the worker public-key verification deployment design",
     "run separately approved Stage 0 synthetic fixture/bootstrap",
     "run Stage 1 no-write identity and direct-read deny/absence proof",

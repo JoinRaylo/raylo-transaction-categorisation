@@ -1,28 +1,51 @@
 # B03-B physical authority scope review
 
-Status: **proposal only; physical scope and IAM are not approved or applied**.
+Status: **partially provisioned synthetic scope; registry, IAM and live proofs are pending**.
 
 This packet is the next gate after the approved synthetic authenticated-receipt
 boundary. It turns the existing [IAM plan](../b03-b-production-boundary-2026-09-16/IAM_PLAN.md)
-into an explicit approval and proof checklist. It does not select resource
-names, create cloud resources, change IAM, read customer data, or authorize
-benchmark consumption.
+into an explicit approval and proof checklist. The approved partial setup below
+creates no customer-data path and does not authorize benchmark consumption. The
+Firestore registry, service identities, IAM bindings, bucket CMEK attachment and
+all live proofs remain unapplied.
 
-## Decisions required before any live probe
+## Verified partial physical scope (2026-09-17)
+
+The following resources were created in the approved `raylo-production` project
+under the active account, with no objects or customer content uploaded:
+
+| Resource | Verified state |
+| --- | --- |
+| Project/location | `raylo-production` (`601576302267`), `europe-west2`; existing default Firestore remains separate and is not reused |
+| Authority bucket | `gs://raylo-production-txncat-benchmark-authority-europe-west2`; regional `europe-west2`, Standard, uniform bucket-level access, public-access prevention, versioning, 30-day object retention and 7-day soft-delete recovery |
+| KMS keyring | `projects/raylo-production/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2` |
+| Receipt key | `.../cryptoKeys/txncat-benchmark-receipts`, HSM RSA PKCS#1 2048 signing, enabled version 1; asymmetric-key rotation is manual/version-bound because automatic rotation is unsupported |
+| Storage key | `.../cryptoKeys/txncat-benchmark-storage`, HSM symmetric encryption, enabled version 1, 90-day automatic rotation beginning 2026-12-16 |
+| Pending registry | Dedicated `txncat-benchmark-authority` Firestore database was not created; no registry data exists |
+| Pending identities/IAM | No service accounts or IAM bindings were created or changed |
+
+The Cloud KMS API was enabled as the prerequisite for the approved key scope.
+The bucket currently has no default CMEK attached; the storage key is reserved
+for the later reviewed bucket/Firestore encryption wiring. No key or bucket
+deletion, retention lock, customer-data read, label write or benchmark admission
+occurred.
+
+## Decisions and evidence required before any live probe
 
 | Decision | Required resolution | Evidence required |
 | --- | --- | --- |
-| Project and location | Name a new, isolated benchmark scope and confirm region/location | Approved resource record; serving and training stores shown separate |
-| Object store | Dedicated immutable bucket/prefix for authority objects, claim data, manifests and indexes | Versioning/retention, generation-zero create-only behavior and no broad worker listing |
-| Registry | Dedicated Firestore database/collection for pointers, proposals, operations and holds | Transaction limits, CAS semantics, backup/recovery and no row payloads in documents |
-| Worker identities | Resolve distinct `learning-worker`, `selection-worker` and `sealed-evaluator` principals | IAM binding export plus explicit deny/absence results for every cross-plane read |
-| Authority identity | Resolve an `authority-writer` identity separate from serving and workers | Object create/readback, registry transaction, KMS signing and public-key self-verification |
-| KMS custody | Choose the authority-owned asymmetric signing key/version, protection level, rotation and audit ownership | Key policy, rotation/retirement procedure, audit-log access and recovery decision |
-| Retention and deletion | Approve retention lock/versioning and the exception process | Deletion-recovery proof showing membership, alias and contamination history cannot be erased |
+| Project and location | Retain the recorded isolated `raylo-production` / `europe-west2` scope and confirm it is separate from serving/training paths | Approved resource record; serving and training stores shown separate |
+| Object store | Use the created dedicated immutable bucket/prefix for authority objects, claim data, manifests and indexes; attach its reviewed CMEK before registry use | Versioning/retention, generation-zero create-only behavior and no broad worker listing |
+| Registry | Create the dedicated `txncat-benchmark-authority` Firestore database for pointers, proposals, operations and holds | Transaction limits, CAS semantics, backup/recovery and no row payloads in documents |
+| Worker identities | Create distinct `learning-worker`, `selection-worker` and `sealed-evaluator` principals | IAM binding export plus explicit deny/absence results for every cross-plane read |
+| Authority identity | Create an `authority-writer` identity separate from serving and workers | Object create/readback, registry transaction, KMS signing and public-key self-verification |
+| KMS custody | Retain the created authority-owned HSM keys; document manual receipt-key version rotation, storage-key schedule and audit ownership | Key policy, rotation/retirement procedure, audit-log access and recovery decision |
+| Retention and deletion | Confirm the bucket's 30-day retention/7-day soft-delete policy and approve whether to lock or extend it before real admission | Deletion-recovery proof showing membership, alias and contamination history cannot be erased |
 | Audit and logging | Approve access/audit log sinks and retention | Logs contain IDs, generations, digests, epochs, key version and caller identity, never payloads or labels |
 
-No row in this table has a default value. Existing serving-app or staging
-approval does not approve these resources.
+Created resources are factual but not permission to consume data. Remaining rows
+are explicit mutations or approvals, not defaults. Existing serving-app or
+staging approval does not approve these resources.
 
 ## Receipt verification deployment decision
 
@@ -147,13 +170,17 @@ customer-linked Plaid pool or to connect B04 consumers.
   unit tests pass, with 115 startup checks passing.
 - The KMS adapter is lazy and injected; the synthetic fake covers typed
   algorithm/checksum responses and non-2048-bit rejection.
-- No physical resource, IAM binding, KMS key, retention policy or live identity
-  proof exists yet.
+- Partial physical scope is verified: dedicated bucket, retention/versioning,
+  keyring and HSM receipt/storage keys exist; the bucket has no default CMEK.
+- No Firestore registry, service identity, IAM binding or live identity proof
+  exists yet. The staged packet has not written any object or registry fixture.
 - No real rows, labels, benchmark membership, model fitting, retraining,
   locked-set access or scoring occurred.
 
-Approval of this packet must record the concrete choices and owners. Until then,
-do not provision, run live permission probes, connect B04, reserve candidates,
-or label any transaction.
+The remaining approval record must name owners for the Firestore database/CMEK,
+bucket CMEK attachment, service identities/IAM bindings and receipt-verification
+design. Until those exact mutations are approved, do not provision further,
+run live permission probes, connect B04, reserve candidates or label any
+transaction.
 
 The packet evidence is pinned in `verification.json` in this directory.

@@ -125,7 +125,8 @@ approved live permission proofs, followed by B04 consumer integration.
 ## B03-B physical scope review (2026-09-17)
 
 The [physical scope review packet](docs/benchmark-implementation/b03-b-physical-scope-review-2026-09-17/README.md)
-is proposal-only. It converts the existing IAM plan into decisions and evidence
+started as a proposal and now records a partially provisioned synthetic scope.
+It converts the existing IAM plan into decisions and evidence
 requirements for an isolated project/location, immutable object store, registry,
 distinct worker and authority identities, retention/deletion, audit logging and
 KMS custody. It also requires an explicit choice for how learning and selection
@@ -133,11 +134,13 @@ workers verify authority receipts; object-read permission must not be treated as
 KMS public-key permission, and verification must fail closed without a local or
 cached fallback.
 
-No physical resource, IAM binding, KMS key or live permission/cross-process probe
-has been created or run. The packet does not authorize customer-linked Plaid
-admission, labels, benchmark membership, B04 consumers, training, scoring or
-cloud mutation. Approval must record the concrete choices and owners before any
-live probe begins.
+The Cloud KMS API, dedicated EU bucket, keyring and HSM keys are now verified;
+the dedicated Firestore registry, service identities, IAM bindings, bucket CMEK
+attachment and live permission/cross-process probes have not been created or
+run. The packet does not authorize customer-linked Plaid admission, labels,
+benchmark membership, B04 consumers, training or scoring. The remaining
+persistent registry/IAM mutations and live probes require their exact
+side-effect approval and named owners.
 
 ## Joint benchmark and retraining data plan (2026-09-16)
 
