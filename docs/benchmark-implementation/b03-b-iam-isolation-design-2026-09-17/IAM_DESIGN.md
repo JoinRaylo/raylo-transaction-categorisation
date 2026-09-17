@@ -1,6 +1,14 @@
 # B03-B IAM and authority-isolation design
 
-Status: **minimal prerequisite APIs enabled; IAM and authority resources pending**.
+Status: **historical proposal; organization-level isolation gate superseded for
+the internal benchmark; runtime IAM controls remain pending**.
+
+The later B03-B gate-reconciliation decision accepts inherited control-plane
+administration as an internal-benchmark risk. This proposal's clean-ancestor
+and effective-access requirements are no longer hard blockers for this use and
+must not be read as evidence of effective isolation. Its exact runtime role
+matrix, resource conditions, no-broad-access requirements and synthetic proof
+sequence remain applicable before any real reservation.
 
 This packet records the next safe decision after the partially provisioned
 synthetic scope. It does not authorize customer-data reads, candidate
@@ -135,9 +143,10 @@ Minimal prerequisite APIs are now enabled; see the separate
 inventory. The concrete pre-apply binding proposal is recorded in
 `b03-b-authority-binding-review-2026-09-17`. Cloud Run and Artifact Registry
 remain disabled. The next decision is separate security approval of that exact
-custom-role/resource-level binding packet. Only after approval, the code gaps
-are closed, and live deny/allow proofs pass should the synthetic-only Stage 0
-bootstrap be considered.
+custom-role/resource-level binding packet. The local receipt hardening is
+complete, but live deployment wiring and the remaining key/retention/access
+proofs are not. Only after approval and live deny/allow proofs pass should the
+synthetic-only Stage 0 bootstrap be considered.
 
 ### Evidence recorded
 

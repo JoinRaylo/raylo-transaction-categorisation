@@ -30,7 +30,7 @@
     "B03-B injected-port object/registry adapter and synthetic boundary tests",
     "B03-D synthetic candidate allocation contract and adversarial tests"
   ],
-  "next_milestone": "effective IAM/security attestation and live authority proofs; then fresh linked-only admission before real evaluation-set creation",
+  "next_milestone": "scoped runtime identity/binding approval and synthetic live authority proofs; then fresh linked-only admission before real evaluation-set creation",
   "not_implemented": [
     "B03 managed reservation authority",
     "B03 authenticated receipt and cross-process/IAM proofs",
@@ -60,19 +60,20 @@
     "?? tools/select_seed.py"
   ],
   "successor_record": {
-    "milestone": "B03-D",
-    "status": "complete_bounded_synthetic_only",
-    "app_base_before_milestone": "e0123a929aa6b7d7d2de925239ecb724659ff9cd",
+    "milestone": "B03-B-gate-reconciliation",
+    "status": "complete_documentation_only_internal_risk_accepted",
+    "app_base_before_milestone": "15429b81dd2b86d72feba933947e9ab704fed305",
     "app_branch": "codex/txncat-b03a-app",
-    "app_implementation_commit": "45ad84f58c21b27bb714cd8eb745e02187e9c610",
-    "research_base_before_milestone": "4f139a973a74b4f26144beee00375a12abdaec52",
+    "app_implementation_commit": "pending_reconciliation_commit",
+    "research_base_before_milestone": "545c296e88f61ac2d672b5b2d5c8c3d943897d83",
     "research_branch": "codex/txncat-b03a-research",
-    "evidence_app": "apps/ob-txn-categoriser/research/benchmark-implementation/b03-d-synthetic-allocation-2026-09-17",
-    "evidence_research": "docs/benchmark-implementation/b03-d-synthetic-allocation-2026-09-17",
+    "research_implementation_commit": "pending_reconciliation_commit",
+    "evidence_app": "apps/ob-txn-categoriser/research/benchmark-implementation/b03-b-gate-reconciliation-2026-09-17",
+    "evidence_research": "docs/benchmark-implementation/b03-b-gate-reconciliation-2026-09-17",
     "authorizes_consumption": false,
     "real_rows_exported": 0,
     "real_rows_labelled": 0,
-    "next_gate": "security/infra effective-access attestation, then fresh bounded linked-only admission and managed authority reservation"
+    "next_gate": "scoped runtime identity/binding approval and synthetic Stage 0-3 authority proof, then complete admission evidence before any reservation"
   },
   "schema_version": "txncat-dataset-handover-v1",
   "validation": {

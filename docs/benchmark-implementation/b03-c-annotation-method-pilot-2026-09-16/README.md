@@ -89,6 +89,8 @@ that path guard is not a substitute for downstream consumer gates.
 After the concrete authority scope and authenticated receipt review, the next
 bounded action is to produce a fresh linked-only candidate snapshot, rerun all
 eligibility/protection checks, commit the separate 500-row pilot reservation,
-and then submit exactly one batch per model. Final evaluation labels still
-require two independent human labels plus Carlos's adjudication; model
-annotations are an annotation-method experiment, not human gold.
+and then submit exactly one batch per model. The pilot's three model votes are
+annotation-method evidence, not human gold: unanimous agreement is descriptive
+only, while every disagreement or incomplete result is raised to Carlos for a
+decision. Two independent human labels plus adjudication remain the policy for
+a later human-gold evaluation set unless explicitly superseded.

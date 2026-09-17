@@ -1,6 +1,7 @@
 # B03-B authority resource provisioning
 
-Status: **empty resources provisioned and verified; effective IAM remains a hard gate**.
+Status: **empty resources provisioned and verified; effective isolation waived
+for the internal benchmark; runtime IAM remains pending**.
 
 The bucket-policy snapshot in this packet is historical. The approved empty
 bucket cleanup is recorded in the [follow-up IAM packet](../b03-b-authority-bucket-iam-cleanup-2026-09-17/README.md).
@@ -78,13 +79,13 @@ service-agent numeric IDs were exposed by failed metadata/policy reads, but
 their service-account IAM policies were not readable by the active account;
 impersonation paths are therefore not certified either.
 
-Consequently the project is not yet proven to be an isolated authority boundary.
-Do not create worker/writer identities, apply custom roles, write synthetic
-fixtures or run live permission probes until a security review closes the
-inherited-access question. If the ancestor grant cannot be governed or
-replaced through the approved privileged/JIT path, use a separately reviewed
-IAM-deny or clean-ancestor design; do not claim that a project-level allow
-matrix prevents folder Owners from bypassing it.
+Consequently the project is not proven to be an isolated authority boundary.
+The later B03-B gate-reconciliation decision accepts that as an internal-
+benchmark risk, so the inherited-access finding is no longer a hard blocker
+for this use. It remains prohibited to represent the project as effectively
+isolated or to treat a project-level allow matrix as preventing folder Owners
+from bypassing it. Runtime identities, exact conditions, synthetic proof and
+the authority CAS remain mandatory before any real reservation.
 
 The next review must also fix the exact resource conditions and unique-ID
 mapping for `authority-writer`, `receipt-verifier`, `learning-worker` and
@@ -96,22 +97,21 @@ may be admitted until those proofs and the B04 admission review pass.
 ## Sol post-provisioning review
 
 Sol reviewed the resource evidence as **CONDITIONAL**. The cryptographic and
-storage bootstrap controls are accepted, but service-account creation and IAM
-bindings remain blocked until:
+storage bootstrap controls are accepted. The later internal-benchmark waiver
+supersedes the clean-ancestor/effective-access condition for this use, but
+service-account creation and IAM bindings still require the exact runtime
+matrix and scoped cloud-change approval. The remaining conditions are:
 
-1. security/infra supplies an organisation-to-project effective-access export
-   or attestation covering inherited Owners/Editors, IAM Deny and principal
-   access boundaries, impersonation roles and nested group membership;
-2. Carlos, `team-infra-eng` and the inherited Joaquim administration path are
+1. Carlos, `team-infra-eng` and the inherited Joaquim administration path are
    recorded as governed control-plane principals, preferably through JIT/PAM;
-3. Google-managed Firebase/Firestore/Storage service identities and their
+2. Google-managed Firebase/Firestore/Storage service identities and their
    exact roles are inventoried, with impersonation paths checked;
-4. the bucket's default `projectOwner`, `projectEditor` and `projectViewer`
+3. the bucket's default `projectOwner`, `projectEditor` and `projectViewer`
    legacy bindings are removed through a separately approved change (completed
    for the empty bucket; see the follow-up IAM packet);
-5. exact custom roles/CEL conditions, unique-ID mappings, key rotation overlap,
+4. exact custom roles/CEL conditions, unique-ID mappings, key rotation overlap,
    audit logging and retention ownership are approved; and
-6. the prior `raylo-production` bucket, registry and keys are marked
+5. the prior `raylo-production` bucket, registry and keys are marked
    superseded, synthetic-only and non-authoritative, with no old receipt keys
    accepted by the new verifier.
 

@@ -1,6 +1,14 @@
 # B03-B authority binding review packet
 
-Status: **proposal only; awaiting separate security approval**.
+Status: **historical pre-apply proposal; effective-isolation condition
+superseded for the internal benchmark; exact runtime mutation still pending
+scoped approval**.
+
+The later B03-B gate-reconciliation decision accepts inherited control-plane
+administration for this internal benchmark and removes organization-level
+effective isolation as a hard gate. This packet remains the source of the
+least-privilege role matrix and resource-condition proposal. It does not itself
+authorize service-account/IAM mutation or claim effective isolation.
 
 This packet follows the successful minimal API enablement recorded in
 `b03-b-authority-api-enablement-2026-09-17`. It is the exact pre-apply review
@@ -11,10 +19,10 @@ integration.
 
 Sol review: **APPROVE with control-plane conditions**. The API-only state is
 accurately bounded, but this packet must not be treated as approval to mutate
-IAM or create authority resources. Before real data, govern or replace the
-direct Carlos Owner grant through the approved privileged/JIT path, complete
-the organization-to-project effective-access review, and capture reproducible
-command evidence with collection time and operation identifiers.
+IAM or create authority resources. The later internal-benchmark waiver
+supersedes the clean-ancestor/effective-access condition for this use; it does
+not waive exact runtime least privilege, caller authentication, resource
+conditions, or reproducible command evidence.
 
 ## Fixed scope
 
@@ -22,10 +30,10 @@ command evidence with collection time and operation identifiers.
 | --- | --- |
 | Project | `raylo-txncat-authority-prod` (`357892832103`) |
 | Region | `europe-west2` |
-| Firestore database | `txncat-benchmark-authority` (regular Google-managed encryption; create pending) |
-| Receipt key | `txncat-benchmark-receipts` (HSM asymmetric signing; create pending) |
-| Storage key | `txncat-benchmark-storage` (HSM encryption; create pending) |
-| Authority bucket | proposed `raylo-txncat-authority-prod-europe-west2`; confirm availability before creation; never reuse the old `raylo-production` bucket |
+| Firestore database | `txncat-benchmark-authority` (regular Google-managed encryption; created and verified empty) |
+| Receipt key | `txncat-benchmark-receipts` (HSM asymmetric signing; version 1 enabled) |
+| Storage key | `txncat-benchmark-storage` (HSM encryption; version 1 enabled) |
+| Authority bucket | `raylo-txncat-authority-prod-europe-west2`; created and verified empty; never reuse the old `raylo-production` bucket |
 
 The four requested APIs and two automatically enabled dependencies are already
 recorded in the API-enablement packet. Cloud Run and Artifact Registry remain

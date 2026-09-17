@@ -91,6 +91,6 @@ real-data gate is to complete the missing alias/history/family and block/weight
 evidence, then prove the retained managed authority runtime and claim CAS. Only
 after that gate may a 500-row manifest be reserved and sent separately to
 Gemini 3.8 Flash, Gemini 3.7 Flash and Sonnet 5. Disagreements remain visible
-for Carlos; they are not auto-adjudicated. The resulting benchmark remains
-permanently unavailable to training and model selection until its freeze and
-release review.
+for Carlos; they are not auto-adjudicated. Any reserved evaluation row and its
+connected protected groups remain permanently unavailable to training and
+model selection; freeze or release review does not lift that exclusion.
