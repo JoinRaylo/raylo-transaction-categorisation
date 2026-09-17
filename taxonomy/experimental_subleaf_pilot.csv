@@ -1,0 +1,16 @@
+parent_leaf,experimental_subleaf,priority,contains_any,rationale
+streaming,streaming_transactional_video,10,prime video rent|primevideo rent|prime video tvod|amazon video rental|amazon video rent|amazon video buy|google play movies|youtube movie|apple tv rent|itunes rent,One-off film or programme purchase rather than a recurring service
+streaming,streaming_sports,20,dazn|tnt sport|bt sport|sky sport|premier sport|eurosport|f1 tv|ufc fight pass|nfl game pass,Sports-specific streaming service
+streaming,streaming_audio_books,30,spotify|audible|apple music|amazon music|deezer|tidal|soundcloud|youtube music|podimo,Music audiobook or audio subscription
+streaming,streaming_video_subscription,40,netflix|disney|prime video|amazon prime|now tv|nowtv|paramount|itvx|hayu|britbox|apple tv|youtube premium|mubi|crunchyroll|discovery plus,Recurring general video service
+streaming,streaming_other,999,,Parent-compatible fallback when no frozen rule matches
+marketplace_general,marketplace_amazon,10,amznmktplace|amazon marketplace,Amazon marketplace basket
+marketplace_general,marketplace_resale_auction,20,vinted|ebay|depop|etsy|whatnot|vestiaire|shpock|gumtree,Second-hand resale auction or creator marketplace
+marketplace_general,marketplace_social_commerce,30,tiktok shop|tiktokshop,Social-platform commerce
+marketplace_general,marketplace_low_cost_import,40,temu|aliexpress|dhgate|wish.com|shein|superbuy|banggood|lightinthebox,Cross-border value marketplace
+marketplace_general,marketplace_other,999,,Parent-compatible fallback when no frozen rule matches
+payment_intermediary,payment_marketplace_escrow,10,mangopay|mgp vinted,Marketplace escrow and settlement intermediary
+payment_intermediary,payment_digital_wallet,20,paypal|alipay|skrill|neteller,Consumer digital wallet
+payment_intermediary,payment_collection_network,30,gocardless|allpay|paypoint|payzone|trustly,Direct-debit bank or cash payment collection network
+payment_intermediary,payment_merchant_processor,40,stripe|sumup|zettle|izettle|square|adyen|checkout.com|worldpay,Merchant acquirer or embedded card processor
+payment_intermediary,payment_other,999,,Parent-compatible fallback when no frozen rule matches

@@ -1,0 +1,5 @@
+#!/bin/bash
+# Texifier local build: Tectonic supplies the Unicode XeTeX engine.
+set -eu
+cd "$(dirname "$TEXPAD_ROOTFILE")"
+/opt/homebrew/bin/tectonic --keep-logs --keep-intermediates "$TEXPAD_ROOTFILE"

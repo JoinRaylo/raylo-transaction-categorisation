@@ -1,0 +1,11 @@
+{
+  "local_crc32c": "q+N7sA==",
+  "gcs_crc32c": "q+N7sA==",
+  "crc32c_matches": true,
+  "bytes_match": true,
+  "gcs_generation": "1788511628342952",
+  "gcs_created": "2026-09-04T08:47:08+0000",
+  "gcs_updated": "2026-09-04T08:47:08+0000",
+  "gcs_object": "gs://raylo-txn-categorisation-scratch/transformer/pretrain_corpus_full.parquet#1788511628342952",
+  "limitation": "Object identity corroboration, not a cryptographic training-consumption manifest or historical customer linkage."
+}

@@ -1,10 +1,45 @@
 # raylo-transaction-categorisation
 
+> **Canonical names (17 September 2026):** the complete T1–T7 pipeline is the
+> **Raylo Transaction Categorisation Engine**, or **Raylo TxCat Engine**. The T6
+> transformer is **TxCat-1**. See [`docs/NAMING.md`](docs/NAMING.md).
+
+> **Pre-launch serving terminology (17 September 2026):** accepted classifier
+> output is final tier `T6`; provider-native fallback is diagnostic only; `T7`
+> remains unclassified. Historical documents that say `T5b` mean the final
+> classifier tier, while historical `T6` means the retired provider fallback.
+> See `docs/waterfall-changes/tier-naming-001/RECORD.md`.
+
 Research repo for a single transaction taxonomy across Raylo's Open Banking providers (Equifax and Plaid).
 
 **Status: research. Nothing here is in production.** No dbt model or scheduled job references this repo, and it must stay that way until work is explicitly promoted.
 
-- **Agent context (read first):** [`CLAUDE.md`](CLAUDE.md) — includes a **2026-08-26 current-state** block
+- **Dataset continuation handover (16 Sep):** [Start here](docs/benchmark-handover/2026-09-16/HANDOVER.md). Self-contained context, source pins, tested startup commands and B03-A synthetic reservation protocol assignment. Includes a fresh-agent prompt and explicit review boundaries before real admission, labelling, cloud changes or retraining.
+
+- **Joint benchmark and retraining data plan (16 Sep):** [Profile and plan](docs/benchmark-implementation/b02-joint-data-plan-2026-09-16/README.md). Profiled 20,473,397 currently linked materialized rows across 46,049 customers (22.85% credits; 35.22% blank merchants). Audited distinct training inputs, 133 conflicting-label groups and selection coverage gaps. Plan protects evaluation and selection before new training additions shared by hinge and transformer. No new labels, fitted models, scores or staging deployment.
+
+- **Historical regression and source-readiness audit (16 Sep):** [Frozen cohort and audit](docs/benchmark-implementation/b02-curation-audit-2026-09-16/README.md). Reuses 8,212 transaction input cases, 641 head-only cases and 1,810 dictionary cases; 28 label-conflict groups are withheld and 5,000 validation rows retain their role. Verified cached baseline predictions supply separate diagnostic scores. Current joins recover 263 direct customer links; 38,498 distinct events still lack customer identity. Scoped effective-input and merchant-name checks precede further family/alias/ancestry work and B03/B04 admission. No fresh rows reserved or labelled.
+
+- **B02 source/index increment (16 Sep):** [Verified private extract and input-presence index](docs/benchmark-implementation/b02-source-index-2026-09-16/REPORT.md). A bounded 78,537-observation sample recovers raw report/Item/currency/pending fields; historical customer identity is still incomplete. Indexed the full 21.5M-row MLM snapshot plus distillation, training and selection inputs. All 40 historical overlap checks agree. No benchmark reserved, labels created, accuracy scores changed or staging deployed.
+
+- **Applicant identity and transport review (16 Sep):** [Backend/transport evidence and next step](docs/benchmark-implementation/b02-applicant-identity-2026-09-16/README.md). Assessment, checkout, provider, account and transaction keys support correlation/grouping; anonymous applicant ownership remains unresolved. The minimal action is an assessment-first warehouse sidecar join; no categoriser DTO or runtime change is required.
+
+- **Bounded applicant measurements (16 Sep):** [Fixed 49-checkout aggregate](docs/benchmark-implementation/b02-applicant-identity-2026-09-16/MEASUREMENTS.md). All 49 had nonblank canonical email and no user ID; direct user/customer and exact canonical-email matches were zero. This is scoped query evidence, not a population estimate or identity certification.
+
+- **Linked-customer population decision (16 Sep):** [V1 scope amendment](docs/benchmark-implementation/b02-linked-customer-scope-2026-09-16/DECISION.md). The initial benchmark population is the audited linked-customer Plaid pool; benchmark candidates require an unambiguous existing assessment → checkout → user → customer link. Unresolved or ambiguous rows remain excluded, while source and audit records are preserved. The runtime categorisation contract is unchanged; the prior requirement to recover anonymous identity before v1 is superseded.
+
+- **B02 initial curation foundation (15 Sep):** [Implementation and evidence](docs/benchmark-implementation/b02-initial/README.md), [three-view amendment](docs/benchmark-implementation/b02-initial/CONTRACT_AMENDMENT.md) and [source readiness](docs/benchmark-implementation/b02-initial/SOURCE_READINESS.md). Shared local checks distinguish representative new events, unseen inputs and unfamiliar merchants. Synthetic profiling and the app report-ID source fix are tested. Durable reservation, full exposure/source indexes and real candidate counts remain pending; no benchmark has been collected or labelled.
+
+- **B01 exposure/source-identity audit (15 Sep):** [Findings and evidence](docs/benchmark-audits/b01-2026-09-15/REPORT.md). Exact pretraining matches cover all 2,000 credit and 400 targeted-risk evaluation inputs; selection validation also overlaps supervised distillation. Current Plaid data is large but only 56.49% links to users/customers, and all stored asset-report IDs are null. Existing scores remain development evidence; no clean master is certified and no pipeline changed.
+
+- **Master benchmark design (15 Sep):** [Design](docs/benchmark-design/master-v1/DESIGN.md), [identity/separation contract](docs/benchmark-design/master-v1/DATA_CONTRACT.md) and [implementation plan](docs/benchmark-design/master-v1/IMPLEMENTATION_PLAN.md). Proposed 20,000-row core/challenge/confirmation benchmark with permanent training/pretraining/enrichment exclusions. Design only: no new dataset collected or admission enforcement deployed.
+
+- **Latest evaluated correction (15 Sep):** [CREDIT-PAYROLL-001](docs/waterfall-changes/credit-payroll-001/RECORD.md) adds one exact Waitrose payroll-credit collision. Both heads and all 15 permitted datasets passed with unchanged real-data scores; the synthetic explicit payroll case is fixed. There are no exact-merchant Waitrose credits in the existing datasets. Research replay is identical; staging promotion is deferred.
+
+- **Fresh waterfall baseline (15 Sep):** [Results and verification](docs/waterfall-changes/baseline-2026-09-15/RECORD.md), [run/compare guide](docs/waterfall-changes/RUNNING.md), [required process](docs/waterfall-changes/POLICY.md) and [score history](docs/waterfall-changes/README.md). All 15 permitted datasets plus seven synthetic examples ran; the research replay produced zero differences. No classification policy changed.
+
+- **Agent context (read first):** [`CLAUDE.md`](CLAUDE.md) — includes **2026-09-07 and 2026-09-02 current-state** blocks
+- **Stakeholder report (Sep 2026):** [`docs/report-2026-09/OB_Transaction_Categorisation_Report_Sep2026.pdf`](docs/report-2026-09/OB_Transaction_Categorisation_Report_Sep2026.pdf) (HTML source alongside)
 - **Stakeholder overview + progress log:** [`docs/project-summary.md`](docs/project-summary.md)
 - **Design rationale:** [Notion — Unified Transaction Taxonomy](https://app.notion.com/p/3bf5bb4b4a6581b6807add39671e56c2)
 - **Labelling conventions (review closed):** [`AGENT_RULES.md`](AGENT_RULES.md)
@@ -33,6 +68,7 @@ src/
   build_tuning_dataset.py         Tier A gold + Tier B production_labels_tranche4.csv
   compare_classifier_versions.py  holdout + risk gold scorer (logreg and hinge)
   score_frontier_vs_classifier.py Gemini 3.7 / Sonnet 5 vs hinge (framing; full prompt)
+  score_gemini38_vs_37.py Gemini 3.8 vs saved 3.7 (keep 3.7; data/gemini38_vs_37_report.md)
   confusion_analysis.py           standing risk-category bar
 tests/
   test_taxonomy_integrity.py      run after every taxonomy / dictionary / T2 / T5 edit
@@ -50,7 +86,7 @@ pytest tests/ -q          # must pass before and after any taxonomy edit
 
 BigQuery project is `raylo-production`, read-only. Write experiment output to a scratch dataset, never `dbt_production`.
 
-## Current state (2026-08-27)
+## Current state (2026-09-07)
 
 | Item | Status |
 |---|---|
@@ -58,10 +94,11 @@ BigQuery project is `raylo-production`, read-only. Write experiment output to a 
 | T4 dictionary | **91,824** keys (Trading 212 / `trading212` → `investment_trading`) |
 | T1–T5 waterfall | Wired; Plaid live T4 **56.5%** of all transactions (89% of filled-merchant rows); T1–T4 **57.0%** on a 20% sample |
 | Production labels | `data/production_labels_tranche4.csv` (100k; review **closed**; `human_reviewed` = Carlos only) |
-| Classifier | Retrained on tranche 4. Holdout **50.9%** logreg / **53.9%** hinge SVM (current gold; freeze-day table said 52.8%). Risk bar **81.4% / 86.1%**. Frontier framing (full prompt, not runtime): Gemini **83.9%** / Sonnet **79.1%** on that holdout. Carlos leaning hinge; serving dumps not switched. 29-way general head: holdout parent **+3.1pp**, risk parent **−2.1pp** — do not cascade |
+| Classifier | Serving head is still the **v5 hinge SVM** dump (stale: 24pp behind on credits, 28pp on T6-bound risk). Reference hinge is **v8** (de-leaked + credit tranche + risk tranche, jsonl 414,400): credit eval **85.9%**, T6-bound risk-leaf acc **75.9%** on the 400-row set (first honest pass of the 70% bar; rules R33–R37 took it 48→59%, the 5k risk tranche to 76%). **Best T5b candidate: in-house DistilBERT** (domain MLM on 21.5M sentences, distilled from 405k Gemini==Sonnet consensus labels, gold pass; 3 seeds vs v8): novel merchants **64.5 vs 59.4**, residual **65.0 vs 59.8**, credit eval **88.8 vs 85.9**, T6-bound risk leaves **85.6 vs 75.9**, full pipeline **83.2 vs 82.2**, general +7–13pp, all CIs exclude zero; 360 rows/s CPU (accepted). `data/classifier_v8_risk_report.md`, `data/transformer_classifier_report.md` (iter 8). Do not quote the leaked 86.1% risk bar |
 | Locked eval | v5 retired. v6 applied (**1,100** rows; Carlos labelled the 8 flags 27 Aug). Do not score until go/no-go |
-| Full pipeline | T1–T5 then hinge **80.5%** leaf on 1,884 row-disjoint gold (residual **500**; was 80.4% / 516). T5 R31 StepChange 16/16. T6 packs in jsonl (**382,739**); v5b/v5c retrains **hurt** the risk bar (86.1→79.8 / 79.0) — serving stays v5. Residual-only + prototype retrain also **hurt** leftover (~22pp). MiniLM `[CLS]` FT was a pooling bug; mean-pool retry is close on holdout (**52.1% vs 53.8%**) but still loses leftover and the risk bar. T6 stays PFC detailed (list `category` 15.7% vs 18.6% on leftover gold) |
-| Experiment 3 | Rebuilt 27 Aug (T1–T7 + screened XGB). Signed Mar–Apr month3 OOT: taxonomy XGB **0.478** vs live logistic **0.328**. month6 OOT: **0.560** vs live **0.405**. `data/experiment3_xgb_report.md`. The 24 Aug 0.308 vs 0.328 logistic analog was **unsigned** |
+| Full pipeline | **2,000** row-disjoint gold rows: T1–T5 then hinge v8 **82.2%** leaf, then transformer **83.2%**; rules-only T1–T7 **74.2%**; provider's own category alone **29.9%** leaf / 41.6% general (45% on provider-labelled rows). Residual (480 rows rules miss): transformer 65.0 / hinge 59.8 / provider 26.2. Direction split still matters (debit ~84% / credit ~57% with the de-leaked hinge; credits now served far better by v8/transformer). Python eval waterfall equals the BigQuery SQL on all rows (`src/check_waterfall_parity.py`). `data/waterfall_pipeline_report.md` |
+| Experiment 3 | Live OB XGB reconstruction, full refit: **0.382 / 0.385** (month3 / month6). August 50-feature taxonomy XGB **0.477 / 0.562** (as-of filter applied). Development champion (0.7 XGB + 0.3 LGB, 1,654–3,150 leaf-level columns) **0.533 / 0.618**. **Same recipe capped at 50 features, single XGBoost: 0.508 / 0.588** (blend 0.508 / 0.583; blend at 100: 0.520 / 0.589; 200: 0.529 / 0.600) — **the 50-feature single-XGBoost champion is the reference carried forward (7 Sep)**; the XGB+LGB blend was tried, gained nothing at any cap, and is dropped; uncapped blend kept as ceiling. All development numbers; prospective test on the Feb–Apr 2026 cohort is the gate. `data/experiment3_champion_model_report.md`, `data/experiment3_champion_capped_report.md`. Granularity: with the August recipe (1 Sep) 275 / 69 / 29 groups indistinguishable, 17 close, ≤9 degrade; with the champion recipe uncapped (7 Sep) month6 rewards full leaf detail (275: 0.612 vs 69: 0.586), month3 does not; capped at 50 from the raw pool, 275 is worst (cap crowding). 287-leaf expansion no gain. `docs/taxonomy-granularity-conclusion.md` |
+| Text / sequence scores on the risk model (OB-transformer repo) | On the single-XGBoost 50-feature champion (refit 0.265 PR-AUC / 0.588 Gini): + bge-base text score **+0.034 / +0.024** (locked recipe); + frozen 15M sequence-encoder score +0.031 / +0.029; **both 0.322 / 0.629**, above the uncapped champion, 52 columns — registered challenger. Our domain-pretrained DistilBERT is level with bge-base as the text encoder at half the cost; **bge-base stays locked**, ours is the registered alternative for the prospective test |
 | Equifax extra tranche | **Rejected** — 6,518 vendors; unmatched filled = 4.4% of dump |
 | LLM at runtime | Forbidden. Labelling is offline (Gemini 3.7 + Sonnet, Opus tiebreak) |
 
@@ -69,7 +106,8 @@ Full numbers and “do not” list: `CLAUDE.md` current-state block. Classifier 
 
 ## Key numbers (do not mix dates)
 
-- **Now (26 Aug 2026):** Plaid T4 **56.5%** of 4.28M rows; T1–T4 **57.0%** on a 20% sample. Equifax T4 37.4%.
+- **Now (7 Sep 2026):** pipeline **83.2%** leaf on 2,000 rows (transformer) vs provider-native **29.9%**; risk model month6 Gini live **0.385** / August 50-feature **0.562** / capped champion (single XGB) **0.588** / uncapped **0.618** / capped + text + encoder **0.629**.
+- **Coverage (26 Aug 2026):** Plaid T4 **56.5%** of 4.28M rows; T1–T4 **57.0%** on a 20% sample. Equifax T4 37.4%.
 - **History:** 321-entry dictionary hit 47.8% of Plaid merchant volume; 21 Aug T4 was 39.1%. Those are superseded.
 - Cross-provider conflict (unchanged finding): applying both crosswalks gives different leaves for 45.2% of shared-merchant volume — this is why T4 must override provider categories.
 - Equifax: **65.8%** well-resolved from provider categories alone; 6,518 distinct vendors; **dead dump**.

@@ -1,0 +1,371 @@
+{
+  "accuracy_evaluation": false,
+  "adapter_sha256": "bf402cf92e00696c18801e0863f692d7706954de8a21f3f46e6cc20d8e0ed7f3",
+  "audit_overlap_sha256": "971564797e25f8c9d49db1b31c47768d2db7604f6ecfe355cb043c06efdd0e2c",
+  "authorizes_consumption": false,
+  "checks": [
+    {
+      "b01_matches": 1030,
+      "dataset": "gold_v2_slm_eval_holdout",
+      "indexed_matches": 1030,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 1055,
+      "source": "mlm_full"
+    },
+    {
+      "b01_matches": 64,
+      "dataset": "gold_v2_slm_eval_holdout",
+      "indexed_matches": 64,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 1055,
+      "source": "vocabulary_prefix"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_v2_slm_eval_holdout",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 1055,
+      "source": "consensus"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_v2_slm_eval_holdout",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 1055,
+      "source": "consensus"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_v2_slm_eval_holdout",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 1055,
+      "source": "tuning_train"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_v2_slm_eval_holdout",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 1055,
+      "source": "tuning_train"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_v2_slm_eval_holdout",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 1055,
+      "source": "tuning_validation"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_v2_slm_eval_holdout",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 1055,
+      "source": "tuning_validation"
+    },
+    {
+      "b01_matches": 2000,
+      "dataset": "gold_credit_eval",
+      "indexed_matches": 2000,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 2000,
+      "source": "mlm_full"
+    },
+    {
+      "b01_matches": 103,
+      "dataset": "gold_credit_eval",
+      "indexed_matches": 103,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 2000,
+      "source": "vocabulary_prefix"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_credit_eval",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 2000,
+      "source": "consensus"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_credit_eval",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 2000,
+      "source": "consensus"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_credit_eval",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 2000,
+      "source": "tuning_train"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_credit_eval",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 2000,
+      "source": "tuning_train"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_credit_eval",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 2000,
+      "source": "tuning_validation"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_credit_eval",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 2000,
+      "source": "tuning_validation"
+    },
+    {
+      "b01_matches": 400,
+      "dataset": "gold_transactions_risk_t6bound",
+      "indexed_matches": 400,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 400,
+      "source": "mlm_full"
+    },
+    {
+      "b01_matches": 14,
+      "dataset": "gold_transactions_risk_t6bound",
+      "indexed_matches": 14,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 400,
+      "source": "vocabulary_prefix"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_transactions_risk_t6bound",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 400,
+      "source": "consensus"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_transactions_risk_t6bound",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 400,
+      "source": "consensus"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_transactions_risk_t6bound",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 400,
+      "source": "tuning_train"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_transactions_risk_t6bound",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 400,
+      "source": "tuning_train"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_transactions_risk_t6bound",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 400,
+      "source": "tuning_validation"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_transactions_risk_t6bound",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 400,
+      "source": "tuning_validation"
+    },
+    {
+      "b01_matches": 1970,
+      "dataset": "gold_pipeline_eval",
+      "indexed_matches": 1970,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 2000,
+      "source": "mlm_full"
+    },
+    {
+      "b01_matches": 97,
+      "dataset": "gold_pipeline_eval",
+      "indexed_matches": 97,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 2000,
+      "source": "vocabulary_prefix"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_pipeline_eval",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 2000,
+      "source": "consensus"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_pipeline_eval",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 2000,
+      "source": "consensus"
+    },
+    {
+      "b01_matches": 12,
+      "dataset": "gold_pipeline_eval",
+      "indexed_matches": 12,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 2000,
+      "source": "tuning_train"
+    },
+    {
+      "b01_matches": 1,
+      "dataset": "gold_pipeline_eval",
+      "indexed_matches": 1,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 2000,
+      "source": "tuning_train"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_pipeline_eval",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 2000,
+      "source": "tuning_validation"
+    },
+    {
+      "b01_matches": 0,
+      "dataset": "gold_pipeline_eval",
+      "indexed_matches": 0,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 2000,
+      "source": "tuning_validation"
+    },
+    {
+      "b01_matches": 4999,
+      "dataset": "tuning_validation",
+      "indexed_matches": 4999,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 5000,
+      "source": "mlm_full"
+    },
+    {
+      "b01_matches": 215,
+      "dataset": "tuning_validation",
+      "indexed_matches": 215,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 5000,
+      "source": "vocabulary_prefix"
+    },
+    {
+      "b01_matches": 2280,
+      "dataset": "tuning_validation",
+      "indexed_matches": 2280,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 5000,
+      "source": "consensus"
+    },
+    {
+      "b01_matches": 1509,
+      "dataset": "tuning_validation",
+      "indexed_matches": 1509,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 5000,
+      "source": "consensus"
+    },
+    {
+      "b01_matches": 8,
+      "dataset": "tuning_validation",
+      "indexed_matches": 8,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 5000,
+      "source": "tuning_train"
+    },
+    {
+      "b01_matches": 7,
+      "dataset": "tuning_validation",
+      "indexed_matches": 7,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 5000,
+      "source": "tuning_train"
+    },
+    {
+      "b01_matches": 5000,
+      "dataset": "tuning_validation",
+      "indexed_matches": 5000,
+      "passed": true,
+      "projection": "transformer-sentence-v1",
+      "rows": 5000,
+      "source": "tuning_validation"
+    },
+    {
+      "b01_matches": 5000,
+      "dataset": "tuning_validation",
+      "indexed_matches": 5000,
+      "passed": true,
+      "projection": "hinge-numeric-v1",
+      "rows": 5000,
+      "source": "tuning_validation"
+    }
+  ],
+  "database_sha256": "61cc0a42ddafb686e9f3ecb437be1eba3f9a78ecbb893f18fdb60eafb7ded5cd",
+  "passed": true,
+  "schema_version": "benchmark-input-index-verification-v1"
+}

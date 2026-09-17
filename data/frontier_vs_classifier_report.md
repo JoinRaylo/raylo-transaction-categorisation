@@ -23,6 +23,18 @@ Leaf accuracy, 4-field input, same gold as the classifier scorers:
 
 Prompt: **90,516** chars / **465** worked notes (taxonomy + TAIL_ADDENDUM + examples). Bulk T4 provenance notes (`Luna A + parent review`, `Carlos review 2026-08-26`, …) were excluded so this matches the §6a labelling guide rather than the 1,026-note dictionary dump. Scorer: `src/score_frontier_vs_classifier.py`.
 
+## Latency (same 2,004 unique rows)
+
+Wall-clock to label the unique union of holdout + risk + pipeline (not locked v6). Gemini and Sonnet ran **sequentially, batches of 25**, full system prompt, no extra concurrency. Hinge v5 is local TF-IDF + SGD on this Mac (features + `decision_function`; median of 5 timed passes after one warmup).
+
+| Head | Wall clock | Throughput | Implied ms / row |
+|---|---:|---:|---:|
+| Gemini 3.7 Flash | **598 s** (~10.0 min) | 3.35 rows/s | ~298 |
+| Sonnet 5 | **494 s** (~8.2 min) | 4.06 rows/s | ~247 |
+| hinge v5 | **0.088 s** | ~23,000 rows/s | **0.044** |
+
+Hinge is about **3,000–7,000×** faster on this set. The LLM figures are API batch throughput with a 90k-char cached prompt, not a streaming per-txn SLA. Hinge does not include T1–T5; those are regex/dictionary and are also local.
+
 ### Holdout (merchant-disjoint, n=1,055) — iteration suite
 
 n=1055

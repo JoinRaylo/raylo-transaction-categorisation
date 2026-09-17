@@ -1,0 +1,302 @@
+{
+  "document_type": "acceptance_scenario_specification",
+  "status": "not_executed_not_enforcement_evidence",
+  "design_revision": 1,
+  "fixture_policy": "Implement with synthetic inputs; no existing locked gold contents required.",
+  "cases": [
+    {
+      "id": "ID01",
+      "name": "Renamed or copied CSV",
+      "given": "Protected content is copied under a different path and split=train.",
+      "expected": "reject",
+      "requirement": "Membership and content-bound receipt override filenames and role columns."
+    },
+    {
+      "id": "ID02",
+      "name": "Relabelled event",
+      "given": "A protected event receives a corrected label, new row ID or report ID.",
+      "expected": "reject",
+      "requirement": "Stable source identity and label-independent projections survive the change."
+    },
+    {
+      "id": "ID03",
+      "name": "Pending to posted",
+      "given": "A new provider ID is linked to a protected pending observation.",
+      "expected": "reject",
+      "requirement": "Verified event aliases carry every prior reservation."
+    },
+    {
+      "id": "ID04",
+      "name": "Reconnected account",
+      "given": "A newly linked account ID belongs to an already protected customer/account group.",
+      "expected": "reject",
+      "requirement": "Verified alias linkage preserves group separation."
+    },
+    {
+      "id": "ID05",
+      "name": "Blank merchant",
+      "given": "An unexposed observation has a blank merchant but verified event/customer/input lineage.",
+      "expected": "allow_if_no_other_conflict",
+      "requirement": "Blank merchant is supported by v2; legacy exclusions still apply."
+    },
+    {
+      "id": "ID06",
+      "name": "Unknown identity",
+      "given": "A candidate has only merchant, amount and date with no recoverable source or customer linkage.",
+      "expected": "quarantine",
+      "requirement": "Do not manufacture an event identity or certify customer isolation."
+    },
+    {
+      "id": "ID07",
+      "name": "Distinct familiar merchant",
+      "given": "A distinct eligible input from an unreserved customer has a familiar merchant and no legacy exclusion.",
+      "expected": "allow_if_no_other_conflict",
+      "requirement": "Merchant familiarity alone is not a core novelty requirement."
+    },
+    {
+      "id": "ID08",
+      "name": "Late cross-partition alias",
+      "given": "A verified alias merge joins a learning exposure and a benchmark member.",
+      "expected": "contamination_incident",
+      "requirement": "Invalidate clean claims and hold promotion; retain all exclusions."
+    },
+    {
+      "id": "ID09",
+      "name": "Key rotation",
+      "given": "A protected token is presented through a new HMAC key version.",
+      "expected": "reject",
+      "requirement": "Dual-key aliases prevent re-admission; unknown migration status quarantines."
+    },
+    {
+      "id": "ID10",
+      "name": "Duplicate annotation mappings",
+      "given": "Returned labels contain missing or duplicate issued job-item IDs.",
+      "expected": "quarantine",
+      "requirement": "No merchant-and-label reconstruction of identity is permitted."
+    },
+    {
+      "id": "FP01",
+      "name": "Amount bucket collision",
+      "given": "Two synthetic transactions differ only in amounts 6.99 and 7.49 but have identical direction/text.",
+      "expected": "matching_transformer_projection",
+      "requirement": "Different exact amounts cannot bypass the effective-input exclusion."
+    },
+    {
+      "id": "FP02",
+      "name": "Truncation collision",
+      "given": "Synthetic descriptions differ only after the retained token-48 boundary.",
+      "expected": "matching_transformer_projection",
+      "requirement": "Compare effective encoded inputs, not only full strings."
+    },
+    {
+      "id": "FP03",
+      "name": "Unlabelled MLM exposure",
+      "given": "A proposed benchmark input appeared only in registered MLM inputs.",
+      "expected": "reject",
+      "requirement": "Unsupervised exposure counts as learning."
+    },
+    {
+      "id": "FP04",
+      "name": "New preprocessing version",
+      "given": "A candidate recipe has a tokenizer/projection version with no held-out projection index.",
+      "expected": "quarantine",
+      "requirement": "Build and verify both sides before fitting or certification."
+    },
+    {
+      "id": "FP05",
+      "name": "Generic narrative similarity",
+      "given": "Different customers share a common payment-rail narrative with uncertain near-duplicate status.",
+      "expected": "quarantine_for_review",
+      "requirement": "Do not assert they are the same event; report any novelty-driven exclusion."
+    },
+    {
+      "id": "FP06",
+      "name": "Preprocessing learned on benchmark",
+      "given": "A vocabulary, vectorizer or mask-statistics proposal includes reserved rows.",
+      "expected": "reject",
+      "requirement": "Learned preprocessing is a gated consumer."
+    },
+    {
+      "id": "EX01",
+      "name": "Every enrichment route",
+      "given": "One protected example is passed separately to each of the nine consumers.",
+      "expected": "reject_before_consumption",
+      "requirement": "No fit, teacher call, rule proposal, prompt or retrieval delivery can consume it."
+    },
+    {
+      "id": "EX02",
+      "name": "Selection validation overlap",
+      "given": "A proposed tuning-validation snapshot shares an event, customer or effective input with training/master.",
+      "expected": "reject",
+      "requirement": "Selection is an explicit separately reserved role."
+    },
+    {
+      "id": "EX03",
+      "name": "Retired or unresolved gold",
+      "given": "A spent, retired, unresolved or failed-labelling benchmark example is offered to training.",
+      "expected": "reject",
+      "requirement": "Reservation is permanent across these lifecycle changes."
+    },
+    {
+      "id": "EX04",
+      "name": "Legacy migration",
+      "given": "A v1-protected merchant or reviewed family has no matching v2 event ID.",
+      "expected": "reject",
+      "requirement": "Migration retains old restrictions."
+    },
+    {
+      "id": "EX05",
+      "name": "Novel-family reservation",
+      "given": "A dictionary candidate draws evidence from a reserved novelty family under the registered policy.",
+      "expected": "reject",
+      "requirement": "Family reservation applies to enrichment as well as fitting."
+    },
+    {
+      "id": "EX06",
+      "name": "Changed training bytes",
+      "given": "A worker receives a valid receipt but a different transformed/augmented fit object.",
+      "expected": "reject",
+      "requirement": "Receipts authorize exact consumed content and ancestry."
+    },
+    {
+      "id": "EX07",
+      "name": "Unknown historical parent",
+      "given": "A model ancestor lacks actual consumed-source evidence.",
+      "expected": "quarantine_clean_certification",
+      "requirement": "A current regenerated corpus is not proof of historical inputs."
+    },
+    {
+      "id": "EX08",
+      "name": "Unregistered local fit",
+      "given": "A model is trained outside the wrappers and submitted for promotion without receipts.",
+      "expected": "reject_promotion",
+      "requirement": "Promotion independently checks complete lineage."
+    },
+    {
+      "id": "TX01",
+      "name": "Concurrent reserve and exposure",
+      "given": "Reservation and learning claims overlap on an event, customer or applicable projection at epoch N.",
+      "expected": "only_one_conflicting_commit",
+      "requirement": "The losing operation must re-read and recheck; no stale approval retry."
+    },
+    {
+      "id": "TX02",
+      "name": "Upload before crash",
+      "given": "The authority crashes after an object upload but before metadata commit.",
+      "expected": "no_authorization",
+      "requirement": "An orphan upload grants no worker access or consumption right."
+    },
+    {
+      "id": "TX03",
+      "name": "Commit before lost response",
+      "given": "The authority commits exposure, then loses its response; the same operation retries.",
+      "expected": "same_receipt",
+      "requirement": "Exact retries are idempotent and exposure remains recorded."
+    },
+    {
+      "id": "TX04",
+      "name": "Operation ID reuse",
+      "given": "An operation ID is reused with different proposal bytes.",
+      "expected": "reject",
+      "requirement": "Idempotency cannot authorize a different snapshot."
+    },
+    {
+      "id": "TX05",
+      "name": "Failed training job",
+      "given": "A worker may have read admitted inputs before failing.",
+      "expected": "retain_exposure",
+      "requirement": "Uncertainty never frees consumed or claimed inputs for unseen admission."
+    },
+    {
+      "id": "TX06",
+      "name": "Authority unavailable",
+      "given": "The authority, identity key or required registry cannot be read.",
+      "expected": "fail_closed",
+      "requirement": "No stale local allow mode."
+    },
+    {
+      "id": "TX07",
+      "name": "Index compaction",
+      "given": "Snapshot plus deltas are compacted while admissions continue.",
+      "expected": "preserve_all_memberships",
+      "requirement": "Prove semantic index equality and publish through the epoch protocol."
+    },
+    {
+      "id": "EV01",
+      "name": "Confirmation concurrency",
+      "given": "Two different selected candidates attempt to claim the same sealed reserve.",
+      "expected": "one_claim_only",
+      "requirement": "Reject the second candidate even if the first has not returned a result."
+    },
+    {
+      "id": "EV02",
+      "name": "Partial confirmation exposure",
+      "given": "A run exposes any result then fails and a changed candidate requests a retry.",
+      "expected": "reject",
+      "requirement": "The claim is spent; only the same candidate/baseline claim may resume."
+    },
+    {
+      "id": "EV03",
+      "name": "Benchmark label revision",
+      "given": "A gold label or adapter changes while comparing a candidate against an old baseline score.",
+      "expected": "rerun_both_on_new_version",
+      "requirement": "Keep the original benchmark/version/result; no in-place replacement."
+    },
+    {
+      "id": "EV04",
+      "name": "Sparse paired results",
+      "given": "A critical slice has low support or no observed discordances.",
+      "expected": "inconclusive_unless_valid_bound_passes",
+      "requirement": "Zero-width resampling is not evidence of non-inferiority."
+    },
+    {
+      "id": "EV05",
+      "name": "Oversampled headline",
+      "given": "A scorer combines challenge and representative rows without design weights into a traffic headline.",
+      "expected": "reject_report",
+      "requirement": "Report cohorts separately with correct denominators and sampling weights."
+    },
+    {
+      "id": "EV06",
+      "name": "Ambiguous retailer credit",
+      "given": "Synthetic bare retailer credit has no visible evidence distinguishing salary and refund.",
+      "expected": "ambiguity_policy_task",
+      "requirement": "Do not infer gold salary solely from amount or hidden user intent."
+    },
+    {
+      "id": "EV07",
+      "name": "Zero eligible traffic stratum",
+      "given": "Effective-input exclusions remove every example in a source stratum.",
+      "expected": "explicit_coverage_limit",
+      "requirement": "Weighting cannot recover zero-support strata."
+    },
+    {
+      "id": "EV08",
+      "name": "Sealed access boundary",
+      "given": "A training/runtime identity requests sealed labels or membership fingerprints.",
+      "expected": "deny_access",
+      "requirement": "Verify IAM with the actual service identities; no raw benchmark content in bundles."
+    },
+    {
+      "id": "SP01",
+      "name": "Cross-customer exact-input link",
+      "given": "Two distinct verified customers share an applicable effective input before partition assignment.",
+      "expected": "same_sampling_block_not_same_identity",
+      "requirement": "Assign the precomputed block to one pool; preserve distinct customer/event IDs and block-aware uncertainty."
+    },
+    {
+      "id": "SP02",
+      "name": "Late bridge between frozen blocks",
+      "given": "A later observation links effective-input blocks already assigned to different partitions.",
+      "expected": "quarantine_for_review",
+      "requirement": "Do not silently reassign existing partitions or choose a winner by arrival order."
+    },
+    {
+      "id": "EV09",
+      "name": "Confirmation version reset attempt",
+      "given": "A spent confirmation cohort is relabelled or republished under a new benchmark version for a different candidate.",
+      "expected": "reject",
+      "requirement": "Permanent cohort and event membership preserve the consumed claim across manifest versions."
+    }
+  ]
+}

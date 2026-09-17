@@ -1,0 +1,66 @@
+{
+  "authorizes_consumption": false,
+  "bytes_billed": 11512315904,
+  "bytes_processed": 11511988946,
+  "dry_run_bytes": 11511988946,
+  "ended_at": "2026-09-16T08:56:58.725000+00:00",
+  "executed": true,
+  "executed_runner_snapshot": "executed-extractor.py.txt",
+  "job_id": "txncat_b02_7c12b43c-e523-4c6f-b4cc-03acd1ff4cbc",
+  "location": "EU",
+  "maintained_runner_ast_identical": true,
+  "max_rows": 250000,
+  "maximum_bytes_billed": 20000000000,
+  "private_receipt_sha256": "1a09ad251324d0a761e5f925c38dda61dcd4a0488e863f6eabd18118fdb44721",
+  "project": "raylo-production",
+  "purpose": "engineering_source_readiness_not_benchmark_sample",
+  "request_limit": 100,
+  "result_rows": 78537,
+  "result_sha256": "038006cdc28cebd2103b40316480eddf4a8229f3150a95715ca82dea5153d8f2",
+  "runner_sha256": "449d7410161e761e81e9b1e2a9240824ec0c765238d4c3730e52937e0879e8de",
+  "schema_version": "benchmark-source-extract-v1",
+  "source_day": "2026-09-15",
+  "source_metadata": [
+    {
+      "etag_after": "Vu/uZnj5NHxvhIw6PDLWJA==",
+      "etag_before": "Vu/uZnj5NHxvhIw6PDLWJA==",
+      "modified_at": "2026-09-16T08:51:22.349000+00:00",
+      "partition": {
+        "field": "_airbyte_extracted_at",
+        "type": "DAY"
+      },
+      "schema_sha256": "a7c2120cd19f9fa7ba866ef1c213f7c8713aed6ee8fbef0979901138017a5698",
+      "table_id": "raylo-production:airbyte_raylo_prod_no_cdc.external_requests",
+      "view_sql_sha256": null
+    },
+    {
+      "etag_after": "arljLNF4zEc/4bk3mlWY0A==",
+      "etag_before": "arljLNF4zEc/4bk3mlWY0A==",
+      "modified_at": "2026-09-16T08:05:43.848000+00:00",
+      "partition": null,
+      "schema_sha256": "eebca754543d40a689bb610652a5299994f7c4a76a315544311491ee605a5141",
+      "table_id": "raylo-production:dbt_production.intermediate_raylo_production__checkout_risk_assessment_results_latest",
+      "view_sql_sha256": null
+    },
+    {
+      "etag_after": "i3q9dVOfBNsf9iSoJht3Ow==",
+      "etag_before": "i3q9dVOfBNsf9iSoJht3Ow==",
+      "modified_at": "2026-09-16T08:03:56.937000+00:00",
+      "partition": null,
+      "schema_sha256": "fe857d66519aff9128a7ac162305f403126bc5f356e799e8454cb79a6e21d160",
+      "table_id": "raylo-production:dbt_production.stg_raylo_production__checkouts",
+      "view_sql_sha256": "e5d1aab35ec1e5b7581ff5cd823696ecfb36c8cfbbb154dbc13e03b64fbf18a3"
+    },
+    {
+      "etag_after": "BYzw8Uu3OQuYNMomNM71Pg==",
+      "etag_before": "BYzw8Uu3OQuYNMomNM71Pg==",
+      "modified_at": "2026-09-16T08:04:06.493000+00:00",
+      "partition": null,
+      "schema_sha256": "5670e9950771413a91b8167930e4c0b14c3c392a27130502ebad11c7933a97ea",
+      "table_id": "raylo-production:dbt_production.stg_raylo_production__users",
+      "view_sql_sha256": "da60c9e2a8d4251d0bd626c77352961d7cc3087dcf0952542b2e810ac293715f"
+    }
+  ],
+  "sql_sha256": "e1e1d16b6beada13828ff4a0ee95566e9a3e1f89ab9b322e4632fdbc7fd7edd0",
+  "started_at": "2026-09-16T08:56:47.432000+00:00"
+}

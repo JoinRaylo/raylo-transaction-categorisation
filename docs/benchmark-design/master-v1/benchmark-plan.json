@@ -1,0 +1,248 @@
+{
+  "document_type": "benchmark_design_specification",
+  "design_revision": 1,
+  "designed_on": "2026-09-15",
+  "status": "proposed_not_implemented",
+  "is_published_dataset_manifest": false,
+  "benchmark_id": "txncat-master",
+  "planned_first_version": "1.0.0",
+  "source_scope": {
+    "launch_provider": "plaid",
+    "legacy_equifax": "report_separately",
+    "population": "unseen_eligible_launch_traffic",
+    "profile_status": "not_yet_measured",
+    "date_bounds_status": "freeze_after_source_lineage_audit_before_sampling",
+    "monthly_cycles_target": 2,
+    "third_party_base_pretraining": "outside_verified_Raylo_lineage"
+  },
+  "initial_labelled_rows_target": 20000,
+  "partitions": [
+    {
+      "id": "core",
+      "rows_target": 10000,
+      "access": "repeatable",
+      "sampling": "probability_sample_eligible_population"
+    },
+    {
+      "id": "challenge",
+      "rows_target": 5000,
+      "access": "repeatable",
+      "sampling": "predeclared_category_and_input_conditions"
+    },
+    {
+      "id": "confirmation",
+      "rows_target": 5000,
+      "access": "sealed_once_per_selected_candidate",
+      "cohorts": [
+        {
+          "id": "representative",
+          "rows_target": 4000
+        },
+        {
+          "id": "critical",
+          "rows_target": 1000
+        }
+      ]
+    }
+  ],
+  "separate_assets": [
+    "training",
+    "model_selection_validation",
+    "annotation_pilot",
+    "legacy_regression",
+    "legacy_locked_v6"
+  ],
+  "annotation_pilot": {
+    "rows_target": 500,
+    "included_in_master_target": false,
+    "final_disposition": "permanently_quarantined"
+  },
+  "identity": {
+    "contract": "proposed_v2",
+    "observation": "provider_namespaced_stable_event_and_account_scope",
+    "aliases": "append_only_verified_pending_posted_and_reconnect_links",
+    "assignment_unit": "partition_block_of_linked_customers_and_shared_effective_inputs",
+    "lookup_keys": [
+      "example_id",
+      "observation_key",
+      "event_family_id",
+      "customer_group_id",
+      "account_group_id",
+      "partition_block_id"
+    ],
+    "input_fingerprints": [
+      "original_logical_input",
+      "research_row_projection",
+      "transformer_sentence",
+      "transformer_encoded_input",
+      "hinge_input",
+      "teacher_distillation_input"
+    ],
+    "near_duplicate_policy": "review_or_quarantine_not_proof_of_event_identity",
+    "private_keyed_tokens": true,
+    "training_transition_from_reserved": false,
+    "retired_members_remain_excluded": true
+  },
+  "admission": {
+    "learning_and_enrichment_purposes": [
+      "supervised_training",
+      "domain_pretraining",
+      "distillation",
+      "tokenizer_vectorizer_fit",
+      "feature_mask_statistics",
+      "dictionary_candidates",
+      "rule_candidates",
+      "prompt_examples",
+      "evidence_retrieval"
+    ],
+    "additional_exposure_purposes": [
+      "model_selection_validation"
+    ],
+    "shared_authority_for_reservation_and_exposure": true,
+    "receipt_bound_to_actual_inputs": true,
+    "exposure_commit_before_consumption": true,
+    "unknowns": "quarantine",
+    "legacy_exclusions": "preserve",
+    "authority_status": "not_built"
+  },
+  "separation": {
+    "training_vs_master": [
+      "event_alias",
+      "linked_customer_account",
+      "applicable_effective_input"
+    ],
+    "training_vs_selection_validation": [
+      "event_alias",
+      "linked_customer_account",
+      "applicable_effective_input"
+    ],
+    "between_master_partitions": [
+      "event_alias",
+      "linked_customer_account",
+      "applicable_effective_input"
+    ],
+    "merchant_family": "novelty_cohort_and_existing_legacy_exclusions",
+    "reserve_before_labelling": true,
+    "same_input_repeats_within_pool": "group_or_aggregate_and_report_dependence",
+    "sampling_weights_required": true,
+    "zero_support_strata": "explicit_limit_no_reweighting_claim",
+    "sampling_blocks": "precompute_connected_blocks_before_random_assignment_no_post_sampling_arrival_order_resolution"
+  },
+  "coverage": {
+    "taxonomy_relative_to_research": "taxonomy/taxonomy.csv",
+    "taxonomy_sha256": "67df23954ac24015a2d617e164fff5906d86d89ab7be1e32e879332e31045e99",
+    "leaves": 275,
+    "general_categories": 29,
+    "critical_groups": {
+      "income_and_credit_purpose": [
+        "salary",
+        "salary_gig",
+        "income_agency_work",
+        "benefits_state",
+        "pension_received",
+        "refund_received",
+        "returned_payment",
+        "tax_refund",
+        "loan_disbursement",
+        "transfer_own_account",
+        "transfer_p2p"
+      ],
+      "priority_bills": [
+        "rent",
+        "mortgage",
+        "council_tax",
+        "energy"
+      ],
+      "borrowing_and_distress": [
+        "credit_card_repayment",
+        "charge_card_repayment",
+        "revolving_credit_repayment",
+        "personal_loan_repayment",
+        "car_finance_repayment",
+        "retail_finance_repayment",
+        "bnpl",
+        "loan_repayment_manual",
+        "loan_repayment_dd",
+        "payday_loan",
+        "cash_advance",
+        "cash_advance_fee",
+        "debt_collection",
+        "debt_enforcement",
+        "debt_management_plan",
+        "overdraft_arranged",
+        "overdraft_unarranged",
+        "account_misuse"
+      ],
+      "gambling": [
+        "gambling_betting",
+        "gambling_casino",
+        "gambling_bingo",
+        "gambling_lottery",
+        "prize_competitions",
+        "gambling_unspecified"
+      ]
+    },
+    "critical_leaf_count": 39,
+    "critical_leaf_rows_target_core_plus_challenge": 200,
+    "applicable_leaf_rows_floor_core_plus_challenge": 20,
+    "critical_customer_groups_target_where_attainable": 30,
+    "critical_counterparty_families_target_where_attainable": 10,
+    "filled_blank_quotas_status": "freeze_after_source_profile_before_scores",
+    "quota_feasibility_status": "not_yet_measured_may_require_larger_challenge",
+    "synthetics_satisfy_real_data_quota": false,
+    "unsupported_leaf_status": "unsupported_insufficient_evidence"
+  },
+  "annotation": {
+    "independent_human_votes": 2,
+    "independent_adjudication_on_disagreement": true,
+    "blind_to": [
+      "model_prediction",
+      "candidate_identity",
+      "partition",
+      "other_reviewer_vote"
+    ],
+    "label_outcomes": [
+      "single_leaf",
+      "ambiguous",
+      "taxonomy_gap",
+      "unresolved"
+    ],
+    "guide_status": "to_freeze_before_final_labelling",
+    "prediction_time_evidence_only": true,
+    "llm_consensus_is_gold": false
+  },
+  "regression_gate": {
+    "status": "proposed_tolerances_not_approved_or_powered",
+    "confidence_one_sided": 0.95,
+    "core_specific_and_general_noninferiority_margin_pp": 0.5,
+    "critical_recall_and_risk_error_margin_pp": 2.0,
+    "no_observed_primary_critical_drop": true,
+    "unexplained_harmful_transitions_allowed": 0,
+    "critical_endpoints_and_multiplicity": "freeze_before_candidate_scores",
+    "paired_customer_aware_uncertainty": true,
+    "insufficient_support_or_power": "inconclusive"
+  },
+  "confirmation": {
+    "claim": "atomic_permanent_cohort_candidate_baseline_benchmark_endpoint_plan_hashes",
+    "changed_candidate_retry": "reject",
+    "exact_retry": "retained_result_or_same_claim_resume_without_new_selection",
+    "partial_exposure_consumes_claim": true,
+    "after_use": "spent_permanently_excluded_refresh_new_cohort",
+    "version_change_resets_use_count": false
+  },
+  "readiness": {
+    "design_checks_only": true,
+    "benchmark_data_collected": false,
+    "historical_exposure_certified": false,
+    "enforcement_verified": false,
+    "baseline_on_master_run": false,
+    "requires_packages": [
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06"
+    ]
+  }
+}

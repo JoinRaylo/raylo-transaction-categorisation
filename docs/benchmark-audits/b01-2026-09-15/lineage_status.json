@@ -1,0 +1,136 @@
+{
+  "evidence": [
+    "local_inventory.json",
+    "local_overlap.json",
+    "independent_verification.json",
+    "corpus_gcs_verification.json",
+    "source_code_provenance.json"
+  ],
+  "historical_fit_receipts_recovered": false,
+  "nodes": [
+    {
+      "artefact": "distilbert-base-uncased",
+      "evidence_and_limits": [
+        "Exact historical upstream revision and training-source membership unavailable."
+      ],
+      "id": "public_base",
+      "recorded_dependencies": [],
+      "status": "unknown_original_revision_and_pretraining_membership"
+    },
+    {
+      "artefact": "txn_encoder_mlm_distilbert_full",
+      "evidence_and_limits": [
+        "Full 21,524,807-row corpus, model bytes, metadata and GCS checksum agree.",
+        "Source event/customer IDs and immutable original fit/parent receipts unavailable.",
+        "Worker interruptions mean corpus membership is not proof of each row consumption."
+      ],
+      "id": "domain_pretraining",
+      "recorded_dependencies": [
+        "public_base"
+      ],
+      "status": "corroborated_input_snapshot_without_fit_receipt"
+    },
+    {
+      "artefact": "full_encoder_tokenizer",
+      "evidence_and_limits": [
+        "First 1,000,000 full-corpus sentences supply vocabulary statistics in inspected code.",
+        "Exact byte/tokenizer artefacts available; original fit membership receipt unavailable."
+      ],
+      "id": "tokenizer_extension",
+      "recorded_dependencies": [
+        "public_base"
+      ],
+      "status": "corroborated_recipe_without_consumption_receipt"
+    },
+    {
+      "artefact": "consensus_labels",
+      "evidence_and_limits": [
+        "404,982-row consensus source hash-pinned; text overlap measured.",
+        "Complete per-call teacher version, prompt examples, adjudication and consumption lineage not recovered."
+      ],
+      "id": "teacher_distillation",
+      "recorded_dependencies": [],
+      "status": "corroborated_label_snapshot_incomplete_prompt_lineage"
+    },
+    {
+      "artefact": "txn_classifier_distilled",
+      "evidence_and_limits": [
+        "404,264 legal source rows; sampling through retained epoch reconstructed independently.",
+        "Training validation overlaps reconstructed fit inputs; immutable historical parent/input receipts missing."
+      ],
+      "id": "distilled_classifier",
+      "recorded_dependencies": [
+        "domain_pretraining",
+        "tokenizer_extension",
+        "teacher_distillation"
+      ],
+      "status": "corroborated_recipe_without_fit_receipt"
+    },
+    {
+      "artefact": "txn_classifier_gold_distilled_s42_s7_s123",
+      "evidence_and_limits": [
+        "414,400-row tuning file and all retained seed artefacts match compilation hashes.",
+        "414,196 legal classifier rows agree with metadata; selected seed 123 sampling independently reconstructed."
+      ],
+      "id": "gold_classifiers",
+      "recorded_dependencies": [
+        "distilled_classifier"
+      ],
+      "status": "hash_verified_bundle_sources_without_fit_receipts"
+    },
+    {
+      "artefact": "tfidf_linearsvm_sgd_v8_risk",
+      "evidence_and_limits": [
+        "Model bytes and current tuning source match compilation hashes.",
+        "Code contains fresh and reused vectorizer routes; immutable fit/vectorizer membership receipt unavailable.",
+        "Logical text/numeric overlap measured, not sparse-feature or near-duplicate absence."
+      ],
+      "id": "hinge_v8",
+      "recorded_dependencies": [],
+      "status": "hash_verified_bundle_source_with_incomplete_fit_lineage"
+    },
+    {
+      "artefact": "retained_classifier_masks",
+      "evidence_and_limits": [
+        "Full tuning file informs masks; statistics and direction-filter recipe inspected.",
+        "Original fitted-statistic consumption receipt missing; filtering model rows does not erase other exposure."
+      ],
+      "id": "masks_and_statistics",
+      "recorded_dependencies": [],
+      "status": "corroborated_training_source_without_fit_receipt"
+    },
+    {
+      "artefact": "tuning_validation_and_development_evaluations",
+      "evidence_and_limits": [
+        "Validation 5,000 rows used for selection and overlaps supervised distillation.",
+        "Permitted holdout/credit/risk/pipeline sets repeatedly used for development; cannot serve as sealed confirmation."
+      ],
+      "id": "model_selection",
+      "recorded_dependencies": [],
+      "status": "known_development_exposure"
+    },
+    {
+      "artefact": "rules_dictionary_crosswalk",
+      "evidence_and_limits": [
+        "Dictionary has 239 gold_v2_review entries; builder uses gold/holdout evidence.",
+        "Research records R33\u2013R37 derived from targeted risk gold.",
+        "Complete historical per-rule/dictionary evidence and manual prompt lineage not reconstructed."
+      ],
+      "id": "waterfall_enrichment",
+      "recorded_dependencies": [],
+      "status": "known_development_exposure_with_incomplete_item_lineage"
+    },
+    {
+      "artefact": "earlier_silver_corpus_tuning_and_OB_transformer",
+      "evidence_and_limits": [
+        "Earlier snapshots are inventoried conservatively; presence is not proof the selected model consumed them.",
+        "OB-transformer sequence/risk models not referenced by the selected categorizer chain; separate ancestry audit required if introduced."
+      ],
+      "id": "legacy_and_other_models",
+      "recorded_dependencies": [],
+      "status": "not_certified_as_current_ancestors"
+    }
+  ],
+  "policy": "Unknown historical exposure remains an explicit clean-admission blocker; do not infer absence from unavailable evidence.",
+  "status": "initial_inventory_not_clean_admission_certificate"
+}

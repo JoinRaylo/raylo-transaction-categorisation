@@ -1,0 +1,11 @@
+{
+  "adapter_sha256": "7d08981e05d1851ec461673d9d6f7c81dbfea270c5de9ccae7814f7404bb5a0a",
+  "aggregate_sha256": "105c09efa629b2db1e139e70474c1dceef66ccf42cb353370c4ffb85bb16add0",
+  "authorizes_consumption": false,
+  "linked_distinct_events": 39427,
+  "parent_independent_aggregation_matches": true,
+  "schema_version": "linked-sample-exposure-v1",
+  "source_distinct_events": 77925,
+  "source_observations": 78537,
+  "source_sha256": "038006cdc28cebd2103b40316480eddf4a8229f3150a95715ca82dea5153d8f2"
+}

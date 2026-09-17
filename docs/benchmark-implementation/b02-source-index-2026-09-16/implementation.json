@@ -1,0 +1,19 @@
+{
+  "files_sha256": {
+    "apps/ob-txn-categoriser/scripts/benchmark_build_index.py": "b10f5eaed47322e9be823aa2456324f679f22ff22347ef83705a3b8538dbb459",
+    "apps/ob-txn-categoriser/scripts/benchmark_extract.py": "69d1429d57f6706762e706648c4781c4eb288940eb72523172ee96b5264d76b5",
+    "apps/ob-txn-categoriser/scripts/benchmark_profile_source.py": "90cf2a3b74164e28a00be220a5d49b7b4410f71d96aa4c109b9a108cd743e02e",
+    "apps/ob-txn-categoriser/scripts/benchmark_source.sql": "e1e1d16b6beada13828ff4a0ee95566e9a3e1f89ab9b322e4632fdbc7fd7edd0",
+    "apps/ob-txn-categoriser/scripts/benchmark_verify_index.py": "bf402cf92e00696c18801e0863f692d7706954de8a21f3f46e6cc20d8e0ed7f3",
+    "lib/raylo-txncat/src/raylo_txncat/__init__.py": "40344ce3bfa44b8f3e4359e080bba310ca04a82b9a6d3497a472f1d9e69d463b",
+    "lib/raylo-txncat/src/raylo_txncat/benchmark.py": "4595f5d5fa0a0bc92fcdf1316af91f6f3659628f82152aa5730a7ebd532a2bb3",
+    "lib/raylo-txncat/src/raylo_txncat/benchmark_exposure.py": "9b0fd6dbcaa1276bd75605ea07966983101ff10ffec118f31c253bf517439ee4",
+    "lib/raylo-txncat/src/raylo_txncat/classifier_types.py": "a2115a8bce44a8c401927f64eeac364165892bbd59bd984500ec7b2aa6eaca03",
+    "lib/raylo-txncat/src/raylo_txncat/hashing.py": "0a2ec7606f4b6f44db1145c59acabc828f1c50f8663d2c2d71a2759b9f4aade1",
+    "lib/raylo-txncat/src/raylo_txncat/head_hinge.py": "5dc21d11f89f96124d09534d63d2a478be7176bce1058ee6526645778cc700fd",
+    "lib/raylo-txncat/src/raylo_txncat/seed_selection.py": "e8c2dc3f8c7d2b3f5cd73a513ab188480db32932ec4f8e3d42a7956d2f37d9a1",
+    "lib/raylo-txncat/src/raylo_txncat/types.py": "8c78aa184a30f96ed4eb305d8d2c9585d98aa5e588eb000b93aced73f52086b3"
+  },
+  "schema_version": "benchmark-source-index-implementation-v1",
+  "shared_policy_version": "three-views-v1"
+}

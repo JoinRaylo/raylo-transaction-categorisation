@@ -1,0 +1,60 @@
+{
+  "repos": {
+    "OB-transformer": {
+      "commit": "9cb2645d912f6c323b019bdfcaa49747437e8919",
+      "files_sha256": {
+        "CLAUDE.md": "98b5c79f24740673ce7cf70d90b997797aae6a360aae9052c2244ccd85051d84",
+        "README.md": "ca9e7464492ab493352bf59c002cd38c0908dd430e84b46ffc89ba89169600e6"
+      }
+    },
+    "app": {
+      "commit": "40d3daf790fcc2259298f443069fce790879d489",
+      "files_sha256": {
+        "apps/ob-txn-categoriser/scripts/evaluation_inventory.json": "9ef9ecef82e7fb35011dd5b6d7b7dc4f91fa2ea327520f3a4240dbb4a6d7b174",
+        "apps/ob-txn-categoriser/scripts/run_evaluations.py": "3914c4e7fc925ef08510df788836c289d3e2a6cbd842f4b297529dbe5d989f61",
+        "apps/payload-extractor/src/payload_extractor/models/rows.py": "5fcd219e1247c5a78cce386b6ead14e37ef784c51e616f69bb242f07cfd0ab7d",
+        "apps/payload-extractor/src/payload_extractor/parsers.py": "c23ddcab17501b7cdb37cce293098ce14afb7b16b24bbca3c17079a57810f92c",
+        "lib/raylo-txncat/src/raylo_txncat/classifier_types.py": "a2115a8bce44a8c401927f64eeac364165892bbd59bd984500ec7b2aa6eaca03",
+        "lib/raylo-txncat/src/raylo_txncat/evalsets.py": "de5357f70a91d50879d4eb8998c40a616fa6f6764fd988e9eaacf78ce035ac9e",
+        "lib/raylo-txncat/src/raylo_txncat/hashing.py": "0a2ec7606f4b6f44db1145c59acabc828f1c50f8663d2c2d71a2759b9f4aade1",
+        "lib/raylo-txncat/src/raylo_txncat/head_hinge.py": "5dc21d11f89f96124d09534d63d2a478be7176bce1058ee6526645778cc700fd",
+        "lib/raylo-txncat/src/raylo_txncat/seed_selection.py": "e8c2dc3f8c7d2b3f5cd73a513ab188480db32932ec4f8e3d42a7956d2f37d9a1",
+        "lib/raylo-txncat/src/raylo_txncat/types.py": "8c78aa184a30f96ed4eb305d8d2c9585d98aa5e588eb000b93aced73f52086b3"
+      }
+    },
+    "dbt": {
+      "commit": "59cb60888865e4e61d85f6b29c51ba03794f07e1",
+      "files_sha256": {
+        "manifest.json": "e7dab14dd35911c7c08d70ef3aceb7e59a8c9710a39b355abf98e5dc56f972f3",
+        "models/intermediate/core/intermediate_core_aggregated_identities.sql": "f5c82a0b73ba0ba1579f5c2ab45dba16b3117dfdd8f6f8855efc9056bb077709",
+        "models/intermediate/credit/intermediate_credit_plaid_transactions.sql": "0a65ac5341eda882ebbff35e4e88950779d7f1d302c0eceee1d61c615b50f750",
+        "models/intermediate/raylo_production/intermediate_raylo_production__checkout_risk_assessment_results_latest.sql": "a1f187d395eb3dee000a5227b1a321e37cf60ad48e321af7ca3e9e30ca30edee",
+        "models/marts/credit/credit_plaid_open_banking_transactions.sql": "02b27f6f7ed41d3765c92e84e8c6ebc3f6c788cbd0d37172d85f910adf72777a",
+        "models/staging/landing_external_requests/stg_landing_external_requests__external_requests_taktile_plaid_transactions.sql": "b6a53e7fd7b6d6495d7844de24a79229385de9357b52350953ced97bbe9497bf",
+        "models/staging/raylo_production/stg_raylo_production__checkouts.sql": "f29b56e5477bf0250193985f1c0a07875fb6b83ca9086c19d7ae200960a80a5a",
+        "models/staging/raylo_production/stg_raylo_production__users.sql": "c573165748be62448c9f136fbdabb7a0d67f376599a4059bbd264fd720873cb9"
+      }
+    },
+    "research": {
+      "commit": "e275d1a6c9e911466816fc76aca33241f33149a1",
+      "files_evidence": "local_inventory.json records working-copy hashes; existing unrelated work was preserved."
+    }
+  },
+  "source_semantics": [
+    {
+      "checked_on": "2026-09-15",
+      "supports": "case-sensitive transaction IDs; pending_transaction_id; report-level asset_report_id",
+      "url": "https://plaid.com/docs/api/products/assets/"
+    },
+    {
+      "checked_on": "2026-09-15",
+      "supports": "account IDs may change when an Item is recreated; persistent_account_id is not universally available",
+      "url": "https://plaid.com/docs/api/accounts/"
+    },
+    {
+      "checked_on": "2026-09-15",
+      "supports": "pending-to-posted identity linkage",
+      "url": "https://plaid.com/docs/transactions/transactions-data/"
+    }
+  ]
+}

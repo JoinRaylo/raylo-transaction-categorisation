@@ -34,6 +34,8 @@ DEVELOPMENT_EVAL_FILES = (
 )
 
 _V6_GOLD_FILES = (
+    "gold_credit_eval.csv",
+    "gold_transactions_risk_t6bound.csv",
     "gold_transactions.csv",
     "gold_transactions_v2.csv",
     "gold_transactions_v2_batch2.csv",

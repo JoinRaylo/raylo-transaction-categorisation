@@ -1,0 +1,33 @@
+% Edit this section directly. Styling is in raylo-report.sty.
+\section{How many categories is the right number}
+Stakeholders asked whether 275 was too many, too few, or arbitrary. We tested both directions. The answer depends on the model that consumes the categories, so it is given in two parts.
+
+\textbf{With the simple August model.} The features were rebuilt at seven levels of detail, from 275 leaves down to 4 broad groups, and the August XGBoost was trained at each with three seeds and bootstrap intervals (Figures 1 and 2 show six of the seven; the seven cash-flow-type rung sits between 9 and 4 and adds nothing to the picture). The 275-leaf, 69-group and 29-group views were statistically indistinguishable. Seventeen groups showed a small, real loss on the six-month outcome; nine and fewer degraded clearly. The 69-group view is today's model-feature grouping: 40 leaves each get their own feature block and the other 235 roll into their 29 general categories. All 275 leaves are still classified.
+
+\textbf{With the champion recipe of section 10.} Given every column, the six-month outcome rewards detail: 275 leaves scores 0.612 against 0.586 for the 69-group view, falling steadily to 0.510 at 4 groups. The three-month outcome does not; its peak is the 69-group view. Under a hard 50-feature cap the picture inverts and 275 leaves becomes the worst rung on both outcomes, because roughly 2,900 thin per-leaf candidates crowd the handful of broad, information-dense features (priority-debt breadth, months with credit products) out of the 50 slots. Only 2 of those 31 broad columns survive selection at 275 leaves, against 9 at 17 groups.
+
+\textbf{Expanding.} Three well-supported parents (streaming, general marketplace, payment intermediary) were split into 15 shadow children, a simulated move from 275 to 287 leaves, with the rules frozen before any outcome was inspected. Against a control that received the exact parent totals, the split features changed GINI by between $-0.002$ and $-0.011$, every confidence interval including zero. This was not a thin-data result: the shadow categories appeared in 54,000 of 64,000 modelling rows.
+
+\begin{figure}[!tbp]
+\centering
+\ChartTitle{Figure 1. Risk-model GINI by number of category groups, August recipe (same cohort, same learner, 3 seeds)}
+\includegraphics[width=\linewidth]{charts/fig-ladder.pdf}
+\caption*{Single XGBoost on per-group counts and amounts, uncapped, three seeds. Predates the September as-of rebuild; directional.}
+\end{figure}
+\begin{figure}[!tbp]
+\centering
+\ChartTitle{Figure 2. The same ladder with the champion recipe, six-month GINI, single XGBoost}
+\includegraphics[width=\linewidth]{charts/fig-ladder-champ.pdf}
+\caption*{Champion recipe with its per-leaf shares and averages, rebuilt at each rung on a recipe-neutral base so only granularity changes.}
+\end{figure}
+\subsection{Reconciling the two results}
+The two ladders answer different questions and the same three points hold across both.
+
+\begin{enumerate}
+\item \textbf{Whether detail helps depends on what the model can do with it.} One count and one amount per category cannot use what a leaf adds over its parent, which is mostly how spending is distributed. Per-leaf shares and averages can, and with them the six-month model finds real signal in the fine leaves. The shorter, noisier three-month horizon does not, under either recipe.
+\item \textbf{A hard feature cap is a selection problem, not a taxonomy problem.} Ranking 2,900 columns by gain and keeping 50 squeezes out the few broad, strong features. The capped champion in section 10 avoids this by selecting from a curated pool that already holds those features, and reaches 0.588 where the raw-pool rung reaches 0.511.
+\item \textbf{The taxonomy decision is the same under every reading.} A leaf can always be rolled up at feature-build time; a rollup can never be split back. Which rollup or pool a model consumes is a modelling choice, made per model and per outcome.
+\end{enumerate}
+\begin{tcolorbox}[colback=BlueTint,colframe=Blue,boxrule=0pt,leftrule=2pt,arc=3mm]
+Keep 275 leaves as the governed source of truth. Detail is reversible, since a leaf can be rolled up at feature-build time, while deletion is not, and the stronger the model, the more the six-month outcome rewards that detail. Let each model consume a validated rollup or a curated feature pool, and keep proposed new categories in shadow until they show stable value.
+\end{tcolorbox}

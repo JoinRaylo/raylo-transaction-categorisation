@@ -1,0 +1,46 @@
+\ProvidesPackage{raylo-report}
+\usepackage[margin=21mm,top=23mm,bottom=23mm,headheight=16pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{FKGroteskRaylo-Regular.ttf}[Path=assets/,BoldFont=FKGroteskRaylo-Bold.ttf,ItalicFont=FKGroteskRaylo-Italic.ttf,BoldItalicFont=FKGroteskRaylo-BoldItalic.ttf]
+\usepackage[table]{xcolor}
+\definecolor{Blue}{HTML}{4252FF}
+\definecolor{BlueTint}{HTML}{F0F1FF}
+\definecolor{Peach}{HTML}{FFD1C8}
+\definecolor{PeachTint}{HTML}{FFF8F7}
+\definecolor{Charcoal}{HTML}{2D2D2D}
+\definecolor{Muted}{HTML}{6C6C6C}
+\usepackage{graphicx,tikz,booktabs,longtable,array,enumitem,caption,titlesec,fancyhdr}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{tcolorbox}
+\usepackage[colorlinks=true,linkcolor=Blue,urlcolor=Blue,bookmarksnumbered=true,pdftitle={Open Banking Transaction Categorisation and Credit Risk - September 2026},pdfauthor={Carlos Noble Jesus}]{hyperref}
+\usepackage{microtype,float,needspace}
+\newlength{\TableWidth}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{7pt}
+\renewcommand{\baselinestretch}{1.15}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.13}
+\setlength{\emergencystretch}{2em}
+\setlist{leftmargin=*,itemsep=4pt,topsep=4pt}
+\titleformat{\section}{\raggedright\hyphenpenalty=10000\color{Charcoal}\fontsize{21}{25}\selectfont\bfseries}{\textcolor{Blue}{\thesection}}{.6em}{}
+\titleformat{\subsection}{\raggedright\color{Charcoal}\large\bfseries}{}{0pt}{}
+\titlespacing*{\section}{0pt}{22pt}{14pt}
+\titlespacing*{\subsection}{0pt}{13pt}{6pt}
+\setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{1}
+% Captions sit below the main reading colour so figures and tables have a clear
+% visual boundary. Muted is the design-system dark grey equivalent of ~70% ink.
+\captionsetup{font={small,color=Muted},labelformat=empty,justification=raggedright,singlelinecheck=false,skip=8pt}
+\newcommand{\ChartTitle}[1]{{\raggedright\bfseries #1\par}\vspace{5pt}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\includegraphics[height=4mm]{assets/raylo-blue.png}}
+\fancyhead[R]{\small\color{Muted} RESEARCH\quad /\quad SEPTEMBER 2026}
+\fancyfoot[L]{\footnotesize\color{Muted} Confidential, internal use only}
+\fancyfoot[R]{\small\color{Blue}\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\raggedbottom
+\widowpenalty=10000\clubpenalty=10000
+
+\let\RayloSection\section
+\renewcommand{\section}{\Needspace{110pt}\RayloSection}

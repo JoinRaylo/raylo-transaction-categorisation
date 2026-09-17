@@ -1,0 +1,85 @@
+{
+  "adapter_sha256": "b10f5eaed47322e9be823aa2456324f679f22ff22347ef83705a3b8538dbb459",
+  "authorizes_consumption": false,
+  "complete": true,
+  "database_bytes": 2112569344,
+  "database_sha256": "61cc0a42ddafb686e9f3ecb437be1eba3f9a78ecbb893f18fdb60eafb7ded5cd",
+  "family_history_complete": false,
+  "identity_history_complete": false,
+  "input_history_complete": false,
+  "inventory_sha256": "bb0c02de639d14a750ccef6fe89bc819a8261b41f1e3c87a05c731433934c423",
+  "key_id": "benchmark-private-20260916-v1",
+  "private_receipt_sha256": "2106efa7ad30c4669620c4ac514ac797b8bba8700d5f4e0b5f02c98c72d1e654",
+  "schema_version": "benchmark-input-presence-v1",
+  "sources": [
+    {
+      "evidence": "preserved_input_snapshot_not_fit_consumption_receipt",
+      "prefix_rows": null,
+      "projections": [
+        "transformer-sentence-v1"
+      ],
+      "purposes": [
+        "domain_pretraining"
+      ],
+      "rows": 21524807,
+      "source_id": "mlm_full",
+      "source_sha256": "a37b9a335dbf29a442ff4666393083105d3bfd4b83296213f8e2b95d9a915ff4"
+    },
+    {
+      "evidence": "preserved_input_snapshot_not_fit_consumption_receipt",
+      "prefix_rows": 1000000,
+      "projections": [
+        "transformer-sentence-v1"
+      ],
+      "purposes": [
+        "tokenizer_vectorizer_fit"
+      ],
+      "rows": 1000000,
+      "source_id": "vocabulary_prefix",
+      "source_sha256": "a37b9a335dbf29a442ff4666393083105d3bfd4b83296213f8e2b95d9a915ff4"
+    },
+    {
+      "evidence": "preserved_input_snapshot_not_fit_consumption_receipt",
+      "prefix_rows": null,
+      "projections": [
+        "transformer-sentence-v1",
+        "hinge-numeric-v1"
+      ],
+      "purposes": [
+        "distillation"
+      ],
+      "rows": 404982,
+      "source_id": "consensus",
+      "source_sha256": "fa8e7680e2f04178874e977a8901e08e3e9e4283bd51de46f0e10c0cd6256fb3"
+    },
+    {
+      "evidence": "preserved_input_snapshot_not_fit_consumption_receipt",
+      "prefix_rows": null,
+      "projections": [
+        "transformer-sentence-v1",
+        "hinge-numeric-v1"
+      ],
+      "purposes": [
+        "supervised_training",
+        "feature_mask_statistics"
+      ],
+      "rows": 414400,
+      "source_id": "tuning_train",
+      "source_sha256": "fd26cde73e7aa3483771adc90b413f2c0c9f4274f9c6b532bb7698e708fe0742"
+    },
+    {
+      "evidence": "preserved_input_snapshot_not_fit_consumption_receipt",
+      "prefix_rows": null,
+      "projections": [
+        "transformer-sentence-v1",
+        "hinge-numeric-v1"
+      ],
+      "purposes": [
+        "model_selection_validation"
+      ],
+      "rows": 5000,
+      "source_id": "tuning_validation",
+      "source_sha256": "47b6d22534ca498ad31ab600786b91932cfac138d0f26bc70aba3a77cf29c13c"
+    }
+  ]
+}

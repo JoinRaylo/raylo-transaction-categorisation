@@ -1,0 +1,413 @@
+{
+  "captured_at": "2026-09-16T12:53:32.944957+00:00",
+  "dry_run_job_id": null,
+  "dry_run_statement_type": "SELECT",
+  "dry_run_total_bytes_processed": 10447908871,
+  "executed": false,
+  "location": "EU",
+  "maximum_bytes_billed": 20000000000,
+  "metadata_before": {
+    "assessment_links": {
+      "created": "2026-09-16T12:05:44.617000+00:00",
+      "etag": "K5i84zvsyqEVtwo+XxTTrg==",
+      "modified": "2026-09-16T12:05:45.342000+00:00",
+      "num_bytes": 455524247,
+      "num_rows": 2889050,
+      "schema": [
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "checkout_risk_assessment_result_id"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "checkout_id"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "partner_id"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "state"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "external_state"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "next_action_type"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "next_action_at"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "created_at"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "updated_at"
+        }
+      ],
+      "table_id": "raylo-production:dbt_production.intermediate_raylo_production__checkout_risk_assessment_results_latest"
+    },
+    "checkout_links": {
+      "created": "2026-09-16T12:04:02.471000+00:00",
+      "etag": "kM+ZV3Klh9V8sTEXWTKX+w==",
+      "modified": "2026-09-16T12:04:03.550000+00:00",
+      "num_bytes": 0,
+      "num_rows": 0,
+      "schema": [
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "checkout_id"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "user_id"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "address_id"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "expires_at"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "invitation_id"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "privacy_policy_accepted_at"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "terms_and_conditions_accepted_at"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "state"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "created_at"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "checkout_created_at"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "updated_at"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "checkout_updated_at"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "friendly_reference"
+        },
+        {
+          "field_type": "BOOLEAN",
+          "mode": "NULLABLE",
+          "name": "recent_change_of_address"
+        },
+        {
+          "field_type": "BOOLEAN",
+          "mode": "NULLABLE",
+          "name": "recent_change_of_country"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "previous_address_id"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "merchant_id"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "organization_id"
+        },
+        {
+          "field_type": "BOOLEAN",
+          "mode": "NULLABLE",
+          "name": "for_organization"
+        },
+        {
+          "field_type": "BOOLEAN",
+          "mode": "NULLABLE",
+          "name": "is_business_checkout"
+        }
+      ],
+      "table_id": "raylo-production:dbt_production.stg_raylo_production__checkouts"
+    },
+    "customer_links": {
+      "created": "2026-09-16T12:04:03.109000+00:00",
+      "etag": "/rE0+F6Tgs2uCqhllmydPg==",
+      "modified": "2026-09-16T12:04:03.761000+00:00",
+      "num_bytes": 0,
+      "num_rows": 0,
+      "schema": [
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "customer_id"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "first_name"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "last_name"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "mobile_phone_number"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "email"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "canonical_email"
+        },
+        {
+          "field_type": "DATE",
+          "mode": "NULLABLE",
+          "name": "date_of_birth"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "address_id"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "marketing_opt_in_at"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "referrer_external_reference"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "referral_rewarded_at"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "review_opt_out_at"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "created_at"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "updated_at"
+        }
+      ],
+      "table_id": "raylo-production:dbt_production.stg_raylo_production__customers"
+    },
+    "materialized_plaid": {
+      "created": "2026-09-16T01:38:59.992000+00:00",
+      "etag": "hoYIxj8jj/e3nVJCXe5AgQ==",
+      "modified": "2026-09-16T01:39:01.362000+00:00",
+      "num_bytes": 10410938247,
+      "num_rows": 36312899,
+      "schema": [
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "external_request_created_at"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "checkout_risk_assessment_result_id"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "transaction_id"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "transaction_date"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "date_transacted"
+        },
+        {
+          "field_type": "FLOAT",
+          "mode": "NULLABLE",
+          "name": "amount"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "transaction_name"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "merchant_name"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "description"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "reference_number"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "payment_method"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "REPEATED",
+          "name": "category"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "primary_credit_category"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "detailed_credit_category"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "account_id"
+        }
+      ],
+      "table_id": "raylo-production:dbt_production.intermediate_credit_plaid_transactions"
+    },
+    "user_links": {
+      "created": "2026-09-16T12:04:11.271000+00:00",
+      "etag": "R0fXXwb6BUb2NgJrDAK2yA==",
+      "modified": "2026-09-16T12:04:12.039000+00:00",
+      "num_bytes": 0,
+      "num_rows": 0,
+      "schema": [
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "user_id"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "customer_id"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "auth_id"
+        },
+        {
+          "field_type": "STRING",
+          "mode": "NULLABLE",
+          "name": "intercom_id"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "created_at"
+        },
+        {
+          "field_type": "TIMESTAMP",
+          "mode": "NULLABLE",
+          "name": "updated_at"
+        }
+      ],
+      "table_id": "raylo-production:dbt_production.stg_raylo_production__users"
+    }
+  },
+  "prior_comparison": {
+    "prior_b01_current_profile": {
+      "blank_merchant": "8809",
+      "credits": "5799",
+      "distinct_account_ids": "1048",
+      "distinct_assessment_ids": "848",
+      "distinct_transaction_ids": "22166",
+      "positive_debits": "16367",
+      "row_count": "22166",
+      "zero_amounts": "0"
+    },
+    "prior_b01_current_profile_receipt": {
+      "dry_run_bytes": 8619466519,
+      "result_sha256": "ce02ab64246329cfbdeb77cfe65a56919046862df71956a29f8a23999fb95087",
+      "sql_sha256": "c33f04a9f31f119ab56472c5d8a65a5786ce293ba790735a92f15bc06cb9c3d1",
+      "statement_type": "SELECT"
+    }
+  },
+  "project": "raylo-production",
+  "query_name": "linked_pool_profile",
+  "runner_path": "/private/tmp/txncat-linked-pool-profile-20260916/run_linked_pool_profile.py",
+  "runner_sha256": "58a7c7506190acc6d9af390ff303116cd7bf21d727df4e3a0460bd139370f635",
+  "source_code_hashes": {
+    "assessment_model": "a1f187d395eb3dee000a5227b1a321e37cf60ad48e321af7ca3e9e30ca30edee",
+    "checkout_model": "f29b56e5477bf0250193985f1c0a07875fb6b83ca9086c19d7ae200960a80a5a",
+    "customer_model": "ed75ff9009eed74b06f05b9d2a9ce2a9651c859247c83ff43a36d34310105236",
+    "manifest": "e7dab14dd35911c7c08d70ef3aceb7e59a8c9710a39b355abf98e5dc56f972f3",
+    "materialized_model": "0a65ac5341eda882ebbff35e4e88950779d7f1d302c0eceee1d61c615b50f750",
+    "user_model": "c573165748be62448c9f136fbdabb7a0d67f376599a4059bbd264fd720873cb9"
+  },
+  "sql_path": "/private/tmp/txncat-linked-pool-profile-20260916/linked_pool_profile.sql",
+  "sql_sha256": "97ea75dbe9015bfe5075ce483e39cf9eafa52f0ce0b922609f3e52a0c73e50bf"
+}

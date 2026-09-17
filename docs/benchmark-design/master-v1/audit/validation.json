@@ -1,0 +1,32 @@
+{
+  "assessment": "share with caveats",
+  "coverage_counts": "hash-verified sources; independent CSV recount for four major sets; all label/direction totals reconcile",
+  "locked_file_contents_opened": false,
+  "models_scored": false,
+  "exact_pretraining_overlap_established": false,
+  "production_mix_profiled": false,
+  "research_commit": "24000b7d79b6a15624e1898476508e8aa903822a",
+  "source_sha256": {
+    "src/build_gold_v6_locked.py": "523fb1b7b0416e3233950a43c4e7a042d077c4a8b4d6a1e8773865d685e6e7bb",
+    "src/build_tuning_dataset.py": "9c748f6d0d7c3d1618a4cede49a2eedfb7d6b9b1a0cb941dab154d7e91510cc4",
+    "src/transformer/build_corpus.py": "301758abc06dd6dfed151aec1ba911a696d694b60d7a8aefa71fcb4cbe9280c1",
+    "src/score_waterfall_pipeline.py": "9ca9c6265622ac598a4f116dc91c8972195b1da957a1d581738dabeb705a3563",
+    "data/classifier_v6_deleaked_report.md": "4c62a21dd2a99eece1541ccc3710b5cf460b92e8ab14acdb48c2b205124c8f9c",
+    "data/classifier_v7_credit_report.md": "5d77c9ae21eda26153a5cbc22eedc4217606a96e371abae82955f6fee72a6e2c",
+    "data/distillation_labels_report.md": "fcc2071433fe145e837b5888eccfbf04fbf42c988780e78d707083bd34a73a14",
+    "data/transformer_classifier_report.md": "1f76b34978614d306c5be8b2afdc880826303c44578a453682589a93dda8d617"
+  },
+  "date_ranges": {
+    "gold_credit_eval": {
+      "n": 2000,
+      "min": "2025-05-22",
+      "max": "2025-10-31"
+    },
+    "gold_transactions_risk_t6bound": {
+      "n": 400,
+      "min": "2025-05-26",
+      "max": "2025-10-27"
+    }
+  },
+  "coverage_sha256": "d2961f28a732293e93ff76602a084372d473dec142dbd76de23e0c2ce1bf357f"
+}

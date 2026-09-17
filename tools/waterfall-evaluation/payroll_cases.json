@@ -1,0 +1,265 @@
+{
+  "schema_version": "credit-payroll-001-cases-v1",
+  "origin": "synthetic predeclared boundary examples; not accuracy data",
+  "cases": [
+    {
+      "case_id": "exact",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE PAYROLL",
+      "direction": "credit",
+      "matches_new_t2": true
+    },
+    {
+      "case_id": "lowercase",
+      "merchant_raw": "Waitrose",
+      "description_raw": "waitrose payroll",
+      "direction": "credit",
+      "matches_new_t2": true
+    },
+    {
+      "case_id": "mixed_case",
+      "merchant_raw": "Waitrose",
+      "description_raw": "Waitrose PayRoll",
+      "direction": "credit",
+      "matches_new_t2": true
+    },
+    {
+      "case_id": "ascii_whitespace",
+      "merchant_raw": " WAITROSE ",
+      "description_raw": " \t\r\nWAITROSE\t  PAYROLL\r\n ",
+      "direction": "credit",
+      "matches_new_t2": true
+    },
+    {
+      "case_id": "debit",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE PAYROLL",
+      "direction": "debit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "bare",
+      "merchant_raw": "Waitrose",
+      "description_raw": "Waitrose",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "missing_description",
+      "merchant_raw": "Waitrose",
+      "description_raw": null,
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "empty_description",
+      "merchant_raw": "Waitrose",
+      "description_raw": "",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "missing_merchant",
+      "merchant_raw": null,
+      "description_raw": "WAITROSE PAYROLL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "empty_merchant",
+      "merchant_raw": "",
+      "description_raw": "WAITROSE PAYROLL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "other_merchant",
+      "merchant_raw": "Tesco",
+      "description_raw": "WAITROSE PAYROLL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "merchant_suffix",
+      "merchant_raw": "Waitrose Ltd",
+      "description_raw": "WAITROSE PAYROLL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "merchant_prefix",
+      "merchant_raw": "Not Waitrose",
+      "description_raw": "WAITROSE PAYROLL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "payroll_only",
+      "merchant_raw": "Waitrose",
+      "description_raw": "PAYROLL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "salary",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE SALARY",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "wages",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE WAGES",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "reference_suffix",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE PAYROLL 123",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "prefix",
+      "merchant_raw": "Waitrose",
+      "description_raw": "NOT WAITROSE PAYROLL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "refund",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE REFUND",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "refunded",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE REFUNDED",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "payroll_refund",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE PAYROLL REFUND",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "refund_payroll",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE REFUND PAYROLL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "reversal",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE PAYROLL REVERSAL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "returned_dd",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE PAYROLL RETURNED DIRECT DEBIT",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "returned_so",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE PAYROLL RETURNED STANDING ORDER",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "dd_reversal",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE PAYROLL DIRECT DEBIT REVERSAL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "reversal_of",
+      "merchant_raw": "Waitrose",
+      "description_raw": "REVERSAL OF WAITROSE PAYROLL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "nbsp",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE\u00a0PAYROLL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "unicode_space",
+      "merchant_raw": "Waitrose",
+      "description_raw": "\u2003WAITROSE PAYROLL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "narrow_nbsp",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE PAYROLL\u202f",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "line_between",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE\nPAYROLL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "suffix_newline",
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE PAYROLL\nREFUND",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "prefix_newline",
+      "merchant_raw": "Waitrose",
+      "description_raw": "REFUND\nWAITROSE PAYROLL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "bookmaker_debit",
+      "merchant_raw": "SkyBet",
+      "description_raw": "SkyBet",
+      "direction": "debit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "bookmaker_credit",
+      "merchant_raw": "SkyBet",
+      "description_raw": "SkyBet",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "bookmaker_payroll",
+      "merchant_raw": "SkyBet",
+      "description_raw": "WAITROSE PAYROLL",
+      "direction": "credit",
+      "matches_new_t2": false
+    },
+    {
+      "case_id": "mcdonalds",
+      "merchant_raw": "McDonalds",
+      "description_raw": "McDonalds",
+      "direction": "debit",
+      "matches_new_t2": false
+    }
+  ]
+}

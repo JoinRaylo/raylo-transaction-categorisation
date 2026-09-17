@@ -1,0 +1,52 @@
+{
+  "accuracy_evaluation_run": false,
+  "accuracy_scores_changed": false,
+  "app_library_full_suite": {
+    "command": "pytest lib/raylo-txncat/tests apps/ob-txn-categoriser/tests -q",
+    "passed": 1337,
+    "warning": "existing Starlette/httpx deprecation"
+  },
+  "authorizes_consumption": false,
+  "benchmark_members_reserved": 0,
+  "final_targeted_suite": {
+    "command": "pytest lib/raylo-txncat/tests/test_benchmark_exposure.py apps/ob-txn-categoriser/tests/test_benchmark_source.py -q",
+    "passed": 39
+  },
+  "historical_overlap_checks": {
+    "evidence": "overlap-verification.json",
+    "passed": 40
+  },
+  "implementation_pins_checked": 13,
+  "locked_labels_read": false,
+  "maintained_projects_ruff_check": "passed",
+  "new_and_maintained_adapter_format_check": "passed",
+  "new_labels_created": false,
+  "new_source_model_inference": false,
+  "original_b02_six_implementation_pins_unchanged": true,
+  "public_evidence_raw_identity_scan": "no_raw_request_source_assessment_report_item_institution_account_transaction_customer_user_identifiers_found",
+  "remaining_gaps": [
+    "historical_event_customer_and_alias_identity",
+    "effective_token_sparse_and_near_duplicate_coverage",
+    "complete_controlled_merchant_family_evidence",
+    "legacy_protected_membership_migration",
+    "durable_reservations_and_consumption_enforcement"
+  ],
+  "research_mirrors": {
+    "adapters_including_sql": 5,
+    "byte_identical": true,
+    "evidence_files": 9
+  },
+  "research_replay": {
+    "byte_identical": true,
+    "original_python": "3.14",
+    "profile_sha256": "c5ca9095f7556f14b134a059c6b42c4bc055621757341f6bf8e00c786010e8a5",
+    "replay_python": "3.12"
+  },
+  "schema_version": "benchmark-source-index-verification-v1",
+  "source_before_after_metadata_etags": "unchanged_for_all_four_relations",
+  "source_index_receipt_and_profile_hash_links": "passed",
+  "staging_deployed": false,
+  "status": "passed",
+  "training_run": false,
+  "waterfall_changed": false
+}

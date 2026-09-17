@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "record_id": "BASELINE-2026-09-14",
+  "status": "historical-results-imported-without-rescoring",
+  "evaluated_at": "2026-09-14T15:34:36.529824+00:00",
+  "mirrored_on": "2026-09-15",
+  "source_repository": "JoinRaylo/internal-services-monorepo",
+  "source_commit": "9c7201bf4e02b00e439335a1292a4caf2b61c81e",
+  "source_path": "apps/ob-txn-categoriser/research/abstention-policy-comparison-v1",
+  "files_sha256": {
+    "README.md": "e47fb85181c62e51ee7c8844c5f49eb2ca06f5aa31482a487a8d5807bb21be52",
+    "summary.json": "a05d1a67a60a56d3c4f484ff1378c1b74edd9fbf2da1a3daa247a2e87bef2210",
+    "validation.json": "67a69812d065e0fe4a93078722e6eee7670ae816c0c5154bae57aa8a25aed329"
+  },
+  "coverage": "Three permitted development sets only; not the complete repeatable inventory.",
+  "pipeline_changed": false,
+  "fresh_evaluation_performed_for_mirror": false
+}
