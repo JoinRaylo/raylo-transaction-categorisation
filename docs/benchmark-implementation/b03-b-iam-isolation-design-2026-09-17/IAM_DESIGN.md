@@ -1,7 +1,6 @@
 # B03-B IAM and authority-isolation design
 
-Status: **REQUEST_CHANGES — design only; no identities or IAM bindings were
-created or changed**.
+Status: **project provisioned; IAM and authority resources pending**.
 
 This packet records the next safe decision after the partially provisioned
 synthetic scope. It does not authorize customer-data reads, candidate
@@ -35,17 +34,23 @@ for new principals. Therefore the resources in `raylo-production` remain
 snapshot, membership, identity evidence, labels, sealed items or worker
 artifacts. Do not remove existing production bindings as part of this task.
 
-The recommended remedy is a separately isolated authority project beneath
+The approved remedy is a separately isolated authority project beneath
 clean IAM ancestors, with no unrelated human/runtime principals. A project-level IAM deny design is a
 possible alternative, but would need a separate security/infra review of every
 principal and service-agent dependency; it is not assumed here.
 
+The approved project now exists as
+`raylo-txncat-authority-prod` (project number `357892832103`), under
+`folders/45426850789` (`internal-services-monorepo`). It was created with no
+APIs enabled and has no service accounts or authority resources. It is the only
+authority project planned for this increment; no authority-staging project is
+needed.
+
 ## Receipt-verification deployment choice
 
-Use one private Cloud Run service in `europe-west2`, deployed only after the
-isolated project exists:
+Use one private Cloud Run service in `europe-west2` in the approved project:
 
-`projects/<AUTHORITY_PROJECT>/locations/europe-west2/services/txncat-receipt-verifier`
+`projects/raylo-txncat-authority-prod/locations/europe-west2/services/txncat-receipt-verifier`
 
 The service has internal ingress, no unauthenticated access, and an image
 pinned by digest. It exposes only the receipt-bound read operation. It does
@@ -65,18 +70,17 @@ forged/forwarded/role-swapped token tests are still required.
 
 ## Exact matrix for the isolated project
 
-The following is the proposed mutation set. `<AUTHORITY_PROJECT>` and all
-resource IDs remain placeholders until the isolated project is approved and
-created. Grant only the listed permissions; do not substitute broad project
-roles.
+The following is the proposed mutation set. The project ID is fixed; bucket,
+database, key and service resource IDs are still pending exact resource review.
+Grant only the listed permissions; do not substitute broad project roles.
 
 | Identity | Resource and binding | Exact permissions/capability | Explicit absence |
 | --- | --- | --- | --- |
 | `txncat-authority-writer` | Authority bucket, conditional custom role `txncatAuthorityObjectCreateRead` | `storage.objects.create`, `storage.objects.get`; conditions for `_authority/`, `private/`, `worker/learning/` and `worker/selection/` only | No object list, update, delete or `sealed/` access |
-| `txncat-authority-writer` | Named Firestore database through a project-level conditional custom role `txncatRegistryWriter` | `datastore.databases.get`, `datastore.entities.create`, `datastore.entities.get`, `datastore.entities.list`, `datastore.entities.update`; condition exactly `resource.name == "projects/<AUTHORITY_PROJECT>/databases/txncat-benchmark-authority"` | No entity delete, database create/update/delete, import/export, bulk delete or index administration |
+| `txncat-authority-writer` | Named Firestore database through a project-level conditional custom role `txncatRegistryWriter` | `datastore.databases.get`, `datastore.entities.create`, `datastore.entities.get`, `datastore.entities.list`, `datastore.entities.update`; condition exactly `resource.name == "projects/raylo-txncat-authority-prod/databases/txncat-benchmark-authority"` | No entity delete, database create/update/delete, import/export, bulk delete or index administration |
 | `txncat-authority-writer` | Receipt CryptoKey, key-level custom role `txncatReceiptSigner` | `cloudkms.cryptoKeyVersions.useToSign`, `cloudkms.cryptoKeyVersions.get` and `cloudkms.cryptoKeyVersions.viewPublicKey` for signing and the writer's self-check/state check | No key/key-version create, rotation, destruction, encryption/decryption or storage-key access |
 | `txncat-receipt-verifier` | Authority bucket, conditional custom role `txncatWorkerObjectGet` | `storage.objects.get`; conditions for `worker/learning/` and `worker/selection/` only | No object list, create, update, delete, `_authority/`, `private/` or `sealed/` access |
-| `txncat-receipt-verifier` | Named Firestore database through a project-level conditional custom role `txncatRegistryLookup` | `datastore.entities.get`; condition exactly on the named database above | No registry list or mutation; no access to other databases |
+| `txncat-receipt-verifier` | Named Firestore database through a project-level conditional custom role `txncatRegistryLookup` | `datastore.entities.get`; condition exactly on `projects/raylo-txncat-authority-prod/databases/txncat-benchmark-authority` | No registry list or mutation; no access to other databases |
 | `txncat-receipt-verifier` | Receipt CryptoKey, key-level custom role `txncatReceiptVerifier` | `cloudkms.cryptoKeyVersions.get` and `cloudkms.cryptoKeyVersions.viewPublicKey` plus the role's required location/project-read permissions | No signing, verification-use, key administration or storage-key access |
 | `txncat-learning-worker` | Exact verifier Cloud Run service | `roles/run.invoker` only | No bucket, Firestore, KMS, selection or sealed grants |
 | `txncat-selection-worker` | Exact verifier Cloud Run service | `roles/run.invoker` only | No bucket, Firestore, KMS, learning or sealed grants |
@@ -120,19 +124,15 @@ to a selection object and vice versa before any live worker proof.
 
 ## Review gate and next step
 
-Sol review: **REQUEST_CHANGES for the current state; APPROVE for the separate-
-project remedy**. The authenticated receipt checks and dedicated-resource
-shape were accepted, but IAM mutation and Stage 0 remain blocked by the
-unresolved caller-authentication, namespace, key-lifecycle and effective-access
-specifications. The production-project inherited-access finding strengthens
-that block.
+Sol review: **APPROVE with control-plane conditions** for the project
+placement; IAM mutation and Stage 0 remain blocked by the unresolved
+caller-authentication, namespace, key-lifecycle and effective-access
+specifications. The production-project inherited-access finding remains a
+hard stop for the old resources.
 
-The next decision is explicit approval to provision a separate authority
-project beneath clean IAM ancestors (or an exact, reviewed deny-policy
-alternative). After that decision,
-prepare the custom-role definitions and resource-level bindings as a dry-run
-review packet. Only after those bindings are separately approved should the
-synthetic-only Stage 0 bootstrap be considered.
+The next decision is approval for minimal API enablement and the exact
+custom-role/resource-level binding packet. Only after those bindings are
+separately approved should the synthetic-only Stage 0 bootstrap be considered.
 
 ### Evidence recorded
 
