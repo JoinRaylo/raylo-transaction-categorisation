@@ -495,7 +495,7 @@ def render_report(report):
         "No pipeline, model or serving configuration was changed by this run.",
         "",
         "All percentages below use every row in the named view. The research pipeline",
-        "uses its original unclassified strings; serving maps T5b abstention to T7/null.",
+        "uses its original unclassified strings; serving maps T6 abstention to T7/null.",
         "Do not pool these overlapping development/validation populations.",
         "",
         "| Dataset | View | Head | Rows | Specific leaf accuracy | Coverage | Research exact |",
@@ -727,7 +727,7 @@ def main():
             classifier_degrade="refuse",
         )
     )
-    if loaded.models.seed != 123 or loaded.config.t5b_abstain_margin != 0.0:
+    if loaded.models.seed != 123 or loaded.config.t6_abstain_margin != 0.0:
         raise ValueError("review evaluation contract before changing selected head or cutoff")
     tiers = DeterministicTiers.from_bundle(loaded.bundle)
     report["research_source_files_verified"] = verify_research_inputs(loaded.bundle, research)

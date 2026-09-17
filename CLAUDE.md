@@ -1,5 +1,14 @@
 # CLAUDE.md — context for continuing this work
 
+## Final serving tier names (2026-09-17)
+
+The pre-launch service contract now names accepted classifier output `T6` and
+keeps `T7` for unclassified/abstained rows. Provider-native fallback is diagnostic
+only and is not a served tier. Historical artefacts are immutable: historical
+`T5b` means final classifier `T6`, and historical `T6` means the retired provider
+fallback. Read `docs/waterfall-changes/tier-naming-001/RECORD.md` before changing
+current serving terminology.
+
 Research repo for Raylo's unified transaction categorisation. Read this before touching anything.
 
 Full design rationale and stakeholder-facing write-up:

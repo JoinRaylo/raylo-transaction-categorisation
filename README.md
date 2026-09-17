@@ -1,5 +1,11 @@
 # raylo-transaction-categorisation
 
+> **Pre-launch serving terminology (17 September 2026):** accepted classifier
+> output is final tier `T6`; provider-native fallback is diagnostic only; `T7`
+> remains unclassified. Historical documents that say `T5b` mean the final
+> classifier tier, while historical `T6` means the retired provider fallback.
+> See `docs/waterfall-changes/tier-naming-001/RECORD.md`.
+
 Research repo for a single transaction taxonomy across Raylo's Open Banking providers (Equifax and Plaid).
 
 **Status: research. Nothing here is in production.** No dbt model or scheduled job references this repo, and it must stay that way until work is explicitly promoted.

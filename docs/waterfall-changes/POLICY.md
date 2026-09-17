@@ -88,7 +88,7 @@ record baseline, candidate and delta with counts and explicit denominators:
 - Correct-to-wrong, wrong-to-correct and wrong-to-different-wrong transitions;
   all changed rows and explanations, with no raw customer data in committed logs.
 - Fixed-cohort residual scores alongside actual candidate residual coverage,
-  so a change in which rows reach T5b cannot masquerade as model improvement.
+  so a change in which rows reach T6 cannot masquerade as model improvement.
 - Duplicate/conflicting-label sensitivity. Preserve gold labels; adjudication
   is a separate versioned task, not a way to make the candidate pass.
 

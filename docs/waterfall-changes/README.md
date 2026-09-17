@@ -4,14 +4,20 @@ Follow [POLICY.md](POLICY.md) for every behavioural change. Start each record fr
 [CHANGE_TEMPLATE.md](CHANGE_TEMPLATE.md). The policy, records and aggregate scores
 are mirrored in the research repository at `docs/waterfall-changes/`.
 
-## Current status — 15 September 2026
+## Current status — 17 September 2026
 
 The [master benchmark design](../benchmark-design/master-v1/DESIGN.md) records the
 coverage audit, proposed fresh cohorts and durable training/evaluation separation.
 This is a design with an implementation/acceptance plan, not a new scored dataset
 or deployed exclusion gate. Existing score history and locked-set rules remain.
 
-The latest evaluation is [CREDIT-PAYROLL-001](credit-payroll-001/RECORD.md): one
+The latest evaluation is [TIER-NAMING-001](tier-naming-001/RECORD.md). It renames
+served classifier output from T5b to T6 and the retired provider fallback to
+diagnostic `provider_native_fallback`. Across 134,227 rows there were zero
+non-tier changes, zero unexpected transitions and no score or T7-count changes.
+Staging promotion remains pending.
+
+The preceding behavioural evaluation is [CREDIT-PAYROLL-001](credit-payroll-001/RECORD.md): one
 exact Waitrose payroll-credit collision. All 15 permitted datasets and both heads
 were evaluated and replayed from research. Real-data scores are unchanged, with
 zero regressions; the explicit synthetic payroll case now resolves to salary.
@@ -34,6 +40,7 @@ monorepo; importing these results is not a fresh research execution.
 | PROCESS-2026-09-15 | Documentation only; no candidate scored | [Policy](POLICY.md) |
 | BASELINE-2026-09-15 | Fresh complete inventory; current policy retained, no candidate change | [Record](baseline-2026-09-15/RECORD.md), [scores](baseline-2026-09-15/summary.json), [validation](baseline-2026-09-15/validation.json), [research replay](baseline-2026-09-15/replay.json) |
 | CREDIT-PAYROLL-001 | Evaluated; offline criteria pass, promotion deferred; zero real-data changes | [Record](credit-payroll-001/RECORD.md), [scores](credit-payroll-001/summary.json), [validation](credit-payroll-001/validation.json), [paired review and research replay](credit-payroll-001/review.json) |
+| TIER-NAMING-001 | Evaluated; behaviour-neutral contract migration, staging pending | [Record](tier-naming-001/RECORD.md), [scores](tier-naming-001/summary.json), [validation](tier-naming-001/validation.json), [paired tier comparison](tier-naming-001/tier_comparison.json) |
 
 Append a new row for each candidate revision, including rejected changes. Do not
 overwrite earlier scores or describe a proposed change as implemented.

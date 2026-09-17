@@ -1,0 +1,15 @@
+{
+  "schema_version": "tier-naming-comparison-v1",
+  "status": "passed",
+  "baseline_rows": 134227,
+  "candidate_rows": 134227,
+  "non_tier_field_differences": 0,
+  "unexpected_tier_transitions": 0,
+  "intentional_tier_transitions": {
+    "T5b_hinge -> T6_hinge": 4920,
+    "T5b_transformer -> T6_transformer": 4846,
+    "T6_native_fallback -> provider_native_fallback": 6297
+  },
+  "unchanged_rows": 118164,
+  "locked_sets_scored": false
+}

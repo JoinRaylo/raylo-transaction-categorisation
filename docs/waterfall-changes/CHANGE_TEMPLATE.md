@@ -34,7 +34,7 @@ separately. Link private row-level transitions and explain every regression.
 ## Verification and decision
 
 - App/library and research tests, old/new goldens, cross-repository parity and SQL.
-- Runtime/deadline impact, especially changed T5b residual volume.
+- Runtime/deadline impact, especially changed T6 residual volume.
 - Acceptance outcome; unresolved failures; reviewer; accepted trade-offs, if any.
 - Mirrored implementation revisions, aggregate files and byte/hash comparison.
 - Append-only score-history entry and research current-score pointer updated.
