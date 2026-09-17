@@ -132,10 +132,12 @@ hard stop for the old resources.
 
 Minimal prerequisite APIs are now enabled; see the separate
 `b03-b-authority-api-enablement-2026-09-17` packet for the exact post-operation
-inventory. Cloud Run and Artifact Registry remain disabled. The next decision
-is review and separate approval for the exact custom-role/resource-level
-binding packet. Only after those bindings are approved and the code gaps are
-closed should the synthetic-only Stage 0 bootstrap be considered.
+inventory. The concrete pre-apply binding proposal is recorded in
+`b03-b-authority-binding-review-2026-09-17`. Cloud Run and Artifact Registry
+remain disabled. The next decision is separate security approval of that exact
+custom-role/resource-level binding packet. Only after approval, the code gaps
+are closed, and live deny/allow proofs pass should the synthetic-only Stage 0
+bootstrap be considered.
 
 ### Evidence recorded
 
