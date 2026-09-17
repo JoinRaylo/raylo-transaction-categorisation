@@ -9,6 +9,13 @@ identity creation, resource creation, customer-data read, BigQuery export,
 candidate reservation, labels, locked-set access, retraining, scoring or B04
 integration.
 
+Sol review: **APPROVE with control-plane conditions**. The API-only state is
+accurately bounded, but this packet must not be treated as approval to mutate
+IAM or create authority resources. Before real data, govern or replace the
+direct Carlos Owner grant through the approved privileged/JIT path, complete
+the organization-to-project effective-access review, and capture reproducible
+command evidence with collection time and operation identifiers.
+
 ## Fixed scope
 
 | Field | Value |
@@ -18,7 +25,7 @@ integration.
 | Firestore database | `txncat-benchmark-authority` (regular Google-managed encryption; create pending) |
 | Receipt key | `txncat-benchmark-receipts` (HSM asymmetric signing; create pending) |
 | Storage key | `txncat-benchmark-storage` (HSM encryption; create pending) |
-| Authority bucket | exact name pending resource creation review; never reuse the old `raylo-production` bucket |
+| Authority bucket | proposed `raylo-txncat-authority-prod-europe-west2`; confirm availability before creation; never reuse the old `raylo-production` bucket |
 
 The four requested APIs and two automatically enabled dependencies are already
 recorded in the API-enablement packet. Cloud Run and Artifact Registry remain
@@ -60,10 +67,19 @@ Every Storage condition must include the object resource type and canonical
 must independently enforce claim-kind ↔ worker-prefix invariants; IAM
 conditions are not a substitute for that protocol check.
 
+Before any binding is applied, replace the placeholders in the reviewed diff
+with the exact bucket/database/key/service names, service-account emails and
+immutable unique IDs, complete CEL conditions, custom-role support checks,
+service-account policies, `actAs`/token-creator absence, and the Storage
+service-agent CMEK grant. Record the raw inventory command set, collection
+time, operation identifiers or output hashes, and the effective allow/deny
+matrix.
+
 ## Required apply and proof order
 
 1. Security reviewer signs off the exact role permissions, conditions, service
-   identities, key policy and inherited-access findings.
+   identities, key policy, inherited-access findings and the governed
+   administrative Owner path.
 2. Create the empty bucket, regular Firestore database and HSM keys with
    deletion protection/retention settings; verify the bucket CMEK service-agent
    grant separately.
