@@ -137,12 +137,14 @@ cached fallback.
 The Cloud KMS API, dedicated EU bucket, keyring, HSM keys and bucket default HSM
 CMEK are now verified. The encrypted dedicated Firestore registry create was
 attempted once but was blocked by provider `RESOURCE_EXHAUSTED` CMEK database
-quota/allowlisting, leaving no database. The revised registry design
-conditionally uses a dedicated Google-managed-encryption Firestore database;
-the effective `constraints/gcp.restrictNonCmekServices` policy returned
-`allValues=ALLOW`, but explicit security/data-governance owner approval remains
-required. Service identities, IAM bindings and live permission/cross-process
-probes have not been created or run. The packet does not authorize customer-linked Plaid admission, labels,
+quota/allowlisting, leaving no database. The revised registry design created a
+dedicated Google-managed-encryption Firestore database after the effective
+`constraints/gcp.restrictNonCmekServices` policy returned `allValues=ALLOW` and
+the task owner's explicit approval for Google-managed registry metadata was
+recorded in the packet. The database has pessimistic concurrency, PITR and
+delete protection, but no documents have been written. Service identities, IAM
+bindings and live permission/cross-process probes have not been created or run.
+The packet does not authorize customer-linked Plaid admission, labels,
 benchmark membership, B04 consumers, training or scoring. The remaining
 persistent registry/IAM mutations and live probes require their exact
 side-effect approval and named owners.
