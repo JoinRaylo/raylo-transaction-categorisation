@@ -28,6 +28,8 @@ has a literal `source_kind="synthetic_fixture"`, fixture ID and policy version.
 The literal boundary is intentional: a future production admission adapter must
 introduce a separately reviewed type and cannot pass real candidates through
 this synthetic contract by changing a boolean or adding an environment field.
+The allocator revalidates request and candidate model dumps at its entry point,
+so Pydantic `model_copy(update=...)` cannot bypass that literal boundary.
 
 ## Role and protection semantics
 

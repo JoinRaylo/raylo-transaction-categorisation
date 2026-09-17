@@ -8,13 +8,13 @@
   "base": {
     "app_base_before_milestone": "e0123a929aa6b7d7d2de925239ecb724659ff9cd",
     "app_branch": "codex/txncat-b03a-app",
-    "app_implementation_commit": "bb9d57265e3b4d11781258a5afc7c6b0f81cd0c1",
+    "app_implementation_commit": "45ad84f58c21b27bb714cd8eb745e02187e9c610",
     "research_base_before_milestone": "4f139a973a74b4f26144beee00375a12abdaec52",
     "research_branch": "codex/txncat-b03a-research"
   },
   "changed_source_sha256": {
-    "app/lib/raylo-txncat/src/raylo_txncat/benchmark_allocation.py": "80fc082ab3ef23b4c8169956ad44f6c8664b347df217da5ac1716efc5ccf87a8",
-    "app/lib/raylo-txncat/tests/test_benchmark_allocation.py": "e9a2b4948d2b643936e0b81e8e877e6def6d41d6f9c0d09500111f9d500a3263"
+    "app/lib/raylo-txncat/src/raylo_txncat/benchmark_allocation.py": "9e91ed34e53356a6295606a1c113a03d09bec19ad9862fcd2b7c23f734a5ada5",
+    "app/lib/raylo-txncat/tests/test_benchmark_allocation.py": "61b8b62e4ce8ddbdbcbe1e44c0dddf99dd82133cd4710b8f7fcd16f501a405ab"
   },
   "contract": {
     "canonical_b02_types": [

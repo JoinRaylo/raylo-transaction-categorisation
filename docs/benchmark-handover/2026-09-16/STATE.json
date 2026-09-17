@@ -64,7 +64,7 @@
     "status": "complete_bounded_synthetic_only",
     "app_base_before_milestone": "e0123a929aa6b7d7d2de925239ecb724659ff9cd",
     "app_branch": "codex/txncat-b03a-app",
-    "app_implementation_commit": "bb9d57265e3b4d11781258a5afc7c6b0f81cd0c1",
+    "app_implementation_commit": "45ad84f58c21b27bb714cd8eb745e02187e9c610",
     "research_base_before_milestone": "4f139a973a74b4f26144beee00375a12abdaec52",
     "research_branch": "codex/txncat-b03a-research",
     "evidence_app": "apps/ob-txn-categoriser/research/benchmark-implementation/b03-d-synthetic-allocation-2026-09-17",

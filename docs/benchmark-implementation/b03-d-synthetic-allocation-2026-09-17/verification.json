@@ -5,7 +5,7 @@
   "authorizes_consumption": false,
   "base_and_branch": {
     "app_base_before_milestone": "e0123a929aa6b7d7d2de925239ecb724659ff9cd",
-    "app_implementation_commit": "bb9d57265e3b4d11781258a5afc7c6b0f81cd0c1",
+    "app_implementation_commit": "45ad84f58c21b27bb714cd8eb745e02187e9c610",
     "app_branch": "codex/txncat-b03a-app",
     "research_base_before_milestone": "4f139a973a74b4f26144beee00375a12abdaec52",
     "research_branch": "codex/txncat-b03a-research"
@@ -13,7 +13,7 @@
   "checks": [
     {
       "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/private/tmp/txncat-b03a-app-worktree/lib/raylo-txncat/src /private/tmp/txncat-c2-env/bin/python -m pytest -q lib/raylo-txncat/tests/test_benchmark_allocation.py",
-      "result": "18 passed"
+      "result": "19 passed"
     },
     {
       "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/private/tmp/txncat-b03a-app-worktree/lib/raylo-txncat/src:/private/tmp/txncat-b03a-app-worktree/apps/ob-txn-categoriser/src /private/tmp/txncat-c2-env/bin/python -m pytest -q -m unit lib/raylo-txncat/tests/test_benchmark.py lib/raylo-txncat/tests/test_benchmark_exposure.py apps/ob-txn-categoriser/tests/unit/test_benchmark_preflight.py",
@@ -21,11 +21,11 @@
     },
     {
       "command": "affected B02/B03 authority, annotation, allocation and preflight unit tests",
-      "result": "199 passed"
+      "result": "200 passed"
     },
     {
       "command": "lib/raylo-txncat/tests unit suite",
-      "result": "1125 passed"
+      "result": "1126 passed"
     },
     {
       "command": "apps/ob-txn-categoriser/tests/unit unit suite",
@@ -43,7 +43,7 @@
   "failed_attempts": [
     {
       "check": "focused allocator test run immediately after the hardening patch",
-      "result": "15 passed, 1 failed because the test regex expected 'inside' while the implementation reported 'contains'; assertion corrected and the final run passed 18 tests",
+      "result": "15 passed, 1 failed because the test regex expected 'inside' while the implementation reported 'contains'; assertion corrected, the immediate rerun passed 18 tests, and the final hardened run passed 19",
       "impact": "test expectation only; no implementation defect remained"
     }
   ],
@@ -61,6 +61,7 @@
     "protected-before-training budget order enforced",
     "exact capacity failure and explicit non-exact shortfall",
     "extra/prod-like fields rejected by strict synthetic models",
+    "model-copy tampering cannot bypass strict synthetic revalidation",
     "result remains non-authorizing"
   ],
   "review": {
