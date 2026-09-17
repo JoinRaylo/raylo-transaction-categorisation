@@ -2,7 +2,7 @@
   "schema_version": "benchmark-physical-scope-review-v1",
   "milestone": "B03-B-physical-scope-review",
   "scope": "synthetic_only_partial_cloud_scope",
-  "status": "partial_scope_provisioned_registry_iam_pending",
+  "status": "partial_scope_provisioned_firestore_regular_pending",
   "authorizes_consumption": false,
   "branch": "codex/txncat-b03a-research",
   "parent_commit": "c5a3216",
@@ -12,10 +12,10 @@
     "lib/raylo-txncat/tests/test_benchmark_authority_cloud.py": "ae80c79ac4f3f0dc7f1cea0f17483d8d69826275e6bb9029a8f4cc1afe9ad872"
   },
   "mirror_sha256": {
-    "CLAUDE.md": "18c002ba4b2b6518cfb2de9b3055d9456169d4f956ee03db5b2fe2a57479c81f",
-    "README.md": "dd33710d850d94190dd2e83502ad754b590917c13b629ef6ec5fddbbf23ec793",
-    "docs/project-summary.md": "7f10d5be16839c3fe07706a98a63dd53c7eb6dc7c67e76c96428837d00d4fe79",
-    "docs/benchmark-implementation/b03-b-physical-scope-review-2026-09-17/README.md": "9e9458d2a59451af7f7ecdd3e866219a1e705fcb04d0b104556f59e7b46248c5"
+    "CLAUDE.md": "b45fe600700f6c55e5f5208e19473dd52be44b1d95debaf5f6ceac62701a902f",
+    "README.md": "ed5b8d7343bfba4f3dae8fd47c28802f5ca2ac11bfa0b33de10008048c3e5789",
+    "docs/project-summary.md": "3926eda837124368917fddfdcca49d832b785f1f7dd26d96bd8276b2972d2c0f",
+    "docs/benchmark-implementation/b03-b-physical-scope-review-2026-09-17/README.md": "0bd93fb5a2c56ba49dfd8b2aad1c5d9acc3439f55aacd2d11e35331636106384"
   },
   "cloud_scope": {
     "project": "raylo-production",
@@ -38,12 +38,15 @@
     "full_app_library_and_unit": "1385 passed, 1 warning",
     "relevant_research_tests": "40 passed",
     "research_full_suite": "85 passed, 1 environment-blocked (missing pandas in existing taxonomy-integrity import)",
-    "physical_scope_provisioning": "bucket, keyring, two HSM keys and bucket default HSM CMEK verified; encrypted registry creation blocked by provider CMEK quota/allowlisting",
+    "physical_scope_provisioning": "bucket, keyring, two HSM keys and bucket default HSM CMEK verified; dedicated registry remains uncreated",
     "bucket_cmek_attachment": "verified; future bucket objects use the dedicated HSM storage key",
-    "firestore_cmek_database": "blocked by RESOURCE_EXHAUSTED CMEK database quota/allowlist; no database created",
+    "firestore_policy_check": "effective constraints/gcp.restrictNonCmekServices returned listPolicy.allValues=ALLOW",
+    "firestore_registry_design": "conditionally dedicated Firestore Native named database using Google's default encryption; pending explicit security/data-governance owner approval",
+    "security_data_owner_approval": "pending explicit approval that Google-managed encryption is acceptable for registry metadata",
+    "firestore_cmek_database": "prior encrypted create attempted once and blocked by RESOURCE_EXHAUSTED CMEK database quota/allowlist; no database created",
     "physical_permission_probe": "not run; registry/IAM pending",
     "cross_process_live_probe": "not run; pending approval",
-    "cloud_calls": "Cloud KMS API enabled; bucket, keyring and two HSM keys created; bucket default CMEK attached; encrypted Firestore create attempted once and blocked by RESOURCE_EXHAUSTED; no customer data or objects uploaded"
+    "cloud_calls": "Cloud KMS API enabled; bucket, keyring and two HSM keys created; bucket default CMEK attached; effective project policy checked read-only and returned allValues=ALLOW; encrypted Firestore create attempted once and blocked by RESOURCE_EXHAUSTED; no customer data or objects uploaded"
   },
   "prior_proposal_review": {
     "model": "gpt-6-astra",
@@ -53,7 +56,7 @@
   "review": {
     "model": "gpt-5.6-sol",
     "status": "APPROVE",
-    "scope": "read-only evidence review of the verified partial cloud state, bucket CMEK attachment and Firestore CMEK provider gate"
+    "scope": "read-only evidence review of the revised conditional Google-managed Firestore registry design and effective project policy check; database creation remains gated on named owner approval"
   },
   "effects": {
     "cloud": true,
@@ -65,8 +68,8 @@
     "b04_consumer_integration": false
   },
   "remaining_gates": [
-    "resolve Firestore CMEK database quota/allowlisting without substituting an unencrypted registry",
-    "create the encrypted Firestore registry after provider eligibility is confirmed",
+    "record explicit security/data-governance owner approval that Google-managed encryption is acceptable for registry metadata",
+    "create the dedicated named Firestore registry using Google's default encryption",
     "create distinct service identities and apply the approved least-privilege IAM matrix",
     "resolve the worker public-key verification deployment design",
     "run separately approved Stage 0 synthetic fixture/bootstrap",

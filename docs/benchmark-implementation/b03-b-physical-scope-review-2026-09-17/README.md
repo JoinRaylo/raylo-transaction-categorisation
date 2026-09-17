@@ -7,7 +7,10 @@ boundary. It turns the existing [IAM plan](../b03-b-production-boundary-2026-09-
 into an explicit approval and proof checklist. The approved partial setup below
 creates no customer-data path and does not authorize benchmark consumption. The
 Firestore registry, service identities, IAM bindings and all live proofs remain
-unapplied. The dedicated bucket's reviewed HSM CMEK is attached.
+unapplied. The dedicated bucket's reviewed HSM CMEK is attached. The registry
+design is conditionally Google-managed encryption because the protocol does not
+require Firestore CMEK; the effective project policy allows non-CMEK services,
+but explicit security/data-governance owner approval is still required.
 
 ## Verified partial physical scope (2026-09-17)
 
@@ -37,7 +40,7 @@ occurred.
 | --- | --- | --- |
 | Project and location | Retain the recorded isolated `raylo-production` / `europe-west2` scope and confirm it is separate from serving/training paths | Approved resource record; serving and training stores shown separate |
 | Object store | Use the created dedicated immutable bucket/prefix for authority objects, claim data, manifests and indexes; its reviewed HSM CMEK is now attached | Versioning/retention, generation-zero create-only behavior and no broad worker listing |
-| Registry | Create the dedicated `txncat-benchmark-authority` Firestore database for pointers, proposals, operations and holds; CMEK creation is currently blocked by the project/organization allowlist or quota | Transaction limits, CAS semantics, backup/recovery and no row payloads in documents |
+| Registry | Subject to owner approval, create the dedicated `txncat-benchmark-authority` Firestore Native database for pointers, proposals, operations and holds using Google's default encryption; the prior CMEK attempt was blocked by the provider allowlist/quota | Transaction limits, CAS semantics, backup/recovery and no row payloads in documents |
 | Worker identities | Create distinct `learning-worker`, `selection-worker` and `sealed-evaluator` principals | IAM binding export plus explicit deny/absence results for every cross-plane read |
 | Authority identity | Create an `authority-writer` identity separate from serving and workers | Object create/readback, registry transaction, KMS signing and public-key self-verification |
 | KMS custody | Retain the created authority-owned HSM keys; document manual receipt-key version rotation, storage-key schedule and audit ownership | Key policy, rotation/retirement procedure, audit-log access and recovery decision |
@@ -175,13 +178,19 @@ customer-linked Plaid pool or to connect B04 consumers.
   attached HSM storage CMEK, keyring and HSM receipt/storage keys exist.
 - No Firestore registry, service identity, IAM binding or live identity proof
   exists yet. The staged packet has not written any object or registry fixture.
+- The effective `constraints/gcp.restrictNonCmekServices` check returned
+  `listPolicy.allValues=ALLOW`; this removes the inherited-policy concern but
+  does not replace explicit security/data-governance owner approval.
 - No real rows, labels, benchmark membership, model fitting, retraining,
   locked-set access or scoring occurred.
 
-The remaining approval record must name owners for resolving Firestore CMEK
-allowlisting/quota, the Firestore database mutation, service identities/IAM
-bindings and receipt-verification design. Until those exact issues and
-mutations are approved, do not provision further, run live permission probes,
+The remaining approval record must name the security/data-governance owner who
+accepts Google-managed encryption for registry metadata, plus owners for the
+Firestore database mutation, service identities/IAM bindings and
+receipt-verification design. The effective project policy check returned
+`listPolicy.allValues=ALLOW`, but that is not a substitute for the owner's
+approval or a separate Raylo policy decision. Until those exact approvals and
+mutations are recorded, do not provision further, run live permission probes,
 connect B04, reserve candidates or label any transaction.
 
 The packet evidence is pinned in `verification.json` in this directory.
