@@ -48,6 +48,29 @@
     "iamcredentials.googleapis.com",
     "storage.googleapis.com"
   ],
+  "managed_service_agents": {
+    "firebase_rules": {
+      "email": "service-357892832103@firebase-rules.iam.gserviceaccount.com",
+      "unique_id": "100128929917910681692",
+      "project_role": "roles/firebaserules.system",
+      "metadata_read": "PERMISSION_DENIED iam.serviceAccounts.get",
+      "iam_policy_read": "PERMISSION_DENIED iam.serviceAccounts.getIamPolicy"
+    },
+    "firestore": {
+      "email": "service-357892832103@gcp-sa-firestore.iam.gserviceaccount.com",
+      "unique_id": "104300972847046110584",
+      "project_role": "roles/firestore.serviceAgent",
+      "metadata_read": "PERMISSION_DENIED iam.serviceAccounts.get",
+      "iam_policy_read": "PERMISSION_DENIED iam.serviceAccounts.getIamPolicy"
+    },
+    "cloud_storage": {
+      "email": "service-357892832103@gs-project-accounts.iam.gserviceaccount.com",
+      "unique_id": "103363169959241854915",
+      "key_role": "roles/cloudkms.cryptoKeyEncrypterDecrypter on txncat-benchmark-storage",
+      "metadata_read": "PERMISSION_DENIED iam.serviceAccounts.get",
+      "iam_policy_read": "PERMISSION_DENIED iam.serviceAccounts.getIamPolicy"
+    }
+  },
   "mutation_inventory": {
     "authority_project_created_in_prior_packet": true,
     "billing_linked": true,
@@ -100,6 +123,30 @@
       "result": "[]; no user-managed worker or authority accounts"
     },
     {
+      "command": "gcloud iam service-accounts describe service-357892832103@firebase-rules.iam.gserviceaccount.com --project=raylo-txncat-authority-prod --format=json --quiet",
+      "result": "PERMISSION_DENIED iam.serviceAccounts.get; unique ID 100128929917910681692 captured from the provider error"
+    },
+    {
+      "command": "gcloud iam service-accounts describe service-357892832103@gcp-sa-firestore.iam.gserviceaccount.com --project=raylo-txncat-authority-prod --format=json --quiet",
+      "result": "PERMISSION_DENIED iam.serviceAccounts.get; unique ID 104300972847046110584 captured from the provider error"
+    },
+    {
+      "command": "gcloud iam service-accounts describe service-357892832103@gs-project-accounts.iam.gserviceaccount.com --project=raylo-txncat-authority-prod --format=json --quiet",
+      "result": "PERMISSION_DENIED iam.serviceAccounts.get; unique ID 103363169959241854915 captured from the provider error"
+    },
+    {
+      "command": "gcloud iam service-accounts get-iam-policy service-357892832103@firebase-rules.iam.gserviceaccount.com --project=raylo-txncat-authority-prod --format=json --quiet",
+      "result": "PERMISSION_DENIED iam.serviceAccounts.getIamPolicy; impersonation path remains uncertified"
+    },
+    {
+      "command": "gcloud iam service-accounts get-iam-policy service-357892832103@gcp-sa-firestore.iam.gserviceaccount.com --project=raylo-txncat-authority-prod --format=json --quiet",
+      "result": "PERMISSION_DENIED iam.serviceAccounts.getIamPolicy; impersonation path remains uncertified"
+    },
+    {
+      "command": "gcloud iam service-accounts get-iam-policy service-357892832103@gs-project-accounts.iam.gserviceaccount.com --project=raylo-txncat-authority-prod --format=json --quiet",
+      "result": "PERMISSION_DENIED iam.serviceAccounts.getIamPolicy; impersonation path remains uncertified"
+    },
+    {
       "command": "gcloud resource-manager folders get-iam-policy 45426850789 --format=json --quiet",
       "result": "team-infra-eng roles/owner; folder administration/viewing/project-creation grants also present"
     },
@@ -133,6 +180,13 @@
       "the prior raylo-production bucket, registry and keys must be formally superseded as synthetic-only/non-authoritative and excluded from the new verifier key set"
     ],
     "owner_approval": "Carlos approved the new authority project and same-billing-account linkage; this packet records no approval to consume data"
+  },
+  "historical_scope_supersession": {
+    "record": "SUPERSESSION.md",
+    "old_project": "raylo-production",
+    "status": "documented_non_authoritative_synthetic_only",
+    "cloud_cleanup": "not performed; any deletion or retention change requires separate approval",
+    "new_verifier_must_reject_old_scope": true
   },
   "hard_stop": [
     "parent folder team-infra-eng Owner inheritance prevents a claim of effective isolation",

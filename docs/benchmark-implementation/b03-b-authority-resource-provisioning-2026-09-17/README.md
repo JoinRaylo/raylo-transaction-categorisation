@@ -68,7 +68,10 @@ legacy project-owner/editor/viewer bindings. The parent folder policy grants
 `group:team-infra-eng` `roles/owner`, and also grants folder administration and
 project-creation/viewing roles to the listed engineering groups/users. The
 organisation IAM policy could not be read by the active account, so the
-organisation-to-project effective policy is not certified.
+organisation-to-project effective policy is not certified. The three managed
+service-agent numeric IDs were exposed by failed metadata/policy reads, but
+their service-account IAM policies were not readable by the active account;
+impersonation paths are therefore not certified either.
 
 Consequently the project is not yet proven to be an isolated authority boundary.
 Do not create worker/writer identities, apply custom roles, write synthetic
@@ -122,4 +125,5 @@ state remains unchanged:
 - no deletion or retention lock performed.
 
 The exact commands, collection time, resource identifiers, IAM findings and
-mutation inventory are pinned in `verification.json`.
+mutation inventory are pinned in `verification.json`. The explicit historical
+fixture decision is in [SUPERSESSION.md](SUPERSESSION.md).
