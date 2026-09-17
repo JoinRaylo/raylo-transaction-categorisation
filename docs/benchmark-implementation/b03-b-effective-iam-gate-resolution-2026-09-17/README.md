@@ -1,10 +1,12 @@
 # B03-B effective IAM gate resolution
 
-Status: **gate characterized; external control-plane action still required**.
+Status: **strict effective-isolation gate waived for the internal benchmark; minimum integrity controls retained**.
 
-This packet records the final read-only diagnosis of the authority boundary. It
-does not apply IAM, enable APIs, create identities, write fixtures, read
-BigQuery, or authorize benchmark consumption.
+This packet records the final read-only diagnosis and Carlos's internal-
+benchmark risk acceptance. The project does not have certified organization-
+level effective isolation, but that is no longer a blocker for this benchmark.
+This packet does not apply IAM, enable APIs, create identities, write fixtures,
+read BigQuery, or authorize benchmark consumption.
 
 ## What the live checks show
 
@@ -29,58 +31,65 @@ The folder also grants Joaquim folder administration/editor and the
 contributor group folder viewer/project creator access. No dedicated
 user-managed authority or worker service accounts exist yet.
 
-This means Carlos's direct project Owner binding is not the missing permission.
-It proves Carlos can operate the project, but it does not prove that the
-authority project is isolated from the inherited control-plane group or from
-organization-level IAM Deny, principal-access-boundary, nested-group or
-service-account impersonation paths.
+Carlos's direct project Owner binding is therefore not a missing-permission
+issue. The read-only checks do show a broad inherited control-plane path, but
+Carlos accepts that risk for this internal, versioned benchmark. This is a
+scope decision, not evidence that the project is isolated from the inherited
+group or from organization-level IAM Deny, principal-access-boundary,
+nested-group or service-account impersonation paths.
 
-## Recommended resolution
+## Accepted internal-benchmark disposition
 
-The preferred fix is a security/infra-admin change that places the authority
-project under a dedicated clean folder with no broad human/runtime inheritance.
-Retain Carlos through a governed direct or JIT administrative path and keep
-managed service agents limited to their exact service roles. The shared
-`internal-services-monorepo` folder must not be changed just to fix this one
-project.
+The strict clean-folder move and organization-level effective-IAM attestation
+are not required to start this internal benchmark. The existing dedicated
+authority project, bucket and registry remain the benchmark scope, and trusted
+infrastructure administrators may retain inherited control-plane access. The
+shared `internal-services-monorepo` folder still must not be changed just to
+fix this project.
 
-The alternative is a separately reviewed project-level IAM Deny design for the
-inherited group and every other effective principal. It must enumerate service
-agent dependencies and cannot be applied safely from this packet. Adding more
-Owner/Storage Admin bindings, relying on the empty bucket policy, or treating a
-local preflight result as authority does not resolve the gate.
+This waiver does not permit broad runtime access, local authority, or a bypass
+of dataset separation. The authority writer, verifier, learning worker and
+selection worker still use named identities, least-privilege resource paths,
+exact receipts, immutable/versioned artifacts and the canonical CAS protocol.
+The three evaluation views remain permanently separated from training and
+selection, with the existing event/account/customer, effective-input,
+unfamiliar-family and alias protections. Only the customer-linked Plaid pool
+is eligible, and anonymous-ID recovery remains closed.
 
-## Minimum control-plane attestation
+## Minimum retained controls and future review
 
-Before any worker/authority identity or fixture is created, security/infra
-should provide an export or signed attestation covering:
+The next implementation steps may proceed after the no-data synthetic checks:
 
-1. organization and folder allow/deny policies plus principal access
-   boundaries;
-2. direct and nested membership of `team-infra-eng@raylo.com` and all other
-   principals inherited by the project;
-3. service-agent identity, unique-ID and impersonation/token-creator paths;
-4. the governed Carlos administrative path and break-glass process; and
-5. the exact custom roles/CEL conditions for the authority writer, verifier,
-   learning worker and selection worker from the reviewed IAM matrix.
+1. create the named authority/verifier/learning/selection identities and apply
+   the reviewed least-privilege bindings;
+2. run synthetic Stage 0 allow/deny, receipt and cross-process probes;
+3. run a fresh bounded customer-linked Plaid admission profile and reserve the
+   500-row pilot;
+4. obtain three independent annotations using the approved Gemini 3.8 Flash,
+   Gemini 3.7 Flash and Sonnet 5 routes, escalating disagreements to Carlos;
+5. freeze the representative, unseen-input and unfamiliar-merchant views,
+   augment hinge and transformer training, and record the supervised retrain.
 
-The live proof then needs to show, without data writes, that the authority
-writer can use only its authority paths, the verifier can read only committed
-learning/selection objects and registry lookups, learning/selection workers
-can invoke only the exact verifier, and all roles are denied sealed/private,
-cross-kind, list, mutation and receipt-signing paths as applicable.
+The following remain required evidence, but are no longer organization-level
+blockers: direct and nested membership of inherited admin groups, service-agent
+unique IDs and impersonation paths, the exact custom roles/CEL conditions, and
+the governed Carlos administrative path. Any benchmark schema, sampling policy,
+authority project or intended use change creates a new benchmark version and
+requires this risk acceptance to be revisited. Production promotion requires a
+separate effective-isolation review.
 
-Only after those proofs pass can the next sequence begin: synthetic Stage 0
-authority probes, then a fresh bounded customer-linked Plaid admission profile,
-the managed 500-row pilot reservation, and three independent annotation batches.
-No real candidate, label, locked set or training consumer is admitted by this
-diagnosis.
+The live permission proof must still show, without customer writes, that the
+authority writer can use only its authority paths, the verifier can read only
+committed learning/selection objects and registry lookups, learning/selection
+workers can invoke only the exact verifier, and the runtime roles are denied
+sealed/private, cross-kind, list, mutation and receipt-signing paths as
+applicable.
 
-## Read-only limitations observed
+## Previously identified control-plane limitations
 
 The current account cannot read organization IAM. Cloud Identity group-membership
 inspection and Policy Troubleshooter checks also could not run because their
 APIs are disabled in the authority project. They were not enabled: enabling
-new APIs would change project state and would not itself establish the required
-attestation. These limitations are evidence that the gate remains open, not
-evidence that the inherited access is absent.
+new APIs would change project state and are not needed for the internal-
+benchmark waiver. These limitations remain recorded for future security review;
+they are not evidence that inherited access is absent.

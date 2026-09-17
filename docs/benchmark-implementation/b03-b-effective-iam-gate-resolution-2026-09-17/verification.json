@@ -1,10 +1,27 @@
 {
   "schema_version": "benchmark-effective-iam-gate-verification-v1",
   "milestone": "B03-B-effective-iam-gate-resolution",
-  "status": "external_control_plane_attestation_required",
+  "status": "internal_benchmark_risk_accepted",
   "scope": "read_only_authority_boundary_diagnosis",
   "authorizes_consumption": false,
   "captured_at": "2026-09-17T19:28:31Z",
+  "risk_acceptance": {
+    "decision": "strict_effective_isolation_non_blocking",
+    "accepted_by": "Carlos",
+    "scope": "internal_versioned_benchmark_only",
+    "retained_controls": [
+      "permanent train/selection/evaluation separation",
+      "event/account/customer, effective-input, unfamiliar-family and alias protections",
+      "named least-privilege runtime paths and exact authority receipts",
+      "customer-linked Plaid-only scope",
+      "anonymous-ID recovery remains closed"
+    ],
+    "revisit_on": [
+      "benchmark schema or sampling-policy change",
+      "authority-project change",
+      "intended-use or production-promotion change"
+    ]
+  },
   "project": {
     "id": "raylo-txncat-authority-prod",
     "number": "357892832103",
@@ -62,8 +79,8 @@
     }
   ],
   "resolution_options": {
-    "recommended": "move the authority project beneath a dedicated clean folder with controlled/JIT administration and no broad human/runtime inheritance",
-    "alternative": "security-reviewed project-level IAM Deny covering inherited principals and service-agent exceptions",
+    "accepted": "retain the dedicated authority project and explicitly accept inherited control-plane administration for this internal benchmark",
+    "optional_hardening": "move the authority project beneath a dedicated clean folder with controlled/JIT administration or apply a security-reviewed IAM Deny covering inherited principals and service-agent exceptions",
     "rejected": [
       "adding Carlos as Owner again",
       "adding project-wide Storage/Firestore administration",
@@ -83,5 +100,5 @@
     "customer_rows_exported": false,
     "labels_or_training_state": false
   },
-  "next_gate": "security/infra effective-access attestation and approved clean-folder or equivalent deny-boundary change, followed by no-data live allow/deny probes"
+  "next_gate": "retained runtime permission proof, followed by a fresh bounded linked-only admission profile and managed authority commit"
 }

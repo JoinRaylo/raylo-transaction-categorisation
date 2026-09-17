@@ -144,21 +144,28 @@ ineligible candidates and ID reuse fail closed. Sol and Astra conditionally
 approved the local direction after these hardening checks. The bounded
 backtracking helper is synthetic-only; no real rows, cloud calls, labels,
 authority reservations, locked-set access, model fit, scoring or retraining
-occurred. The next real gate is effective IAM/security attestation followed by
-a fresh bounded linked-only admission profile and managed reservation.
+occurred. The next real gates are the retained runtime permission proof,
+followed by a fresh bounded linked-only admission profile and managed
+reservation. Strict organization-level effective isolation was waived for the
+internal benchmark by the recorded risk acceptance; permanent separation and
+novelty/group protections were not waived.
 
-## B03-B effective IAM gate diagnosis (2026-09-17)
+## B03-B effective IAM gate disposition (2026-09-17)
 
 The [read-only gate-resolution packet](docs/benchmark-implementation/b03-b-effective-iam-gate-resolution-2026-09-17/README.md)
 confirms Carlos's direct Owner grant on `raylo-txncat-authority-prod`, while the
 project inherits `team-infra-eng` as Owner from the shared
-`internal-services-monorepo` folder. Organization IAM, nested group membership,
-deny/PAB and impersonation paths are not certified. The recommended resolution
-is a dedicated clean folder with governed/JIT administration; the shared folder
-must not be changed casually. Cloud Identity and Policy Troubleshooter checks
-were unavailable because their APIs were disabled and were not enabled. No IAM
-mutation, API enablement, identity, fixture, BigQuery read, customer data,
-locked-set or B04 state changed.
+`internal-services-monorepo` folder. Carlos has accepted that inherited
+control-plane risk for this internal, versioned benchmark, so strict clean-
+folder/effective-IAM attestation is non-blocking. This does not certify
+isolation: organization IAM, nested group membership, deny/PAB and
+impersonation paths remain unobserved. The dedicated authority resources and
+named least-privilege runtime paths remain in scope; permanent
+train/selection/evaluation separation, novelty/group protections,
+customer-linked Plaid-only scope and closed anonymous-ID recovery are not
+waived. Cloud Identity and Policy Troubleshooter checks were unavailable
+because their APIs were disabled and were not enabled. Any benchmark expansion
+or production promotion must revisit the decision.
 
 ## B03-B physical scope review (2026-09-17)
 
