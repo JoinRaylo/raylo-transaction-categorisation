@@ -40,7 +40,7 @@ monorepo; importing these results is not a fresh research execution.
 | PROCESS-2026-09-15 | Documentation only; no candidate scored | [Policy](POLICY.md) |
 | BASELINE-2026-09-15 | Fresh complete inventory; current policy retained, no candidate change | [Record](baseline-2026-09-15/RECORD.md), [scores](baseline-2026-09-15/summary.json), [validation](baseline-2026-09-15/validation.json), [research replay](baseline-2026-09-15/replay.json) |
 | CREDIT-PAYROLL-001 | Evaluated; offline criteria pass, promotion deferred; zero real-data changes | [Record](credit-payroll-001/RECORD.md), [scores](credit-payroll-001/summary.json), [validation](credit-payroll-001/validation.json), [paired review and research replay](credit-payroll-001/review.json) |
-| TIER-NAMING-001 | Evaluated; behaviour-neutral contract migration, staging pending | [Record](tier-naming-001/RECORD.md), [scores](tier-naming-001/summary.json), [validation](tier-naming-001/validation.json), [paired tier comparison](tier-naming-001/tier_comparison.json) |
+| TIER-NAMING-001 | Evaluated and staging-verified; behaviour-neutral contract migration | [Record](tier-naming-001/RECORD.md), [scores](tier-naming-001/summary.json), [validation](tier-naming-001/validation.json), [paired tier comparison](tier-naming-001/tier_comparison.json), [staging receipt](tier-naming-001/staging_verification.json) |
 
 Append a new row for each candidate revision, including rejected changes. Do not
 overwrite earlier scores or describe a proposed change as implemented.

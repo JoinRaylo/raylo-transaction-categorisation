@@ -1,5 +1,13 @@
 # CLAUDE.md — context for continuing this work
 
+## Canonical names (2026-09-17)
+
+Call the complete T1–T7 pipeline the **Raylo Transaction Categorisation Engine**
+or **Raylo TxCat Engine**. Call the transformer used at T6 **TxCat-1**. TxCat-1
+does not name the hinge rollback or the full engine. Use these names in new
+service documentation, reports and external communication; preserve historical
+artefact wording. See [`docs/NAMING.md`](docs/NAMING.md).
+
 ## Final serving tier names (2026-09-17)
 
 The pre-launch service contract now names accepted classifier output `T6` and

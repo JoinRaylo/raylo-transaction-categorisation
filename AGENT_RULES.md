@@ -1,5 +1,11 @@
 # AGENT_RULES.md — labelling conventions
 
+**Canonical names (Carlos, 17 Sep 2026):** the complete T1–T7 pipeline is the
+**Raylo Transaction Categorisation Engine** or **Raylo TxCat Engine**. The T6
+transformer is **TxCat-1**; this name does not include the hinge rollback or the
+full engine. Follow [`docs/NAMING.md`](docs/NAMING.md) in new documentation and
+communication while preserving historical artefacts.
+
 **Waterfall change process (Carlos, 15 Sep 2026):** follow
 [POLICY.md](docs/waterfall-changes/POLICY.md) for every behavioural change. Document
 the hypothesis, rerun the complete permitted evaluation suite, mirror the app and

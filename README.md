@@ -1,5 +1,9 @@
 # raylo-transaction-categorisation
 
+> **Canonical names (17 September 2026):** the complete T1–T7 pipeline is the
+> **Raylo Transaction Categorisation Engine**, or **Raylo TxCat Engine**. The T6
+> transformer is **TxCat-1**. See [`docs/NAMING.md`](docs/NAMING.md).
+
 > **Pre-launch serving terminology (17 September 2026):** accepted classifier
 > output is final tier `T6`; provider-native fallback is diagnostic only; `T7`
 > remains unclassified. Historical documents that say `T5b` mean the final
