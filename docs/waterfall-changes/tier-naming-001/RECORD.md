@@ -1,6 +1,6 @@
 # TIER-NAMING-001 — final served tier names
 
-Status: evaluated; staging promotion pending.
+Status: evaluated and verified in staging.
 Created / evaluated: 2026-09-17. Owner: Carlos.
 
 ## Change and predeclared acceptance
@@ -63,4 +63,16 @@ canonical config/harness source hashes changed; the explicit paired comparison
 therefore allowed only the declared tier mappings and compared every other row
 field byte-for-value.
 
-Staging deployment and signed Taktile verification remain the promotion step.
+## Staging verification
+
+CI run [35237110119](https://github.com/JoinRaylo/internal-services-monorepo/actions/runs/35237110119)
+deployed commit `111f114be5796a983413abfd46e15fd2cb660fcf` as image digest
+`sha256:830c1ee245f7774dc182b8d66a7d586211406fb44adecb13c019b100eb684146`.
+The reviewed apply changed one Cloud Run resource and added or destroyed none;
+the serving bundle remained pinned to `a2553f3462205963254b0fb1ad9dff6d64e1399abdecaab93977265908c7f23d`.
+
+The signed 84-row staging verification passed, including signature rejection,
+durable evidence readback and exact pinned/gzip replay. Served tier counts were
+T1=2, T2=11, T4=5, T5=9, T6=51 and T7=6, with no `T5b` response. The receipt is
+stored as `staging_verification.json`. Real Taktile invocation is tracked
+separately because this verifier calls the service's signed public endpoint.
