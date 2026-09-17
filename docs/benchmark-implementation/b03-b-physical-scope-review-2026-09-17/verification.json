@@ -12,10 +12,10 @@
     "lib/raylo-txncat/tests/test_benchmark_authority_cloud.py": "ae80c79ac4f3f0dc7f1cea0f17483d8d69826275e6bb9029a8f4cc1afe9ad872"
   },
   "mirror_sha256": {
-    "CLAUDE.md": "c8c03929a4a03b1e433d0180015d874a3f6d73462a03294bf5cc052f6fa4cb13",
-    "README.md": "c8618a5ad4b2e9e9187e9c4566c3a317613708bfa6f5610a071c2e082f3720e4",
-    "docs/project-summary.md": "d7a7d4ca2fb0de036294e41adbe0977cb33b2d6f67c0e59f130389ed781ef3d0",
-    "docs/benchmark-implementation/b03-b-physical-scope-review-2026-09-17/README.md": "25ea827e9f4ba9df794ebaa8e0e48237df9683883e6ac9a4fbd8c12b7b2917c7"
+    "CLAUDE.md": "18c002ba4b2b6518cfb2de9b3055d9456169d4f956ee03db5b2fe2a57479c81f",
+    "README.md": "dd33710d850d94190dd2e83502ad754b590917c13b629ef6ec5fddbbf23ec793",
+    "docs/project-summary.md": "7f10d5be16839c3fe07706a98a63dd53c7eb6dc7c67e76c96428837d00d4fe79",
+    "docs/benchmark-implementation/b03-b-physical-scope-review-2026-09-17/README.md": "9e9458d2a59451af7f7ecdd3e866219a1e705fcb04d0b104556f59e7b46248c5"
   },
   "cloud_scope": {
     "project": "raylo-production",
@@ -26,6 +26,7 @@
     "authority_keyring": "projects/raylo-production/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2",
     "receipt_key_version": "projects/raylo-production/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-receipts/cryptoKeyVersions/1",
     "storage_key_version": "projects/raylo-production/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-storage/cryptoKeyVersions/1",
+    "bucket_default_cmek": "projects/raylo-production/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-storage",
     "firestore_database": "not_created",
     "service_accounts": "none_created",
     "iam_bindings": "none_changed"
@@ -37,10 +38,12 @@
     "full_app_library_and_unit": "1385 passed, 1 warning",
     "relevant_research_tests": "40 passed",
     "research_full_suite": "85 passed, 1 environment-blocked (missing pandas in existing taxonomy-integrity import)",
-    "physical_scope_provisioning": "bucket, keyring and two HSM keys verified; registry/IAM pending exact persistent-mutation confirmation",
+    "physical_scope_provisioning": "bucket, keyring, two HSM keys and bucket default HSM CMEK verified; encrypted registry creation blocked by provider CMEK quota/allowlisting",
+    "bucket_cmek_attachment": "verified; future bucket objects use the dedicated HSM storage key",
+    "firestore_cmek_database": "blocked by RESOURCE_EXHAUSTED CMEK database quota/allowlist; no database created",
     "physical_permission_probe": "not run; registry/IAM pending",
     "cross_process_live_probe": "not run; pending approval",
-    "cloud_calls": "Cloud KMS API enabled; bucket, keyring and two HSM keys created; no customer data or objects uploaded"
+    "cloud_calls": "Cloud KMS API enabled; bucket, keyring and two HSM keys created; bucket default CMEK attached; encrypted Firestore create attempted once and blocked by RESOURCE_EXHAUSTED; no customer data or objects uploaded"
   },
   "prior_proposal_review": {
     "model": "gpt-6-astra",
@@ -50,7 +53,7 @@
   "review": {
     "model": "gpt-5.6-sol",
     "status": "APPROVE",
-    "scope": "read-only evidence review of the verified partial cloud state and remaining mutation gate"
+    "scope": "read-only evidence review of the verified partial cloud state, bucket CMEK attachment and Firestore CMEK provider gate"
   },
   "effects": {
     "cloud": true,
@@ -62,8 +65,8 @@
     "b04_consumer_integration": false
   },
   "remaining_gates": [
-    "confirm the exact persistent Firestore registry and IAM mutations before proceeding",
-    "attach the reviewed storage CMEK to the authority bucket and create the encrypted Firestore registry",
+    "resolve Firestore CMEK database quota/allowlisting without substituting an unencrypted registry",
+    "create the encrypted Firestore registry after provider eligibility is confirmed",
     "create distinct service identities and apply the approved least-privilege IAM matrix",
     "resolve the worker public-key verification deployment design",
     "run separately approved Stage 0 synthetic fixture/bootstrap",

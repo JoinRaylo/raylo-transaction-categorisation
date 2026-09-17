@@ -134,10 +134,12 @@ workers verify authority receipts; object-read permission must not be treated as
 KMS public-key permission, and verification must fail closed without a local or
 cached fallback.
 
-The Cloud KMS API, dedicated EU bucket, keyring and HSM keys are now verified;
-the dedicated Firestore registry, service identities, IAM bindings, bucket CMEK
-attachment and live permission/cross-process probes have not been created or
-run. The packet does not authorize customer-linked Plaid admission, labels,
+The Cloud KMS API, dedicated EU bucket, keyring, HSM keys and bucket default HSM
+CMEK are now verified. The encrypted dedicated Firestore registry create was
+attempted once but was blocked by provider `RESOURCE_EXHAUSTED` CMEK database
+quota/allowlisting, leaving no database. Service identities, IAM bindings and
+live permission/cross-process probes have not been created or run. The packet
+does not authorize customer-linked Plaid admission, labels,
 benchmark membership, B04 consumers, training or scoring. The remaining
 persistent registry/IAM mutations and live probes require their exact
 side-effect approval and named owners.
