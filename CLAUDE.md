@@ -167,6 +167,19 @@ waived. Cloud Identity and Policy Troubleshooter checks were unavailable
 because their APIs were disabled and were not enabled. Any benchmark expansion
 or production promotion must revisit the decision.
 
+## B03-B fresh linked-only admission profile (2026-09-17)
+
+The [fresh aggregate profile](docs/benchmark-implementation/b03-b-linked-admission-profile-2026-09-17/README.md)
+reran the pinned EU `SELECT` against `raylo-production` under the 20 GB cap:
+36,706,094 materialized Plaid rows, 20,653,747 existing customer-linked
+observations and 46,273 linked customers, with 16,052,347 rows excluded by the
+existing link rule. The result is aggregate-only and does not establish
+candidate-level aliases/history, exposure against training or selection,
+view-specific novelty, merchant families, block sizes or pilot eligibility.
+Astra independently reviewed it as sufficient to plan but not admit the pilot.
+No identifiers, payloads, labels, reservation or authority object were
+exported or written. The next gate is an admission-specific lineage extract.
+
 ## B03-B physical scope review (2026-09-17)
 
 The [physical scope review packet](docs/benchmark-implementation/b03-b-physical-scope-review-2026-09-17/README.md)
