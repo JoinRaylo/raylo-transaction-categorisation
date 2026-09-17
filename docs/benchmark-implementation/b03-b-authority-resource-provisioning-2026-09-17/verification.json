@@ -3,6 +3,7 @@
   "milestone": "B03-B-authority-resource-provisioning",
   "scope": "empty_synthetic_infrastructure_only",
   "status": "resources_verified_effective_iam_gate_open",
+  "superseded_bucket_policy_packet": "../b03-b-authority-bucket-iam-cleanup-2026-09-17/verification.json",
   "authorizes_consumption": false,
   "branch": "codex/txncat-b03a-app",
   "base_commit": "49b9f0932cd05b1f665fc67babf3cc2b4ba437c5",
@@ -108,7 +109,7 @@
     },
     {
       "command": "gcloud storage buckets get-iam-policy gs://raylo-txncat-authority-prod-europe-west2 --project=raylo-txncat-authority-prod --format=json --quiet",
-      "result": "default legacy projectOwner/projectEditor/projectViewer bucket bindings"
+      "result": "historical provisioning-time snapshot: default legacy projectOwner/projectEditor/projectViewer bucket bindings; current empty policy is recorded in the superseding cleanup packet"
     },
     {
       "command": "gcloud kms keys get-iam-policy txncat-benchmark-storage --location=europe-west2 --keyring=txncat-benchmark-authority-europe-west2 --project=raylo-txncat-authority-prod --format=json --quiet",

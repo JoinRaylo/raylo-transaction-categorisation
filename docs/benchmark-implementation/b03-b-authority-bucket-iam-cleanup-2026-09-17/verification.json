@@ -1,0 +1,235 @@
+{
+  "schema_version": "benchmark-authority-bucket-iam-cleanup-v1",
+  "milestone": "B03-B-authority-bucket-iam-cleanup",
+  "scope": "empty_authority_bucket_legacy_binding_cleanup_only",
+  "status": "cleanup_complete_effective_iam_gate_open",
+  "authorizes_consumption": false,
+  "branch": "codex/txncat-b03a-app",
+  "base_commit": "f292b42dc6f2d8a864ce156591e7491cb2e8be89",
+  "captured_at": "2026-09-17T17:56:20Z",
+  "project": {
+    "id": "raylo-txncat-authority-prod",
+    "number": "357892832103",
+    "location": "europe-west2",
+    "bucket": "gs://raylo-txncat-authority-prod-europe-west2"
+  },
+  "approval": {
+    "owner": "Carlos",
+    "temporary_recovery_grant_approved": true,
+    "approval_scope": "Apply only the expiring project-level roles/storage.admin grant required to finish the already approved empty-bucket legacy-binding cleanup, then revoke it immediately",
+    "real_data_access_approved": false,
+    "locked_set_access_approved": false,
+    "model_or_training_changes_approved": false
+  },
+  "pre_cleanup": {
+    "bucket_policy_etag": "CAI=",
+    "bucket_policy": {
+      "bindings": [
+        {
+          "members": [
+            "projectEditor:raylo-txncat-authority-prod",
+            "projectOwner:raylo-txncat-authority-prod"
+          ],
+          "role": "roles/storage.legacyBucketOwner"
+        },
+        {
+          "members": [
+            "projectViewer:raylo-txncat-authority-prod"
+          ],
+          "role": "roles/storage.legacyBucketReader"
+        },
+        {
+          "members": [
+            "projectEditor:raylo-txncat-authority-prod",
+            "projectOwner:raylo-txncat-authority-prod"
+          ],
+          "role": "roles/storage.legacyObjectOwner"
+        },
+        {
+          "members": [
+            "projectViewer:raylo-txncat-authority-prod"
+          ],
+          "role": "roles/storage.legacyObjectReader"
+        }
+      ],
+      "etag": "CAI="
+    },
+    "live_and_noncurrent_objects": "none; recursive --all-versions listing returned only the bucket header",
+    "soft_deleted_objects": "none; --soft-deleted listing returned empty"
+  },
+  "partial_cleanup": {
+    "successful_removals": [
+      {
+        "member": "projectOwner:raylo-txncat-authority-prod",
+        "role": "roles/storage.legacyBucketOwner",
+        "result_etag": "CAM="
+      },
+      {
+        "member": "projectEditor:raylo-txncat-authority-prod",
+        "role": "roles/storage.legacyBucketOwner",
+        "result_etag": "CAQ="
+      }
+    ],
+    "failed_removal": {
+      "member": "projectViewer:raylo-txncat-authority-prod",
+      "role": "roles/storage.legacyBucketReader",
+      "error": "PERMISSION_DENIED storage.buckets.getIamPolicy"
+    },
+    "remaining_policy_etag": "CAQ=",
+    "remaining_pairs": [
+      [
+        "projectViewer:raylo-txncat-authority-prod",
+        "roles/storage.legacyBucketReader"
+      ],
+      [
+        "projectEditor:raylo-txncat-authority-prod",
+        "roles/storage.legacyObjectOwner"
+      ],
+      [
+        "projectOwner:raylo-txncat-authority-prod",
+        "roles/storage.legacyObjectOwner"
+      ],
+      [
+        "projectViewer:raylo-txncat-authority-prod",
+        "roles/storage.legacyObjectReader"
+      ]
+    ]
+  },
+  "temporary_recovery": {
+    "member": "user:carlos.noblejesus@raylo.com",
+    "role": "roles/storage.admin",
+    "condition": {
+      "expression": "request.time < timestamp(\"2026-09-17T16:55:00Z\")",
+      "title": "temporary_bucket_policy_recovery",
+      "description": "Time-limited recovery for the approved empty-bucket IAM cleanup"
+    },
+    "grant_project_policy_etag": "BwZbsG6Z7Vo=",
+    "grant_project_policy_version": 3,
+    "grant_readback": "Carlos roles/owner, the Firebase Rules and Firestore service-agent bindings, and this exact conditional Storage Admin binding",
+    "fresh_bucket_policy_readback": {
+      "etag": "CAQ=",
+      "bindings": [
+        {
+          "members": [
+            "projectViewer:raylo-txncat-authority-prod"
+          ],
+          "role": "roles/storage.legacyBucketReader"
+        },
+        {
+          "members": [
+            "projectEditor:raylo-txncat-authority-prod",
+            "projectOwner:raylo-txncat-authority-prod"
+          ],
+          "role": "roles/storage.legacyObjectOwner"
+        },
+        {
+          "members": [
+            "projectViewer:raylo-txncat-authority-prod"
+          ],
+          "role": "roles/storage.legacyObjectReader"
+        }
+      ],
+      "unexpected_bindings": false
+    },
+    "empty_policy_update": {
+      "input": {
+        "bindings": [],
+        "version": 1
+      },
+      "etag_precondition": "CAQ=",
+      "result_etag": "CAU=",
+      "readback": {
+        "etag": "CAU=",
+        "bindings": []
+      }
+    },
+    "revocation": {
+      "result": "temporary binding removed",
+      "final_project_policy_etag": "BwZbsXvF9Uw=",
+      "final_project_policy_version": 1,
+      "final_project_policy": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:service-357892832103@firebase-rules.iam.gserviceaccount.com"
+            ],
+            "role": "roles/firebaserules.system"
+          },
+          {
+            "members": [
+              "serviceAccount:service-357892832103@gcp-sa-firestore.iam.gserviceaccount.com"
+            ],
+            "role": "roles/firestore.serviceAgent"
+          },
+          {
+            "members": [
+              "user:carlos.noblejesus@raylo.com"
+            ],
+            "role": "roles/owner"
+          }
+        ]
+      },
+      "storage_admin_binding_present": false
+    }
+  },
+  "final_bucket_checks": {
+    "policy": {
+      "etag": "CAU=",
+      "bindings": []
+    },
+    "live_and_noncurrent_objects": "none; gcloud storage ls --recursive --all-versions returned only gs://raylo-txncat-authority-prod-europe-west2/",
+    "soft_deleted_objects": "none; gcloud storage ls --soft-deleted returned empty",
+    "metadata": {
+      "location": "EUROPE-WEST2",
+      "location_type": "region",
+      "default_storage_class": "STANDARD",
+      "uniform_bucket_level_access": true,
+      "public_access_prevention": "enforced",
+      "versioning_enabled": true,
+      "retention_period_seconds": 2592000,
+      "soft_delete_retention_seconds": 604800,
+      "default_kms_key": "projects/raylo-txncat-authority-prod/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-storage",
+      "update_time": "2026-09-17T16:42:21+0000"
+    }
+  },
+  "commands": {
+    "grant": "gcloud projects add-iam-policy-binding raylo-txncat-authority-prod --member='user:carlos.noblejesus@raylo.com' --role='roles/storage.admin' '--condition=expression=request.time < timestamp(\"2026-09-17T16:55:00Z\"),title=temporary_bucket_policy_recovery,description=Time-limited recovery for the approved empty-bucket IAM cleanup' --project=raylo-txncat-authority-prod --quiet",
+    "fresh_bucket_read": "gcloud storage buckets get-iam-policy gs://raylo-txncat-authority-prod-europe-west2 --project=raylo-txncat-authority-prod --format=json --quiet",
+    "empty_policy_file": "/private/tmp/txncat-authority-empty-bucket-iam-policy.json",
+    "empty_policy_update": "gcloud storage buckets set-iam-policy gs://raylo-txncat-authority-prod-europe-west2 /private/tmp/txncat-authority-empty-bucket-iam-policy.json --etag=CAQ= --project=raylo-txncat-authority-prod --quiet",
+    "bucket_readback": "gcloud storage buckets get-iam-policy gs://raylo-txncat-authority-prod-europe-west2 --project=raylo-txncat-authority-prod --format=json --quiet",
+    "revoke": "gcloud projects remove-iam-policy-binding raylo-txncat-authority-prod --member='user:carlos.noblejesus@raylo.com' --role='roles/storage.admin' '--condition=expression=request.time < timestamp(\"2026-09-17T16:55:00Z\"),title=temporary_bucket_policy_recovery,description=Time-limited recovery for the approved empty-bucket IAM cleanup' --project=raylo-txncat-authority-prod --quiet"
+  },
+  "reviews": {
+    "sol": "CONDITIONAL: approved exactly the six legacy bucket member-role removals while the bucket was empty, subject to complete before/after policy and control readbacks",
+    "astra": "CONDITIONAL: approved only the explicitly authorised temporary project-level roles/storage.admin recovery grant, exact fresh-policy verification, etag-protected empty update and immediate revocation",
+    "overall_effective_iam": "OPEN: inherited folder Owner, unreadable organisation IAM, governed control-plane principals and service-agent impersonation paths remain uncertified"
+  },
+  "mutation_inventory": {
+    "bucket_policy_changed": true,
+    "temporary_project_storage_admin_grant_added": true,
+    "temporary_project_storage_admin_grant_revoked": true,
+    "project_owner_binding_changed": false,
+    "kms_policies_changed": false,
+    "bucket_settings_changed": false,
+    "objects_or_documents_written": false,
+    "customer_data_accessed": false,
+    "labels_or_benchmark_membership_changed": false,
+    "training_retraining_or_scoring": false,
+    "locked_sets_accessed": false,
+    "b04_consumer_integration": false
+  },
+  "hard_stop": [
+    "parent folder team-infra-eng Owner inheritance prevents a claim of effective isolation",
+    "organisation IAM policy read is denied for the active account",
+    "managed service-agent metadata, IAM policy and impersonation paths remain uncertified",
+    "worker/authority identities, custom conditions, receipt verification deployment, audit ownership and live synthetic probes remain pending"
+  ],
+  "next_gate": "security review and explicit approval of effective IAM/identity design before worker bindings, synthetic fixture writes or live permission probes",
+  "source_evidence": {
+    "raw_transaction_payloads": "not accessed",
+    "bigquery_customer_rows": "not accessed",
+    "locked_sets": "not accessed",
+    "models_or_training_state": "unchanged"
+  }
+}

@@ -2,6 +2,9 @@
 
 Status: **empty resources provisioned and verified; effective IAM remains a hard gate**.
 
+The bucket-policy snapshot in this packet is historical. The approved empty
+bucket cleanup is recorded in the [follow-up IAM packet](../b03-b-authority-bucket-iam-cleanup-2026-09-17/README.md).
+
 This packet records the current approved authority scope after the billing
 prerequisite was resolved. It supersedes the resource coordinates and status
 claims in `../b03-b-physical-scope-review-2026-09-17/` for the current authority
@@ -63,8 +66,10 @@ the historical physical-scope work and does not change this decision.
 ## Post-provisioning access audit
 
 The direct project policy contains Carlos's `roles/owner` grant and the
-Firestore/Rules Google-managed service-agent grants. The bucket has the normal
-legacy project-owner/editor/viewer bindings. The parent folder policy grants
+Firestore/Rules Google-managed service-agent grants. At provisioning time the
+bucket had the normal legacy project-owner/editor/viewer bindings; those
+bindings were subsequently removed from the empty bucket and are detailed in
+the follow-up IAM packet. The parent folder policy grants
 `group:team-infra-eng` `roles/owner`, and also grants folder administration and
 project-creation/viewing roles to the listed engineering groups/users. The
 organisation IAM policy could not be read by the active account, so the
@@ -102,7 +107,8 @@ bindings remain blocked until:
 3. Google-managed Firebase/Firestore/Storage service identities and their
    exact roles are inventoried, with impersonation paths checked;
 4. the bucket's default `projectOwner`, `projectEditor` and `projectViewer`
-   legacy bindings are removed through a separately approved change;
+   legacy bindings are removed through a separately approved change (completed
+   for the empty bucket; see the follow-up IAM packet);
 5. exact custom roles/CEL conditions, unique-ID mappings, key rotation overlap,
    audit logging and retention ownership are approved; and
 6. the prior `raylo-production` bucket, registry and keys are marked

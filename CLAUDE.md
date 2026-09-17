@@ -151,9 +151,12 @@ present with enabled version 1; the storage key has 90-day rotation. Cloud Run
 and Artifact Registry remain disabled.
 
 The post-creation audit found the parent folder's inherited
-`group:team-infra-eng` Owner grant, normal legacy project bindings on the empty
-bucket, and an organisation IAM policy that the active account cannot read.
-Effective isolation is therefore not certified. No worker or authority
+`group:team-infra-eng` Owner grant, and an organisation IAM policy that the
+active account cannot read. The empty bucket's six default legacy project
+convenience member-role pairs were subsequently removed under an explicitly
+approved, time-limited recovery grant; the [follow-up IAM packet](docs/benchmark-implementation/b03-b-authority-bucket-iam-cleanup-2026-09-17/README.md)
+records the exact etag-protected change and revocation. Effective isolation is
+therefore not certified. No worker or authority
 user-managed service account, custom IAM binding, synthetic object/document,
 customer row, label, benchmark membership, model fit, locked-set access, score
 or B04 consumer was added. The [current packet](docs/benchmark-implementation/b03-b-authority-resource-provisioning-2026-09-17/README.md)
