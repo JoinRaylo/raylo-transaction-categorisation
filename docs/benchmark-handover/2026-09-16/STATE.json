@@ -31,16 +31,16 @@
     "B03-D synthetic candidate allocation contract and adversarial tests",
     "B03-B named runtime identities, scoped IAM and bounded synthetic live proof; extended live cases explicitly deferred",
     "B03-B private candidate event-lineage evidence; admission remains blocked",
-    "B03-C ID-bearing future training/selection export and permanent exact-ID lookup; no real export yet"
+    "B03-C ID-bearing future training/selection export and permanent exact-ID lookup; no real export yet",
+    "B03-E private 500-row eval lookup and identifier-free annotation payload with mandatory prospective Tier-B exclusion"
   ],
-  "next_milestone": "export a fresh private customer-linked Plaid candidate pool, exclude permanent training/selection membership, allocate evaluation before training, then run the 500-row annotation pilot",
-  "next_gate": "the private candidate export must preserve account/customer/input/family grouping, exclude permanent exact-ID membership, and record evaluation membership before any provider call",
+  "next_milestone": "extend the reviewed provider runner to the private v2 pilot, apply PII/output handling checks, then collect three independent annotations and surface disagreements to Carlos",
+  "next_gate": "the real annotation runner must verify the v2 pilot receipt, preserve independent provider outputs and avoid exposing source identity fields; no automatic disagreement adjudication",
   "not_implemented": [
     "B03 managed reservation authority",
-    "private ID-complete candidate allocation and 500-row annotation pilot",
     "B04 consumer and promotion enforcement",
     "certified real benchmark membership",
-    "independent new labels",
+    "independent new labels and Carlos disagreement adjudication",
     "new supervised retrain",
     "live writer restriction, unknown/forged-subject and key rotation/retirement proofs"
   ],
@@ -282,6 +282,105 @@
       "the lookup is membership metadata, not consumption authority"
     ],
     "next_step": "export and allocate a fresh private customer-linked Plaid candidate pool, assigning evaluation before training augmentation"
+  },
+  "private_eval_pilot_record": {
+    "milestone": "B03-E-private-evaluation-pilot",
+    "status": "construction_and_prospective_training_protection_review_approved_annotation_pending",
+    "captured_at": "2026-09-18T12:13:32Z",
+    "app_base_before_milestone": "360bd861d85647a80d4547b15d4b18ddb1c7f8c1",
+    "app_branch": "codex/txncat-b03a-app",
+    "app_evidence_commit": "3101e24",
+    "research_base_before_milestone": "1b067c411728afd4ec9af65d7b0ccf3bb2fdc768",
+    "research_branch": "codex/txncat-b03a-research",
+    "research_construction_commit": "9cdc4a1",
+    "research_training_protection_commit": "c7c46ba",
+    "evidence_app": "apps/ob-txn-categoriser/research/benchmark-implementation/b03-e-private-eval-pilot-2026-09-18",
+    "evidence_research": "docs/benchmark-implementation/b03-e-private-eval-pilot-2026-09-18",
+    "private_artifact": {
+      "approved_version": "v2",
+      "path": "/private/tmp/txncat-eval-pilot-20260918-v2",
+      "superseded_unapproved_version": "/private/tmp/txncat-eval-pilot-20260918-v1",
+      "pilot_sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248",
+      "membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068",
+      "summary_sha256": "c261ccbd4da660a75aa0fb9f4df99699f760411db96343ee71b17942847cb668",
+      "receipt_sha256": "3a903922ca6a13becd62bc57751b11b35a1b9a579a6f6696d55f064aac04b623",
+      "directory_mode": "0700",
+      "file_mode": "0600"
+    },
+    "source": {
+      "scope": "unambiguous existing assessment_to_checkout_to_user_to_customer linked Plaid only",
+      "candidate_rows": 5000,
+      "candidate_result_sha256": "f9c549ee7a8a6bbfaec8999d3edaf2dca22f0d4f4fa463a486dcc3fd5a8f32ef",
+      "profile_sha256": "04efff789eadd9bbae635109bd15be80e34164bf8132e1d78f7bacbce2eb7ec5",
+      "lineage_result_sha256": "030d239d3e361e81750bc77ee0b1e97969e9d13a2eece588f3cd780385418ae4",
+      "anonymous_id_recovery": false
+    },
+    "allocation": {
+      "rows": 500,
+      "customer_blocks": 464,
+      "max_rows_per_customer": 4,
+      "primary_views": {
+        "representative": 250,
+        "unseen_input": 150,
+        "unfamiliar_merchant": 100
+      },
+      "primary_view_historical_input_overlap": {
+        "representative": 111,
+        "unseen_input": 0,
+        "unfamiliar_merchant": 0
+      },
+      "identifier_free_annotation_payload": true
+    },
+    "prospective_training_protection": {
+      "required_at": ["fetch", "build"],
+      "protected_groups": ["event", "account", "customer"],
+      "receipt_binds_eval_lookup_and_fetched_rows": true,
+      "bigquery_dry_run": {
+        "project": "raylo-production",
+        "location": "EU",
+        "statement_type": "SELECT",
+        "rows_returned": 0,
+        "total_bytes_processed_upper_bound": 7657252259
+      },
+      "real_fetch_executed": false
+    },
+    "tests": {
+      "focused_pilot": "12 passed",
+      "focused_training_protection": "24 passed",
+      "full_regression": "135 passed, 2 pre-existing unknown-marker warnings",
+      "py_compile": "passed",
+      "git_diff_check": "passed"
+    },
+    "independent_review": {
+      "pilot_construction": {
+        "reviewer": "Astra",
+        "agent": "Kant",
+        "initial_findings": 4,
+        "blocking_findings_after_correction": 0,
+        "status": "approved_v2"
+      },
+      "training_protection": {
+        "reviewer": "Astra",
+        "agent": "Curie",
+        "initial_findings": 3,
+        "blocking_findings_after_correction": 0,
+        "status": "approved"
+      }
+    },
+    "authorizes_consumption": false,
+    "provider_calls": 0,
+    "labels_created": 0,
+    "cloud_changes": 0,
+    "retraining": false,
+    "locked_set_scoring": false,
+    "limitations": [
+      "legacy training rows without provider IDs prevent retrospective exact event/group completeness",
+      "unfamiliar merchant means unseen normalized name, not a reviewed alias family",
+      "the quota-based pilot does not establish population-weighted metrics",
+      "transaction narratives may contain personal information",
+      "membership and receipts are local safeguards, not consumption authority"
+    ],
+    "next_step": "extend the synthetic provider runner to the reviewed v2 private manifest, add PII/output controls, then collect three independent annotations without auto-adjudication"
   },
   "schema_version": "txncat-dataset-handover-v1",
   "validation": {
