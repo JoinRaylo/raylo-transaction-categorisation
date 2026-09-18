@@ -1,0 +1,20 @@
+{
+  "schema_version": "benchmark-id-bearing-training-membership-implementation-v1",
+  "milestone": "B03-C-id-bearing-training-membership",
+  "date": "2026-09-18",
+  "repo": "raylo-transaction-categorisation",
+  "branch": "codex/txncat-b03a-research",
+  "base_commit": "00958ff0fafebe30bf6ea7f6339e5fdd5b0989dc",
+  "changed_code": [
+    "src/training_membership.py",
+    "src/build_tuning_dataset.py",
+    "tests/test_training_membership.py"
+  ],
+  "model_jsonl_schema_changed": false,
+  "real_rows_returned": 0,
+  "real_labels_created": 0,
+  "provider_annotation_calls": 0,
+  "models_retrained": 0,
+  "locked_sets_scored": 0,
+  "cloud_mutations": 0
+}

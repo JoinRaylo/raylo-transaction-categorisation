@@ -102,6 +102,27 @@ cannot authorize evaluation, training, selection, scoring or promotion. Physical
 authenticated receipts, complete linked-pool history/aliases, eligibility and
 B04 consumer gates remain open.
 
+## B03-C ID-bearing training membership (2026-09-18)
+
+The agreed simplified membership boundary is implemented in
+`src/training_membership.py` and wired into `src/build_tuning_dataset.py`.
+Future Tier-B fetches use the approved unambiguous assessment -> checkout ->
+user -> customer chain, retain Plaid `account_id`/`transaction_id`, and use stable
+hash ordering. Build leaves the model JSONL `messages` schema unchanged and writes
+a separate private exact-ID role lookup plus an explicit identity-coverage report.
+Legacy curated rows without provider IDs remain unresolved; absence from this
+lookup is not historical-completeness evidence. Exact IDs cannot cross roles,
+sources or changed payloads. Prior exact assignments survive rebuilds; a final
+coverage marker binds the lookup to both model files and detects partial
+publication. Repeated assessments are accepted only when their model payload
+agrees, and merchant roles are stable under pool growth. Research tests are 89 passed; canonical B02/B03
+membership regressions are 101 passed; the query compiled in a no-row BigQuery dry
+run. Independent Astra review is approved with no remaining findings. Evidence:
+`docs/benchmark-implementation/b03-c-id-bearing-training-membership-2026-09-18/`.
+No real rows, labels, provider calls, retraining or locked-set scoring occurred.
+Next: use this lookup to exclude existing learning/selection IDs from the fresh
+private customer-linked candidate export, then allocate evaluation before training.
+
 ## B03-B authenticated receipt boundary (2026-09-17)
 
 The canonical app boundary now includes strict `AuthenticatedReceipt` and

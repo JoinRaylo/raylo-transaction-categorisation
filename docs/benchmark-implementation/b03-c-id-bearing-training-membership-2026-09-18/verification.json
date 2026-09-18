@@ -1,0 +1,67 @@
+{
+  "schema_version": "benchmark-id-bearing-training-membership-verification-v1",
+  "milestone": "B03-C-id-bearing-training-membership",
+  "date": "2026-09-18",
+  "checks": [
+    {
+      "command": "/Users/carlosnoblejesus/Repos/raylo-transaction-categorisation/.venv/bin/python -m pytest -q tests/test_training_membership.py",
+      "result": "15 passed"
+    },
+    {
+      "command": "/Users/carlosnoblejesus/Repos/raylo-transaction-categorisation/.venv/bin/python -m pytest -q tests/",
+      "result": "89 passed"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=lib/raylo-txncat/src /private/tmp/txncat-c2-env/bin/python -m pytest -q -m unit lib/raylo-txncat/tests/test_membership_manifest.py lib/raylo-txncat/tests/test_benchmark.py",
+      "result": "101 passed"
+    },
+    {
+      "command": "python -m py_compile src/training_membership.py src/build_tuning_dataset.py",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "bq query --dry_run --use_legacy_sql=false <synthetic one-merchant generated query>",
+      "result": "passed",
+      "location": "EU",
+      "statement_type": "SELECT",
+      "rows_returned": 0,
+      "total_bytes_processed_upper_bound": 7657197083,
+      "output_schema": [
+        "account_id STRING",
+        "transaction_id STRING",
+        "merchant STRING",
+        "description STRING",
+        "amount FLOAT",
+        "is_credit INTEGER",
+        "source_payload_sha256 STRING"
+      ]
+    }
+  ],
+  "independent_review": {
+    "model": "gpt-6-astra",
+    "status": "approved",
+    "remaining_findings": 0,
+    "reviewed_scope": [
+      "verified linked-source query semantics",
+      "cross-role and changed-payload rejection",
+      "permanent assignments across rebuilds",
+      "staged publication and coverage commit marker",
+      "lookup and model hash bindings",
+      "upload fail-closed verification and artifact names",
+      "temporary-file cleanup under injected failures"
+    ]
+  },
+  "limitations": [
+    "Legacy curated rows without provider IDs remain identity-unavailable.",
+    "Lookup absence is not historical-completeness evidence.",
+    "The sidecar is private membership metadata and does not authorise consumption.",
+    "The BigQuery check was compilation-only and returned no transaction rows.",
+    "Publication is single-writer and every consumer must verify the coverage hashes.",
+    "GCS upload was tested synthetically and not executed against live storage."
+  ],
+  "next_step": "export and allocate a fresh private customer-linked Plaid candidate pool, assigning evaluation before training augmentation"
+}

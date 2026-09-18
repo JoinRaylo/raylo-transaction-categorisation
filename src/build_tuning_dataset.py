@@ -32,10 +32,19 @@ Philosophy (agreed 2026-08-21, keep this in sync with any future changes):
 
 Usage:
     python src/build_tuning_dataset.py fetch [cap_per_merchant]
-    python src/build_tuning_dataset.py build   # -> outputs/tuning_{train,val}.jsonl
+    python src/build_tuning_dataset.py build   # -> model JSONL + private membership sidecars
     python src/build_tuning_dataset.py upload gs://BUCKET/PATH
+
+The fetch command now requires the reviewed unambiguous assessment -> checkout ->
+user -> customer linkage and retains Plaid account/transaction IDs.  Build keeps
+those identifiers out of the model JSONL and writes them to the private
+``outputs/tuning_membership_lookup.csv`` instead.  Existing fetched JSON without
+IDs must be re-fetched; the builder deliberately fails rather than inventing an
+identity.  Legacy curated CSV rows are counted as identity-unavailable in the
+coverage report, so lookup absence is not historical-completeness evidence.
 """
 import csv
+import hashlib
 import json
 import pathlib
 import random
@@ -50,6 +59,13 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from gating_experiment import ROOT, OUT_DIR, load_crosswalk  # noqa: E402
 from build_tail_eval import bq_json  # noqa: E402
 from label_provenance import DICTIONARY_ELIGIBLE_TIERS  # noqa: E402
+from training_membership import (  # noqa: E402
+    TrackedExample,
+    exact_plaid_membership,
+    publish_training_export,
+    unavailable_membership,
+    verify_training_export,
+)
 
 LABELS_SOURCE = ROOT / "data" / "production_labels_tranche4.csv"
 GOLD_TXN_FILE = ROOT / "data" / "gold_transactions.csv"
@@ -83,6 +99,8 @@ TRAIN_JSONL = OUT_DIR / "tuning_train.jsonl"
 VAL_JSONL = OUT_DIR / "tuning_val.jsonl"
 SLM_EVAL_CSV = ROOT / "data" / "gold_v2_slm_eval_holdout.csv"
 SPLIT_MANIFEST = OUT_DIR / "tuning_gold_v2_split_manifest.csv"
+MEMBERSHIP_LOOKUP = OUT_DIR / "tuning_membership_lookup.csv"
+MEMBERSHIP_COVERAGE = OUT_DIR / "tuning_membership_coverage.json"
 SEED = 42
 VAL_FRACTION = 0.15
 OVERSAMPLE_FACTOR = 3  # how many times a conflicting (context-dependent) Tier A merchant's rows are repeated
@@ -158,6 +176,121 @@ def build_system_prompt(leaves):
     return "\n".join(lines)
 
 
+def build_linked_tier_b_query(merchants, cap_per_merchant):
+    """Build the Tier-B fetch from the approved customer-linked Plaid pool."""
+    if type(cap_per_merchant) is not int or cap_per_merchant <= 0:
+        raise ValueError("cap_per_merchant must be a positive integer")
+    merchants = list(merchants)
+    if not merchants or any(not isinstance(m, str) or not m.strip() for m in merchants):
+        raise ValueError("at least one nonblank merchant is required")
+
+    def q(s):
+        return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+    in_list = ", ".join(q(m) for m in merchants)
+    return f"""
+WITH source_observations AS (
+  SELECT
+    checkout_risk_assessment_result_id AS assessment_id,
+    account_id,
+    transaction_id,
+    LOWER(TRIM(merchant_name)) AS merchant,
+    IFNULL(COALESCE(description, transaction_name), '') AS description,
+    ROUND(ABS(amount), 2) AS amount,
+    CAST(amount < 0 AS INT64) AS is_credit,
+    TO_HEX(SHA256(TO_JSON_STRING(STRUCT(
+      LOWER(TRIM(merchant_name)) AS merchant,
+      IFNULL(COALESCE(description, transaction_name), '') AS description,
+      ROUND(ABS(amount), 2) AS amount,
+      CAST(amount < 0 AS INT64) AS is_credit
+    )))) AS payload_sha256
+  FROM `raylo-production.dbt_production.intermediate_credit_plaid_transactions`
+  WHERE NULLIF(TRIM(checkout_risk_assessment_result_id), '') IS NOT NULL
+    AND NULLIF(TRIM(account_id), '') IS NOT NULL
+    AND NULLIF(TRIM(transaction_id), '') IS NOT NULL
+    AND NULLIF(TRIM(merchant_name), '') IS NOT NULL
+    AND LOWER(TRIM(merchant_name)) IN ({in_list})
+), assessment_links AS (
+  SELECT
+    checkout_risk_assessment_result_id AS assessment_id,
+    COUNT(DISTINCT checkout_id) AS checkout_count,
+    MIN(checkout_id) AS checkout_id
+  FROM `raylo-production.dbt_production.intermediate_raylo_production__checkout_risk_assessment_results_latest`
+  WHERE NULLIF(TRIM(checkout_risk_assessment_result_id), '') IS NOT NULL
+    AND NULLIF(TRIM(checkout_id), '') IS NOT NULL
+  GROUP BY assessment_id
+), checkout_links AS (
+  SELECT
+    checkout_id,
+    COUNT(DISTINCT NULLIF(TRIM(user_id), '')) AS user_count,
+    MIN(NULLIF(TRIM(user_id), '')) AS user_id
+  FROM `raylo-production.dbt_production.stg_raylo_production__checkouts`
+  WHERE NULLIF(TRIM(checkout_id), '') IS NOT NULL
+  GROUP BY checkout_id
+), user_links AS (
+  SELECT
+    user_id,
+    COUNT(DISTINCT NULLIF(TRIM(customer_id), '')) AS customer_count,
+    MIN(NULLIF(TRIM(customer_id), '')) AS customer_id
+  FROM `raylo-production.dbt_production.stg_raylo_production__users`
+  WHERE NULLIF(TRIM(user_id), '') IS NOT NULL
+  GROUP BY user_id
+), customer_links AS (
+  SELECT
+    NULLIF(TRIM(customer_id), '') AS customer_id,
+    COUNT(*) AS customer_record_count
+  FROM `raylo-production.dbt_production.stg_raylo_production__customers`
+  WHERE NULLIF(TRIM(customer_id), '') IS NOT NULL
+  GROUP BY customer_id
+), linked_observations AS (
+  SELECT s.*
+  FROM source_observations s
+  JOIN assessment_links a USING (assessment_id)
+  JOIN checkout_links c ON a.checkout_count = 1 AND a.checkout_id = c.checkout_id
+  JOIN user_links u ON c.user_count = 1 AND c.user_id = u.user_id
+  JOIN customer_links cr
+    ON u.customer_count = 1
+    AND u.customer_id = cr.customer_id
+    AND cr.customer_record_count = 1
+), event_versions AS (
+  SELECT
+    account_id,
+    transaction_id,
+    ARRAY_AGG(
+      STRUCT(merchant, description, amount, is_credit, payload_sha256)
+      ORDER BY assessment_id
+      LIMIT 1
+    )[OFFSET(0)] AS chosen
+  FROM linked_observations
+  GROUP BY account_id, transaction_id
+  HAVING COUNT(DISTINCT payload_sha256) = 1
+)
+SELECT
+  account_id,
+  transaction_id,
+  chosen.merchant AS merchant,
+  chosen.description AS description,
+  chosen.amount AS amount,
+  chosen.is_credit AS is_credit,
+  chosen.payload_sha256 AS source_payload_sha256
+FROM event_versions
+QUALIFY ROW_NUMBER() OVER (
+  PARTITION BY chosen.merchant
+  ORDER BY TO_HEX(SHA256(CONCAT('tuning-v2:', account_id, ':', transaction_id)))
+) <= {cap_per_merchant}
+"""
+
+
+def tier_b_role(merchant):
+    """Assign a stable role that does not change when the merchant pool grows."""
+
+    if not isinstance(merchant, str) or not merchant:
+        raise ValueError("merchant is required")
+    digest = hashlib.sha256(f"tuning-role-v1:{SEED}:{merchant}".encode()).digest()
+    fraction = int.from_bytes(digest[:8], "big") / 2**64
+    return "selection" if fraction < VAL_FRACTION else "train"
+
+
 def fetch(cap_per_merchant):
     _, _, leaves, _, _ = load_crosswalk()
     excluded_merchants = set()
@@ -186,24 +319,14 @@ def fetch(cap_per_merchant):
           f"excluding {len(excluded_merchants)} gold-set/Tier-A merchants and "
           f"context_dependent/needs_review/accepted_tiebreak/accepted_general", file=sys.stderr)
 
-    def q(s):
-        return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
     CHUNK = 1500
     all_txns = []
     for i in range(0, len(eligible), CHUNK):
         part = eligible[i:i + CHUNK]
-        in_list = ", ".join(q(r["merchant"]) for r in part)
         print(f"Transaction fetch chunk {i // CHUNK + 1}/{(len(eligible) + CHUNK - 1) // CHUNK}...", file=sys.stderr)
-        rows_json = bq_json(f"""
-SELECT LOWER(TRIM(merchant_name)) AS merchant,
-       IFNULL(COALESCE(original_description, transaction_name), '') AS description,
-       ROUND(ABS(amount), 2) AS amount,
-       CAST(amount < 0 AS INT64) AS is_credit
-FROM `raylo-production.dbt_production.credit_plaid_open_banking_transactions`
-WHERE merchant_name IS NOT NULL AND TRIM(merchant_name) != ''
-  AND LOWER(TRIM(merchant_name)) IN ({in_list})
-QUALIFY ROW_NUMBER() OVER (PARTITION BY LOWER(TRIM(merchant_name)) ORDER BY RAND()) <= {cap_per_merchant}
-""")
+        rows_json = bq_json(build_linked_tier_b_query(
+            [r["merchant"] for r in part], cap_per_merchant
+        ))
         all_txns += rows_json
 
     target_by_merchant = {r["merchant"]: r["target"] for r in eligible}
@@ -221,24 +344,26 @@ def build():
     system_prompt = build_system_prompt(leaves)
     SYSTEM_PROMPT_PATH.write_text(system_prompt)
 
-    def to_example(merchant, description, amount, direction, target):
+    def to_example(merchant, description, amount, direction, target, membership):
         user_msg = (f"merchant: {merchant}\n"
                     f"description: {description}\n"
                     f"amount: {amount}\n"
                     f"direction: {direction}")
-        return {"messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_msg},
-            {"role": "assistant", "content": target},
-        ]}
+        return TrackedExample(
+            messages={"messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_msg},
+                {"role": "assistant", "content": target},
+            ]},
+            membership=membership,
+        )
 
     # ---------- Tier B: production_labels, merchant-level split (unchanged mechanism) ----------
     txns = json.loads(TXNS_JSON.read_text())
     rng = random.Random(SEED)
     merchants = sorted({t["merchant"] for t in txns})
-    rng.shuffle(merchants)
-    n_val = max(1, int(len(merchants) * VAL_FRACTION))
-    val_merchants = set(merchants[:n_val])
+    val_merchants = {merchant for merchant in merchants if tier_b_role(merchant) == "selection"}
+    n_val = len(val_merchants)
 
     def tier_b_example(t):
         # BigQuery's JSON API returns INT64 fields as strings ("0"/"1"), and
@@ -246,7 +371,14 @@ def build():
         # silently always takes the credit branch. Every row in the first
         # tuning attempt had direction=credit (should be ~0.5% credit).
         direction = "credit" if int(t["is_credit"]) else "debit"
-        return to_example(t["merchant"], t["description"], t["amount"], direction, t["target"])
+        return to_example(
+            t["merchant"],
+            t["description"],
+            t["amount"],
+            direction,
+            t["target"],
+            exact_plaid_membership(source="tier_b_customer_linked_plaid", row=t),
+        )
 
     train, val = [], []
     tier_a_preview = load_tier_a()
@@ -291,7 +423,12 @@ def build():
             # Plaid's raw amount is signed (negative = credit) -- the system prompt promises
             # "amount (absolute value, GBP)" and direction carries the sign meaning separately.
             ex = to_example(r["merchant_raw"], r["description_raw"], abs(float(r["amount"])),
-                             r["direction"], r["gold_leaf"])
+                             r["direction"], r["gold_leaf"],
+                             unavailable_membership(
+                                 source="tier_a_gold_transactions",
+                                 row=r,
+                                 provider=r.get("provider"),
+                             ))
             tier_a_train_examples.extend([ex] * reps)
 
     # Do not rewrite SLM_EVAL_CSV — that file is the frozen published holdout.
@@ -314,7 +451,11 @@ def build():
                     and r["gold_leaf"] not in STARVED_TOPUP_LEAVES):
                 continue
             ex = to_example(r["merchant_raw"], r["description_raw"], abs(float(r["amount"])),
-                            r["direction"], r["gold_leaf"])
+                            r["direction"], r["gold_leaf"],
+                            unavailable_membership(
+                                source="tuning_leaf_topup",
+                                row=r,
+                            ))
             topup_examples.append(ex)
             if r["gold_leaf"] in starved_topup:
                 starved_topup[r["gold_leaf"]].append(ex)
@@ -328,17 +469,28 @@ def build():
                 continue
             if not r.get("gold_leaf") or r["gold_leaf"] not in leaves:
                 continue
-            credit_examples.append(to_example(r.get("merchant_raw") or "", r.get("description_raw") or "",
-                                              abs(float(r["amount"])), r["direction"], r["gold_leaf"]))
+            credit_examples.append(to_example(
+                r.get("merchant_raw") or "",
+                r.get("description_raw") or "",
+                abs(float(r["amount"])),
+                r["direction"],
+                r["gold_leaf"],
+                unavailable_membership(
+                    source=("tuning_credit_topup" if _f == CREDIT_TOPUP_FILE
+                            else "tuning_risk_topup"),
+                    row=r,
+                    provider=r.get("provider"),
+                ),
+            ))
     print(f"Row-level tranche top-ups (credit + risk): {len(credit_examples)} rows", file=sys.stderr)
 
     train = train + tier_a_train_examples + topup_examples + credit_examples
 
     def _leaf_of(ex):
-        return next(m["content"] for m in ex["messages"] if m["role"] == "assistant")
+        return next(m["content"] for m in ex.messages["messages"] if m["role"] == "assistant")
 
     def _merchant_of(ex):
-        user = next(m["content"] for m in ex["messages"] if m["role"] == "user")
+        user = next(m["content"] for m in ex.messages["messages"] if m["role"] == "user")
         for part in user.split("\n"):
             if part.startswith("merchant: "):
                 return _norm(part[len("merchant: "):])
@@ -385,12 +537,14 @@ def build():
     if len(val) > MAX_VAL_ROWS:
         val = val[:MAX_VAL_ROWS]  # platform hard cap -- see MAX_VAL_ROWS comment
 
-    with open(TRAIN_JSONL, "w") as f:
-        for ex in train:
-            f.write(json.dumps(ex) + "\n")
-    with open(VAL_JSONL, "w") as f:
-        for ex in val:
-            f.write(json.dumps(ex) + "\n")
+    membership_coverage = publish_training_export(
+        train,
+        val,
+        train_path=TRAIN_JSONL,
+        selection_path=VAL_JSONL,
+        lookup_path=MEMBERSHIP_LOOKUP,
+        coverage_path=MEMBERSHIP_COVERAGE,
+    )
 
     all_targets = ([t["target"] for t in txns]
                    + [r["gold_leaf"] for m, rows in tier_a.items() if m not in holdout_merchants for r in rows]
@@ -416,14 +570,34 @@ def build():
     print(f"rarest 5 classes: {target_counts.most_common()[-5:]}", file=sys.stderr)
     print(f"System prompt ({len(system_prompt)} chars) written to {SYSTEM_PROMPT_PATH}", file=sys.stderr)
     print(f"Split manifest written to {SPLIT_MANIFEST}", file=sys.stderr)
+    print(f"Exact-ID membership lookup written to {MEMBERSHIP_LOOKUP} "
+          f"({membership_coverage['permanent_unique_exact_transactions']} permanent unique "
+          "transactions)", file=sys.stderr)
+    print(f"Membership coverage written to {MEMBERSHIP_COVERAGE}", file=sys.stderr)
 
 
 def upload(gcs_path):
     import subprocess
     gcs_path = gcs_path.rstrip("/")
-    subprocess.run(["gcloud", "storage", "cp", str(TRAIN_JSONL), f"{gcs_path}/train.jsonl"], check=True)
-    subprocess.run(["gcloud", "storage", "cp", str(VAL_JSONL), f"{gcs_path}/val.jsonl"], check=True)
-    print(f"Uploaded to {gcs_path}/{{train,val}}.jsonl", file=sys.stderr)
+    coverage = verify_training_export(
+        train_path=TRAIN_JSONL,
+        selection_path=VAL_JSONL,
+        lookup_path=MEMBERSHIP_LOOKUP,
+        coverage_path=MEMBERSHIP_COVERAGE,
+    )
+    uploads = (
+        (MEMBERSHIP_LOOKUP, "membership_lookup.csv"),
+        (TRAIN_JSONL, coverage["model_files"]["train"]["artifact_name"]),
+        (VAL_JSONL, coverage["model_files"]["selection"]["artifact_name"]),
+        # Commit marker last: consumers must verify all hashes before use.
+        (MEMBERSHIP_COVERAGE, "membership_coverage.json"),
+    )
+    for source, destination in uploads:
+        subprocess.run(
+            ["gcloud", "storage", "cp", str(source), f"{gcs_path}/{destination}"],
+            check=True,
+        )
+    print(f"Uploaded verified training export to {gcs_path}", file=sys.stderr)
 
 
 if __name__ == "__main__":
