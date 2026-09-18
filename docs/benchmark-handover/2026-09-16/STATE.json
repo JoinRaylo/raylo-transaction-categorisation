@@ -30,13 +30,14 @@
     "B03-B injected-port object/registry adapter and synthetic boundary tests",
     "B03-D synthetic candidate allocation contract and adversarial tests",
     "B03-B named runtime identities, scoped IAM and bounded synthetic live proof; extended live cases explicitly deferred",
-    "B03-B private candidate event-lineage evidence; admission remains blocked"
+    "B03-B private candidate event-lineage evidence; admission remains blocked",
+    "B03-C ID-bearing future training/selection export and permanent exact-ID lookup; no real export yet"
   ],
-  "next_milestone": "complete candidate-level alias/history, novelty, legacy and exposure evidence; then managed 500-row annotation pilot and evaluation-set creation",
-  "next_gate": "complete pending/reconnection alias and historical identity evidence, effective-input and reviewed-family screens, legacy protected-membership mapping, and managed reservation/consumer authorization before any real reservation",
+  "next_milestone": "export a fresh private customer-linked Plaid candidate pool, exclude permanent training/selection membership, allocate evaluation before training, then run the 500-row annotation pilot",
+  "next_gate": "the private candidate export must preserve account/customer/input/family grouping, exclude permanent exact-ID membership, and record evaluation membership before any provider call",
   "not_implemented": [
     "B03 managed reservation authority",
-    "fresh candidate-level linked-only history, alias, novelty and exposure evidence",
+    "private ID-complete candidate allocation and 500-row annotation pilot",
     "B04 consumer and promotion enforcement",
     "certified real benchmark membership",
     "independent new labels",
@@ -225,6 +226,62 @@
       "local manifest lookup is not an authority or consumer authorization"
     ],
     "next_step": "freeze ID-bearing training/selection exports, then create the private customer-linked Plaid candidate manifest before annotation"
+  },
+  "id_bearing_training_membership_record": {
+    "milestone": "B03-C-id-bearing-training-membership",
+    "status": "review_approved_adapter_implemented_no_real_export",
+    "captured_at": "2026-09-18T11:30:38Z",
+    "app_base_before_milestone": "cd9f7a96eab30784126414c2d1ed2a8f1d23b599",
+    "app_branch": "codex/txncat-b03a-app",
+    "app_evidence_commit": "17aa145",
+    "research_base_before_milestone": "00958ff0fafebe30bf6ea7f6339e5fdd5b0989dc",
+    "research_branch": "codex/txncat-b03a-research",
+    "research_implementation_commit": "3f2a843",
+    "evidence_app": "apps/ob-txn-categoriser/research/benchmark-implementation/b03-c-id-bearing-training-membership-2026-09-18",
+    "evidence_research": "docs/benchmark-implementation/b03-c-id-bearing-training-membership-2026-09-18",
+    "research_code": [
+      "src/training_membership.py",
+      "src/build_tuning_dataset.py",
+      "tests/test_training_membership.py"
+    ],
+    "roles": ["train", "selection", "eval", "excluded", "neither"],
+    "source_scope": "unambiguous existing assessment_to_checkout_to_user_to_customer linked Plaid only",
+    "bigquery_dry_run": {
+      "location": "EU",
+      "statement_type": "SELECT",
+      "rows_returned": 0,
+      "total_bytes_processed_upper_bound": 7657197083
+    },
+    "tests": {
+      "focused_membership": "15 passed",
+      "research_suite": "89 passed",
+      "canonical_b02_b03_regression": "101 passed",
+      "py_compile": "passed",
+      "git_diff_check": "passed"
+    },
+    "independent_review": {
+      "reviewer": "Astra",
+      "agent": "Sagan",
+      "status": "approved",
+      "blocking_findings": 0,
+      "correction_rounds": 3
+    },
+    "authorizes_consumption": false,
+    "real_rows_exported": 0,
+    "real_rows_reserved": 0,
+    "real_rows_labelled": 0,
+    "provider_calls": false,
+    "cloud_changes": false,
+    "retraining": false,
+    "locked_set_scoring": false,
+    "limitations": [
+      "legacy curated rows without provider IDs remain identity-unavailable",
+      "lookup absence is not historical completeness evidence",
+      "publication is single-writer and consumers must verify coverage hashes",
+      "BigQuery was dry-run only and GCS upload was synthetic-only",
+      "the lookup is membership metadata, not consumption authority"
+    ],
+    "next_step": "export and allocate a fresh private customer-linked Plaid candidate pool, assigning evaluation before training augmentation"
   },
   "schema_version": "txncat-dataset-handover-v1",
   "validation": {
