@@ -1,8 +1,8 @@
 # B03-B authority binding review packet
 
 Status: **historical pre-apply proposal; effective-isolation condition
-superseded for the internal benchmark; exact runtime mutation still pending
-scoped approval**.
+superseded for the internal benchmark; runtime mutation applied and live proof
+pending**.
 
 The later B03-B gate-reconciliation decision accepts inherited control-plane
 administration for this internal benchmark and removes organization-level

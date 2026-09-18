@@ -1,7 +1,7 @@
 # B03-B authority resource provisioning
 
 Status: **empty resources provisioned and verified; effective isolation waived
-for the internal benchmark; runtime IAM remains pending**.
+for the internal benchmark; runtime identities applied and live proof pending**.
 
 The bucket-policy snapshot in this packet is historical. The approved empty
 bucket cleanup is recorded in the [follow-up IAM packet](../b03-b-authority-bucket-iam-cleanup-2026-09-17/README.md).
@@ -29,13 +29,14 @@ object, Firestore document or row payload was written.
 | Storage key | `.../cryptoKeys/txncat-benchmark-storage`; HSM symmetric encryption, version 1 `ENABLED`, 90-day rotation, next rotation `2026-12-16T00:00:00Z` |
 | Authority bucket | `gs://raylo-txncat-authority-prod-europe-west2`; regional `europe-west2`, Standard, uniform bucket-level access, public-access prevention, versioning, 30-day retention and 7-day soft delete; default HSM storage CMEK attached |
 | Registry | `projects/raylo-txncat-authority-prod/databases/txncat-benchmark-authority`; Firestore Native Standard, `europe-west2`, pessimistic concurrency, PITR and delete protection enabled; Google-managed default encryption; no documents |
-| User-managed service accounts | None created |
+| User-managed service accounts | Four named accounts; no user-managed keys |
 
 The Cloud Storage service identity was created only to satisfy the bucket's
 HSM-CMEK dependency. Its key-level grant is exactly
 `roles/cloudkms.cryptoKeyEncrypterDecrypter` on `txncat-benchmark-storage` for
-`service-357892832103@gs-project-accounts.iam.gserviceaccount.com`. No worker or
-authority runtime identity has been created or granted access.
+`service-357892832103@gs-project-accounts.iam.gserviceaccount.com`. Four named
+runtime identities now exist; only the authority writer and receipt verifier
+have the scoped control-plane bindings recorded in the runtime-identity packet.
 
 Firestore deliberately uses Google's default encryption for registry metadata.
 The new create command omitted `--kms-key-name`; no Firestore CMEK allowlist or
@@ -97,10 +98,9 @@ may be admitted until those proofs and the B04 admission review pass.
 ## Sol post-provisioning review
 
 Sol reviewed the resource evidence as **CONDITIONAL**. The cryptographic and
-storage bootstrap controls are accepted. The later internal-benchmark waiver
-supersedes the clean-ancestor/effective-access condition for this use, but
-service-account creation and IAM bindings still require the exact runtime
-matrix and scoped cloud-change approval. The remaining conditions are:
+storage bootstrap controls and the later internal-benchmark waiver are
+accepted. The exact runtime matrix has now been applied; the remaining
+conditions are:
 
 1. Carlos, `team-infra-eng` and the inherited Joaquim administration path are
    recorded as governed control-plane principals, preferably through JIT/PAM;
@@ -115,8 +115,9 @@ matrix and scoped cloud-change approval. The remaining conditions are:
    superseded, synthetic-only and non-authoritative, with no old receipt keys
    accepted by the new verifier.
 
-Until then, no identities, custom bindings, fixtures or live probes are
-created. No data may be admitted.
+The pre-apply restriction in this historical provisioning packet was closed by
+the approved runtime-identity packet. No synthetic fixture or live probe has
+yet been run, and no data may be admitted until those proofs pass.
 
 ## Evidence boundary
 

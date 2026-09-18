@@ -1,14 +1,15 @@
 # B03-B IAM and authority-isolation design
 
 Status: **historical proposal; organization-level isolation gate superseded for
-the internal benchmark; runtime IAM controls remain pending**.
+the internal benchmark; runtime IAM bindings applied and live proof pending**.
 
 The later B03-B gate-reconciliation decision accepts inherited control-plane
 administration as an internal-benchmark risk. This proposal's clean-ancestor
 and effective-access requirements are no longer hard blockers for this use and
 must not be read as evidence of effective isolation. Its exact runtime role
 matrix, resource conditions, no-broad-access requirements and synthetic proof
-sequence remain applicable before any real reservation.
+sequence remain applicable before any real reservation. The applied identities
+and bindings are recorded in the dated B03-B runtime-identities packet.
 
 This packet records the next safe decision after the partially provisioned
 synthetic scope. It does not authorize customer-data reads, candidate
@@ -47,12 +48,13 @@ clean IAM ancestors, with no unrelated human/runtime principals. A project-level
 possible alternative, but would need a separate security/infra review of every
 principal and service-agent dependency; it is not assumed here.
 
-The approved project now exists as
+At this design packet's capture, the approved project existed as
 `raylo-txncat-authority-prod` (project number `357892832103`), under
-`folders/45426850789` (`internal-services-monorepo`). It was created with no
-APIs enabled and has no service accounts or authority resources. It is the only
-authority project planned for this increment; no authority-staging project is
-needed.
+`folders/45426850789` (`internal-services-monorepo`), with no APIs, service
+accounts or authority resources. The later
+`b03-b-runtime-identities-2026-09-18` packet records the applied identities and
+bindings. It remains the only authority project planned for this increment;
+no authority-staging project is needed.
 
 ## Receipt-verification deployment choice
 

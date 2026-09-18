@@ -72,7 +72,7 @@ Before the 500-row annotation pilot:
 | --- | --- | --- |
 | Effective organization-level isolation | **Waived for this internal benchmark** | No isolation claim; no shared-folder mutation |
 | Project/resource scope | **Verified** | New authority coordinates only; old resources remain synthetic-only |
-| Runtime identities and exact bindings | **Pending** | No service accounts, roles or live authority path yet |
+| Runtime identities and exact bindings | **Applied** | Four keyless identities, six custom roles and scoped writer/verifier bindings; live proof pending |
 | Synthetic live Stage 0–3 proof | **Pending** | No fixture or live allow/deny proof yet |
 | Candidate history/family/legacy/block/weight evidence | **Pending** | Current 5,000-row engineering draw has zero eligible view combinations |
 | Authoritative 500-row reservation | **Pending** | No rows reserved or labelled |
@@ -92,8 +92,7 @@ internal benchmark by this decision. Their runtime requirements are not
 superseded: no broad worker access, direct generic object reads, local receipt
 fallback, authority bypass, or cross-plane consumption is allowed.
 
-This packet does not approve service-account/IAM mutation or synthetic fixture
-creation. Those operations remain separately controlled cloud changes. The
-next bounded action is to reconcile the exact runtime identity/binding packet,
-obtain the required scoped approval, and then run synthetic-only authority
-proofs before returning to admission evidence.
+The runtime identity/binding mutation is now recorded in the dated
+`b03-b-runtime-identities-2026-09-18` packet. Synthetic fixture creation and
+live proof remain separately controlled. The next bounded action is to run
+synthetic-only authority proofs before returning to admission evidence.

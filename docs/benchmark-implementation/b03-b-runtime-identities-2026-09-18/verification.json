@@ -1,0 +1,174 @@
+{
+  "schema_version": "benchmark-runtime-identities-verification-v1",
+  "milestone": "B03-B-runtime-identities",
+  "status": "identities_and_least_privilege_bindings_applied_synthetic_proof_pending",
+  "scope": "authority_control_plane_only",
+  "captured_at": "2026-09-18T05:44:58Z",
+  "approval": {
+    "approved_by": "Carlos",
+    "scope": "four_keyless_service_accounts_and_exact_least_privilege_matrix_in_raylo_txncat_authority_prod",
+    "shared_folder_changes": false,
+    "broad_project_roles": false
+  },
+  "authority_scope": {
+    "project": "raylo-txncat-authority-prod",
+    "project_number": "357892832103",
+    "region": "europe-west2",
+    "bucket": "gs://raylo-txncat-authority-prod-europe-west2",
+    "firestore_database": "projects/raylo-txncat-authority-prod/databases/txncat-benchmark-authority",
+    "receipt_key": "projects/raylo-txncat-authority-prod/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-receipts",
+    "storage_key": "projects/raylo-txncat-authority-prod/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-storage"
+  },
+  "service_accounts": [
+    {
+      "role": "authority-writer",
+      "email": "txncat-authority-writer@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+      "unique_id": "110799062502316526083",
+      "created_in_this_step": true,
+      "disabled": false
+    },
+    {
+      "role": "receipt-verifier",
+      "email": "txncat-receipt-verifier@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+      "unique_id": "102004524245181644069",
+      "created_in_this_step": false,
+      "disabled": false
+    },
+    {
+      "role": "learning-worker",
+      "email": "txncat-learning-worker@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+      "unique_id": "103294586886679890509",
+      "created_in_this_step": false,
+      "disabled": false
+    },
+    {
+      "role": "selection-worker",
+      "email": "txncat-selection-worker@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+      "unique_id": "111373158714103570704",
+      "created_in_this_step": true,
+      "disabled": false
+    }
+  ],
+  "custom_roles": {
+    "txncatAuthorityObjectCreateRead": ["storage.objects.create", "storage.objects.get"],
+    "txncatWorkerObjectGet": ["storage.objects.get"],
+    "txncatRegistryWriter": ["datastore.databases.get", "datastore.entities.create", "datastore.entities.get", "datastore.entities.list", "datastore.entities.update"],
+    "txncatRegistryLookup": ["datastore.entities.get"],
+    "txncatReceiptSigner": ["cloudkms.cryptoKeyVersions.useToSign", "cloudkms.cryptoKeyVersions.get", "cloudkms.cryptoKeyVersions.viewPublicKey"],
+    "txncatReceiptVerifier": ["cloudkms.cryptoKeyVersions.get", "cloudkms.cryptoKeyVersions.viewPublicKey", "cloudkms.locations.get", "cloudkms.locations.list", "resourcemanager.projects.get"]
+  },
+  "bindings": {
+    "project_conditional": [
+      "authority-writer object create/get restricted to the named bucket _authority, private, worker/learning and worker/selection prefixes",
+      "receipt-verifier object get restricted to the named bucket worker/learning and worker/selection prefixes",
+      "authority-writer registry writer restricted to the named Firestore database resource name",
+      "receipt-verifier registry lookup restricted to the named Firestore database resource name"
+    ],
+    "receipt_key": [
+      "authority-writer txncatReceiptSigner",
+      "receipt-verifier txncatReceiptVerifier"
+    ],
+    "storage_key": [
+      "Cloud Storage service agent roles/cloudkms.cryptoKeyEncrypterDecrypter only"
+    ],
+    "worker_direct_data_access": "none",
+    "worker_verifier_invoker": "pending_exact_private_verifier_service",
+    "service_account_iam_policies": "empty",
+    "user_managed_service_account_keys": "none"
+  },
+  "policy_readback": {
+    "project_policy": {
+      "etag": "BwZbu1tgYnk=",
+      "version": 3,
+      "runtime_bindings": [
+        {
+          "member": "serviceAccount:txncat-authority-writer@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+          "role": "projects/raylo-txncat-authority-prod/roles/txncatAuthorityObjectCreateRead",
+          "condition_title": "txncat-authority-object-prefixes",
+          "condition_expression": "resource.name.startsWith(\"projects/_/buckets/raylo-txncat-authority-prod-europe-west2/objects/_authority/\") || resource.name.startsWith(\"projects/_/buckets/raylo-txncat-authority-prod-europe-west2/objects/private/\") || resource.name.startsWith(\"projects/_/buckets/raylo-txncat-authority-prod-europe-west2/objects/worker/learning/\") || resource.name.startsWith(\"projects/_/buckets/raylo-txncat-authority-prod-europe-west2/objects/worker/selection/\")"
+        },
+        {
+          "member": "serviceAccount:txncat-receipt-verifier@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+          "role": "projects/raylo-txncat-authority-prod/roles/txncatWorkerObjectGet",
+          "condition_title": "txncat-worker-object-prefixes",
+          "condition_expression": "resource.name.startsWith(\"projects/_/buckets/raylo-txncat-authority-prod-europe-west2/objects/worker/learning/\") || resource.name.startsWith(\"projects/_/buckets/raylo-txncat-authority-prod-europe-west2/objects/worker/selection/\")"
+        },
+        {
+          "member": "serviceAccount:txncat-authority-writer@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+          "role": "projects/raylo-txncat-authority-prod/roles/txncatRegistryWriter",
+          "condition_title": "txncat-registry-writer-database",
+          "condition_expression": "resource.name == \"projects/raylo-txncat-authority-prod/databases/txncat-benchmark-authority\""
+        },
+        {
+          "member": "serviceAccount:txncat-receipt-verifier@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+          "role": "projects/raylo-txncat-authority-prod/roles/txncatRegistryLookup",
+          "condition_title": "txncat-registry-lookup-database",
+          "condition_expression": "resource.name == \"projects/raylo-txncat-authority-prod/databases/txncat-benchmark-authority\""
+        }
+      ],
+      "unconditional_runtime_bindings": []
+    },
+    "receipt_key_policy": {
+      "etag": "BwZbu1hHbas=",
+      "version": 1,
+      "bindings": [
+        {
+          "member": "serviceAccount:txncat-authority-writer@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+          "role": "projects/raylo-txncat-authority-prod/roles/txncatReceiptSigner"
+        },
+        {
+          "member": "serviceAccount:txncat-receipt-verifier@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+          "role": "projects/raylo-txncat-authority-prod/roles/txncatReceiptVerifier"
+        }
+      ]
+    },
+    "storage_key_policy": {
+      "etag": "BwZbr4_DfUM=",
+      "version": 1,
+      "bindings": [
+        {
+          "member": "serviceAccount:service-357892832103@gs-project-accounts.iam.gserviceaccount.com",
+          "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+        }
+      ]
+    },
+    "service_account_policies": {
+      "all_four_etag": "ACAB",
+      "all_four_bindings": []
+    }
+  },
+  "command_evidence": [
+    "gcloud iam service-accounts list --project=raylo-txncat-authority-prod --limit=20 --format=json(email,uniqueId,disabled) --quiet",
+    "gcloud iam roles list --project=raylo-txncat-authority-prod --filter=name:txncat --limit=20 --format=json(name,title,stage) --quiet",
+    "gcloud projects get-iam-policy raylo-txncat-authority-prod --project=raylo-txncat-authority-prod --format=json(bindings,etag,version) --quiet",
+    "gcloud kms keys get-iam-policy txncat-benchmark-receipts --keyring=txncat-benchmark-authority-europe-west2 --location=europe-west2 --project=raylo-txncat-authority-prod --format=json(bindings,etag,version) --quiet",
+    "gcloud kms keys get-iam-policy txncat-benchmark-storage --keyring=txncat-benchmark-authority-europe-west2 --location=europe-west2 --project=raylo-txncat-authority-prod --format=json(bindings,etag,version) --quiet",
+    "gcloud iam service-accounts get-iam-policy <each-runtime-account> --project=raylo-txncat-authority-prod --format=json(bindings,etag,version) --quiet",
+    "gcloud iam service-accounts keys list --iam-account=<each-runtime-account> --managed-by=user --limit=20 --format=json(name,keyType,disabled) --quiet"
+  ],
+  "bucket_binding_note": {
+    "bucket_level_attempt": "PERMISSION_DENIED storage.buckets.getIamPolicy for active Carlos identity",
+    "fallback_applied": "project-level custom roles with exact canonical bucket/object-prefix CEL conditions",
+    "broad_storage_role_added": false,
+    "proof_required": true
+  },
+  "read_only_verification": {
+    "project_policy": "four conditional runtime bindings plus existing Carlos Owner and managed service agents",
+    "receipt_key_policy": "writer signer and verifier public-key roles only",
+    "service_account_policies": "all four returned etag ACAB with no bindings",
+    "user_managed_key_lists": "all four empty",
+    "shared_folder_changed": false,
+    "apis_enabled": false,
+    "objects_or_documents_written": false
+  },
+  "effects": {
+    "cloud_control_plane_changed": true,
+    "customer_data_accessed": false,
+    "bigquery_queried": false,
+    "rows_exported": false,
+    "reservations_or_labels": false,
+    "provider_calls": false,
+    "training_selection_or_locked_evaluation": false
+  },
+  "next_gate": "synthetic Stage 0-3 verifier, direct-read deny and CAS proof, then complete admission evidence before any real reservation"
+}
