@@ -196,6 +196,22 @@ def test_anthropic_client_disables_automatic_retries(monkeypatch):
         client.close()
 
 
+def test_anthropic_batch_results_disable_response_compression():
+    class FakeResults:
+        def __init__(self):
+            self.extra_headers = None
+
+        def results(self, job_id, *, extra_headers):
+            assert job_id == "batch-synthetic"
+            self.extra_headers = extra_headers
+            return ()
+
+    batches = FakeResults()
+    client = SimpleNamespace(messages=SimpleNamespace(batches=batches))
+    assert pilot._anthropic_results(SimpleNamespace(id="batch-synthetic"), client) == {}
+    assert batches.extra_headers == {"Accept-Encoding": "identity"}
+
+
 def test_private_prompt_forbids_source_identity_and_batch_state_is_digest_only():
     prompt = {
         "item_id": "pilot-v1-" + "a" * 64,

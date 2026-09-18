@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import io
 import json
 import math
 import os
@@ -229,21 +230,24 @@ def _read_json(path: Path, strict_json_loads) -> Any:
     return strict_json_loads(raw)
 
 
-def load_manifest(path: Path, pilot_manifest, strict_json_loads):
-    raw = path.read_bytes()
+def parse_manifest(raw: bytes, pilot_manifest, strict_json_loads):
     strict_json_loads(raw)
     return pilot_manifest.model_validate_json(raw, strict=True)
 
 
-def load_prompts(
-    path: Path, manifest: object, strict_json_loads
+def load_manifest(path: Path, pilot_manifest, strict_json_loads):
+    return parse_manifest(path.read_bytes(), pilot_manifest, strict_json_loads)
+
+
+def parse_prompts(
+    raw: bytes, manifest: object, strict_json_loads
 ) -> tuple[PrivatePrompt, ...]:
     expected = {
         item.item_id: (item.content_sha256, item.prompt_sha256)
         for item in manifest.items
     }
     rows: list[PrivatePrompt] = []
-    for line in path.read_bytes().splitlines():
+    for line in raw.splitlines():
         if not line:
             raise ValueError("blank private prompt record")
         strict_json_loads(line)
@@ -266,12 +270,38 @@ def load_prompts(
     return tuple(rows)
 
 
-def taxonomy_leaves(path: Path) -> frozenset[str]:
-    with path.open(newline="") as stream:
-        leaves = {row["detailed_category"] for row in csv.DictReader(stream)}
-    if not leaves or "unclassified_other" not in leaves:
+def load_prompts(
+    path: Path, manifest: object, strict_json_loads
+) -> tuple[PrivatePrompt, ...]:
+    return parse_prompts(path.read_bytes(), manifest, strict_json_loads)
+
+
+def taxonomy_leaves_bytes(raw: bytes) -> frozenset[str]:
+    reader = csv.DictReader(io.StringIO(raw.decode("utf-8"), newline=""))
+    if (
+        reader.fieldnames is None
+        or len(reader.fieldnames) != len(set(reader.fieldnames))
+        or "detailed_category" not in reader.fieldnames
+    ):
+        raise ValueError("taxonomy schema is invalid")
+    fields = set(reader.fieldnames)
+    rows = list(reader)
+    if any(set(row) != fields for row in rows):
+        raise ValueError("taxonomy row is malformed")
+    leaves = [row["detailed_category"] for row in rows]
+    if (
+        any(
+            type(leaf) is not str or not leaf or leaf != leaf.strip() for leaf in leaves
+        )
+        or len(leaves) != len(set(leaves))
+        or "unclassified_other" not in leaves
+    ):
         raise ValueError("taxonomy is missing or incomplete")
     return frozenset(leaves)
+
+
+def taxonomy_leaves(path: Path) -> frozenset[str]:
+    return taxonomy_leaves_bytes(path.read_bytes())
 
 
 def _strict_result(value: object) -> dict[str, object]:
@@ -815,7 +845,10 @@ def _batch_status(args, canonical):
 
 def _anthropic_results(job: object, client) -> dict[str, object]:
     results = {}
-    for result in client.messages.batches.results(job.id):
+    for result in client.messages.batches.results(
+        job.id,
+        extra_headers={"Accept-Encoding": "identity"},
+    ):
         custom_id = getattr(result, "custom_id", None)
         if not isinstance(custom_id, str) or custom_id in results:
             raise ValueError("Anthropic batch returned duplicate or invalid custom ID")
