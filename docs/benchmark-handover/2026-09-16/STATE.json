@@ -29,7 +29,7 @@
     "B03-A synthetic reservation protocol",
     "B03-B injected-port object/registry adapter and synthetic boundary tests",
     "B03-D synthetic candidate allocation contract and adversarial tests",
-    "B03-B named runtime identities, scoped IAM and synthetic live Stage 0-3 proof"
+    "B03-B named runtime identities, scoped IAM and bounded synthetic live proof; extended live cases explicitly deferred"
   ],
   "next_milestone": "fresh linked-only candidate admission evidence; then reviewed 500-row independent annotation pilot and evaluation-set creation",
   "not_implemented": [
@@ -38,7 +38,8 @@
     "B04 consumer and promotion enforcement",
     "certified real benchmark membership",
     "independent new labels",
-    "new supervised retrain"
+    "new supervised retrain",
+    "live writer restriction, unknown/forged-subject and key rotation/retirement proofs"
   ],
   "research_base_before_handover": "1687a589a005298a809e421ac8e54666b8227053",
   "research_unrelated_starting_status": [
@@ -62,19 +63,28 @@
   ],
   "successor_record": {
     "milestone": "B03-B-runtime-identities-live-synthetic-proof",
-    "status": "complete_live_synthetic_proof_real_admission_pending",
+    "status": "bounded_live_synthetic_proof_passed_extended_cases_deferred_real_admission_pending",
+    "captured_at": "2026-09-18T08:54:10Z",
     "app_base_before_milestone": "13eac30",
     "app_branch": "codex/txncat-b03a-app",
-    "app_implementation_commit": "9e30c06",
+    "app_implementation_commit": "82b7750",
     "research_base_before_milestone": "4b36953",
     "research_branch": "codex/txncat-b03a-research",
-    "research_implementation_commit": "9c07b2c",
+    "research_implementation_commit": "8d13211",
     "evidence_app": "apps/ob-txn-categoriser/research/benchmark-implementation/b03-b-runtime-identities-2026-09-18",
     "evidence_research": "docs/benchmark-implementation/b03-b-runtime-identities-2026-09-18",
     "authorizes_consumption": false,
     "real_rows_exported": 0,
     "real_rows_labelled": 0,
-    "next_gate": "fresh linked-only candidate-level admission evidence for history/aliases, input and family novelty, exposure exclusion and pilot eligibility before any real reservation"
+    "manifest": {
+      "namespace": "synthetic-stage0-20260918-v3",
+      "object": "_authority/synthetic-stage0-20260918-v3/proof-manifest.json",
+      "generation": "1789720806638620",
+      "sha256": "655e36e867eaad8a6d2e7ab9c8bb60906df03c2e4212b02f4ecab1ed12a9ae58",
+      "size_bytes": 12148,
+      "authorizes_consumption": false
+    },
+    "next_gate": "fresh linked-only candidate-level admission evidence for history/aliases, input and family novelty, exposure exclusion and pilot eligibility before any real reservation; deferred live hardening remains a separate follow-up"
   },
   "schema_version": "txncat-dataset-handover-v1",
   "validation": {
@@ -124,19 +134,36 @@
     },
     "non_passing_attempts": [
       "root repository-wide pytest was not a valid monorepo check because unrelated app environments and dependencies are intentionally separate",
-      "combined importlib collection exposed test-local imports; package suites were rerun with explicit test-root PYTHONPATH and passed"
+      "combined importlib collection exposed test-local imports; package suites were rerun with explicit test-root PYTHONPATH and passed",
+      "first v5 Cloud Build failed because its temporary Docker context omitted the canonical script; no deployment used that image",
+      "first KMS-disabled live probe used an incorrect expected-status environment value; the corrected 503 probe passed"
     ],
     "live_synthetic_proof": {
-      "namespace": "synthetic-stage0-20260918-v2",
-      "image_digest": "sha256:510f24807152026b3cf65dd5478ab6aaa9825d07901247964eff7d2ed3d50e3d",
-      "writer_execution": "txncat-proof-bootstrap-v2-mfczw",
-      "cas_statuses": ["committed", "stale_epoch"],
+      "namespace": "synthetic-stage0-20260918-v3",
+      "image_tag": "b03b-live-20260918-v6",
+      "image_digest": "sha256:9ee6f539ab3ac1760e87e3021baf2311d6a7dc8f84418dcfab2f18c86cc731b0",
+      "cloud_build_id": "40d2ae34-b469-43c4-8cd8-af33e7f51c6b",
+      "writer_execution": "txncat-proof-bootstrap-v2-8gfz2",
+      "manifest_object": "_authority/synthetic-stage0-20260918-v3/proof-manifest.json",
+      "manifest_generation": "1789720806638620",
+      "manifest_sha256": "655e36e867eaad8a6d2e7ab9c8bb60906df03c2e4212b02f4ecab1ed12a9ae58",
+      "manifest_size_bytes": 12148,
+      "cas_statuses": ["stale_epoch", "committed"],
+      "registry_cas_boundary_reached": true,
+      "race_winner_epoch": 6,
+      "retry_committed_epoch": 7,
+      "final_epoch": 7,
       "retry_statuses": {"new_operation": "committed", "exact_retry": "already_committed"},
       "valid_worker_http": {"learning": 200, "selection": 200},
-      "denied_worker_http": {"cross_plane": 403, "contaminated": 403, "wrong_audience": 401},
+      "denied_worker_http": {"cross_plane": 403, "contaminated": 403, "pending": 503, "orphan": 403, "changed_reference": 403, "wrong_audience": 401},
       "direct_data_plane_access": "all worker and verifier probes denied",
       "kms_disabled_http": 503,
       "kms_recovery_http": 200,
+      "deferred_live_cases": [
+        "authority-writer list/delete/update/sealed-object restriction probes",
+        "unknown-subject and forged-token Cloud Run probes",
+        "receipt-key rotation and retirement proof"
+      ],
       "authorizes_consumption": false,
       "customer_rows_exported": 0,
       "labels_or_reservations": 0
