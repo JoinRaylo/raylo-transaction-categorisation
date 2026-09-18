@@ -1,5 +1,6 @@
 """Synthetic unit tests for the provider-independent pilot runner guards."""
 
+import hashlib
 import json
 import os
 import sys
@@ -22,6 +23,8 @@ from raylo_txncat.benchmark_annotation import (  # noqa: E402
     validate_batch,
 )
 from raylo_txncat.hashing import sha256, strict_json_loads  # noqa: E402
+
+from tools.benchmark import annotation_pilot as pilot  # noqa: E402
 from tools.benchmark.annotation_pilot import (  # noqa: E402
     BatchState,
     PrivatePrompt,
@@ -31,7 +34,6 @@ from tools.benchmark.annotation_pilot import (  # noqa: E402
     _strict_result,
     _validate_experiment_paths,
 )
-from tools.benchmark import annotation_pilot as pilot  # noqa: E402
 
 
 def _digest(seed: str) -> str:
@@ -138,6 +140,62 @@ def test_provider_result_is_exact_and_status_fields_cannot_smuggle_labels():
         _strict_result({**valid, "confidence": float("nan")})
 
 
+def test_provider_rationale_obvious_identifiers_are_redacted_before_storage():
+    rationale = "Email person@example.com or call 07123 456789 ref 123456789."
+    redacted = pilot._redact_output_rationale(rationale)
+    assert "person@example.com" not in redacted
+    assert "07123 456789" not in redacted
+    assert "123456789" not in redacted
+    assert redacted.count("[redacted-") == 3
+
+
+@pytest.mark.parametrize(
+    ("requested", "returned"),
+    [
+        ("gemini-3.8-flash", "gemini-3.8-flash"),
+        ("gemini-3.8-flash", "models/gemini-3.8-flash-001"),
+        ("gemini-3.7-flash", "gemini-3.7-flash-20260918"),
+        ("claude-sonnet-5", "claude-sonnet-5-20260918"),
+    ],
+)
+def test_returned_model_identity_allows_only_requested_revision_family(
+    requested, returned
+):
+    assert pilot._validate_returned_model(requested, returned) == returned
+
+
+@pytest.mark.parametrize(
+    "returned",
+    [None, "", "gemini-3.7-flash", "gemini-3.8-flash-preview", "claude-sonnet-5"],
+)
+def test_returned_model_identity_rejects_missing_or_other_models(returned):
+    with pytest.raises(ValueError, match="unverified model identity"):
+        pilot._validate_returned_model("gemini-3.8-flash", returned)
+
+
+def test_anthropic_result_requires_exactly_one_named_tool_call():
+    correct = SimpleNamespace(type="tool_use", name="submit_annotation")
+    assert pilot._anthropic_tool_result([correct]) is correct
+    with pytest.raises(ValueError, match="exactly one"):
+        pilot._anthropic_tool_result([])
+    with pytest.raises(ValueError, match="exactly one"):
+        pilot._anthropic_tool_result(
+            [correct, SimpleNamespace(type="tool_use", name="other")]
+        )
+    with pytest.raises(ValueError, match="exactly one"):
+        pilot._anthropic_tool_result([SimpleNamespace(type="tool_use", name="other")])
+
+
+def test_anthropic_client_disables_automatic_retries(monkeypatch):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "synthetic-key")
+    client, types = pilot._clients(Namespace(), "anthropic_api")
+    try:
+        assert types is None
+        assert client.max_retries == 0
+    finally:
+        client.close()
+
+
 def test_private_prompt_forbids_source_identity_and_batch_state_is_digest_only():
     prompt = {
         "item_id": "pilot-v1-" + "a" * 64,
@@ -211,8 +269,94 @@ def test_partial_provider_collection_has_an_explicit_incomplete_state():
 
 def test_real_pilot_manifest_is_not_provider_executable():
     manifest = SimpleNamespace(manifest_kind="real_pilot")
-    with pytest.raises(ValueError, match="synthetic manifests only"):
+    with pytest.raises(ValueError, match="reviewed-local-pilot"):
         pilot._validate_runner_manifest(manifest)
+    pilot._validate_runner_manifest(manifest, allow_reviewed_real_pilot=True)
+
+
+def _real_bundle_fixture(tmp_path):
+    root = tmp_path / "annotation_method_experiment"
+    root.mkdir(parents=True)
+    paths = {
+        "manifest": root / "manifest.json",
+        "prompts": root / "prompts.jsonl",
+        "taxonomy": root / "taxonomy.csv",
+        "system": root / "system.txt",
+    }
+    for name, path in paths.items():
+        path.write_text(f"synthetic {name}\n", encoding="utf-8")
+    manifest = SimpleNamespace(
+        manifest_kind="real_pilot",
+        manifest_sha256=_digest("real-manifest"),
+        items=tuple(None for _ in range(500)),
+    )
+    receipt = {
+        "schema_version": "txncat-annotation-bundle-receipt-v1",
+        "purpose": "three_independent_model_annotations",
+        "manifest_kind": "real_pilot",
+        "manifest_sha256": manifest.manifest_sha256,
+        "rows": 500,
+        "manifest_file_sha256": hashlib.sha256(
+            paths["manifest"].read_bytes()
+        ).hexdigest(),
+        "prompts_sha256": hashlib.sha256(paths["prompts"].read_bytes()).hexdigest(),
+        "taxonomy_sha256": hashlib.sha256(paths["taxonomy"].read_bytes()).hexdigest(),
+        "system_sha256": hashlib.sha256(paths["system"].read_bytes()).hexdigest(),
+        "primary_views": {
+            "representative": 250,
+            "unseen_input": 150,
+            "unfamiliar_merchant": 100,
+        },
+        "obvious_identifier_redactions": {"email": 1},
+        "explicit_source_identity_fields": 0,
+        "provider_submission_review_required": True,
+        "authorizes_consumption": False,
+        "provider_calls": 0,
+        "labels_created": 0,
+    }
+    receipt_path = root / "receipt.json"
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    args = Namespace(
+        mode="batch-submit",
+        bundle_receipt=receipt_path,
+        **paths,
+    )
+    return args, manifest
+
+
+def test_real_pilot_requires_batch_and_an_unchanged_bundle_receipt(tmp_path):
+    args, manifest = _real_bundle_fixture(tmp_path)
+    pilot._validate_real_pilot_execution(args, manifest, strict_json_loads)
+
+    args.prompts.write_text("changed prompts\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="receipt is incomplete or changed"):
+        pilot._validate_real_pilot_execution(args, manifest, strict_json_loads)
+
+    args.mode = "online"
+    with pytest.raises(ValueError, match="discounted batch mode"):
+        pilot._validate_real_pilot_execution(args, manifest, strict_json_loads)
+
+
+@pytest.mark.parametrize(
+    ("path", "value"),
+    [
+        (("rows",), 500.0),
+        (("primary_views", "representative"), 250.0),
+        (("explicit_source_identity_fields",), False),
+        (("provider_calls",), False),
+        (("labels_created",), False),
+    ],
+)
+def test_real_bundle_receipt_rejects_non_strict_integer_counts(tmp_path, path, value):
+    args, manifest = _real_bundle_fixture(tmp_path)
+    receipt = json.loads(args.bundle_receipt.read_text(encoding="utf-8"))
+    target = receipt
+    for key in path[:-1]:
+        target = target[key]
+    target[path[-1]] = value
+    args.bundle_receipt.write_text(json.dumps(receipt), encoding="utf-8")
+    with pytest.raises(ValueError, match="receipt is incomplete or changed"):
+        pilot._validate_real_pilot_execution(args, manifest, strict_json_loads)
 
 
 def test_batch_state_invariants_and_transitions_are_fail_closed(tmp_path):
@@ -312,6 +456,126 @@ def test_fake_batch_collect_maps_one_result_to_one_vote(tmp_path, monkeypatch):
     batch = canonical[1].model_validate_json(output.read_bytes(), strict=True)
     validate_batch(manifest, batch)
     assert len(batch.votes) == 1
+    assert pilot._load_job_state(state_path, strict_json_loads).state == "collected"
+
+
+def test_batch_collection_clears_stale_error_after_success(tmp_path, monkeypatch):
+    canonical, manifest, prompts = _fixture()
+    item = prompts[0].item_id
+    response = SimpleNamespace(
+        text=json.dumps(
+            {
+                "status": "labelled",
+                "leaf": "groceries",
+                "confidence": 0.9,
+                "rationale": "Synthetic response.",
+            }
+        ),
+        model_version="gemini-3.8-flash",
+        response_id="response-1",
+        usage_metadata=None,
+    )
+    job = SimpleNamespace(
+        state=SimpleNamespace(value="JOB_STATE_SUCCEEDED"),
+        dest=SimpleNamespace(
+            inlined_responses=[
+                SimpleNamespace(
+                    error=None,
+                    metadata={"item_id": item},
+                    response=response,
+                )
+            ]
+        ),
+    )
+    state_path = _submitted_state(tmp_path, canonical, manifest, prompts)
+    submitted = pilot._load_job_state(state_path, strict_json_loads)
+    pilot._update_job_state(
+        state_path,
+        submitted,
+        state="collection_uncertain",
+        error_code="SyntheticTransportError",
+    )
+    output = tmp_path / "output.json"
+    monkeypatch.setattr(
+        pilot, "_clients", lambda args, provider: (_FakeClient(job), None)
+    )
+    pilot._collect_batch(
+        Namespace(model="gemini-3.8-flash", job_state=state_path, output=output),
+        prompts,
+        "Synthetic guide",
+        frozenset({"groceries", "unclassified_other"}),
+        manifest,
+        canonical,
+    )
+    state = pilot._load_job_state(state_path, strict_json_loads)
+    assert state.state == "collected"
+    assert state.error_code is None
+
+
+def test_batch_collection_recovers_identical_output_after_state_write_failure(
+    tmp_path, monkeypatch
+):
+    canonical, manifest, prompts = _fixture()
+    item = prompts[0].item_id
+    response = SimpleNamespace(
+        text=json.dumps(
+            {
+                "status": "labelled",
+                "leaf": "groceries",
+                "confidence": 0.9,
+                "rationale": "Synthetic response.",
+            }
+        ),
+        model_version="gemini-3.8-flash",
+        response_id="response-1",
+        usage_metadata=None,
+    )
+    job = SimpleNamespace(
+        state=SimpleNamespace(value="JOB_STATE_SUCCEEDED"),
+        dest=SimpleNamespace(
+            inlined_responses=[
+                SimpleNamespace(
+                    error=None,
+                    metadata={"item_id": item},
+                    response=response,
+                )
+            ]
+        ),
+    )
+    state_path = _submitted_state(tmp_path, canonical, manifest, prompts)
+    output = tmp_path / "output.json"
+    monkeypatch.setattr(
+        pilot, "_clients", lambda args, provider: (_FakeClient(job), None)
+    )
+    original_update = pilot._update_job_state
+
+    def fail_final_state_write(path, current_state, **changes):
+        if changes.get("state") == "collected":
+            raise RuntimeError("synthetic state write failure")
+        return original_update(path, current_state, **changes)
+
+    monkeypatch.setattr(pilot, "_update_job_state", fail_final_state_write)
+    args = Namespace(model="gemini-3.8-flash", job_state=state_path, output=output)
+    with pytest.raises(RuntimeError, match="synthetic state write failure"):
+        pilot._collect_batch(
+            args,
+            prompts,
+            "Synthetic guide",
+            frozenset({"groceries", "unclassified_other"}),
+            manifest,
+            canonical,
+        )
+    assert output.exists()
+
+    monkeypatch.setattr(pilot, "_update_job_state", original_update)
+    pilot._collect_batch(
+        args,
+        prompts,
+        "Synthetic guide",
+        frozenset({"groceries", "unclassified_other"}),
+        manifest,
+        canonical,
+    )
     assert pilot._load_job_state(state_path, strict_json_loads).state == "collected"
 
 
