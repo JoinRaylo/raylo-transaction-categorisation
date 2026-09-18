@@ -194,8 +194,10 @@
     "captured_at": "2026-09-18T10:45:03Z",
     "app_base_before_milestone": "1c29be0c51ea917edddd9d1f268180852e018472",
     "app_branch": "codex/txncat-b03a-app",
+    "app_implementation_commit": "7b89d5f",
     "research_base_before_milestone": "108e08896994a31ed1869323d92068e491a07607",
     "research_branch": "codex/txncat-b03a-research",
+    "research_implementation_commit": "2109d03",
     "canonical_files": [
       "lib/raylo-txncat/src/raylo_txncat/membership_manifest.py",
       "lib/raylo-txncat/tests/test_membership_manifest.py"
