@@ -137,5 +137,15 @@
     ],
     "mutations": false
   },
+  "local_validation": {
+    "candidate_lineage_adversarial_tests": "7 passed",
+    "startup_unit_tests": "115 passed",
+    "raylo_txncat_library_tests": "1128 passed",
+    "ob_txn_categoriser_app_tests": "327 passed, 1 skipped, 1 warning",
+    "ruff_check": "passed",
+    "ruff_format_check": "passed",
+    "py_compile": "passed",
+    "json_diff_and_mirror_checks": "passed"
+  },
   "next_gate": "complete alias/history, effective-input, family, legacy-membership and managed-authority evidence before real reservation"
 }

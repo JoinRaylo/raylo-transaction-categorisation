@@ -157,6 +157,30 @@ def test_summary_rejects_an_unexpected_account_transaction_pair():
         summarise(candidates, lineage, "profile-sha")
 
 
+def test_summary_rejects_a_missing_current_candidate_pair():
+    candidates = [_candidate("account-1", "transaction-1", "customer-1")]
+    lineage = [_lineage("account-1", "transaction-1", customer="customer-1")]
+    with pytest.raises(ValueError, match="does not cover the exact candidate"):
+        summarise(candidates, lineage, "profile-sha")
+
+
+def test_summary_rejects_a_current_customer_mismatch():
+    candidates = [_candidate("account-1", "transaction-1", "customer-1")]
+    lineage = [
+        _lineage(
+            "account-1",
+            "transaction-1",
+            source="current_materialized",
+            pending=None,
+            report=None,
+            customer=None,
+            linked_customer="customer-2",
+        )
+    ]
+    with pytest.raises(ValueError, match="does not match the candidate"):
+        summarise(candidates, lineage, "profile-sha")
+
+
 def test_lineage_rejects_non_boolean_pending_state():
     row = _lineage("account-1", "transaction-1", pending=1)  # type: ignore[arg-type]
     with pytest.raises(ValueError, match="pending state"):
