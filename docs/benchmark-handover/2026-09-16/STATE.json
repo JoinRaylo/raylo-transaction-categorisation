@@ -28,12 +28,13 @@
     "historical regression cohort",
     "B03-A synthetic reservation protocol",
     "B03-B injected-port object/registry adapter and synthetic boundary tests",
-    "B03-D synthetic candidate allocation contract and adversarial tests"
+    "B03-D synthetic candidate allocation contract and adversarial tests",
+    "B03-B named runtime identities, scoped IAM and synthetic live Stage 0-3 proof"
   ],
-  "next_milestone": "synthetic live authority proofs; then fresh linked-only admission before real evaluation-set creation",
+  "next_milestone": "fresh linked-only candidate admission evidence; then reviewed 500-row independent annotation pilot and evaluation-set creation",
   "not_implemented": [
     "B03 managed reservation authority",
-    "B03 authenticated receipt and cross-process/IAM proofs",
+    "fresh candidate-level linked-only history, alias, novelty and exposure evidence",
     "B04 consumer and promotion enforcement",
     "certified real benchmark membership",
     "independent new labels",
@@ -60,20 +61,20 @@
     "?? tools/select_seed.py"
   ],
   "successor_record": {
-    "milestone": "B03-B-runtime-identities",
-    "status": "complete_control_plane_only_synthetic_proof_pending",
-    "app_base_before_milestone": "85ff0fe",
+    "milestone": "B03-B-runtime-identities-live-synthetic-proof",
+    "status": "complete_live_synthetic_proof_real_admission_pending",
+    "app_base_before_milestone": "13eac30",
     "app_branch": "codex/txncat-b03a-app",
-    "app_implementation_commit": "7fe019e",
-    "research_base_before_milestone": "5055385",
+    "app_implementation_commit": "9e30c06",
+    "research_base_before_milestone": "4b36953",
     "research_branch": "codex/txncat-b03a-research",
-    "research_implementation_commit": "4b36953",
+    "research_implementation_commit": "9c07b2c",
     "evidence_app": "apps/ob-txn-categoriser/research/benchmark-implementation/b03-b-runtime-identities-2026-09-18",
     "evidence_research": "docs/benchmark-implementation/b03-b-runtime-identities-2026-09-18",
     "authorizes_consumption": false,
     "real_rows_exported": 0,
     "real_rows_labelled": 0,
-    "next_gate": "synthetic Stage 0-3 verifier, direct-read deny and CAS proof, then complete admission evidence before any reservation"
+    "next_gate": "fresh linked-only candidate-level admission evidence for history/aliases, input and family novelty, exposure exclusion and pilot eligibility before any real reservation"
   },
   "schema_version": "txncat-dataset-handover-v1",
   "validation": {
@@ -106,9 +107,39 @@
     "reference_hashes_verified": 9,
     "research_mirror": {
       "local_links_verified_across_both_repos": 24,
-      "verified_byte_identical_files": 3
+      "verified_byte_identical_files": 9
     },
     "startup_test_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/private/tmp/txncat-d2-worktree/lib/raylo-txncat/src:/private/tmp/txncat-d2-worktree/apps/ob-txn-categoriser/src /private/tmp/txncat-c2-env/bin/python -m pytest -q -m unit lib/raylo-txncat/tests/test_benchmark.py lib/raylo-txncat/tests/test_benchmark_exposure.py apps/ob-txn-categoriser/tests/unit/test_benchmark_preflight.py",
-    "startup_tests_passed": 115
+    "startup_tests_passed": 115,
+    "scoped_full_suite": {
+      "raylo_txncat_library": "1128 passed",
+      "ob_txn_categoriser_app": "327 passed, 1 skipped, 1 warning"
+    },
+    "final_checks": {
+      "authority_and_cloud_unit": "55 passed",
+      "ruff_check": "passed",
+      "ruff_format_check": "passed",
+      "py_compile": "passed",
+      "git_diff_check": "passed in both worktrees"
+    },
+    "non_passing_attempts": [
+      "root repository-wide pytest was not a valid monorepo check because unrelated app environments and dependencies are intentionally separate",
+      "combined importlib collection exposed test-local imports; package suites were rerun with explicit test-root PYTHONPATH and passed"
+    ],
+    "live_synthetic_proof": {
+      "namespace": "synthetic-stage0-20260918-v2",
+      "image_digest": "sha256:510f24807152026b3cf65dd5478ab6aaa9825d07901247964eff7d2ed3d50e3d",
+      "writer_execution": "txncat-proof-bootstrap-v2-mfczw",
+      "cas_statuses": ["committed", "stale_epoch"],
+      "retry_statuses": {"new_operation": "committed", "exact_retry": "already_committed"},
+      "valid_worker_http": {"learning": 200, "selection": 200},
+      "denied_worker_http": {"cross_plane": 403, "contaminated": 403, "wrong_audience": 401},
+      "direct_data_plane_access": "all worker and verifier probes denied",
+      "kms_disabled_http": 503,
+      "kms_recovery_http": 200,
+      "authorizes_consumption": false,
+      "customer_rows_exported": 0,
+      "labels_or_reservations": 0
+    }
   }
 }
