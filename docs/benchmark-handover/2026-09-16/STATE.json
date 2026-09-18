@@ -188,6 +188,42 @@
     },
     "next_gate": "complete alias/history, effective-input, reviewed-family, legacy-membership and managed-authority evidence before real reservation"
   },
+  "membership_manifest_record": {
+    "milestone": "B03-C-minimal-membership-manifest",
+    "status": "synthetic_manifest_implemented_review_approved",
+    "captured_at": "2026-09-18T10:45:03Z",
+    "app_base_before_milestone": "1c29be0c51ea917edddd9d1f268180852e018472",
+    "app_branch": "codex/txncat-b03a-app",
+    "research_base_before_milestone": "108e08896994a31ed1869323d92068e491a07607",
+    "research_branch": "codex/txncat-b03a-research",
+    "canonical_files": [
+      "lib/raylo-txncat/src/raylo_txncat/membership_manifest.py",
+      "lib/raylo-txncat/tests/test_membership_manifest.py"
+    ],
+    "roles": ["train", "selection", "eval", "excluded", "neither"],
+    "focused_tests": "101 passed",
+    "independent_review": {
+      "reviewer": "Astra",
+      "agent": "Bohr",
+      "status": "approved",
+      "blocking_findings": 0
+    },
+    "authorizes_consumption": false,
+    "real_rows_exported": 0,
+    "real_rows_reserved": 0,
+    "real_rows_labelled": 0,
+    "provider_calls": false,
+    "cloud_changes": false,
+    "retraining": false,
+    "locked_set_scoring": false,
+    "limitations": [
+      "legacy training JSONL lacks provider observation IDs",
+      "manifest absence is not historical completeness evidence",
+      "pending/posted and reconnect aliases remain unresolved",
+      "local manifest lookup is not an authority or consumer authorization"
+    ],
+    "next_step": "freeze ID-bearing training/selection exports, then create the private customer-linked Plaid candidate manifest before annotation"
+  },
   "schema_version": "txncat-dataset-handover-v1",
   "validation": {
     "base_ci": {

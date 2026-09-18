@@ -1,0 +1,43 @@
+{
+  "schema_version": "benchmark-minimal-membership-manifest-verification-v1",
+  "milestone": "B03-C-minimal-membership-manifest",
+  "status": "synthetic_checks_passed_review_approved",
+  "commands": {
+    "focused_tests": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=lib/raylo-txncat/src python -m pytest -q -m unit lib/raylo-txncat/tests/test_membership_manifest.py lib/raylo-txncat/tests/test_benchmark.py",
+      "result": "101 passed"
+    },
+    "startup_tests": "125 passed",
+    "library_suite": "1,138 passed",
+    "app_suite": "327 passed, 1 skipped, 1 existing warning",
+    "ruff_check": "passed",
+    "ruff_format_check": "passed",
+    "py_compile": "passed",
+    "git_diff_check": "passed"
+  },
+  "safety": {
+    "authorizes_consumption": false,
+    "real_rows_exported": 0,
+    "real_rows_reserved": 0,
+    "real_rows_labelled": 0,
+    "provider_calls": false,
+    "cloud_changes": false,
+    "retraining": false,
+    "locked_set_scoring": false
+  },
+  "independent_review": {
+    "reviewer": "Astra",
+    "agent": "Bohr",
+    "status": "approved",
+    "blocking_findings": 0,
+    "review_scope": "bounded synthetic membership manifest and adversarial tests",
+    "test_coverage_follow_up": "closed"
+  },
+  "limitations": [
+    "existing training JSONL lacks provider observation IDs",
+    "manifest absence is not historical completeness evidence",
+    "pending/posted and reconnect aliases are not resolved by this helper",
+    "this helper is not an authority or authenticated consumer gate"
+  ],
+  "next_step": "freeze ID-bearing training/selection exports, then create the private customer-linked Plaid candidate manifest before annotation"
+}
