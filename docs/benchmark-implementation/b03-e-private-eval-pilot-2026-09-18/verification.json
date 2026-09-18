@@ -1,0 +1,62 @@
+{
+  "artifact": {
+    "local_path": "/private/tmp/txncat-eval-pilot-20260918-v2",
+    "membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068",
+    "pilot_sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248",
+    "receipt_sha256": "3a903922ca6a13becd62bc57751b11b35a1b9a579a6f6696d55f064aac04b623",
+    "status": "approved_v2_private_annotation_input",
+    "summary_sha256": "c261ccbd4da660a75aa0fb9f4df99699f760411db96343ee71b17942847cb668",
+    "supersedes_unapproved": "/private/tmp/txncat-eval-pilot-20260918-v1"
+  },
+  "authorizes_consumption": false,
+  "captured_at": "2026-09-18T11:55:05Z",
+  "controls": {
+    "anonymous_id_recovery": false,
+    "cloud_changes": 0,
+    "customer_linked_plaid_only": true,
+    "identifier_free_annotation_payload": true,
+    "labels_created": 0,
+    "locked_sets_scored": 0,
+    "models_retrained": 0,
+    "provider_calls": 0,
+    "whole_customer_primary_assignment": true
+  },
+  "independent_review": {
+    "agent": "Kant",
+    "blocking_findings_after_correction": 0,
+    "initial_findings": 4,
+    "model": "Astra",
+    "status": "approved_v2"
+  },
+  "pilot": {
+    "customers": 464,
+    "existing_membership_files": 0,
+    "max_rows_per_customer": 4,
+    "primary_view_historical_input_overlap": {
+      "representative": 111,
+      "unfamiliar_merchant": 0,
+      "unseen_input": 0
+    },
+    "primary_views": {
+      "representative": 250,
+      "unfamiliar_merchant": 100,
+      "unseen_input": 150
+    },
+    "rows": 500,
+    "view_tags": {
+      "representative": 500,
+      "unfamiliar_merchant": 156,
+      "unseen_input": 389
+    }
+  },
+  "source": {
+    "candidate_result_sha256": "f9c549ee7a8a6bbfaec8999d3edaf2dca22f0d4f4fa463a486dcc3fd5a8f32ef",
+    "lineage_result_sha256": "030d239d3e361e81750bc77ee0b1e97969e9d13a2eece588f3cd780385418ae4",
+    "profile_sha256": "04efff789eadd9bbae635109bd15be80e34164bf8132e1d78f7bacbce2eb7ec5"
+  },
+  "tests": {
+    "focused": "12 passed",
+    "full_regression": "126 passed, 2 pre-existing unknown-marker warnings",
+    "py_compile": "passed"
+  }
+}

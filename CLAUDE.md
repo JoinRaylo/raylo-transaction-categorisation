@@ -123,6 +123,24 @@ No real rows, labels, provider calls, retraining or locked-set scoring occurred.
 Next: use this lookup to exclude existing learning/selection IDs from the fresh
 private customer-linked candidate export, then allocate evaluation before training.
 
+## B03-E private evaluation pilot construction (2026-09-18)
+
+The approved private v2 pilot is recorded in
+`docs/benchmark-implementation/b03-e-private-eval-pilot-2026-09-18/` and built by
+`tools/benchmark/build_eval_pilot.py`. It assigns 500 exact Plaid events to eval
+before annotation, with a 250 representative / 150 unseen-input / 100
+unfamiliar-merchant primary split across 464 whole customer blocks. Explicit
+source IDs live only in the private `membership.csv`; `pilot.jsonl` contains the
+annotation fields and a derived pilot ID. Strict novelty cohorts have zero known
+historical effective-input matches, while the representative cohort intentionally
+contains 111 familiar inputs. Astra approved v2 after the builder was hardened for
+historical customer contradictions, raw/opaque customer grouping consistency and
+membership-input receipt hashes. Twelve focused tests and 126 regressions pass.
+No provider call, label, retrain, locked-set score or cloud change occurred.
+Historical exact-ID completeness and reviewed merchant families remain unavailable;
+future Tier-B training fetches must consume the v2 eval membership as a mandatory
+exclusion before the annotation providers are called.
+
 ## B03-B authenticated receipt boundary (2026-09-17)
 
 The canonical app boundary now includes strict `AuthenticatedReceipt` and
