@@ -1,12 +1,13 @@
 # Synthetic Stage 0–3 proof plan
 
-Status: **executed and passed synthetically on 2026-09-18**. This plan records
-the live proof after the runtime identity/binding milestone. It does not
-authorize customer-data access or benchmark consumption.
+Status: **bounded live proof executed and passed synthetically on 2026-09-18**.
+This plan records the live proof after the runtime identity/binding milestone.
+The extended writer/key-rotation cases remain deferred, and nothing here
+authorizes customer-data access or benchmark consumption.
 
 ## Pinned proof namespace and principals
 
-- Synthetic namespace: `synthetic-stage0-20260918-v2`.
+- Synthetic namespace: `synthetic-stage0-20260918-v3`.
 - Authority writer: `txncat-authority-writer`, unique ID
   `110799062502316526083`.
 - Receipt verifier: `txncat-receipt-verifier`, unique ID
@@ -19,18 +20,18 @@ authorize customer-data access or benchmark consumption.
 - Live verifier audience: the exact private Cloud Run service URL, pinned in
   the execution receipt after deployment.
 - Object paths are permanently namespaced under
-  `_authority/synthetic-stage0-20260918-v2/`,
-  `worker/learning/synthetic-stage0-20260918-v2/` and
-  `worker/selection/synthetic-stage0-20260918-v2/`. Private canaries use
-  `private/synthetic-stage0-20260918-v2/`.
+  `_authority/synthetic-stage0-20260918-v3/`,
+  `worker/learning/synthetic-stage0-20260918-v3/` and
+  `worker/selection/synthetic-stage0-20260918-v3/`. Private canaries use
+  `private/synthetic-stage0-20260918-v3/`.
 - Firestore collections are
-  `txncat_synthetic-stage0-20260918-v2_registry`,
-  `txncat_synthetic-stage0-20260918-v2_proposals` and
-  `txncat_synthetic-stage0-20260918-v2_operations`; only the current
+  `txncat_synthetic-stage0-20260918-v3_registry`,
+  `txncat_synthetic-stage0-20260918-v3_proposals` and
+  `txncat_synthetic-stage0-20260918-v3_operations`; only the current
   synthetic namespace uses them.
-- The live image digest, deployment identity, disposable signing version,
-  retention owner and audit-log owner are recorded in the execution receipt;
-  they must not be invented before deployment.
+- The live image digest, deployment identity, manifest generation/digest,
+  proof owner and retention/audit ownership disposition are recorded in the
+  retained receipt; deferred controls are named rather than invented.
 
 ## Stage 0 — fixture/bootstrap
 
@@ -87,22 +88,33 @@ commit serially. An identical lost-response retry returns the original
 operation without a duplicate epoch. An after-commit alias joining a protected
 and learned group must hold certification and retain the earlier exposure.
 
+The executed v3 live race used two non-conflicting prepared proposals, a
+process barrier immediately before the real registry transaction, and the same
+expected epoch. Both contenders therefore reached the Firestore CAS boundary;
+the observed outcomes were exactly one `committed` and one `stale_epoch`. The
+loser was reprepared with a new operation ID, committed at the next epoch, and
+the exact original retry returned `already_committed`. Conflicting-proposal
+contention and the full non-conflicting serial matrix remain deferred.
+
 ## Stage 3 — failure, retention and key lifecycle
 
-Exercise an orphan upload, failed registry CAS, contaminated operation,
-contamination alias and disposable signing-key rotation/retirement. Each
-affected read fails closed; disabling the active signing version must yield an
-unavailable/denied result rather than a cached allow. No orphan or historical
-membership is deleted by a cleanup shortcut. Evidence records the caller
-unique ID, operation ID, object name/generation/digest, registry epoch, key
-version and outcome only.
+The executed v3 proof exercised an orphan upload, a pending proposal,
+contaminated operation/alias, changed reference, failed registry CAS,
+receipt-key disable and recovery. Each exercised read failed closed; disabling
+the active signing version returned 503/unavailable rather than a cached allow,
+and re-enabling it restored a valid 200 read. No orphan or historical
+membership was deleted by a cleanup shortcut. Live writer restriction probes,
+unknown-subject/forged-token probes and signing-key rotation/retirement are
+deferred. Evidence records only synthetic caller/operation/object metadata,
+registry epochs, key version and outcome.
 
 ## Execution blockers
 
-The synthetic fixture/bootstrap, disposable-key lifecycle and Cloud Run
-identity actions completed. Cloud Run was used only to obtain the approved
-service-account identities without creating user-managed keys; it is not
-required for the offline protocol semantics. The runtime identities, IAM
+The synthetic fixture/bootstrap, bounded disposable-key disable/recovery and
+Cloud Run identity actions completed. Cloud Run was used only to obtain the
+approved service-account identities without creating user-managed keys; it is
+not required for the offline protocol semantics. The runtime identities, IAM
 bindings and synthetic proof do not authorize real rows, labels, reservations,
 provider calls, training or locked-set scoring. The next gate is fresh
-linked-only admission evidence.
+linked-only admission evidence; the deferred live proof cases are a separate
+hardening follow-up, not an authority grant.

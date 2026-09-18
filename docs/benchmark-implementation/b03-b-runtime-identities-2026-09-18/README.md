@@ -1,7 +1,8 @@
 # B03-B runtime identities and bindings
 
-Status: **named identities, least-privilege bindings and the synthetic live
-proof passed; fresh linked-only admission remains pending**.
+Status: **bounded named-identity/synthetic live proof passed; the extended
+writer-restriction and key-rotation matrix remains explicitly deferred, and
+fresh linked-only admission remains pending**.
 
 Carlos explicitly approved creation of the four keyless runtime identities and
 the exact least-privilege matrix in `raylo-txncat-authority-prod`. This packet
@@ -36,22 +37,27 @@ interrupted creation request; the authority-writer and selection-worker
 accounts were created in this approved step. No duplicate account or key was
 created.
 
-## Synthetic live proof passed
+## Bounded synthetic live proof passed
 
 The canonical runtime
 `apps/ob-txn-categoriser/scripts/benchmark_authority_live_proof.py` ran in
 `raylo-txncat-authority-prod` under the four named identities, using namespace
-`synthetic-stage0-20260918-v2`. The immutable image was
-`europe-west2-docker.pkg.dev/raylo-txncat-authority-prod/txncat-proof/authority-proof@sha256:510f24807152026b3cf65dd5478ab6aaa9825d07901247964eff7d2ed3d50e3d`.
+`synthetic-stage0-20260918-v3` through explicit Cloud Run environment
+configuration. The immutable image was
+`europe-west2-docker.pkg.dev/raylo-txncat-authority-prod/txncat-proof/authority-proof@sha256:9ee6f539ab3ac1760e87e3021baf2311d6a7dc8f84418dcfab2f18c86cc731b0`.
 
 - The writer job completed the synthetic bootstrap, including a pending
-  proposal, orphan, reservation/learning contamination alias and real
-  Firestore CAS race. The observed race was `committed` versus `stale_epoch`;
-  the new-operation retry committed and the exact retry returned
+  proposal, orphan, reservation/learning contamination alias and a barrier-
+  synchronized two-process Firestore CAS race. Both contenders reached the
+  registry transaction; the observed race was exactly one `committed` and one
+  `stale_epoch`. The new-operation retry committed at the next epoch, final
+  registry state matched that epoch, and the exact retry returned
   `already_committed`.
 - Valid learning and selection probes returned HTTP 200. Both cross-plane
-  receipt swaps and the contaminated claim returned HTTP 403. A wrong-audience
-  identity token was rejected by Cloud Run with HTTP 401.
+  receipt swaps, the contaminated claim, the orphan reference and the changed
+  reference returned HTTP 403. The proposal-only pending request returned HTTP
+  503/unavailable, and a wrong-audience identity token was rejected by Cloud Run
+  with HTTP 401.
 - Every worker probe observed direct Storage, Firestore and KMS access as
   `denied`. The verifier identity probe observed private-object read,
   Firestore mutation and KMS signing as `denied`.
@@ -63,11 +69,31 @@ The proof manifest is synthetic-only and explicitly
 `authorizes_consumption=false`. Its object is the only authority object Carlos
 can read directly, through the narrowly scoped
 `txncatSyntheticManifestReader` role, solely to assemble local probe inputs;
-workers and the verifier retain their separate runtime permissions.
+workers and the verifier retain their separate runtime permissions. The retained
+v3 manifest reference is:
+
+| Field | Value |
+| --- | --- |
+| Object | `_authority/synthetic-stage0-20260918-v3/proof-manifest.json` |
+| Generation | `1789720806638620` |
+| Size | `12148` bytes |
+| SHA-256 | `655e36e867eaad8a6d2e7ab9c8bb60906df03c2e4212b02f4ecab1ed12a9ae58` |
+
+The proof/evidence owner is Carlos. Synthetic fixture writes ran as the named
+authority-writer account under his approval; retention remains governed by the
+authority bucket's existing controls and no cleanup shortcut was used. Cloud
+provider audit logs remain provider-managed; Carlos retained the execution,
+revision, image and manifest locators above as the review receipt.
+
+This is a bounded runtime proof, not a claim that the full Stage 0–3 matrix is
+complete. Live writer list/delete/update/sealed-object restriction probes,
+unknown-subject/forged-token live probes, and signing-key rotation/retirement
+are deferred. The unit contract tests cover the corresponding strict identity
+and receipt cases where the live proof does not.
 
 ## Custom roles
 
-Six project custom roles were created, with no predefined project-wide Storage,
+Seven project custom roles were created, with no predefined project-wide Storage,
 Firestore, KMS, Editor or Owner role granted to a runtime identity:
 
 | Role | Permissions |
@@ -78,6 +104,7 @@ Firestore, KMS, Editor or Owner role granted to a runtime identity:
 | `txncatRegistryLookup` | `datastore.entities.get` |
 | `txncatReceiptSigner` | `cloudkms.cryptoKeyVersions.useToSign`, `cloudkms.cryptoKeyVersions.get`, `cloudkms.cryptoKeyVersions.viewPublicKey` |
 | `txncatReceiptVerifier` | `cloudkms.cryptoKeyVersions.get`, `cloudkms.cryptoKeyVersions.viewPublicKey`, `cloudkms.locations.get`, `cloudkms.locations.list`, `resourcemanager.projects.get` |
+| `txncatSyntheticManifestReader` | `storage.objects.get` on the exact v3 manifest object only |
 
 ## Bindings applied
 
@@ -97,7 +124,7 @@ Firestore, KMS, Editor or Owner role granted to a runtime identity:
 - Learning and selection workers have no Storage, Firestore or KMS bindings.
   They receive only `roles/run.invoker` on the exact private verifier service.
 - Carlos has a separate custom role containing only `storage.objects.get`, with
-  a CEL condition matching the v2 synthetic proof-manifest object exactly. It
+  a CEL condition matching the v3 synthetic proof-manifest object exactly. It
   does not grant bucket listing or claim-object access.
 
 ## Bucket-policy fallback and proof boundary
@@ -125,4 +152,5 @@ account history, input and merchant-family novelty, training/selection
 exclusions and pilot block eligibility before any real reservation or label.
 The current local preflight, synthetic manifest and these IAM bindings remain
 non-authorizing; no real data may be consumed until that admission review and
-the later annotation/retrain gates pass.
+the later annotation/retrain gates pass. The deferred live proof cases are not
+silently treated as authority.

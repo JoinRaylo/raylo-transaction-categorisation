@@ -234,18 +234,25 @@ private-object read or KMS-signing permission. Carlos has one additional
 probe inputs can be assembled; it does not grant listing or claim-object reads.
 
 The immutable proof image is
-`europe-west2-docker.pkg.dev/raylo-txncat-authority-prod/txncat-proof/authority-proof@sha256:510f24807152026b3cf65dd5478ab6aaa9825d07901247964eff7d2ed3d50e3d`.
-Under namespace `synthetic-stage0-20260918-v2`, the real Firestore race yielded
-one `committed` and one `stale_epoch`; a new-operation retry committed and the
-exact retry returned `already_committed`. Valid learning and selection calls
-returned 200; cross-plane receipt swaps and the contaminated claim returned
-403; a wrong-audience token returned 401. All worker direct Storage/Firestore/KMS
-probes and all verifier direct data/signing probes were denied. Disabling the
-receipt-key version made a previously valid call return 503 `unavailable`, and
-re-enabling it restored 200. The final key version is HSM-protected and enabled.
+`europe-west2-docker.pkg.dev/raylo-txncat-authority-prod/txncat-proof/authority-proof@sha256:9ee6f539ab3ac1760e87e3021baf2311d6a7dc8f84418dcfab2f18c86cc731b0`.
+Under namespace `synthetic-stage0-20260918-v3`, a barrier immediately before
+the real Firestore compare-and-commit synchronized two non-conflicting
+proposals so both contenders reached the registry boundary; the outcomes were
+exactly one `committed` and one `stale_epoch`. A new-operation retry committed,
+and the exact retry returned `already_committed`. Valid learning and selection
+calls returned 200; pending, orphan, changed-reference, cross-plane and
+contaminated claims returned 403/503 as specified, and a wrong-audience token
+returned 401. All worker direct Storage/Firestore/KMS probes and all verifier
+direct data/signing probes were denied. Disabling the receipt-key version made
+a previously valid call return 503 `unavailable`; re-enabling it restored 200.
+The final key versions are HSM-protected and enabled.
 
-This proves the synthetic runtime boundary only. The manifest says
-`authorizes_consumption=false`, and the proof wrote no customer rows, labels,
+This is a bounded synthetic live matrix, not a blanket Stage 0–3 certification.
+The manifest says `authorizes_consumption=false` and records its object
+generation, SHA-256, proof owner, execution identity and retention/audit
+disposition. Writer list/delete/update/sealed-object restrictions,
+unknown-subject/forged-token probes and key rotation/retirement remain deferred
+to a follow-up hardening pass. The proof wrote no customer rows, labels,
 reservations, provider outputs, training/selection inputs or locked-set scores.
 The next gate is a fresh candidate-level admission evidence pass over the
 customer-linked Plaid pool; local preflight and this synthetic authority proof
