@@ -4,7 +4,7 @@ Status: implemented locally with synthetic inputs only. This is a simplification
 of the dataset-construction lookup, not a claim that the real benchmark is
 admitted or historically independent.
 
-The canonical implementation is in the app monorepo:
+The canonical implementation is:
 
 - `lib/raylo-txncat/src/raylo_txncat/membership_manifest.py`
 - `lib/raylo-txncat/tests/test_membership_manifest.py`
