@@ -1,7 +1,8 @@
 # B03-E private evaluation pilot construction
 
-Status: **constructed and independently approved for annotation preparation; not
-yet labelled or authorized for training/scoring consumption**.
+Status: **constructed, prospectively protected from Tier-B training/selection and
+independently approved for annotation preparation; not yet labelled or authorized
+for training/scoring consumption**.
 
 This milestone turns the existing receipt-bound, customer-linked Plaid candidate
 draw into the simple private lookup Carlos requested. It assigns 500 distinct
@@ -58,13 +59,35 @@ membership file is itself hash-bound in the output receipt.
 This run supplied zero prior exact-ID membership files because the historical
 training exports do not contain recoverable provider identities. The private
 exposure profile remains the only retrospective model-input screen. Prospective
-separation begins with this eval lookup: future training/selection construction
-must exclude these exact events and connected account/customer groups.
+separation begins with this eval lookup. Future Tier-B fetch and build commands now
+require the same private membership file and exclude these exact events and
+connected account/customer groups.
+
+## Prospective training protection
+
+`src/build_tuning_dataset.py` now requires one or more
+`--protected-membership` inputs for both `fetch` and `build`. The linked query
+retains `customer_id` in the private source artifact, while model JSONL remains
+identifier-free. Before train/selection assignment, the fetch rejects exact eval
+events and every fetched row sharing an eval account or customer. Contradictory
+account/customer mappings fail closed.
+
+The private fetched transaction file is published with a receipt binding its hash,
+row count and each eval lookup hash/row count. Build reloads the supplied lookup and
+requires those bindings to match. Missing receipts, changed lookup/data, duplicate
+headers/events, malformed CSV widths, blank identifiers and inconsistent connected
+groups are rejected. This is a simple local protection and receipt, not a new
+database or cloud authority service.
+
+The updated SQL compiled in a BigQuery EU dry run without returning rows; its
+upper-bound bytes processed were `7,657,252,259`. Twenty-four focused membership
+tests and 135 full regressions passed. Independent Astra review found three initial
+fail-closed gaps; after correction it approved with no remaining findings.
 
 ## Verification and review
 
 - 12 focused synthetic/adversarial pilot tests passed.
-- 126 research and benchmark regression tests passed; two pre-existing unknown
+- 135 research and benchmark regression tests passed; two pre-existing unknown
   pytest-marker warnings remain.
 - Independent Astra review initially found four issues: over-restricting the
   representative cohort, accepting contradictory historical customers, trusting
@@ -76,7 +99,7 @@ must exclude these exact events and connected account/customer groups.
   explicit source identifiers from `pilot.jsonl`.
 
 No provider call, label, model retrain, locked-set score, cloud mutation or real
-training export occurred.
+training fetch/export occurred.
 
 ## Deliberate limitations and next gate
 
@@ -92,7 +115,7 @@ training export occurred.
 - `authorizes_consumption=false`: the artifact is annotation input and membership
   evidence, not authority to train or score.
 
-The next gate is to make the v2 eval membership a mandatory exclusion input for
-future Tier-B train/selection fetches. After that prospective separation check is
-tested and reviewed, send the identifier-free pilot independently to the three
-approved annotation models and preserve all disagreements for Carlos.
+The next gate is to extend the already-synthetic provider runner to this reviewed
+private manifest, add output/PII handling checks, and then send the identifier-free
+pilot independently to the three approved annotation models. Preserve all three
+outputs and route every disagreement to Carlos; do not auto-adjudicate.

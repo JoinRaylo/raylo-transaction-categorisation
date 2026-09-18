@@ -29,6 +29,7 @@ def plaid_row(name="one", *, description="synthetic coffee"):
     return {
         "account_id": f"account-{name}",
         "transaction_id": f"transaction-{name}",
+        "customer_id": f"customer-{name}",
         "merchant": "synthetic merchant",
         "description": description,
         "amount": "12.34",
@@ -283,6 +284,7 @@ def test_tier_b_query_is_id_bearing_customer_linked_and_deterministic():
     query = build_linked_tier_b_query(["synthetic merchant"], 7)
     assert "account_id" in query
     assert "transaction_id" in query
+    assert "chosen.customer_id AS customer_id" in query
     assert "intermediate_credit_plaid_transactions" in query
     assert "credit_plaid_open_banking_transactions` t" not in query
     assert "checkout_count = 1" in query
@@ -291,6 +293,7 @@ def test_tier_b_query_is_id_bearing_customer_linked_and_deterministic():
     assert "customer_record_count = 1" in query
     assert "SELECT s.*" in query
     assert "COUNT(DISTINCT payload_sha256) = 1" in query
+    assert "COUNT(DISTINCT customer_id) = 1" in query
     assert "ARRAY_AGG" in query
     assert "source_payload_sha256" in query
     assert "ORDER BY TO_HEX(SHA256" in query
@@ -309,3 +312,192 @@ def test_tier_b_query_rejects_unsafe_empty_inputs():
     for merchants, cap in (([], 1), ([""], 1), (["synthetic"], 0), (["synthetic"], True)):
         with pytest.raises(ValueError):
             build_linked_tier_b_query(merchants, cap)
+
+
+def write_eval_membership(path, rows):
+    fields = ("provider", "account_id", "transaction_id", "customer_id", "role")
+    with path.open("w", newline="", encoding="utf-8") as stream:
+        writer = csv.DictWriter(stream, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def test_eval_protection_excludes_exact_account_and_customer_groups(tmp_path):
+    lookup = tmp_path / "eval.csv"
+    write_eval_membership(
+        lookup,
+        [
+            {
+                "provider": "plaid",
+                "account_id": "eval-account",
+                "transaction_id": "eval-transaction",
+                "customer_id": "eval-customer",
+                "role": "eval",
+            }
+        ],
+    )
+    protection = builder.load_eval_protection([lookup])
+    rows = [
+        plaid_row("safe"),
+        plaid_row("exact")
+        | {
+            "account_id": "eval-account",
+            "transaction_id": "eval-transaction",
+            "customer_id": "eval-customer",
+        },
+        plaid_row("same-account")
+        | {"account_id": "eval-account", "customer_id": "eval-customer"},
+        plaid_row("same-customer") | {"customer_id": "eval-customer"},
+    ]
+    retained, excluded = builder.exclude_eval_membership(rows, protection)
+    assert retained == [plaid_row("safe")]
+    assert excluded == {"exact_event": 1, "account_group": 1, "customer_group": 1}
+    assert protection["inputs"][0]["rows"] == 1
+    assert protection["inputs"][0]["sha256"] == __import__("hashlib").sha256(
+        lookup.read_bytes()
+    ).hexdigest()
+
+
+@pytest.mark.parametrize(
+    "row",
+    [
+        {
+            "provider": "equifax",
+            "account_id": "account",
+            "transaction_id": "transaction",
+            "customer_id": "customer",
+            "role": "eval",
+        },
+        {
+            "provider": "plaid",
+            "account_id": "account",
+            "transaction_id": "transaction",
+            "customer_id": "customer",
+            "role": "train",
+        },
+    ],
+)
+def test_eval_protection_rejects_out_of_scope_membership(tmp_path, row):
+    lookup = tmp_path / "eval.csv"
+    write_eval_membership(lookup, [row])
+    with pytest.raises(ValueError, match="outside the protected scope"):
+        builder.load_eval_protection([lookup])
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        (
+            "provider,account_id,transaction_id,customer_id,customer_id,role\n"
+            "plaid,account,transaction,customer,shadow,eval\n"
+        ),
+        (
+            "provider,account_id,transaction_id,customer_id,role\n"
+            "plaid,   ,transaction,customer,eval\n"
+        ),
+        (
+            "provider,account_id,transaction_id,customer_id,role\n"
+            "plaid,account,transaction,customer,eval,extra\n"
+        ),
+    ],
+)
+def test_eval_protection_rejects_malformed_csv(tmp_path, text):
+    lookup = tmp_path / "eval.csv"
+    lookup.write_text(text, encoding="utf-8")
+    with pytest.raises(ValueError):
+        builder.load_eval_protection([lookup])
+
+
+def test_eval_protection_rejects_account_customer_contradiction(tmp_path):
+    lookup = tmp_path / "eval.csv"
+    write_eval_membership(
+        lookup,
+        [
+            {
+                "provider": "plaid",
+                "account_id": "eval-account",
+                "transaction_id": f"transaction-{index}",
+                "customer_id": f"customer-{index}",
+                "role": "eval",
+            }
+            for index in range(2)
+        ],
+    )
+    with pytest.raises(ValueError, match="account crosses customer"):
+        builder.load_eval_protection([lookup])
+
+
+def test_fetched_account_customer_contradiction_fails_closed(tmp_path):
+    lookup = tmp_path / "eval.csv"
+    write_eval_membership(
+        lookup,
+        [
+            {
+                "provider": "plaid",
+                "account_id": "eval-account",
+                "transaction_id": "eval-transaction",
+                "customer_id": "eval-customer",
+                "role": "eval",
+            }
+        ],
+    )
+    protection = builder.load_eval_protection([lookup])
+    with pytest.raises(ValueError, match="contradicts eval customer"):
+        builder.exclude_eval_membership(
+            [plaid_row("other") | {"account_id": "eval-account"}],
+            protection,
+        )
+
+
+def test_tier_b_fetch_receipt_binds_eval_lookup_and_result(tmp_path):
+    lookup = tmp_path / "eval.csv"
+    write_eval_membership(
+        lookup,
+        [
+            {
+                "provider": "plaid",
+                "account_id": "eval-account",
+                "transaction_id": "eval-transaction",
+                "customer_id": "eval-customer",
+                "role": "eval",
+            }
+        ],
+    )
+    protection = builder.load_eval_protection([lookup])
+    data_path = tmp_path / "txns.json"
+    receipt_path = tmp_path / "receipt.json"
+    builder.write_tier_b_fetch(
+        [plaid_row("safe")],
+        protection,
+        data_path=data_path,
+        receipt_path=receipt_path,
+    )
+    assert builder.read_verified_tier_b_fetch(
+        [lookup],
+        data_path=data_path,
+        receipt_path=receipt_path,
+    ) == [plaid_row("safe")]
+
+    receipt = json.loads(receipt_path.read_text())
+    receipt["eval_membership_inputs"] = [{"sha256": "not-a-hash", "rows": -1}]
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    with pytest.raises(ValueError, match="verified eval protection"):
+        builder.read_verified_tier_b_fetch(
+            [lookup],
+            data_path=data_path,
+            receipt_path=receipt_path,
+        )
+
+    builder.write_tier_b_fetch(
+        [plaid_row("safe")],
+        protection,
+        data_path=data_path,
+        receipt_path=receipt_path,
+    )
+    data_path.write_text("[]", encoding="utf-8")
+    with pytest.raises(ValueError, match="verified eval protection"):
+        builder.read_verified_tier_b_fetch(
+            [lookup],
+            data_path=data_path,
+            receipt_path=receipt_path,
+        )

@@ -31,8 +31,10 @@ Philosophy (agreed 2026-08-21, keep this in sync with any future changes):
      training or scoring inputs.
 
 Usage:
-    python src/build_tuning_dataset.py fetch [cap_per_merchant]
-    python src/build_tuning_dataset.py build   # -> model JSONL + private membership sidecars
+    python src/build_tuning_dataset.py fetch [cap_per_merchant] \
+        --protected-membership /private/path/eval-membership.csv
+    python src/build_tuning_dataset.py build \
+        --protected-membership /private/path/eval-membership.csv
     python src/build_tuning_dataset.py upload gs://BUCKET/PATH
 
 The fetch command now requires the reviewed unambiguous assessment -> checkout ->
@@ -43,6 +45,7 @@ IDs must be re-fetched; the builder deliberately fails rather than inventing an
 identity.  Legacy curated CSV rows are counted as identity-unavailable in the
 coverage report, so lookup absence is not historical-completeness evidence.
 """
+import argparse
 import csv
 import hashlib
 import json
@@ -95,6 +98,7 @@ RISK_GUARD_LEAVES = {
 }
 MIN_RISK_GUARD_CLEAN = 250
 TXNS_JSON = OUT_DIR / "tuning_txns.json"
+TXNS_RECEIPT = OUT_DIR / "tuning_txns_receipt.json"
 TRAIN_JSONL = OUT_DIR / "tuning_train.jsonl"
 VAL_JSONL = OUT_DIR / "tuning_val.jsonl"
 SLM_EVAL_CSV = ROOT / "data" / "gold_v2_slm_eval_holdout.csv"
@@ -114,6 +118,159 @@ ALLOWED_TIERS = DICTIONARY_ELIGIBLE_TIERS
 ABSTAIN_TIERS = {"abstain_confirmed", "abstain_residual", "abstain_human"}
 
 SYSTEM_PROMPT_PATH = OUT_DIR / "tuning_system_prompt.txt"
+
+
+def _file_sha256(path):
+    with pathlib.Path(path).open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def load_eval_protection(paths):
+    """Load private eval memberships that future Tier-B fetches must exclude."""
+
+    if not paths:
+        raise ValueError("at least one eval membership lookup is required")
+    events = set()
+    accounts = set()
+    customers = set()
+    account_customers = {}
+    inputs = []
+    for supplied in paths:
+        path = pathlib.Path(supplied)
+        rows = 0
+        with path.open(newline="", encoding="utf-8") as stream:
+            reader = csv.DictReader(stream)
+            required = {
+                "provider",
+                "account_id",
+                "transaction_id",
+                "customer_id",
+                "role",
+            }
+            if (
+                reader.fieldnames is None
+                or len(reader.fieldnames) != len(set(reader.fieldnames))
+                or not required <= set(reader.fieldnames)
+            ):
+                raise ValueError("eval membership lookup schema is incomplete")
+            for row in reader:
+                if None in row or any(value is None for value in row.values()):
+                    raise ValueError("eval membership row width is invalid")
+                identity = (
+                    row["provider"],
+                    row["account_id"],
+                    row["transaction_id"],
+                )
+                customer_id = row["customer_id"]
+                if (
+                    identity[0] != "plaid"
+                    or row["role"] != "eval"
+                    or any(not value.strip() or value != value.strip() for value in identity)
+                    or not customer_id.strip()
+                    or customer_id != customer_id.strip()
+                ):
+                    raise ValueError("eval membership row is outside the protected scope")
+                event = identity[1:]
+                if event in events:
+                    raise ValueError("eval membership contains a duplicate event")
+                events.add(event)
+                accounts.add(identity[1])
+                customers.add(customer_id)
+                previous_customer = account_customers.setdefault(identity[1], customer_id)
+                if previous_customer != customer_id:
+                    raise ValueError("eval membership account crosses customer groups")
+                rows += 1
+        if rows == 0:
+            raise ValueError("eval membership lookup is empty")
+        inputs.append({"sha256": _file_sha256(path), "rows": rows})
+    return {
+        "events": frozenset(events),
+        "accounts": frozenset(accounts),
+        "customers": frozenset(customers),
+        "account_customers": account_customers,
+        "inputs": tuple(inputs),
+    }
+
+
+def exclude_eval_membership(rows, protection):
+    """Exclude exact events and their connected account/customer groups."""
+
+    retained = []
+    counts = {"exact_event": 0, "account_group": 0, "customer_group": 0}
+    seen = set()
+    fetched_account_customers = {}
+    for row in rows:
+        required = ("account_id", "transaction_id", "customer_id")
+        if any(not isinstance(row.get(field), str) or not row[field] for field in required):
+            raise ValueError("fetched Tier-B row is missing linked identity")
+        event = (row["account_id"], row["transaction_id"])
+        if event in seen:
+            raise ValueError("fetched Tier-B rows contain a duplicate event")
+        seen.add(event)
+        previous_customer = fetched_account_customers.setdefault(
+            row["account_id"], row["customer_id"]
+        )
+        if previous_customer != row["customer_id"]:
+            raise ValueError("fetched Tier-B account crosses customer groups")
+        protected_customer = protection["account_customers"].get(row["account_id"])
+        if protected_customer is not None and protected_customer != row["customer_id"]:
+            raise ValueError("fetched Tier-B account contradicts eval customer membership")
+        if event in protection["events"]:
+            counts["exact_event"] += 1
+            continue
+        if row["account_id"] in protection["accounts"]:
+            counts["account_group"] += 1
+            continue
+        if row["customer_id"] in protection["customers"]:
+            counts["customer_group"] += 1
+            continue
+        retained.append(row)
+    return retained, counts
+
+
+def write_tier_b_fetch(rows, protection, *, data_path=TXNS_JSON, receipt_path=TXNS_RECEIPT):
+    """Publish fetched rows first and their protection receipt last."""
+
+    data_path = pathlib.Path(data_path)
+    receipt_path = pathlib.Path(receipt_path)
+    data_path.write_text(json.dumps(rows), encoding="utf-8")
+    receipt = {
+        "schema_version": "tuning-tier-b-fetch-receipt-v1",
+        "source_kind": "customer_linked_plaid_materialized",
+        "anonymous_id_recovery": False,
+        "eval_membership_inputs": list(protection["inputs"]),
+        "rows": len(rows),
+        "result_sha256": _file_sha256(data_path),
+    }
+    receipt_path.write_text(
+        json.dumps(receipt, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return receipt
+
+
+def read_verified_tier_b_fetch(
+    protected_memberships,
+    *,
+    data_path=TXNS_JSON,
+    receipt_path=TXNS_RECEIPT,
+):
+    data_path = pathlib.Path(data_path)
+    receipt_path = pathlib.Path(receipt_path)
+    protection = load_eval_protection(protected_memberships)
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    if (
+        receipt.get("schema_version") != "tuning-tier-b-fetch-receipt-v1"
+        or receipt.get("source_kind") != "customer_linked_plaid_materialized"
+        or receipt.get("anonymous_id_recovery") is not False
+        or receipt.get("eval_membership_inputs") != list(protection["inputs"])
+        or receipt.get("result_sha256") != _file_sha256(data_path)
+    ):
+        raise ValueError("Tier-B fetch is missing its verified eval protection")
+    rows = json.loads(data_path.read_text(encoding="utf-8"))
+    if type(rows) is not list or receipt.get("rows") != len(rows):
+        raise ValueError("Tier-B fetch row count does not match its receipt")
+    return rows
 
 
 def _norm(s):
@@ -192,8 +349,8 @@ def build_linked_tier_b_query(merchants, cap_per_merchant):
 WITH source_observations AS (
   SELECT
     checkout_risk_assessment_result_id AS assessment_id,
-    account_id,
-    transaction_id,
+    TRIM(account_id) AS account_id,
+    TRIM(transaction_id) AS transaction_id,
     LOWER(TRIM(merchant_name)) AS merchant,
     IFNULL(COALESCE(description, transaction_name), '') AS description,
     ROUND(ABS(amount), 2) AS amount,
@@ -243,7 +400,7 @@ WITH source_observations AS (
   WHERE NULLIF(TRIM(customer_id), '') IS NOT NULL
   GROUP BY customer_id
 ), linked_observations AS (
-  SELECT s.*
+  SELECT s.*, u.customer_id
   FROM source_observations s
   JOIN assessment_links a USING (assessment_id)
   JOIN checkout_links c ON a.checkout_count = 1 AND a.checkout_id = c.checkout_id
@@ -257,17 +414,19 @@ WITH source_observations AS (
     account_id,
     transaction_id,
     ARRAY_AGG(
-      STRUCT(merchant, description, amount, is_credit, payload_sha256)
+      STRUCT(customer_id, merchant, description, amount, is_credit, payload_sha256)
       ORDER BY assessment_id
       LIMIT 1
     )[OFFSET(0)] AS chosen
   FROM linked_observations
   GROUP BY account_id, transaction_id
   HAVING COUNT(DISTINCT payload_sha256) = 1
+    AND COUNT(DISTINCT customer_id) = 1
 )
 SELECT
   account_id,
   transaction_id,
+  chosen.customer_id AS customer_id,
   chosen.merchant AS merchant,
   chosen.description AS description,
   chosen.amount AS amount,
@@ -291,7 +450,8 @@ def tier_b_role(merchant):
     return "selection" if fraction < VAL_FRACTION else "train"
 
 
-def fetch(cap_per_merchant):
+def fetch(cap_per_merchant, protected_memberships):
+    protection = load_eval_protection(protected_memberships)
     _, _, leaves, _, _ = load_crosswalk()
     excluded_merchants = set()
     for gf in GOLD_V1_FILES:
@@ -333,11 +493,17 @@ def fetch(cap_per_merchant):
     for t in all_txns:
         t["target"] = target_by_merchant[t["merchant"]]
 
-    TXNS_JSON.write_text(json.dumps(all_txns))
+    all_txns, excluded = exclude_eval_membership(all_txns, protection)
+    write_tier_b_fetch(all_txns, protection)
+    print(
+        f"Eval protection excluded {sum(excluded.values())} Tier-B rows "
+        f"({excluded})",
+        file=sys.stderr,
+    )
     print(f"Wrote {len(all_txns)} transaction rows -> {TXNS_JSON}", file=sys.stderr)
 
 
-def build():
+def build(protected_memberships):
     from collections import Counter
 
     _, _, leaves, _, _ = load_crosswalk()
@@ -359,7 +525,7 @@ def build():
         )
 
     # ---------- Tier B: production_labels, merchant-level split (unchanged mechanism) ----------
-    txns = json.loads(TXNS_JSON.read_text())
+    txns = read_verified_tier_b_fetch(protected_memberships)
     rng = random.Random(SEED)
     merchants = sorted({t["merchant"] for t in txns})
     val_merchants = {merchant for merchant in merchants if tier_b_role(merchant) == "selection"}
@@ -605,9 +771,26 @@ if __name__ == "__main__":
     if not args or args[0] not in {"fetch", "build", "upload"}:
         sys.exit(__doc__)
     if args[0] == "fetch":
-        fetch(int(args[1]) if len(args) > 1 else DEFAULT_CAP)
+        parser = argparse.ArgumentParser(prog="build_tuning_dataset.py fetch")
+        parser.add_argument("cap_per_merchant", nargs="?", type=int, default=DEFAULT_CAP)
+        parser.add_argument(
+            "--protected-membership",
+            action="append",
+            type=pathlib.Path,
+            required=True,
+        )
+        fetch_args = parser.parse_args(args[1:])
+        fetch(fetch_args.cap_per_merchant, fetch_args.protected_membership)
     elif args[0] == "build":
-        build()
+        parser = argparse.ArgumentParser(prog="build_tuning_dataset.py build")
+        parser.add_argument(
+            "--protected-membership",
+            action="append",
+            type=pathlib.Path,
+            required=True,
+        )
+        build_args = parser.parse_args(args[1:])
+        build(build_args.protected_membership)
     elif args[0] == "upload":
         if len(args) < 2:
             sys.exit("usage: upload gs://BUCKET/PATH")

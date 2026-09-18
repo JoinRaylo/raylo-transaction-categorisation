@@ -28,6 +28,31 @@
     "model": "Astra",
     "status": "approved_v2"
   },
+  "prospective_training_protection": {
+    "bigquery_dry_run": {
+      "location": "EU",
+      "rows_returned": 0,
+      "statement_type": "SELECT",
+      "total_bytes_processed_upper_bound": 7657252259
+    },
+    "connected_groups": [
+      "event",
+      "account",
+      "customer"
+    ],
+    "independent_review": {
+      "agent": "Curie",
+      "blocking_findings_after_correction": 0,
+      "initial_findings": 3,
+      "model": "Astra",
+      "status": "approved"
+    },
+    "real_fetch_executed": false,
+    "required_at": [
+      "fetch",
+      "build"
+    ]
+  },
   "pilot": {
     "customers": 464,
     "existing_membership_files": 0,
@@ -56,7 +81,8 @@
   },
   "tests": {
     "focused": "12 passed",
-    "full_regression": "126 passed, 2 pre-existing unknown-marker warnings",
+    "focused_training_protection": "24 passed",
+    "full_regression": "135 passed, 2 pre-existing unknown-marker warnings",
     "py_compile": "passed"
   }
 }

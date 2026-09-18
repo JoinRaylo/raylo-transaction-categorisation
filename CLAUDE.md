@@ -138,8 +138,11 @@ historical customer contradictions, raw/opaque customer grouping consistency and
 membership-input receipt hashes. Twelve focused tests and 126 regressions pass.
 No provider call, label, retrain, locked-set score or cloud change occurred.
 Historical exact-ID completeness and reviewed merchant families remain unavailable;
-future Tier-B training fetches must consume the v2 eval membership as a mandatory
-exclusion before the annotation providers are called.
+future Tier-B training fetches and builds now require the v2 eval membership as a
+mandatory exact event/account/customer exclusion. The resulting private fetch is
+hash-bound to that lookup, and build re-verifies both inputs. The hardened query
+compiled in an EU no-row dry run; 24 focused tests and 135 regressions pass, and
+Astra approved the protection after three fixes. No real training fetch occurred.
 
 ## B03-B authenticated receipt boundary (2026-09-17)
 
