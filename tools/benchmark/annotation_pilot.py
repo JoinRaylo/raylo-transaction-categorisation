@@ -1085,8 +1085,16 @@ def _load_taxonomy_system(args):
 def _binding_digests(
     manifest, taxonomy_path: Path, system_path: Path
 ) -> tuple[str, str]:
-    taxonomy_sha256 = hashlib.sha256(taxonomy_path.read_bytes()).hexdigest()
-    guide_sha256 = hashlib.sha256(system_path.read_bytes()).hexdigest()
+    return _binding_digests_bytes(
+        manifest, taxonomy_path.read_bytes(), system_path.read_bytes()
+    )
+
+
+def _binding_digests_bytes(
+    manifest, taxonomy_raw: bytes, system_raw: bytes
+) -> tuple[str, str]:
+    taxonomy_sha256 = hashlib.sha256(taxonomy_raw).hexdigest()
+    guide_sha256 = hashlib.sha256(system_raw).hexdigest()
     if any(
         item.taxonomy_sha256 != taxonomy_sha256 or item.guide_sha256 != guide_sha256
         for item in manifest.items
@@ -1116,15 +1124,35 @@ def _validate_bundle_receipt(
     manifest,
     strict_json_loads,
 ) -> None:
-    raw = receipt_path.read_bytes()
-    receipt = strict_json_loads(raw)
+    _validate_bundle_receipt_contents(
+        receipt_raw=receipt_path.read_bytes(),
+        manifest_raw=manifest_path.read_bytes(),
+        prompts_raw=prompts_path.read_bytes(),
+        taxonomy_raw=taxonomy_path.read_bytes(),
+        system_raw=system_path.read_bytes(),
+        manifest=manifest,
+        strict_json_loads=strict_json_loads,
+    )
+
+
+def _validate_bundle_receipt_contents(
+    *,
+    receipt_raw: bytes,
+    manifest_raw: bytes,
+    prompts_raw: bytes,
+    taxonomy_raw: bytes,
+    system_raw: bytes,
+    manifest,
+    strict_json_loads,
+) -> None:
+    receipt = strict_json_loads(receipt_raw)
     if type(receipt) is not dict:
         raise ValueError("annotation bundle receipt is not an object")
     bindings = {
-        "manifest_file_sha256": hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
-        "prompts_sha256": hashlib.sha256(prompts_path.read_bytes()).hexdigest(),
-        "taxonomy_sha256": hashlib.sha256(taxonomy_path.read_bytes()).hexdigest(),
-        "system_sha256": hashlib.sha256(system_path.read_bytes()).hexdigest(),
+        "manifest_file_sha256": hashlib.sha256(manifest_raw).hexdigest(),
+        "prompts_sha256": hashlib.sha256(prompts_raw).hexdigest(),
+        "taxonomy_sha256": hashlib.sha256(taxonomy_raw).hexdigest(),
+        "system_sha256": hashlib.sha256(system_raw).hexdigest(),
     }
     primary_views = {
         "representative": 250,

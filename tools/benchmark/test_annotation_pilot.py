@@ -353,6 +353,33 @@ def test_real_pilot_requires_batch_and_an_unchanged_bundle_receipt(tmp_path):
         pilot._validate_real_pilot_execution(args, manifest, strict_json_loads)
 
 
+def test_bundle_receipt_can_validate_one_read_only_snapshot(tmp_path):
+    args, manifest = _real_bundle_fixture(tmp_path)
+    snapshot = {
+        "receipt_raw": args.bundle_receipt.read_bytes(),
+        "manifest_raw": args.manifest.read_bytes(),
+        "prompts_raw": args.prompts.read_bytes(),
+        "taxonomy_raw": args.taxonomy.read_bytes(),
+        "system_raw": args.system.read_bytes(),
+    }
+    args.system.write_text("concurrent replacement\n", encoding="utf-8")
+    pilot._validate_bundle_receipt_contents(
+        **snapshot,
+        manifest=manifest,
+        strict_json_loads=strict_json_loads,
+    )
+    with pytest.raises(ValueError, match="receipt is incomplete or changed"):
+        pilot._validate_bundle_receipt(
+            args.bundle_receipt,
+            manifest_path=args.manifest,
+            prompts_path=args.prompts,
+            taxonomy_path=args.taxonomy,
+            system_path=args.system,
+            manifest=manifest,
+            strict_json_loads=strict_json_loads,
+        )
+
+
 @pytest.mark.parametrize(
     ("path", "value"),
     [
