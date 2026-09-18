@@ -32,15 +32,16 @@
     "B03-B named runtime identities, scoped IAM and bounded synthetic live proof; extended live cases explicitly deferred",
     "B03-B private candidate event-lineage evidence; admission remains blocked",
     "B03-C ID-bearing future training/selection export and permanent exact-ID lookup; no real export yet",
-    "B03-E private 500-row eval lookup and identifier-free annotation payload with mandatory prospective Tier-B exclusion"
+    "B03-E private 500-row eval lookup and identifier-free annotation payload with mandatory prospective Tier-B exclusion",
+    "B03-C three-model private pilot annotation and non-adjudicating Carlos review queue"
   ],
-  "next_milestone": "extend the reviewed provider runner to the private v2 pilot, apply PII/output handling checks, then collect three independent annotations and surface disagreements to Carlos",
-  "next_gate": "the real annotation runner must verify the v2 pilot receipt, preserve independent provider outputs and avoid exposing source identity fields; no automatic disagreement adjudication",
+  "next_milestone": "Carlos resolves 239 model disagreements plus 24 unanimous abstentions, then a receipt-bound importer freezes all 500 internal-benchmark labels",
+  "next_gate": "every queued row needs a valid Carlos status and, when labelled, a taxonomy leaf; no model majority or unanimity may silently become a final label",
   "not_implemented": [
     "B03 managed reservation authority",
     "B04 consumer and promotion enforcement",
     "certified real benchmark membership",
-    "independent new labels and Carlos disagreement adjudication",
+    "Carlos disagreement adjudication and immutable final pilot labels",
     "new supervised retrain",
     "live writer restriction, unknown/forged-subject and key rotation/retirement proofs"
   ],
@@ -381,6 +382,80 @@
       "membership and receipts are local safeguards, not consumption authority"
     ],
     "next_step": "extend the synthetic provider runner to the reviewed v2 private manifest, add PII/output controls, then collect three independent annotations without auto-adjudication"
+  },
+  "private_pilot_annotation_record": {
+    "milestone": "B03-C-private-pilot-annotation-and-review-queue",
+    "status": "three_complete_model_streams_carlos_review_pending",
+    "captured_at": "2026-09-18",
+    "app_branch": "codex/txncat-b03a-app",
+    "app_contract_commit": "382d43e",
+    "research_base_before_milestone": "ad9c4ee",
+    "research_branch": "codex/txncat-b03a-research",
+    "source_scope": "customer-linked Plaid only",
+    "anonymous_id_recovery": false,
+    "model_votes": {
+      "claude-sonnet-5": 500,
+      "gemini-3.7-flash": 500,
+      "gemini-3.8-flash": 500
+    },
+    "gemini_attempt_3": {
+      "synthetic_acceptance": {
+        "gemini-3.7-flash": "10/10",
+        "gemini-3.8-flash": "10/10"
+      },
+      "recovered": {
+        "gemini-3.7-flash": "14/14",
+        "gemini-3.8-flash": "26/26"
+      }
+    },
+    "comparison": {
+      "rows": 500,
+      "unanimous": 261,
+      "unanimous_labelled": 237,
+      "unanimous_ambiguous": 11,
+      "unanimous_insufficient_evidence": 13,
+      "disagreement": 239,
+      "review_rows": 263,
+      "incomplete": 0,
+      "primary_views": {
+        "representative": {"rows": 250, "unanimous_labelled": 130, "disagreement": 109, "unanimous_non_labelled": 11, "review": 120},
+        "unseen_input": {"rows": 150, "unanimous_labelled": 74, "disagreement": 71, "unanimous_non_labelled": 5, "review": 76},
+        "unfamiliar_merchant": {"rows": 100, "unanimous_labelled": 33, "disagreement": 59, "unanimous_non_labelled": 8, "review": 67}
+      }
+    },
+    "private_review": {
+      "version": "adjudication-v2",
+      "supersedes": "adjudication",
+      "directory_mode": "0700",
+      "file_mode": "0600",
+      "workbook_sha256": "bd09ea3ea844f9e3b65b7292c1a3c0f7357fdf024ffe681a4a0afce8a3b3824e",
+      "review_queue_sha256": "cad0fe005e2b9f5e597b235f1a31a5d69985a515bbf3c61efb8b8968d8804370",
+      "explicit_source_identity_fields": 0,
+      "exact_source_identifier_matches": 0
+    },
+    "tests": {
+      "focused": "37 passed",
+      "review_queue": "10 passed",
+      "full_research": "197 passed, 2 pre-existing unknown-marker warnings",
+      "ruff_E_F_I_BLE": "passed",
+      "workbook_checks": "passed"
+    },
+    "independent_review": {
+      "reviewer": "Astra",
+      "agent": "Archimedes",
+      "status": "approved_after_correction",
+      "initial_findings": 2,
+      "blocking_findings": 0
+    },
+    "carlos_decisions": 0,
+    "gold_labels_created": 0,
+    "auto_adjudication": false,
+    "authorizes_consumption": false,
+    "training_or_selection_consumption": false,
+    "retraining": false,
+    "locked_set_scoring": false,
+    "cloud_changes": false,
+    "next_step": "Carlos resolves all 263 workbook rows, then a receipt-bound importer validates and freezes the 500 labels"
   },
   "schema_version": "txncat-dataset-handover-v1",
   "validation": {

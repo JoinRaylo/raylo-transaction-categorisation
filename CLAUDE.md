@@ -102,6 +102,36 @@ cannot authorize evaluation, training, selection, scoring or promotion. Physical
 authenticated receipts, complete linked-pool history/aliases, eligibility and
 B04 consumer gates remain open.
 
+## B03-C private pilot annotation and review queue (2026-09-18)
+
+The reviewed private 500-row pilot now has 500/500 strict-valid independent
+votes from Sonnet 5, Gemini 3.7 Flash and Gemini 3.8 Flash. Gemini attempt 3
+was gated by a separate 10-case synthetic batch acceptance suite per model,
+uses the exact four-field schema and taxonomy leaf enum, and recovered only
+the 14 and 26 previously invalid rows. The merged artifacts retain every
+earlier attempt and reject model drift, non-STOP finishes, invalid confidence,
+unknown leaves and alternate field names.
+
+`tools/benchmark/prepare_annotation_review_queue.py` validates the manifest,
+membership, prompt redaction, model identities, vote/attempt bindings and
+source-ID absence before publishing owner-only comparison evidence. The result
+is 239 complete model disagreements and zero incomplete row. Another 24 rows
+are unanimous abstentions (11 ambiguous, 13 insufficient evidence), so the
+corrected v2 queue contains 263 rows. Its mutually exclusive primary-view
+review counts are representative 120/250, unseen-input 76/150 and
+unfamiliar-merchant 67/100. The private workbook is under the experiment's
+`adjudication-v2/` directory and contains review reason plus editable Carlos
+status, leaf and notes fields with validation; it is not committed. The
+earlier 239-row `adjudication/` bundle is superseded and must not be used.
+
+No consensus, majority or unanimous abstention is a final label. The 237
+unanimously labelled rows do not require Carlos review under the approved
+pilot workflow. `carlos_decisions=0`,
+`gold_labels_created=0` and `authorizes_consumption=false`. The next gate is
+Carlos's 263 decisions, followed by a receipt-bound import that freezes all
+500 internal-benchmark labels. Training augmentation, retraining and any
+locked-set score remain later, separate actions.
+
 ## B03-C ID-bearing training membership (2026-09-18)
 
 The agreed simplified membership boundary is implemented in

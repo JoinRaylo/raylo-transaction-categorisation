@@ -69,7 +69,9 @@ def _write_private(path: Path, payload: bytes) -> None:
         os.fsync(stream.fileno())
 
 
-def _membership_source_ids(raw: bytes, manifest) -> frozenset[str]:
+def _membership_metadata(
+    raw: bytes, manifest
+) -> tuple[frozenset[str], dict[str, str]]:
     reader = csv.DictReader(io.StringIO(raw.decode("utf-8"), newline=""))
     if (
         reader.fieldnames is None
@@ -115,10 +117,13 @@ def _membership_source_ids(raw: bytes, manifest) -> frozenset[str]:
             or item.source_snapshot_sha256 != row["source_snapshot_sha256"]
         ):
             raise ValueError("source membership row is not bound to the manifest")
-    return frozenset(
-        row[field]
-        for row in rows
-        for field in ("account_id", "transaction_id", "customer_id")
+    return (
+        frozenset(
+            row[field]
+            for row in rows
+            for field in ("account_id", "transaction_id", "customer_id")
+        ),
+        {row["pilot_id"]: row["primary_view"] for row in rows},
     )
 
 
@@ -184,7 +189,7 @@ def build_review_queue(
     output: Path,
 ) -> dict:
     if (
-        output.name != "adjudication"
+        not re.fullmatch(r"adjudication(?:-v[1-9][0-9]*)?", output.name)
         or output.parent.name != "annotation_method_experiment"
     ):
         raise ValueError(
@@ -214,7 +219,9 @@ def build_review_queue(
     taxonomy_sha256 = _sha256(taxonomy_raw)
     if any(item.taxonomy_sha256 != taxonomy_sha256 for item in manifest.items):
         raise ValueError("taxonomy file is not bound to the annotation manifest")
-    source_ids = _membership_source_ids(membership_raw, manifest)
+    source_ids, primary_view_by_id = _membership_metadata(
+        membership_raw, manifest
+    )
     for prompt in prompts:
         _validate_prompt_text(prompt.prompt, strict_json_loads)
 
@@ -273,19 +280,41 @@ def build_review_queue(
         )
     queue = []
     by_view: dict[str, Counter[str]] = {}
+    by_primary_view: dict[str, Counter[str]] = {}
+    review_by_primary_view: Counter[str] = Counter()
+    review_reasons: Counter[str] = Counter()
+    unanimous_non_labelled: Counter[str] = Counter()
     for record in records:
         item = item_by_id[record.item_id]
+        primary_view = primary_view_by_id[record.item_id]
+        by_primary_view.setdefault(primary_view, Counter())[record.status] += 1
         for view in item.views:
             by_view.setdefault(view, Counter())[record.status] += 1
         if record.status == "unanimous":
-            continue
-        if record.status != "disagreement" or len(record.votes) != 3:
+            vote_statuses = {vote.status for vote in record.votes}
+            if vote_statuses == {"labelled"}:
+                continue
+            if len(vote_statuses) != 1 or not vote_statuses <= {
+                "ambiguous",
+                "insufficient_evidence",
+            }:
+                raise ValueError("unanimous non-labelled result is invalid")
+            review_reason = "unanimous_non_labelled"
+            unanimous_non_labelled[next(iter(vote_statuses))] += 1
+        elif record.status == "disagreement":
+            review_reason = "model_disagreement"
+        else:
             raise ValueError("only complete three-model disagreements may be reviewed")
+        if len(record.votes) != 3:
+            raise ValueError("only complete three-model results may be reviewed")
+        review_by_primary_view[primary_view] += 1
+        review_reasons[review_reason] += 1
         prompt = prompt_by_id[record.item_id]
         queue.append(
             {
                 "schema_version": "txncat-annotation-review-item-v1",
                 "item_id": record.item_id,
+                "primary_view": primary_view,
                 "views": list(item.views),
                 "prompt": prompt.prompt,
                 "votes": [
@@ -299,6 +328,7 @@ def build_review_queue(
                     for vote in record.votes
                 ],
                 "comparison_status": record.status,
+                "review_reason": review_reason,
                 "carlos_resolution_required": True,
             }
         )
@@ -314,6 +344,10 @@ def build_review_queue(
         },
         "comparison": counts,
         "review_queue_rows": len(queue),
+        "review_reasons": dict(sorted(review_reasons.items())),
+        "unanimous_labelled_rows": counts["unanimous"]
+        - sum(unanimous_non_labelled.values()),
+        "unanimous_non_labelled": dict(sorted(unanimous_non_labelled.items())),
         "by_view": {
             view: {
                 status: view_counts.get(status, 0)
@@ -321,6 +355,14 @@ def build_review_queue(
             }
             for view, view_counts in sorted(by_view.items())
         },
+        "by_primary_view": {
+            view: {
+                status: view_counts.get(status, 0)
+                for status in ("unanimous", "disagreement", "incomplete")
+            }
+            for view, view_counts in sorted(by_primary_view.items())
+        },
+        "review_queue_by_primary_view": dict(sorted(review_by_primary_view.items())),
         "auto_adjudication": False,
         "carlos_decisions": 0,
         "gold_labels_created": 0,

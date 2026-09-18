@@ -230,6 +230,8 @@ def test_review_queue_preserves_votes_without_auto_adjudication(tmp_path):
     assert summary["gold_labels_created"] == 0
     assert len(queue) == receipt["review_queue_rows"] == 1
     assert len(queue[0]["votes"]) == 3
+    assert queue[0]["primary_view"] == "unseen_input"
+    assert queue[0]["review_reason"] == "model_disagreement"
     assert queue[0]["carlos_resolution_required"] is True
     assert not {
         "account_id",
@@ -238,6 +240,65 @@ def test_review_queue_preserves_votes_without_auto_adjudication(tmp_path):
     } & set(queue[0])
     assert output.stat().st_mode & 0o777 == 0o700
     assert all(path.stat().st_mode & 0o777 == 0o600 for path in output.iterdir())
+    assert summary["by_primary_view"] == {
+        "representative": {
+            "unanimous": 1,
+            "disagreement": 0,
+            "incomplete": 0,
+        },
+        "unseen_input": {
+            "unanimous": 0,
+            "disagreement": 1,
+            "incomplete": 0,
+        },
+    }
+    assert summary["review_reasons"] == {"model_disagreement": 1}
+    assert summary["unanimous_labelled_rows"] == 1
+    assert summary["unanimous_non_labelled"] == {}
+    assert summary["review_queue_by_primary_view"] == {"unseen_input": 1}
+
+
+@pytest.mark.parametrize("status", ["ambiguous", "insufficient_evidence"])
+def test_unanimous_non_labelled_rows_require_carlos_review(tmp_path, status):
+    root, manifest, prompts, taxonomy, membership, batches = _fixture(tmp_path)
+    target_item = json.loads(batches[0].read_text(encoding="utf-8"))["votes"][0][
+        "item_id"
+    ]
+    for batch_path in batches:
+        changed = json.loads(batch_path.read_text(encoding="utf-8"))
+        for vote in changed["votes"]:
+            if vote["item_id"] == target_item:
+                vote["status"] = status
+                vote["leaf"] = None
+                vote["confidence"] = None
+        batch_path.write_text(json.dumps(changed), encoding="utf-8")
+
+    output = root / "adjudication-v2"
+    receipt = build_review_queue(
+        app_root=APP_ROOT,
+        manifest_path=manifest,
+        prompts_path=prompts,
+        taxonomy_path=taxonomy,
+        membership_path=membership,
+        batch_paths=batches,
+        output=output,
+    )
+    queue = [
+        json.loads(line)
+        for line in (output / "review_queue.jsonl").read_text().splitlines()
+    ]
+    summary = json.loads((output / "summary.json").read_text(encoding="utf-8"))
+    reviewed = next(row for row in queue if row["item_id"] == target_item)
+    assert receipt["review_queue_rows"] == len(queue) == 2
+    assert reviewed["comparison_status"] == "unanimous"
+    assert reviewed["review_reason"] == "unanimous_non_labelled"
+    assert {vote["status"] for vote in reviewed["votes"]} == {status}
+    assert summary["review_reasons"] == {
+        "model_disagreement": 1,
+        "unanimous_non_labelled": 1,
+    }
+    assert summary["unanimous_labelled_rows"] == 0
+    assert summary["unanimous_non_labelled"] == {status: 1}
 
 
 def test_review_queue_requires_three_distinct_batch_files(tmp_path):
