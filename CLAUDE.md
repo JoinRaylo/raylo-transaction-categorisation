@@ -221,6 +221,36 @@ or B04 consumer was added. The [current packet](docs/benchmark-implementation/b0
 records the exact resource IDs and commands. Worker identity/IAM changes,
 synthetic fixtures and live permission proofs remain gated on security review.
 
+## B03-B runtime identities and synthetic live proof (2026-09-18)
+
+The [runtime proof packet](docs/benchmark-implementation/b03-b-runtime-identities-2026-09-18/README.md)
+is the current status after the approved synthetic deployment. Four keyless
+service accounts are present in `raylo-txncat-authority-prod`: authority writer,
+receipt verifier, learning worker and selection worker. Runtime bindings are
+custom and resource/prefix constrained; workers have only invocation access to
+the private verifier, while the verifier has no direct Firestore mutation,
+private-object read or KMS-signing permission. Carlos has one additional
+`storage.objects.get` binding for the exact synthetic proof manifest so local
+probe inputs can be assembled; it does not grant listing or claim-object reads.
+
+The immutable proof image is
+`europe-west2-docker.pkg.dev/raylo-txncat-authority-prod/txncat-proof/authority-proof@sha256:510f24807152026b3cf65dd5478ab6aaa9825d07901247964eff7d2ed3d50e3d`.
+Under namespace `synthetic-stage0-20260918-v2`, the real Firestore race yielded
+one `committed` and one `stale_epoch`; a new-operation retry committed and the
+exact retry returned `already_committed`. Valid learning and selection calls
+returned 200; cross-plane receipt swaps and the contaminated claim returned
+403; a wrong-audience token returned 401. All worker direct Storage/Firestore/KMS
+probes and all verifier direct data/signing probes were denied. Disabling the
+receipt-key version made a previously valid call return 503 `unavailable`, and
+re-enabling it restored 200. The final key version is HSM-protected and enabled.
+
+This proves the synthetic runtime boundary only. The manifest says
+`authorizes_consumption=false`, and the proof wrote no customer rows, labels,
+reservations, provider outputs, training/selection inputs or locked-set scores.
+The next gate is a fresh candidate-level admission evidence pass over the
+customer-linked Plaid pool; local preflight and this synthetic authority proof
+remain non-authorizing.
+
 ## Joint benchmark and retraining data plan (2026-09-16)
 
 Read [the full-pool profile and joint plan](docs/benchmark-implementation/b02-joint-data-plan-2026-09-16/README.md)
