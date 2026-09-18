@@ -84,7 +84,21 @@
       "size_bytes": 12148,
       "authorizes_consumption": false
     },
-    "next_gate": "fresh linked-only candidate-level admission evidence for history/aliases, input and family novelty, exposure exclusion and pilot eligibility before any real reservation; deferred live hardening remains a separate follow-up"
+    "next_gate": "fresh linked-only candidate-level admission evidence for history/aliases, input and family novelty, exposure exclusion and pilot eligibility before any real reservation; deferred live hardening remains a separate follow-up",
+    "independent_protocol_review": {
+      "reviewer": "Astra (Volta)",
+      "status": "approved",
+      "scope": "committed bounded synthetic v3 milestone",
+      "blocking_findings": 0,
+      "reviewed_commits": ["82b7750", "0060636", "8d13211", "385fbca"],
+      "confirmed_deferrals": [
+        "conflicting-proposal contention and full serial-commit matrix",
+        "live writer list/delete/update/sealed-object restrictions",
+        "unknown-subject and forged-token live probes",
+        "signing-key rotation/retirement",
+        "real admission and B04 consumer/promotion enforcement"
+      ]
+    }
   },
   "schema_version": "txncat-dataset-handover-v1",
   "validation": {
