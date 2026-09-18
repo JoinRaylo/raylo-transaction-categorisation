@@ -1,0 +1,141 @@
+{
+  "schema_version": "benchmark-candidate-lineage-verification-v1",
+  "milestone": "B03-B-candidate-event-lineage-evidence",
+  "status": "candidate_lineage_captured_not_admitted",
+  "captured_at": "2026-09-18T10:04:47Z",
+  "scope": "private_customer_linked_plaid_candidate_lineage_evidence",
+  "source_scope": {
+    "project": "raylo-production",
+    "location": "EU",
+    "source_kind": "customer_linked_plaid_materialized",
+    "anonymous_id_recovery": false,
+    "tables": [
+      "raylo-production.dbt_production.credit_plaid_open_banking_transactions",
+      "raylo-production.dbt_production.intermediate_credit_plaid_transactions",
+      "raylo-production.dbt_production.intermediate_raylo_production__checkout_risk_assessment_results_latest",
+      "raylo-production.dbt_production.stg_raylo_production__checkouts",
+      "raylo-production.dbt_production.stg_raylo_production__customers",
+      "raylo-production.dbt_production.stg_raylo_production__users"
+    ],
+    "statement_type": "SELECT"
+  },
+  "candidate": {
+    "seed": "b05-pilot-source-v1",
+    "rows": 5000,
+    "accounts": 4672,
+    "customers": 4542,
+    "result_sha256": "f9c549ee7a8a6bbfaec8999d3edaf2dca22f0d4f4fa463a486dcc3fd5a8f32ef",
+    "profile_sha256": "04efff789eadd9bbae635109bd15be80e34164bf8132e1d78f7bacbce2eb7ec5"
+  },
+  "query": {
+    "job_id": "txncat_lineage_8ce6f2bc-eaf9-420d-8e91-53bfde392e69",
+    "account_parameter_count": 4672,
+    "transaction_parameter_count": 5000,
+    "dry_run_bytes": 10033362010,
+    "bytes_processed": 10033362010,
+    "bytes_billed": 10033823744,
+    "maximum_bytes_billed": 20000000000,
+    "sql_sha256": "d610ec954cf57ce98d3030b318e5844df405592174bd7da50c0a045c43b14a13",
+    "runner_sha256": "2ab924f67f6747f0217c1d5261e66b28d69a73d8dcd13ee8f1dc45da4f5a0311",
+    "result_rows": 5636,
+    "result_sha256": "030d239d3e361e81750bc77ee0b1e97969e9d13a2eece588f3cd780385418ae4",
+    "summary_sha256": "bdd27e236240b84c82e11f744e88fd49a29c7683255dd5eafe600c043815c00e",
+    "receipt_sha256": "3dd947de67d7474ec275dc60696d93f23b93e8c61a20faf5026974a82bfc76c9"
+  },
+  "lineage": {
+    "source_rows": {
+      "current_materialized": 5000,
+      "plaid_materialized_history": 636
+    },
+    "events": 5000,
+    "accounts": 4672,
+    "rows_per_account": {
+      "min": 1,
+      "max": 4
+    },
+    "alias_signals": {
+      "candidate_events_with_history": 5000,
+      "candidate_events_with_multiple_reports": 0,
+      "candidate_events_with_pending_state": 5,
+      "events_with_multiple_source_observations": 636,
+      "events_with_content_variants": 0,
+      "events_with_source_metadata_variants": 636,
+      "events_with_pending_and_posted_states": 0,
+      "pending_transaction_id_available": false,
+      "pending_transaction_id_nonnull": 0
+    },
+    "identity_signals": {
+      "accounts_with_multiple_customer_ids_in_selected_lineage": 0,
+      "customers_with_multiple_candidate_accounts": 121,
+      "all_selected_account_history_identity_complete": false
+    },
+    "candidate_blocks": {
+      "account_groups": 4672,
+      "account_max_rows": 4,
+      "customer_groups": 4542,
+      "customer_max_rows": 5,
+      "assignment_groups": 4542,
+      "assignment_max_rows": 5
+    },
+    "family_evidence": {
+      "reviewed_family_index_present": false,
+      "family_absence_certified": false,
+      "exact_name_absence_is_family_absence": false
+    }
+  },
+  "admission": {
+    "eligible_rows": 0,
+    "authorizes_consumption": false,
+    "rows_reserved_or_labelled": 0,
+    "blockers": [
+      "pending_reconnection_aliases_unverified",
+      "historical_identity_completeness_not_certified",
+      "effective_input_history_profile_is_non_authorizing",
+      "reviewed_merchant_family_index_missing",
+      "legacy_protected_membership_migration_missing",
+      "managed_reservation_and_consumer_gate_not_authorizing"
+    ]
+  },
+  "limitations": [
+    "selected candidate account and transaction keys only; not complete raw-account/report history",
+    "available source does not expose pending_transaction_id",
+    "repeated IDs and content variants are signals, not alias proof",
+    "complete training/selection exposure and legacy exclusions remain unproven",
+    "view-specific unfamiliar-family and sampling-weight evidence remain unproven"
+  ],
+  "mutations": {
+    "bigquery_source_mutated": false,
+    "destination_table_written": false,
+    "authority_objects_or_documents_written": false,
+    "customer_rows_exported_to_repository": false,
+    "rows_reserved": 0,
+    "rows_labelled": 0,
+    "provider_calls": 0,
+    "training_or_selection_state_changed": false,
+    "locked_sets_read": false,
+    "retrain_or_score": false
+  },
+  "private_evidence": {
+    "raw_lineage_retained_outside_repository": true,
+    "repository_contains_raw_rows": false,
+    "private_file_mode": "0600"
+  },
+  "independent_review": {
+    "reviewer": "Astra",
+    "agent": "Rawls",
+    "status": "approved",
+    "blocking_findings": 0,
+    "scope": "latest corrected candidate-lineage code, query, evidence packet and mirrors",
+    "confirmed": [
+      "exact paired candidate event filtering",
+      "pre-write unexpected/missing-pair and current-customer checks",
+      "strict boolean/null pending-state validation",
+      "exact five false history flags and integer zero reservation validation",
+      "separate comparable-content and source-metadata signals",
+      "final receipt/summary hashes and byte-identical mirrors",
+      "no privacy or authorization overclaim"
+    ],
+    "mutations": false
+  },
+  "next_gate": "complete alias/history, effective-input, family, legacy-membership and managed-authority evidence before real reservation"
+}

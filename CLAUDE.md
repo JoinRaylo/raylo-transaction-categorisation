@@ -258,6 +258,30 @@ The next gate is a fresh candidate-level admission evidence pass over the
 customer-linked Plaid pool; local preflight and this synthetic authority proof
 remain non-authorizing.
 
+## B03-B candidate event-lineage evidence (2026-09-18)
+
+The [candidate-lineage packet](docs/benchmark-implementation/b03-b-candidate-lineage-2026-09-18/README.md)
+binds the exact private `b05-pilot-source-v1` draw (5,000 distinct
+account/transaction events) and its non-authorizing exposure profile to a
+bounded BigQuery SELECT. The selected-key lineage returned 5,636 private rows:
+5,000 from the current materialization and 636 from the older materialized
+Plaid history, covering 4,672 accounts and 4,542 candidate customers.
+Candidate block sizes are recorded for later whole-block allocation, but they
+are not an admission allow.
+
+The source does not expose `pending_transaction_id`, and this query is scoped
+to selected candidate account/transaction keys rather than complete raw
+account/report history. Comparable transaction content variants were 0; the
+636 repeated source observations and source-metadata variants are still alias
+signals only. Complete historical identity, training/selection exposure,
+reviewed merchant families and legacy membership remain unproven;
+the summary has six explicit blockers, eligible rows 0 and
+`authorizes_consumption=false`. The source and authority were not mutated, no
+rows were reserved or labelled, and no provider, training, selection,
+locked-set, scoring or retraining operation occurred. The next gate is the
+missing alias/history/family/legacy evidence plus managed reservation and
+consumer authorization.
+
 ## Joint benchmark and retraining data plan (2026-09-16)
 
 Read [the full-pool profile and joint plan](docs/benchmark-implementation/b02-joint-data-plan-2026-09-16/README.md)

@@ -29,9 +29,11 @@
     "B03-A synthetic reservation protocol",
     "B03-B injected-port object/registry adapter and synthetic boundary tests",
     "B03-D synthetic candidate allocation contract and adversarial tests",
-    "B03-B named runtime identities, scoped IAM and bounded synthetic live proof; extended live cases explicitly deferred"
+    "B03-B named runtime identities, scoped IAM and bounded synthetic live proof; extended live cases explicitly deferred",
+    "B03-B private candidate event-lineage evidence; admission remains blocked"
   ],
-  "next_milestone": "fresh linked-only candidate admission evidence; then reviewed 500-row independent annotation pilot and evaluation-set creation",
+  "next_milestone": "complete candidate-level alias/history, novelty, legacy and exposure evidence; then managed 500-row annotation pilot and evaluation-set creation",
+  "next_gate": "complete pending/reconnection alias and historical identity evidence, effective-input and reviewed-family screens, legacy protected-membership mapping, and managed reservation/consumer authorization before any real reservation",
   "not_implemented": [
     "B03 managed reservation authority",
     "fresh candidate-level linked-only history, alias, novelty and exposure evidence",
@@ -99,6 +101,90 @@
         "real admission and B04 consumer/promotion enforcement"
       ]
     }
+  },
+  "candidate_lineage_record": {
+    "milestone": "B03-B-candidate-event-lineage-evidence",
+    "status": "captured_not_admitted",
+    "captured_at": "2026-09-18T10:04:47Z",
+    "app_base_before_milestone": "ab3e5f1",
+    "app_branch": "codex/txncat-b03a-app",
+    "research_base_before_milestone": "4050d71",
+    "research_branch": "codex/txncat-b03a-research",
+    "evidence_app": "apps/ob-txn-categoriser/research/benchmark-implementation/b03-b-candidate-lineage-2026-09-18",
+    "evidence_research": "docs/benchmark-implementation/b03-b-candidate-lineage-2026-09-18",
+    "candidate_seed": "b05-pilot-source-v1",
+    "candidate_rows": 5000,
+    "candidate_accounts": 4672,
+    "candidate_customers": 4542,
+    "candidate_result_sha256": "f9c549ee7a8a6bbfaec8999d3edaf2dca22f0d4f4fa463a486dcc3fd5a8f32ef",
+    "candidate_profile_sha256": "04efff789eadd9bbae635109bd15be80e34164bf8132e1d78f7bacbce2eb7ec5",
+    "lineage_result_rows": 5636,
+    "lineage_result_sha256": "030d239d3e361e81750bc77ee0b1e97969e9d13a2eece588f3cd780385418ae4",
+    "summary_sha256": "bdd27e236240b84c82e11f744e88fd49a29c7683255dd5eafe600c043815c00e",
+    "receipt_sha256": "3dd947de67d7474ec275dc60696d93f23b93e8c61a20faf5026974a82bfc76c9",
+    "query": {
+      "project": "raylo-production",
+      "location": "EU",
+      "statement_type": "SELECT",
+      "job_id": "txncat_lineage_8ce6f2bc-eaf9-420d-8e91-53bfde392e69",
+      "dry_run_bytes": 10033362010,
+      "bytes_processed": 10033362010,
+      "bytes_billed": 10033823744,
+      "maximum_bytes_billed": 20000000000,
+      "sql_sha256": "d610ec954cf57ce98d3030b318e5844df405592174bd7da50c0a045c43b14a13",
+      "runner_sha256": "2ab924f67f6747f0217c1d5261e66b28d69a73d8dcd13ee8f1dc45da4f5a0311"
+    },
+    "aggregate_signals": {
+      "current_materialized_rows": 5000,
+      "plaid_materialized_history_rows": 636,
+      "events_with_content_variants": 0,
+      "events_with_source_metadata_variants": 636,
+      "candidate_events_with_pending_state": 5,
+      "pending_transaction_id_available": false,
+      "customers_with_multiple_candidate_accounts": 121,
+      "all_selected_account_history_identity_complete": false,
+      "reviewed_family_index_present": false
+    },
+    "admission": {
+      "eligible_rows": 0,
+      "authorizes_consumption": false,
+      "rows_reserved_or_labelled": 0,
+      "blockers": [
+        "pending_reconnection_aliases_unverified",
+        "historical_identity_completeness_not_certified",
+        "effective_input_history_profile_is_non_authorizing",
+        "reviewed_merchant_family_index_missing",
+        "legacy_protected_membership_migration_missing",
+        "managed_reservation_and_consumer_gate_not_authorizing"
+      ]
+    },
+    "data_handling": {
+      "customer_linked_private_rows_materialized_locally": 5636,
+      "raw_rows_committed_to_repository": 0,
+      "authority_objects_or_documents_written": 0,
+      "provider_calls": 0,
+      "training_selection_locked_set_scoring_or_retrain": false,
+      "private_output_mode": "0600"
+    },
+    "independent_review": {
+      "reviewer": "Astra",
+      "agent": "Rawls",
+      "status": "approved",
+      "blocking_findings": 0,
+      "reviewed_runner_sha256": "2ab924f67f6747f0217c1d5261e66b28d69a73d8dcd13ee8f1dc45da4f5a0311",
+      "reviewed_sql_sha256": "d610ec954cf57ce98d3030b318e5844df405592174bd7da50c0a045c43b14a13",
+      "mutations": false,
+      "confirmed": [
+        "exact paired candidate event filtering",
+        "pre-write unexpected/missing-pair and current-customer checks",
+        "strict boolean/null pending-state validation",
+        "exact five false history flags and integer zero reservation validation",
+        "separate comparable-content and source-metadata signals",
+        "final receipt/summary hashes and byte-identical mirrors",
+        "no privacy or authorization overclaim"
+      ]
+    },
+    "next_gate": "complete alias/history, effective-input, reviewed-family, legacy-membership and managed-authority evidence before real reservation"
   },
   "schema_version": "txncat-dataset-handover-v1",
   "validation": {
