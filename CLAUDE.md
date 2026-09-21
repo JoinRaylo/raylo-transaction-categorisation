@@ -201,6 +201,37 @@ quotas, or use of final labels for supplement selection. The next gate is G1
 pilot closure (AIE-511 adjudication, AIE-512 importer, AIE-513 enforcement
 evidence).
 
+## B03-F pilot reconstruction and Opus 5 adjudication (2026-09-21)
+
+The lost v2 pilot working artifacts were reconstructed byte-identically under
+`~/.local/share/raylo-txncat/benchmark-eval-pilot/reconstruction-2026-09-21/`
+(dirs `0700`, files `0600`). The recovery runner
+`tools/benchmark/recover_eval_pilot_membership.py` re-executed the pinned draw's
+identity join and returned all 500 rows (474 accounts, 464 customers; pilot-ID
+set sha `9074da7b…`). `benchmark_build_index.py` rebuilt the B02 index under
+the preserved key to a byte-identical `database_sha256` `61cc0a42…` (40/40
+overlap checks pass), and `reconstruct_eval_pilot_views.py` re-ran the
+deterministic allocation to reproduce `pilot.jsonl` `fc5c626c…` and
+`membership.csv` `0afb4155…` exactly; the full view fingerprint passed.
+
+Provider recovery yielded 500/499/499 strict-valid votes: each Gemini model
+has one unretried attempt-1 `MAX_TOKENS` item, accepted as two `incomplete`
+comparison rows (259/239/2 vs the milestone's 261/239/0). The retry cap of
+three was respected; nothing was synthesised and no repair calls were made.
+
+The AIE-511 adjudication runner `tools/benchmark/adjudicate_pilot_opus.py` ran
+a `claude-opus-5` batch-only first pass over the 265 review rows: 265/265
+strict-valid `ProposedAdjudication` proposals (156 labelled / 83 ambiguous /
+26 insufficient evidence), per-item alias blinding, zero retries. Opus
+proposals are adjudication aids, never independent votes or gold labels —
+enforced by the canonical contract in `benchmark_annotation.py`. The lead
+review agreed 204 / disagreed 33 / unsure 28; 61 rows and six policy groups
+escalate to Carlos in the review workbook. `carlos_decisions=0`,
+`final_labels_created=0`, `authorizes_consumption=false`. Evidence:
+`docs/benchmark-implementation/b03-f-pilot-reconstruction-adjudication-2026-09-21/`.
+Next gate: Carlos's 61 decisions and six policy rulings, then the AIE-512
+receipt-bound importer.
+
 ## B03-B authenticated receipt boundary (2026-09-17)
 
 The canonical app boundary now includes strict `AuthenticatedReceipt` and

@@ -572,4 +572,75 @@
     "phase_state": "synthetic-only",
     "next_gate": "G1 pilot closure: AIE-511/AIE-512/AIE-513 evidence; no real-data action authorised"
   }
+,
+  "pilot_reconstruction_adjudication_record": {
+      "milestone": "AIE-511-pilot-reconstruction-adjudication",
+      "status": "v2_pilot_recovered_byte_identical_opus_first_pass_lead_review_complete_carlos_decisions_pending",
+      "captured_at": "2026-09-21T20:15:00Z",
+      "research_branch": "codex/txncat-aie510-g0-research",
+      "app_branch": "codex/txncat-aie510-g0",
+      "app_contract_commit": "4a737ad232fa780d65b1dbc6af0213f394019132",
+      "evidence_research": "docs/benchmark-implementation/b03-f-pilot-reconstruction-adjudication-2026-09-21",
+      "evidence_app": "apps/ob-txn-categoriser/research/benchmark-implementation/b03-f-pilot-reconstruction-adjudication-2026-09-21",
+      "re_identification": {
+          "bigquery_job_id": "txncat_pilot_recover_9803b1e5-1434-46d1-955c-403c3a5bcead",
+          "result_rows": 500,
+          "distinct_accounts": 474,
+          "distinct_customers": 464,
+          "pilot_id_set_sha256": "9074da7bb98d2e738681c9854240f35ff1eb14f2a0ffabe8a950c71f101a193f"
+      },
+      "index_rebuild": {
+          "database_sha256": "61cc0a42ddafb686e9f3ecb437be1eba3f9a78ecbb893f18fdb60eafb7ded5cd",
+          "byte_identical_to_archived": true,
+          "verify_index": "40/40 passed"
+      },
+      "view_reconstruction": {
+          "fingerprint": "all pass",
+          "pilot_sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248",
+          "membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068",
+          "byte_identical_to_approved_v2": true
+      },
+      "provider_recovery": {
+          "valid_votes": {
+              "claude-sonnet-5": 500,
+              "gemini-3.8-flash": 499,
+              "gemini-3.7-flash": 499
+          },
+          "incomplete_items": 2,
+          "review_rows": 265,
+          "milestone_match": false,
+          "decision": "gap accepted by Carlos; no fourth attempt; retry cap respected"
+      },
+      "opus5_adjudication": {
+          "model": "claude-opus-5",
+          "batch": "msgbatch_016mzC71m6c29kcUZDm3aCXU",
+          "valid": "265/265 attempt-1",
+          "outcomes": {
+              "labelled": 156,
+              "ambiguous": 83,
+              "insufficient_evidence": 26
+          },
+          "is_independent_vote": false
+      },
+      "lead_review": {
+          "reviewed": 265,
+          "agree": 204,
+          "disagree": 33,
+          "unsure": 28,
+          "escalated_to_carlos": 61,
+          "policy_groups": 6
+      },
+      "focused_tests": "19 annotation contract tests; 1293 library unit tests",
+      "authorizes_consumption": false,
+      "carlos_decisions": 0,
+      "final_labels_created": 0,
+      "real_rows_labelled": 0,
+      "retraining": false,
+      "locked_set_scoring": false,
+      "deviations": [
+          "model-assisted first pass replaced blind first review (approved by Carlos 2026-09-21)",
+          "two items carry incomplete vote tuples (accepted, unrepaired)"
+      ],
+      "next_gate": "Carlos's 61 escalated decisions + six policy rulings, then AIE-512 receipt-bound importer"
+  }
 }
