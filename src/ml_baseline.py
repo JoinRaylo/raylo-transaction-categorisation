@@ -28,6 +28,7 @@ load_dotenv()
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from gating_experiment import ROOT, OUT_DIR, MECH_PRIMARIES, load_crosswalk  # noqa: E402
+import eval_protection  # noqa: E402
 
 TRAIN_PARQUET = OUT_DIR / "ml_train.parquet"
 EVAL_PARQUET = OUT_DIR / "ml_eval_txns.parquet"
@@ -67,8 +68,20 @@ def fetch_train():
     df = df.dropna(subset=["leaf"])
     df["is_credit"] = (df["ttype"] == 1).astype(np.int8)
     df["amount"] = df["amount"].abs().astype(np.float32)
+    df["provider"] = "equifax"
+    # B04: fetched rows must pass the protected-release guard; rows without
+    # linkage identity fail closed until the query carries them.
+    df = pd.DataFrame(
+        eval_protection.apply_env(
+            df.to_dict("records"), purpose="supervised_training"
+        )
+    )
     df = df[["description", "vendor", "amount", "is_credit", "leaf"]]
     df.to_parquet(TRAIN_PARQUET, index=False)
+    eval_protection.write_artifact_receipt(
+        TRAIN_PARQUET, consumer="ml_baseline.fetch_train",
+        purpose="supervised_training",
+    )
     print(f"Wrote {TRAIN_PARQUET}: {len(df)} rows, {df['leaf'].nunique()} leaves", file=sys.stderr)
 
 
@@ -91,9 +104,22 @@ def fetch_eval():
     """
     print(f"Pulling Plaid transactions for {len(merchants)} gold merchants...", file=sys.stderr)
     df = bq_client().query(query).result().to_dataframe()
+    df["provider"] = "plaid"
+    # B04: this builds a new evaluation set from the linked pool — protected
+    # benchmark members must be excluded here too, and rows without linkage
+    # identity fail closed until the query carries them.
+    df = pd.DataFrame(
+        eval_protection.apply_env(
+            df.to_dict("records"), purpose="model_selection_validation"
+        )
+    )
     df["amount"] = df["amount"].astype(np.float32)
     df["is_credit"] = df["is_credit"].astype(np.int8)
     df.to_parquet(EVAL_PARQUET, index=False)
+    eval_protection.write_artifact_receipt(
+        EVAL_PARQUET, consumer="ml_baseline.fetch_eval",
+        purpose="model_selection_validation",
+    )
     print(f"Wrote {EVAL_PARQUET}: {len(df)} txns for {df['merchant'].nunique()} merchants", file=sys.stderr)
 
 
@@ -113,6 +139,8 @@ def train():
     from sklearn.feature_extraction.text import HashingVectorizer
     from sklearn.linear_model import SGDClassifier
 
+    # B04: the parquet must still match its bound fetch receipt before .fit.
+    eval_protection.verify_artifact(TRAIN_PARQUET)
     df = pd.read_parquet(TRAIN_PARQUET)
     rng = np.random.default_rng(SEED)
     df = df.iloc[rng.permutation(len(df))].reset_index(drop=True)
@@ -143,6 +171,8 @@ def evaluate():
     bundle = joblib.load(MODEL_JOBLIB)
     vectorizer, clf = bundle["vectorizer"], bundle["clf"]
 
+    # B04: the eval parquet must still match its bound fetch receipt.
+    eval_protection.verify_artifact(EVAL_PARQUET)
     txns = pd.read_parquet(EVAL_PARQUET)
     X = featurise(vectorizer, txns)
     txns["pred"] = clf.predict(X)

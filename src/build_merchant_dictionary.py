@@ -2,6 +2,7 @@
 import csv
 import pathlib
 from label_provenance import DICTIONARY_ELIGIBLE_TIERS
+import eval_protection  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 # (merchant, leaf, confidence, note)
@@ -368,7 +369,11 @@ print(f"gold_v2_review additions: {_gv2_added}")
 # to avoid re-introducing the exact circularity the gold-set leakage audit found.
 _PROD_GOOD_TIERS = DICTIONARY_ELIGIBLE_TIERS
 _prod_added = 0
-for r in csv.DictReader(open(ROOT / "data" / "production_labels_tranche3.csv")):
+_T3_LABELS = ROOT / "data" / "production_labels_tranche3.csv"
+# B04: tranche label files are fetched artifacts; they may only seed the
+# dictionary when their bound receipts still verify.
+eval_protection.verify_artifact(_T3_LABELS)
+for r in csv.DictReader(open(_T3_LABELS)):
     m = r["merchant"].strip().lower()
     # exclude the FULL Tier A merchant set (_by_merchant), not just `seen` -- most Tier A
     # merchants never passed the stricter gold_v2_review promotion filter above and so
@@ -480,6 +485,7 @@ _PAYDAY_FP = _re_gv2.compile(
 )
 _t4_added = _t4_updated = _t4_skipped_unclass = _t4_skipped_t2 = 0
 if _T4_LABELS.exists():
+    eval_protection.verify_artifact(_T4_LABELS)
     _by_norm = {r["normalised_merchant"]: r for r in rows}
     for r in csv.DictReader(open(_T4_LABELS)):
         m = r["merchant"].strip().lower()
@@ -530,6 +536,7 @@ print(f"production_tranche4: added {_t4_added}, retargeted {_t4_updated}, "
 _AGENT_SOURCE_PREFIXES = ("production_tranche3_", "production_tranche4_")
 _t4_ctx, _t4_final_of = set(), {}
 if _T4_LABELS.exists():
+    eval_protection.verify_artifact(_T4_LABELS)
     for r in csv.DictReader(open(_T4_LABELS)):
         m = r["merchant"].strip().lower()
         if r["tier"] == "context_dependent":

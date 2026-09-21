@@ -34,6 +34,7 @@ from gating_experiment import (MODELS, build_system_prompt, build_tool_schema,  
 from build_final_gold_v2 import TXN_ADDENDUM  # noqa: E402
 from build_final_gold_v2_batch2 import _leaf_equifax_queries  # noqa: E402
 from label_provenance import DICTIONARY_ELIGIBLE_TIERS  # noqa: E402
+import eval_protection  # noqa: E402
 
 SAMPLE_CSV = OUT_DIR / "tuning_topup_sample.csv"
 PREDICTIONS = {k: OUT_DIR / f"tuning_topup_predictions_{k}.csv" for k in MODELS}
@@ -131,6 +132,7 @@ def fetch():
                     "target_leaf": leaf, "merchant": m, "merchant_raw": r["merchant_raw"],
                     "description_raw": r["description_raw"] or "", "amount": r["amount"],
                     "direction": r["direction"], "native_category": r["native_category"],
+                    "provider": "equifax",
                 })
         if not found_any:
             no_data.append(leaf)
@@ -142,10 +144,17 @@ def fetch():
     print(f"Genuinely no Equifax data found for {len(no_data)} leaves: {no_data}", file=sys.stderr)
 
     OUT_DIR.mkdir(exist_ok=True)
+    # B04: fetched rows must pass the protected-release guard; rows without
+    # linkage identity fail closed until the query carries them.
+    rows = eval_protection.apply_env(rows, purpose="supervised_training")
     fieldnames = ["row_id"] + [k for k in rows[0].keys() if k != "row_id"]
     with open(SAMPLE_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader(); w.writerows(rows)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="build_tuning_leaf_topup.fetch",
+        purpose="supervised_training",
+    )
     print(f"Wrote {SAMPLE_CSV}", file=sys.stderr)
 
 
@@ -338,6 +347,7 @@ def fetch_gap_fill(gap_leaves):
                     "target_leaf": leaf, "merchant": m, "merchant_raw": r["merchant_raw"],
                     "description_raw": r["description_raw"] or "", "amount": r["amount"],
                     "direction": r["direction"], "native_category": r["native_category"],
+                    "provider": "equifax",
                 })
         if not found_any:
             still_no_data.append(leaf)
@@ -351,10 +361,19 @@ def fetch_gap_fill(gap_leaves):
     print(f"Still genuinely zero Equifax data at all for {len(still_no_data)} leaves: {still_no_data}", file=sys.stderr)
 
     all_rows = existing + rows
+    # B04: newly fetched rows must pass the protected-release guard; rows
+    # without linkage identity fail closed until the query carries them.
+    all_rows = existing + eval_protection.apply_env(
+        rows, purpose="supervised_training"
+    )
     fieldnames = ["row_id"] + [k for k in all_rows[0].keys() if k != "row_id"]
     with open(SAMPLE_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader(); w.writerows(all_rows)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="build_tuning_leaf_topup.fetch_gap_fill",
+        purpose="supervised_training",
+    )
     print(f"Wrote {SAMPLE_CSV}: {len(all_rows)} total rows", file=sys.stderr)
 
 

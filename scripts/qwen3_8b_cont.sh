@@ -21,6 +21,16 @@ cp "$ROOT/outputs/qwen3_8b_long_adapters/adapter_config.json" "$ADP/adapter_conf
 
 # MLX still pointed at the 24 Aug jsonl; corrections landed in tuning_train.jsonl.
 rm -f "$ROOT/outputs/qwen3_data/train.jsonl"
+
+# B04: the supervised export must verify against its membership coverage and
+# the pinned protected release before any training may consume it.
+"$PY" - <<PY
+import sys
+sys.path.insert(0, "$ROOT/src")
+import eval_protection
+eval_protection.verify_tuning_export(out_dir="$ROOT/outputs")
+PY
+
 ln "$ROOT/outputs/tuning_train.jsonl" "$ROOT/outputs/qwen3_data/train.jsonl"
 
 if pgrep -f 'mlx_lm.lora .*qwen3_8b_long_cont_adapters' >/dev/null 2>&1; then

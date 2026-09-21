@@ -53,6 +53,7 @@ load_dotenv()
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 import generate_crosswalk_sql as gxw  # noqa: E402
+import eval_protection  # noqa: E402
 
 REPORT = ROOT / "data" / "experiment3_iv_report.md"
 PLAID_PARQUET = ROOT / "outputs" / "experiment3_plaid_features.parquet"
@@ -556,6 +557,13 @@ def _query(client, sql: str, label: str) -> pd.DataFrame:
 
 
 def fetch():
+    # B04 gated off: proposal-level feature extracts carry no customer
+    # identity, so connected-customer exclusion cannot be proven — a
+    # protected member's behaviour could enter the feature store.
+    eval_protection.gate(
+        "experiment3_taxonomy_iv.fetch",
+        "proposal-level features carry no linked customer identity",
+    )
     from google.cloud import bigquery
     client = bigquery.Client(project="raylo-production")
     PLAID_PARQUET.parent.mkdir(exist_ok=True)
@@ -591,6 +599,12 @@ def _split_plaid(plaid: pd.DataFrame):
 
 def _attach_equifax_dates(eqx: pd.DataFrame) -> pd.DataFrame:
     """Join financial_proposal_created_at onto Equifax feature rows."""
+    # B04 gated off: proposal-level data carries no linked customer identity,
+    # so connected-customer exclusion cannot be proven.
+    eval_protection.gate(
+        "experiment3_taxonomy_iv._attach_equifax_dates",
+        "proposal-level rows carry no linked customer identity",
+    )
     eqx = eqx.copy()
     eqx["financial_proposal_id"] = eqx["financial_proposal_id"].astype(str)
     if EQX_DATES_PARQUET.exists():

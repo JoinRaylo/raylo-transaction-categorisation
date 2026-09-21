@@ -35,6 +35,7 @@ from gating_experiment import (  # noqa: E402
     build_notes_addendum, load_crosswalk,
 )
 from build_final_gold_v2 import TXN_ADDENDUM  # noqa: E402
+import eval_protection  # noqa: E402
 
 SAMPLE_CSV = OUT_DIR / "risk_leaf_topup_sample.csv"
 MODELS = {
@@ -245,12 +246,19 @@ def fetch():
             row_id += 1
 
     OUT_DIR.mkdir(exist_ok=True)
+    # B04: fetched rows must pass the protected-release guard; rows without
+    # linkage identity fail closed until the query carries them.
+    all_rows = eval_protection.apply_env(all_rows, purpose="supervised_training")
     fieldnames = ["row_id", "target_leaf", "merchant", "merchant_raw", "description_raw",
                   "amount", "direction", "native_category", "provider"]
     with open(SAMPLE_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(all_rows)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="build_risk_leaf_topup.fetch",
+        purpose="supervised_training",
+    )
     by_leaf = Counter(r["target_leaf"] for r in all_rows)
     print(f"\nWrote {SAMPLE_CSV}: {len(all_rows)} rows", file=sys.stderr)
     for leaf in TARGET_LEAVES:
@@ -302,12 +310,21 @@ def gap_fill():
             next_id += 1
 
     all_rows = existing + new_rows
+    # B04: newly fetched rows must pass the protected-release guard; rows
+    # without linkage identity fail closed until the query carries them.
+    all_rows = existing + eval_protection.apply_env(
+        new_rows, purpose="supervised_training"
+    )
     fieldnames = ["row_id", "target_leaf", "merchant", "merchant_raw", "description_raw",
                   "amount", "direction", "native_category", "provider"]
     with open(SAMPLE_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(all_rows)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="build_risk_leaf_topup",
+        purpose="supervised_training",
+    )
     print(f"Gap-fill added {len(new_rows)} rows -> {SAMPLE_CSV} now {len(all_rows)}", file=sys.stderr)
 
 

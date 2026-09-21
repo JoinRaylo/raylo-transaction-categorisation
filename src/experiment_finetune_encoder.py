@@ -40,6 +40,7 @@ from score_t5b_residual import (  # noqa: E402
     features_frame,
     scores_and_margin,
 )
+import eval_protection  # noqa: E402
 
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 TRAIN_JSONL = OUT_DIR / "tuning_train.jsonl"
@@ -183,6 +184,9 @@ def _logits(model, batch):
 def _prepare_data():
     rng = np.random.default_rng(SEED)
     print(f"Loading {TRAIN_JSONL}...", file=sys.stderr)
+    # B04: the supervised export must verify against its membership coverage
+    # and the pinned protected release before training may consume it.
+    eval_protection.verify_tuning_export(out_dir=OUT_DIR)
     df = _parse_tuning_jsonl(TRAIN_JSONL)
     df = df.iloc[rng.permutation(len(df))].reset_index(drop=True)
     leaves = sorted(df["leaf"].unique())

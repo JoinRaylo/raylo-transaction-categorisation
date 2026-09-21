@@ -63,6 +63,7 @@ from gating_experiment import (  # noqa: E402
     load_crosswalk, load_example_merchants, load_example_notes, build_notes_addendum,
 )
 from build_tail_eval import TAIL_ADDENDUM, POPULATION_QUERY, bq_json  # noqa: E402
+import eval_protection  # noqa: E402
 
 STRINGS_CSV = OUT_DIR / "production_strings.csv"
 EVIDENCE_JSON = OUT_DIR / "production_evidence.json"
@@ -96,6 +97,16 @@ GOLD_FILES = [ROOT / "data" / "gold_merchant_labels.csv", ROOT / "data" / "gold_
 
 
 def fetch(n):
+    # B04 gated off: the population and evidence queries run over the
+    # unexcluded linked pool — merchant counts include protected rows and
+    # APPROX_TOP_COUNT(description, 3) egresses verbatim narratives with no
+    # B02 identity.  Rebuild requires the exclusion applied in-SQL before
+    # aggregation.
+    eval_protection.gate(
+        "production_labelling.fetch",
+        "pool aggregates and per-merchant narrative egress cannot prove "
+        "disjointness from protected events",
+    )
     print("Querying unmatched Plaid merchant population...", file=sys.stderr)
     pop = sorted(((r["m"], int(r["n"])) for r in bq_json(POPULATION_QUERY)), key=lambda x: -x[1])
     already_gold = set()

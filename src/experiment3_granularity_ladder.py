@@ -50,6 +50,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import experiment3_xgb_pipeline as x3  # noqa: E402
 from credit_metrics import signed_gini  # noqa: E402
+import eval_protection  # noqa: E402
 
 LADDER_PATH = ROOT / "taxonomy" / "granularity_ladder.csv"
 LONG_TABLE = f"{x3.PROJECT}.{x3.DATASET}.experiment3_ladder_long"
@@ -173,6 +174,13 @@ GROUP BY 1, 2, 3, 4
 
 
 def aggregate():
+    # B04 gated off: the ladder aggregate is built from x3's unfiltered
+    # staging tables (see experiment3_xgb_pipeline.fetch), so protected
+    # membership cannot be proven disjoint.
+    eval_protection.gate(
+        "experiment3_granularity_ladder.aggregate",
+        "consumes unfiltered linked-pool staging tables",
+    )
     from google.cloud import bigquery
     client = x3._client()
     sql = _long_sql()
@@ -343,6 +351,11 @@ def _live_reference(df, ycol, train_start, train_end, oot_end):
 
 
 def train():
+    # B04 gated off: the parquet feature stores predate bound provenance.
+    eval_protection.gate(
+        "experiment3_granularity_ladder.train",
+        "unbound feature store; rebuild under the protected-release guard",
+    )
     long_df = pd.read_parquet(LONG_PARQUET)
     base = pd.read_parquet(x3.FEAT_PARQUET)
     base["financial_proposal_id"] = base["financial_proposal_id"].astype(str)

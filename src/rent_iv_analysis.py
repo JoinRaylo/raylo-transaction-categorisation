@@ -32,6 +32,7 @@ load_dotenv()
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import final_evaluation as fe  # noqa: E402
+import eval_protection  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 REPORT_MD = ROOT / "data" / "rent_iv_report.md"
@@ -70,7 +71,20 @@ def fetch():
     df = client.query(sql, job_config=job_config).result().to_dataframe()
     print(f"Fetched {len(df)} candidate transactions across {df['financial_proposal_id'].nunique()} proposals",
           file=sys.stderr)
+    df["provider"] = "equifax"
+    # B04: row-level transaction egress must pass the protected-release
+    # guard; rows without linked customer identity fail closed until the
+    # query carries it.
+    df = pd.DataFrame(
+        eval_protection.apply_env(
+            df.to_dict("records"), purpose="evidence_retrieval"
+        )
+    )
     df.to_parquet(ROOT / "outputs" / "rent_candidates.parquet", index=False)
+    eval_protection.write_artifact_receipt(
+        ROOT / "outputs" / "rent_candidates.parquet",
+        consumer="rent_iv_analysis.fetch", purpose="evidence_retrieval",
+    )
 
     print("Pulling outcome cohort restricted to proposals with matched Equifax data "
           "(per CLAUDE.md's documented ~37k-proposal cohort)...", file=sys.stderr)
@@ -115,6 +129,8 @@ def compute():
     rules_with_r13 = all_rules
     rules_without_r13 = [r for r in all_rules if r["rule_id"] != "R13"]
 
+    # B04: the candidates parquet must still match its bound fetch receipt.
+    eval_protection.verify_artifact(ROOT / "outputs" / "rent_candidates.parquet")
     df = pd.read_parquet(ROOT / "outputs" / "rent_candidates.parquet")
     outcomes = pd.read_parquet(ROOT / "outputs" / "rent_outcomes.parquet")
     for col in ("vendor", "description", "sub", "pri"):

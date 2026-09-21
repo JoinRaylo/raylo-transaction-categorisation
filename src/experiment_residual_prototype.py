@@ -32,6 +32,7 @@ from distillation_bakeoff import MODELS_DIR, OUT_DIR, SEED, build_text  # noqa: 
 from eval_sets import refuse_confirmation_eval  # noqa: E402
 from final_evaluation import load_crosswalk, load_dictionary, load_rules, our_leaf  # noqa: E402
 import final_evaluation as fe  # noqa: E402
+import eval_protection  # noqa: E402
 from score_t5b_residual import (  # noqa: E402
     GOLD_HOLDOUT,
     GOLD_RISK,
@@ -167,6 +168,9 @@ def main():
     rng = np.random.default_rng(SEED)
 
     print(f"Loading {TRAIN_JSONL}...", file=sys.stderr)
+    # B04: the supervised export must verify against its membership coverage
+    # and the pinned protected release before training may consume it.
+    eval_protection.verify_tuning_export(out_dir=OUT_DIR)
     df = parse_jsonl(TRAIN_JSONL)
     n_caught = int(df["caught"].sum())
     residual, proto, slice_df = build_slice(df, rng)

@@ -63,6 +63,15 @@ score_one "$MODEL4" "$ADP4" \
   "$ROOT/outputs/qwen3_4b_risk_predictions.csv"
 
 echo "=== start Qwen3-8B LoRA $(date) ==="
+# B04: the supervised export must verify against its membership coverage and
+# the pinned protected release before any training may consume it.
+"$PY" - <<PY
+import sys
+sys.path.insert(0, "$ROOT/src")
+import eval_protection
+eval_protection.verify_tuning_export(out_dir="$ROOT/outputs")
+PY
+
 PYTHONUNBUFFERED=1 "$LORA" \
   --model "$MODEL8" \
   --train \

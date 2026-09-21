@@ -25,6 +25,15 @@ score_one() {
 }
 
 echo "=== Qwen3-8B long LoRA (patience=8, keep latest) $(date) ==="
+# B04: the supervised export must verify against its membership coverage and
+# the pinned protected release before any training may consume it.
+"$PY" - <<PY
+import sys
+sys.path.insert(0, "$ROOT/src")
+import eval_protection
+eval_protection.verify_tuning_export(out_dir="$ROOT/outputs")
+PY
+
 # caffeinate so overnight train isn't killed by idle sleep
 caffeinate -is env PYTHONUNBUFFERED=1 "$LORA" \
   --model "$MODEL8" \

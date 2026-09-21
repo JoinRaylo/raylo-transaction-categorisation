@@ -63,14 +63,34 @@ def _norm(s: str) -> str:
 
 
 def refuse_confirmation_eval(path) -> None:
-    """Exit if `path` is a locked confirmation set. Call from every scorer."""
-    name = pathlib.Path(path).name
-    if name in CONFIRMATION_SET_NAMES:
+    """Exit if `path` is a locked confirmation set. Call from every scorer.
+
+    The filename check catches the normal case; a byte digest of the locked
+    files (when present) catches a renamed copy, so relabelling the file does
+    not bypass the lock.
+    """
+
+    path = pathlib.Path(path)
+    if path.name in CONFIRMATION_SET_NAMES:
         sys.exit(
-            f"Refusing to score {name}. "
+            f"Refusing to score {path.name}. "
             "v5 is retired (tranche-4 novelty leak). "
             "v6 is the locked confirmation set and is scored once at go/no-go."
         )
+    if path.name not in CONFIRMATION_SET_NAMES and path.is_file():
+        import hashlib
+
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        locked = {
+            locked_path.name: hashlib.sha256(locked_path.read_bytes()).hexdigest()
+            for locked_path in (V5_LOCKED, V6_LOCKED)
+            if locked_path.is_file()
+        }
+        if digest in locked.values():
+            sys.exit(
+                f"Refusing to score {path.name}: its bytes are identical to a "
+                "locked confirmation set. Renaming does not unlock it."
+            )
 
 
 def v6_excluded_merchants() -> set[str]:

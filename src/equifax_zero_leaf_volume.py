@@ -40,6 +40,15 @@ ORDER BY n DESC
 """
 
 print("Querying Equifax dump...", file=sys.stderr)
+import eval_protection  # noqa: E402
+
+# B04 gated off: grouped category counts over the Equifax dump cannot prove
+# disjointness from the protected release — the aggregation carries no B02
+# identity.  Rerun requires the exclusion applied to the inner rows first.
+eval_protection.gate(
+    "equifax_zero_leaf_volume",
+    "aggregate counts over a linked source cannot prove disjointness",
+)
 df = bq_client().query(query).result().to_dataframe()
 print(df.to_string(index=False))
 out = ROOT / "outputs" / "equifax_zero_leaf_volume.csv"

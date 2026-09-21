@@ -34,6 +34,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import generate_crosswalk_sql as gxw  # noqa: E402
 from build_tuning_dataset import frozen_holdout_merchants, load_risk_merchants  # noqa: E402
+import eval_protection  # noqa: E402
 
 OUT = ROOT / "outputs" / "transformer"
 PRETRAIN_PARQUET = OUT / "pretrain_corpus.parquet"
@@ -81,6 +82,15 @@ def _run(sql: str, label: str) -> pd.DataFrame:
 
 # ------------------------------------------------------------------ pretrain
 def build_pretrain(eqx_sample: int):
+    # B04 gated off: this is a GROUP BY text-frequency export with no B02
+    # identity — a count=1 row is a verbatim narrative that could be a
+    # protected event.  Rebuild requires identity-bearing inner rows with
+    # the protected exclusion applied before aggregation.
+    eval_protection.gate(
+        "transformer.build_pretrain",
+        "aggregate text-frequency export cannot prove disjointness from "
+        "protected events",
+    )
     plaid_sql = f"""
 WITH r AS (
   SELECT LOWER(TRIM(IFNULL(merchant_name, ''))) AS merchant,
@@ -189,6 +199,13 @@ FROM kept WHERE rn <= {per_leaf_cap}
 
 
 def build_silver(per_leaf_cap: int):
+    # B04 gated off: same GROUP BY text-frequency shape as build_pretrain —
+    # protected narratives could pass through unaggregated at count=1.
+    eval_protection.gate(
+        "transformer.build_silver",
+        "aggregate text-frequency export cannot prove disjointness from "
+        "protected events",
+    )
     sql = _silver_sql(per_leaf_cap)
     assert len(sql.encode()) < 1_000_000, len(sql)
     df = _run(sql, "silver")

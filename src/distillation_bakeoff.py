@@ -41,6 +41,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from eval_sets import refuse_confirmation_eval  # noqa: E402
 from gating_experiment import ROOT, OUT_DIR, load_crosswalk  # noqa: E402
 from ml_baseline import bq_client, GOLD_HEAD, GOLD_TAIL, EVAL_PARQUET  # noqa: E402
+import eval_protection  # noqa: E402
 
 TRAIN_PARQUET = OUT_DIR / "distill_train.parquet"
 MODELS_DIR = OUT_DIR / "distill_models"
@@ -104,7 +105,16 @@ def fetch_train():
     df = df.dropna(subset=["leaf"])
     df["amount"] = df["amount"].astype(np.float32)
     df["is_credit"] = df["is_credit"].astype(np.int8)
+    # B04: linked-pool fetch must pass the protected-release guard; rows
+    # without B02 linkage identity fail closed until the query carries them.
+    df = pd.DataFrame(
+        eval_protection.apply_env(df.to_dict("records"), purpose="distillation")
+    )
     df.to_parquet(TRAIN_PARQUET, index=False)
+    eval_protection.write_artifact_receipt(
+        TRAIN_PARQUET, consumer="distillation_bakeoff.fetch",
+        purpose="distillation",
+    )
     print(f"Wrote {TRAIN_PARQUET}: {len(df)} transaction-level rows, "
           f"{df['merchant'].nunique()} merchants, {df['leaf'].nunique()} leaves", file=sys.stderr)
 
@@ -119,6 +129,9 @@ def train():
     from sklearn.feature_extraction.text import HashingVectorizer, TfidfVectorizer
     from sklearn.linear_model import SGDClassifier
 
+    # B04: the parquet must carry a bound fetch receipt from a guarded
+    # fetch; a pre-guard parquet has no receipt and fails closed.
+    eval_protection.verify_artifact(TRAIN_PARQUET)
     MODELS_DIR.mkdir(exist_ok=True)
     df = pd.read_parquet(TRAIN_PARQUET)
     rng = np.random.default_rng(SEED)
@@ -170,6 +183,9 @@ def retrain_lightgbm():
     and early-stopping patience widened to match the slower learning rate.
     Same TF-IDF features as B (already-fitted vectorizer, no re-fit) so
     architecture remains the only variable versus B."""
+    # B04: the parquet must carry a bound fetch receipt from a guarded
+    # fetch; a pre-guard parquet has no receipt and fails closed.
+    eval_protection.verify_artifact(TRAIN_PARQUET)
     import joblib
     import lightgbm as lgb
     from collections import Counter
@@ -262,6 +278,9 @@ def train_v2():
     from sklearn.feature_extraction.text import TfidfVectorizer
     from sklearn.linear_model import SGDClassifier
 
+    # B04: tuning export must verify against its membership coverage and the
+    # pinned protected release before .fit may consume it.
+    eval_protection.verify_tuning_export(out_dir=OUT_DIR)
     MODELS_DIR.mkdir(exist_ok=True)
     train_path = OUT_DIR / "tuning_train.jsonl"
     print(f"Loading {train_path}...", file=sys.stderr)
@@ -343,6 +362,9 @@ def train_embed():
     import joblib
     from sklearn.linear_model import SGDClassifier
 
+    # B04: tuning export must verify against its membership coverage and the
+    # pinned protected release before .fit may consume it.
+    eval_protection.verify_tuning_export(out_dir=OUT_DIR)
     MODELS_DIR.mkdir(exist_ok=True)
     train_path = OUT_DIR / "tuning_train.jsonl"
     print(f"Loading {train_path}...", file=sys.stderr)
@@ -452,6 +474,8 @@ def evaluate():
     from collections import Counter
 
     _, _, _, gen_of, _ = load_crosswalk()
+    # B04: the eval parquet must still match its bound fetch receipt.
+    eval_protection.verify_artifact(EVAL_PARQUET)
     txns = pd.read_parquet(EVAL_PARQUET)
     txns["merchant"] = txns["merchant"].str.strip().str.lower()
 

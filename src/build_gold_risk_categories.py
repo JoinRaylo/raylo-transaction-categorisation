@@ -70,6 +70,7 @@ from gating_experiment import (  # noqa: E402
     build_notes_addendum, load_crosswalk,
 )
 from build_final_gold_v2 import TXN_ADDENDUM  # noqa: E402
+import eval_protection  # noqa: E402
 
 SAMPLE_CSV = OUT_DIR / "gold_risk_sample.csv"
 # Option 1 pair (2026-08-23): Gemini 3.7 Flash + Sonnet 5, matching
@@ -187,10 +188,17 @@ def fetch():
 
     fieldnames = ["row_id", "target_leaf", "merchant", "merchant_raw", "description_raw",
                   "amount", "direction", "native_category", "provider"]
+    # B04: fetched rows must pass the protected-release guard; rows without
+    # linkage identity fail closed until the query carries them.
+    all_rows = eval_protection.apply_env(all_rows, purpose="model_selection_validation")
     with open(SAMPLE_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(all_rows)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="build_gold_risk_categories.fetch",
+        purpose="model_selection_validation",
+    )
     n_leaves_covered = len({r["target_leaf"] for r in all_rows if r["target_leaf"] != "gambling_broad_pool"})
     print(f"\nWrote {SAMPLE_CSV}: {len(all_rows)} rows, "
           f"{n_leaves_covered}/{len(ALL_TARGET_LEAVES)} target leaves have >=1 source row", file=sys.stderr)
@@ -427,6 +435,8 @@ def sheet():
 def apply_review(path):
     import openpyxl
 
+    # B04: the reviewed sample must still match its bound fetch receipt.
+    eval_protection.verify_artifact(SAMPLE_CSV)
     _, _, leaves, gen_of, _ = load_crosswalk()
     ws = openpyxl.load_workbook(path, data_only=True)["Review"]
     hdr = [c.value for c in ws[1]]
@@ -472,6 +482,11 @@ def apply_review(path):
                                           "gold_leaf", "target_leaf"])
         w.writeheader()
         w.writerows(out_rows)
+    eval_protection.write_artifact_receipt(
+        FINAL_CSV, consumer="build_gold_risk_categories.apply_review",
+        purpose="model_selection_validation",
+        inputs=[SAMPLE_CSV, pathlib.Path(path)],
+    )
     print(f"Wrote {FINAL_CSV}: {len(out_rows)} gold transactions "
           f"({blank} left blank/unclassifiable, excluded; {empty_merchant_kept} kept with no merchant field, "
           f"reviewed off the narrative alone)", file=sys.stderr)

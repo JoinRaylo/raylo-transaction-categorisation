@@ -36,6 +36,7 @@ sys.path.insert(0, str(ROOT / "src"))
 import experiment3_granularity_ladder as ladder  # noqa: E402
 import experiment3_xgb_pipeline as x3  # noqa: E402
 from credit_metrics import signed_gini  # noqa: E402
+import eval_protection  # noqa: E402
 
 FEATURES_PARQUET = x3.OUT_DIR / "experiment3_champion_features.parquet"
 SEARCH_JSON = x3.OUT_DIR / "experiment3_champion_search.json"
@@ -121,6 +122,11 @@ def _safe_divide(num: np.ndarray, den: np.ndarray) -> np.ndarray:
 def build_features() -> pd.DataFrame:
     """Build a local, proposal-level feature matrix from the saved long data."""
     print("Building champion feature matrix...", file=sys.stderr)
+    # B04 gated off: the parquet feature stores predate bound provenance.
+    eval_protection.gate(
+        "experiment3_champion_model.build_features",
+        "unbound feature store; rebuild under the protected-release guard",
+    )
     base = x3._prepare(pd.read_parquet(x3.FEAT_PARQUET))
     base["financial_proposal_id"] = base["financial_proposal_id"].astype(str)
     base_cols = x3._candidate_cols(base)
@@ -512,6 +518,11 @@ def _published_predictions(target: str, oot: pd.DataFrame) -> tuple[np.ndarray, 
 
 def run_search(df: pd.DataFrame | None = None) -> dict:
     if df is None:
+        # B04 gated off: the parquet feature stores predate bound provenance.
+        eval_protection.gate(
+            "experiment3_champion_model.run_search",
+            "unbound feature store; rebuild under the protected-release guard",
+        )
         df = x3._prepare(pd.read_parquet(FEATURES_PARQUET))
     elif "created" not in df:
         df = x3._prepare(df)
@@ -691,6 +702,11 @@ def predict_artifact(
 
 def validate_artifacts(result: dict | None = None) -> dict:
     """Re-score serialised models, add OOF Platt scaling and robustness checks."""
+    # B04 gated off: the parquet feature stores predate bound provenance.
+    eval_protection.gate(
+        "experiment3_champion_model.validate_artifacts",
+        "unbound feature store; rebuild under the protected-release guard",
+    )
     if result is None:
         result = json.loads(SEARCH_JSON.read_text())
     df = x3._prepare(pd.read_parquet(FEATURES_PARQUET))

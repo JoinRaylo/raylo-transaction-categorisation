@@ -69,6 +69,7 @@ from training_membership import (  # noqa: E402
     unavailable_membership,
     verify_training_export,
 )
+import eval_protection  # noqa: E402
 
 LABELS_SOURCE = ROOT / "data" / "production_labels_tranche4.csv"
 GOLD_TXN_FILE = ROOT / "data" / "gold_transactions.csv"
@@ -239,6 +240,10 @@ def write_tier_b_fetch(rows, protection, *, data_path=TXNS_JSON, receipt_path=TX
         "source_kind": "customer_linked_plaid_materialized",
         "anonymous_id_recovery": False,
         "eval_membership_inputs": list(protection["inputs"]),
+        "protected_release": {
+            "membership_sha256": eval_protection.PINNED_BINDING["membership_sha256"],
+            "publication_sha256": eval_protection.PINNED_BINDING["publication_sha256"],
+        },
         "rows": len(rows),
         "result_sha256": _file_sha256(data_path),
     }
@@ -264,6 +269,11 @@ def read_verified_tier_b_fetch(
         or receipt.get("source_kind") != "customer_linked_plaid_materialized"
         or receipt.get("anonymous_id_recovery") is not False
         or receipt.get("eval_membership_inputs") != list(protection["inputs"])
+        or receipt.get("protected_release")
+        != {
+            "membership_sha256": eval_protection.PINNED_BINDING["membership_sha256"],
+            "publication_sha256": eval_protection.PINNED_BINDING["publication_sha256"],
+        }
         or receipt.get("result_sha256") != _file_sha256(data_path)
     ):
         raise ValueError("Tier-B fetch is missing its verified eval protection")
@@ -281,6 +291,9 @@ def load_tier_a():
     """All unified gold rows, keyed by normalised merchant."""
     if not GOLD_TXN_FILE.exists():
         sys.exit(f"Missing {GOLD_TXN_FILE} — run src/build_gold_transactions_unified.py")
+    # B04: the unified gold file is a fetched artifact; it may only seed
+    # Tier-A training rows when its bound receipt still verifies.
+    eval_protection.verify_artifact(GOLD_TXN_FILE)
     by_merchant = defaultdict(list)
     for r in csv.DictReader(open(GOLD_TXN_FILE)):
         by_merchant[_norm(r["merchant_raw"])].append(r)
@@ -450,7 +463,11 @@ def tier_b_role(merchant):
     return "selection" if fraction < VAL_FRACTION else "train"
 
 
-def fetch(cap_per_merchant, protected_memberships):
+def fetch(cap_per_merchant, protected_memberships, args=None):
+    # B04: the supplied membership/publication must be the pinned frozen
+    # release; digest drift or a wrong file fails before any query runs.
+    if args is not None:
+        eval_protection.assert_bound(protected_memberships, args)
     protection = load_eval_protection(protected_memberships)
     _, _, leaves, _, _ = load_crosswalk()
     excluded_merchants = set()
@@ -459,6 +476,9 @@ def fetch(cap_per_merchant, protected_memberships):
     tier_a = load_tier_a()
     excluded_merchants |= set(tier_a)  # Tier A supersedes Tier B entirely for any overlapping merchant
 
+    # B04: the merged tranche-4 label file is a fetched artifact; it may only
+    # drive Tier-B selection when its bound receipt still verifies.
+    eval_protection.verify_artifact(LABELS_SOURCE)
     rows = list(csv.DictReader(open(LABELS_SOURCE)))
     eligible = []
     for r in rows:
@@ -503,8 +523,11 @@ def fetch(cap_per_merchant, protected_memberships):
     print(f"Wrote {len(all_txns)} transaction rows -> {TXNS_JSON}", file=sys.stderr)
 
 
-def build(protected_memberships):
+def build(protected_memberships, args=None):
     from collections import Counter
+
+    if args is not None:
+        eval_protection.assert_bound(protected_memberships, args)
 
     _, _, leaves, _, _ = load_crosswalk()
     system_prompt = build_system_prompt(leaves)
@@ -605,6 +628,13 @@ def build(protected_memberships):
             w.writerow([m, "eval_holdout" if m in holdout_merchants else "train", m in conflicting])
 
     # ---------- Top-up: thin-leaf targeted sourcing, all goes to training ----------
+    # B04: every top-up file is a learning input; it may only be consumed when
+    # a bound artifact receipt verifies against the pinned protected release.
+    # Files that predate the guard have no receipt and fail closed — refetch
+    # them under the guard, re-review, then rebuild.
+    for _topup in (TOPUP_FILE, CREDIT_TOPUP_FILE, RISK_TOPUP_FILE):
+        if _topup.exists():
+            eval_protection.verify_artifact(_topup)
     topup_examples = []
     starved_topup = {leaf: [] for leaf in STARVED_TOPUP_LEAVES}
     if TOPUP_FILE.exists():
@@ -779,8 +809,19 @@ if __name__ == "__main__":
             type=pathlib.Path,
             required=True,
         )
+        parser.add_argument(
+            "--protected-publication",
+            type=pathlib.Path,
+            required=True,
+            help="Frozen outcome publication JSON bound to the membership",
+        )
+        parser.add_argument("--txncat-src", type=pathlib.Path, default=None)
         fetch_args = parser.parse_args(args[1:])
-        fetch(fetch_args.cap_per_merchant, fetch_args.protected_membership)
+        fetch(
+            fetch_args.cap_per_merchant,
+            fetch_args.protected_membership,
+            fetch_args,
+        )
     elif args[0] == "build":
         parser = argparse.ArgumentParser(prog="build_tuning_dataset.py build")
         parser.add_argument(
@@ -789,8 +830,15 @@ if __name__ == "__main__":
             type=pathlib.Path,
             required=True,
         )
+        parser.add_argument(
+            "--protected-publication",
+            type=pathlib.Path,
+            required=True,
+            help="Frozen outcome publication JSON bound to the membership",
+        )
+        parser.add_argument("--txncat-src", type=pathlib.Path, default=None)
         build_args = parser.parse_args(args[1:])
-        build(build_args.protected_membership)
+        build(build_args.protected_membership, build_args)
     elif args[0] == "upload":
         if len(args) < 2:
             sys.exit("usage: upload gs://BUCKET/PATH")

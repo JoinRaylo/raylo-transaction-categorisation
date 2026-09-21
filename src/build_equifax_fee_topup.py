@@ -25,6 +25,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 from ml_baseline import bq_client  # noqa: E402
+import eval_protection  # noqa: E402
 
 FINAL_CSV = ROOT / "data" / "tuning_leaf_topup.csv"
 BT_PAT = re.compile(r"balance\s*transfer", re.I)
@@ -93,9 +94,14 @@ def main():
             "native_category": r["native_category"],
             "gold_leaf": leaf,
             "target_leaf": leaf,
+            "provider": "equifax",
         })
 
     existing = list(csv.DictReader(open(FINAL_CSV))) if FINAL_CSV.exists() else []
+    if existing:
+        # B04: the existing merge output must still match its bound receipt
+        # before new rows are appended onto it.
+        eval_protection.verify_artifact(FINAL_CSV)
     seen = {_fp(r) for r in existing}
     added = []
     for r in rows:
@@ -105,11 +111,18 @@ def main():
         seen.add(fp)
         added.append(r)
 
+    # B04: fetched rows must pass the protected-release guard; rows without
+    # linkage identity fail closed until the query carries them.
+    added = eval_protection.apply_env(added, purpose="supervised_training")
     with open(FINAL_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=FIELDNAMES)
         w.writeheader()
         w.writerows(existing)
-        w.writerows(added)
+        w.writerows({k: r[k] for k in FIELDNAMES} for r in added)
+    eval_protection.write_artifact_receipt(
+        FINAL_CSV, consumer="build_equifax_fee_topup",
+        purpose="supervised_training",
+    )
 
     from collections import Counter
     by_leaf = Counter(r["gold_leaf"] for r in added)

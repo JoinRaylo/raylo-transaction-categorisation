@@ -38,6 +38,7 @@ from final_evaluation import (  # noqa: E402
     plaid_native_leaf,
 )
 import final_evaluation as fe  # noqa: E402
+import eval_protection  # noqa: E402
 
 SAMPLE_CSV = OUT_DIR / "t6_residual_topup_sample.csv"
 COUNTS_MD = ROOT / "data" / "t6_residual_topup_fetch.md"
@@ -248,6 +249,9 @@ def main():
         print(f"  [{leaf}] kept {len(kept)} T6-bound", file=sys.stderr)
 
     OUT_DIR.mkdir(exist_ok=True)
+    # B04: fetched rows must pass the protected-release guard; rows without
+    # linkage identity fail closed until the query carries them.
+    all_rows = eval_protection.apply_env(all_rows, purpose="supervised_training")
     fieldnames = [
         "row_id", "target_leaf", "provider", "merchant", "merchant_raw",
         "description_raw", "amount", "direction", "native_category",
@@ -257,6 +261,10 @@ def main():
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(all_rows)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="fetch_t6_residual_topup",
+        purpose="supervised_training",
+    )
 
     lines = [
         "# T6 residual top-up fetch (2026-08-27)\n",

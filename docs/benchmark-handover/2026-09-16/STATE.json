@@ -702,5 +702,30 @@
       "insufficient_evidence": 17,
       "labelled": 427
     }
+  },
+  "b04_enforcement_record": {
+    "artifact": "docs/benchmark-implementation/b04-consumer-enforcement-2026-09-21/",
+    "authorizes_consumption": false,
+    "canonical_module": "raylo_txncat.benchmark_enforcement",
+    "consumer_counts": {
+      "bound_read": 16,
+      "enforced": 62,
+      "gated_off": 25
+    },
+    "consumers_total": 103,
+    "matrix_sha256": "ecbbcd0a44624c35ba50e65e39d10614525aed626209470c11fba56347d4f111",
+    "milestone": "b04-consumer-enforcement-2026-09-21",
+    "receipt_sha256": "3a027142bb53fecc522de07424d3f68104b4c68b6ec8e36dd6bf8ab87d939ee2",
+    "recorded_utc": "2026-09-21T22:30:00Z",
+    "release": {
+      "membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068",
+      "pilot_sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248",
+      "publication_file_sha256": "eaf5a8bba13a60e007fa7d92c9df8729c80e7e7b13a8b830c4c0642458c44f22",
+      "publication_sha256": "2b3c2f6443c99f30272f50075b2f7cf4647b04fb5ccdf1926467a24d3d4e8436",
+      "schema_version": "benchmark-release-binding-v1"
+    },
+    "research_adapter": "src/eval_protection.py",
+    "scope": "prospective only; historical non-use not certified",
+    "ticket": "AIE-513"
   }
 }

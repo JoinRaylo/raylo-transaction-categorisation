@@ -48,6 +48,7 @@ import experiment3_champion_capped as capped
 import experiment3_champion_model as ch
 import experiment3_granularity_ladder as ladder
 import experiment3_xgb_pipeline as x3
+import eval_protection
 from credit_metrics import signed_gini
 
 ROOT = ch.ROOT
@@ -147,6 +148,11 @@ def build_rung_features(rung: str, long_df: pd.DataFrame, base: pd.DataFrame) ->
 def build_all_rung_features() -> pd.DataFrame:
     print("Building recipe-agnostic base (spine + dims) + per-rung rich features...",
           file=sys.stderr)
+    # B04 gated off: the parquet feature stores predate bound provenance.
+    eval_protection.gate(
+        "experiment3_champion_granularity.build_all_rung_features",
+        "unbound feature store; rebuild under the protected-release guard",
+    )
     base = x3._prepare(pd.read_parquet(x3.FEAT_PARQUET))
     base["financial_proposal_id"] = base["financial_proposal_id"].astype(str)
     keep = list(dict.fromkeys(ladder.META + ladder.SPINE + ladder.DIMS))

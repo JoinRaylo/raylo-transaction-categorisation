@@ -38,6 +38,7 @@ sys.path.insert(0, str(ROOT / "src"))
 import experiment3_champion_model as champion  # noqa: E402
 import experiment3_xgb_pipeline as x3  # noqa: E402
 from credit_metrics import signed_gini  # noqa: E402
+import eval_protection  # noqa: E402
 
 SPEC_PATH = ROOT / "taxonomy" / "experimental_subleaf_pilot.csv"
 AGG_PARQUET = x3.OUT_DIR / "experiment3_subleaf_aggregate.parquet"
@@ -172,6 +173,12 @@ JOIN parent p USING (financial_proposal_id, provider, parent_leaf)
 
 
 def aggregate() -> pd.DataFrame:
+    # B04 gated off: proposal/provider aggregates carry no customer identity,
+    # so connected-customer exclusion cannot be proven.
+    eval_protection.gate(
+        "experiment3_subleaf_pilot.aggregate",
+        "proposal-level aggregates carry no linked customer identity",
+    )
     from google.cloud import bigquery
 
     client = x3._client()
@@ -227,6 +234,11 @@ def _reconciliation(agg: pd.DataFrame) -> dict:
 
 def build_features(agg: pd.DataFrame | None = None) -> pd.DataFrame:
     if agg is None:
+        # B04 gated off: the parquet aggregates predate bound provenance.
+        eval_protection.gate(
+            "experiment3_subleaf_pilot.build_features",
+            "unbound feature store; rebuild under the protected-release guard",
+        )
         agg = pd.read_parquet(AGG_PARQUET)
     agg = agg.copy()
     agg["financial_proposal_id"] = agg["financial_proposal_id"].astype(str)
@@ -479,6 +491,11 @@ def _write_report(result: dict) -> None:
 
 def train(df: pd.DataFrame | None = None, agg: pd.DataFrame | None = None) -> dict:
     if df is None:
+        # B04 gated off: the parquet feature stores predate bound provenance.
+        eval_protection.gate(
+            "experiment3_subleaf_pilot.train",
+            "unbound feature store; rebuild under the protected-release guard",
+        )
         df = x3._prepare(pd.read_parquet(FEATURE_PARQUET))
     elif "created" not in df:
         df = x3._prepare(df)

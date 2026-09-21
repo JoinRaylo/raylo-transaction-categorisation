@@ -18,6 +18,9 @@ import csv
 import pathlib
 import sys
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import eval_protection  # noqa: E402
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "data" / "gold_transactions.csv"
 HOLDOUT = ROOT / "data" / "gold_v2_slm_eval_holdout.csv"
@@ -77,6 +80,17 @@ def row_out(source, r, holdout_m, native, notes=""):
 
 
 def main():
+    # B04: every merged gold CSV is a fetched artifact; each must still match
+    # its bound receipt before it may seed the unified training gold file.
+    merged_sources = [
+        ROOT / "data" / "gold_transactions_v2.csv",
+        ROOT / "data" / "gold_transactions_v2_batch2.csv",
+        ROOT / "data" / "gold_transactions_v3_volume.csv",
+        ROOT / "data" / "gold_transactions_v4_slm_volume.csv",
+    ]
+    for _p in merged_sources:
+        if _p.exists():
+            eval_protection.verify_artifact(_p)
     holdout_m = holdout_merchants()
     v4_native, v4_notes = v4_native_map()
     out = []
@@ -113,6 +127,10 @@ def main():
         w = csv.DictWriter(f, fieldnames=FIELDNAMES)
         w.writeheader()
         w.writerows(out)
+    eval_protection.write_artifact_receipt(
+        OUT, consumer="build_gold_transactions_unified",
+        purpose="model_selection_validation", inputs=merged_sources,
+    )
     print(f"Wrote {OUT}: {len(out)} rows ({n_train} train, {n_eval} iter_eval); "
           f"{len(holdout_m)} holdout merchants; v4 missing native={missing_v4}",
           file=sys.stderr)

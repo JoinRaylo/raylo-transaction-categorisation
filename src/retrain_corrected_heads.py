@@ -33,6 +33,7 @@ from distillation_bakeoff import (  # noqa: E402
     _parse_tuning_jsonl,
     build_text,
 )
+import eval_protection  # noqa: E402
 
 LOGREG_PATH = MODELS_DIR / "tfidf_logreg_v2.joblib"
 HINGE_PATH = MODELS_DIR / "tfidf_linearsvm_sgd.joblib"
@@ -70,7 +71,12 @@ def main():
     parser.add_argument(
         "--reuse-vectorizer", action="store_true",
         help="With --skip-logreg, reuse TF-IDF from the serving logreg dump")
+    parser.add_argument("--txncat-src", type=pathlib.Path, default=None)
     args = parser.parse_args()
+
+    # B04: the tuning export must verify against its membership coverage and
+    # the pinned protected release before any .fit may consume it.
+    eval_protection.verify_tuning_export(txncat_src=args.txncat_src, out_dir=OUT_DIR)
 
     if args.hinge_only:
         args.skip_logreg = True

@@ -36,6 +36,9 @@ import torch.nn.functional as F
 from transformers import AutoModelForMaskedLM, AutoTokenizer, get_linear_schedule_with_warmup
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "src"))
+import eval_protection  # noqa: E402
+
 CORPUS = ROOT / "outputs" / "transformer" / "pretrain_corpus.parquet"
 SAVE_DIR = ROOT / "outputs" / "distill_models" / "txn_encoder_mlm"
 CKPT = SAVE_DIR / "ckpt.pt"
@@ -166,6 +169,13 @@ def probe(tokenizer, model, dev, words=PROBE_WORDS, k=8):
 def train(args):
     dev = device()
     log(f"device {dev}; base {args.base}")
+    # B04: the corpus parquet predates bound provenance; only a guarded
+    # rebuild may produce a consumable pretraining artifact.
+    eval_protection.gate(
+        "transformer.pretrain_mlm.train",
+        "pretrain corpus has no bound fetch receipt; rebuild via "
+        "build_corpus under the protected-release guard",
+    )
     df = pd.read_parquet(CORPUS, columns=["text", "provider", "n"])
     if args.max_sentences and len(df) > args.max_sentences:
         df = df.sample(args.max_sentences, random_state=42)

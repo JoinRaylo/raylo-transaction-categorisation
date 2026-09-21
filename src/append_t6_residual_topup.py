@@ -17,6 +17,8 @@ import csv
 import pathlib
 import sys
 
+import eval_protection  # noqa: E402
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "outputs"
 FINAL = ROOT / "data" / "tuning_leaf_topup.csv"
@@ -50,6 +52,17 @@ def _fp(r):
 
 
 def main():
+    # B04: the reviewed files descend from guarded fetches — each must have a
+    # sibling raw fetch artifact whose bound receipt still verifies, and an
+    # existing output file must match its own merge receipt.  Reviewed files
+    # predating the guard fail closed until the raw fetch is rerun under it.
+    for path in REVIEWED:
+        raw = path.with_name(path.name.replace("_reviewed", ""))
+        if raw == path or not raw.exists():
+            sys.exit(f"B04: no raw fetch artifact for reviewed file {path.name}")
+        eval_protection.verify_artifact(raw)
+    if FINAL.exists():
+        eval_protection.verify_artifact(FINAL)
     holdout = {_norm(r["merchant_raw"]) for r in csv.DictReader(open(HOLDOUT))}
     holdout.discard("")
     existing = list(csv.DictReader(open(FINAL))) if FINAL.exists() else []
@@ -88,6 +101,10 @@ def main():
         w.writeheader()
         w.writerows(existing)
         w.writerows(added)
+    eval_protection.write_artifact_receipt(
+        FINAL, consumer="append_t6_residual_topup",
+        purpose="supervised_training", inputs=list(REVIEWED),
+    )
     print(f"was {len(existing)}; added {len(added)}; now {len(existing) + len(added)}; "
           f"skipped {skipped}", file=sys.stderr)
 

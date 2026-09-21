@@ -40,6 +40,7 @@ from experiment_finetune_encoder import (  # noqa: E402
 )
 from final_evaluation import load_crosswalk, load_dictionary, load_rules  # noqa: E402
 import final_evaluation as fe  # noqa: E402
+import eval_protection  # noqa: E402
 from score_t5b_residual import (  # noqa: E402
     GOLD_HOLDOUT,
     GOLD_RISK,
@@ -127,6 +128,9 @@ def val_acc(model, loader, dev):
 def train():
     rng = np.random.default_rng(SEED)
     print(f"Loading {TRAIN_JSONL}...", file=sys.stderr)
+    # B04: the supervised export must verify against its membership coverage
+    # and the pinned protected release before training may consume it.
+    eval_protection.verify_tuning_export(out_dir=OUT_DIR)
     df = _parse_tuning_jsonl(TRAIN_JSONL)
     df = df.iloc[rng.permutation(len(df))].reset_index(drop=True)
     leaves = sorted(df["leaf"].unique())

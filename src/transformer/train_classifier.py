@@ -48,6 +48,7 @@ sys.path.insert(0, str(ROOT / "src" / "transformer"))
 from build_corpus import SILVER_PARQUET, amt_bucket_py, sentence  # noqa: E402
 from distillation_bakeoff import OUT_DIR, _parse_tuning_jsonl  # noqa: E402
 from pretrain_mlm import SAVE_DIR as MLM_DIR, device, log as _log  # noqa: E402
+import eval_protection  # noqa: E402
 
 TAXONOMY = ROOT / "taxonomy" / "taxonomy.csv"
 TRAIN_JSONL = OUT_DIR / "tuning_train.jsonl"
@@ -88,6 +89,9 @@ def _empirical_direction_counts():
     labelled `cash_advance`); the mask is therefore taxonomy OR observed-in-gold."""
     if not TRAIN_JSONL.exists():
         return {}
+    # B04: the supervised export must verify against its membership coverage
+    # and the pinned protected release before any consumer may read it.
+    eval_protection.verify_tuning_export(out_dir=OUT_DIR)
     df = _parse_tuning_jsonl(TRAIN_JSONL)
     c = df.groupby(["leaf", df["is_credit"].astype(int)]).size()
     return {(l, int(d)): int(n) for (l, d), n in c.items()}
@@ -169,6 +173,9 @@ def loss_fn(model, leaf_logits, gen_logits, y_leaf, y_gen, w_gen=0.3, w_cons=0.3
 
 # ------------------------------------------------------------ data
 def gold_frame():
+    # B04: the supervised export must verify against its membership coverage
+    # and the pinned protected release before training may consume it.
+    eval_protection.verify_tuning_export(out_dir=OUT_DIR)
     df = _parse_tuning_jsonl(TRAIN_JSONL)
     df["text"] = [sentence("credit" if int(c) else "debit", amt_bucket_py(a), v, d)
                   for v, d, a, c in zip(df["vendor"], df["description"], df["amount"], df["is_credit"])]
@@ -181,6 +188,13 @@ def silver_frame(path=None):
     a leaf column — e.g. `data/distillation_labels_consensus.parquet` (Gemini==Sonnet consensus
     on the 500k most frequent Plaid texts, 5 Sep)."""
     path = pathlib.Path(path) if path else SILVER_PARQUET
+    # B04: the silver corpus has no bound fetch receipt; only a guarded
+    # rebuild may produce a consumable training artifact.
+    eval_protection.gate(
+        "transformer.train_classifier.silver_frame",
+        "silver corpus has no bound fetch receipt; rebuild via "
+        "build_corpus under the protected-release guard",
+    )
     df = pd.read_parquet(path)
     if "leaf" not in df.columns and "final_leaf" in df.columns:
         df = df.rename(columns={"final_leaf": "leaf"})
