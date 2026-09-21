@@ -642,5 +642,33 @@
           "two items carry incomplete vote tuples (accepted, unrepaired)"
       ],
       "next_gate": "Carlos's 61 escalated decisions + six policy rulings, then AIE-512 receipt-bound importer"
+  },
+  "pilot_final_decisions_record": {
+    "authorizes_consumption": false,
+    "decided_by": "carlos",
+    "decision_capture": "chat rulings verbatim by review-sheet row; 6 policy rulings; 61 escalated rows; 204 opus proposals confirmed",
+    "decision_source_counts": {
+      "carlos_confirmed_proposal": 204,
+      "carlos_ruling": 61,
+      "unanimous_votes": 235
+    },
+    "decisions_receipt_sha256": "041c6abca5d85ee31ee295eb3c9d50e876d30713b5ce13e4aee854d1a7ede1b0",
+    "distinct_final_leaves": 82,
+    "final_outcomes_sha256": "a7cbc51b8b289f94d7ddb7244a787f04f823521f40933e4513b79693bfb883a5",
+    "final_status_counts": {
+      "ambiguous": 56,
+      "insufficient_evidence": 17,
+      "labelled": 427
+    },
+    "milestone": "b03-f-pilot-final-decisions-2026-09-21",
+    "opus_is_human_gold": false,
+    "opus_is_independent_vote": false,
+    "recorded_utc": "2026-09-21T19:55:00Z",
+    "requires_before_consumption": [
+      "aie512_receipt_bound_import_freeze",
+      "aie513_b04_enforcement"
+    ],
+    "rows_total": 500,
+    "unanimous_rows_human_reviewed": false
   }
 }
