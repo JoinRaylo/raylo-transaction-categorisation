@@ -670,5 +670,37 @@
     ],
     "rows_total": 500,
     "unanimous_rows_human_reviewed": false
+  },
+  "pilot_outcome_publication_record": {
+    "authorizes_consumption": false,
+    "binding": {
+      "comparison_sha256": "50bc3bada67eaa4ed8aa8593151a2d5dac4d1bdf6737ae9477390248ed6050ae",
+      "decisions_sha256": "d7ed78665688c0c8eb8a38155ffbb6ec25e908c030d8c0d4f7d7708fcb93a1ba",
+      "membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068",
+      "pilot_sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248",
+      "proposals_sha256": "c286cb225c03acc8ef2dc52bc6a9f6fd3dc298762a67aac5b88ee3b44602deac",
+      "schema_version": "benchmark-outcome-binding-v1",
+      "taxonomy_sha256": "67df23954ac24015a2d617e164fff5906d86d89ab7be1e32e879332e31045e99"
+    },
+    "decision_source_counts": {
+      "carlos_confirmed_proposal": 204,
+      "carlos_ruling": 61,
+      "unanimous_votes": 235
+    },
+    "distinct_final_leaves": 82,
+    "importer": "raylo_txncat.benchmark_import (AIE-512), app commit b52aa45a",
+    "milestone": "b03-f-pilot-outcome-publication-2026-09-21",
+    "outcome_count": 500,
+    "publication_file_sha256": "eaf5a8bba13a60e007fa7d92c9df8729c80e7e7b13a8b830c4c0642458c44f22",
+    "publication_sha256": "2b3c2f6443c99f30272f50075b2f7cf4647b04fb5ccdf1926467a24d3d4e8436",
+    "recorded_utc": "2026-09-21T20:05:00Z",
+    "requires_before_consumption": [
+      "aie513_b04_enforcement"
+    ],
+    "status_counts": {
+      "ambiguous": 56,
+      "insufficient_evidence": 17,
+      "labelled": 427
+    }
   }
 }
