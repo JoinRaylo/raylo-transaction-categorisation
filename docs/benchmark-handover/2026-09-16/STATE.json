@@ -539,5 +539,37 @@
       "customer_rows_exported": 0,
       "labels_or_reservations": 0
     }
+  },
+  "g0_synthetic_contracts_record": {
+    "milestone": "AIE-510-G0",
+    "status": "synthetic_contracts_implemented_review_pending",
+    "captured_at": "2026-09-21T14:29:23Z",
+    "app_base_before_milestone": "366d45b1ee80bffa32efa58af8de8742b248ce17",
+    "app_branch": "codex/txncat-aie510-g0",
+    "app_implementation_commit": "48bcfd451df6c3210027ee7a1c3bee6e25d9bc48",
+    "research_base_before_milestone": "c5ca7311c8054ccb9125e5e2197ab6bbb4aa5ef7",
+    "research_branch": "codex/txncat-aie510-g0-research",
+    "evidence_app": "apps/ob-txn-categoriser/research/benchmark-implementation/g0-synthetic-contracts-2026-09-21",
+    "evidence_research": "docs/benchmark-implementation/g0-synthetic-contracts-2026-09-21",
+    "canonical_files": [
+      "lib/raylo-txncat/src/raylo_txncat/benchmark_cohort.py",
+      "lib/raylo-txncat/src/raylo_txncat/benchmark_lifecycle.py",
+      "lib/raylo-txncat/src/raylo_txncat/benchmark_annotation.py",
+      "lib/raylo-txncat/tests/test_benchmark_cohort.py",
+      "lib/raylo-txncat/tests/test_benchmark_lifecycle.py",
+      "lib/raylo-txncat/tests/test_benchmark_annotation.py"
+    ],
+    "focused_tests": "76 passed",
+    "full_library_suite": "1291 passed",
+    "authorizes_consumption": false,
+    "real_rows_read": 0,
+    "real_rows_reserved": 0,
+    "real_rows_labelled": 0,
+    "provider_calls": 0,
+    "cloud_changes": 0,
+    "retraining": false,
+    "locked_set_scoring": false,
+    "phase_state": "synthetic-only",
+    "next_gate": "G1 pilot closure: AIE-511/AIE-512/AIE-513 evidence; no real-data action authorised"
   }
 }

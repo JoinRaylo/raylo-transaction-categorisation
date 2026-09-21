@@ -1,0 +1,134 @@
+{
+  "schema_version": "benchmark-g0-synthetic-contracts-verification-v1",
+  "milestone": "AIE-510-G0",
+  "scope": "synthetic_only",
+  "authorizes_consumption": false,
+  "base": {
+    "app_base_before_milestone": "366d45b1ee80bffa32efa58af8de8742b248ce17",
+    "app_branch": "codex/txncat-aie510-g0",
+    "app_implementation_commit": "48bcfd451df6c3210027ee7a1c3bee6e25d9bc48",
+    "research_base_before_milestone": "c5ca7311c8054ccb9125e5e2197ab6bbb4aa5ef7",
+    "research_branch": "codex/txncat-aie510-g0-research"
+  },
+  "environment": {
+    "python": "/Users/carlosnoblejesus/Repos/internal-services-monorepo/.venv/bin/python",
+    "workdir": "/private/tmp/txncat-aie510-g0-app",
+    "env": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=$PWD/lib/raylo-txncat/src:$PWD/apps/ob-txn-categoriser/src",
+    "pytest_options": "-q -m unit -p no:cacheprovider",
+    "ruff": "/Users/carlosnoblejesus/Repos/internal-services-monorepo/.venv/bin/ruff --config $PWD/pyproject.toml"
+  },
+  "checks": [
+    {
+      "command": "$PY -m pytest -q -m unit -p no:cacheprovider lib/raylo-txncat/tests/test_benchmark.py lib/raylo-txncat/tests/test_benchmark_exposure.py apps/ob-txn-categoriser/tests/unit/test_benchmark_preflight.py",
+      "when": "pre-edit baseline",
+      "result": "116 passed"
+    },
+    {
+      "command": "$PY -m pytest -q -m unit -p no:cacheprovider lib/raylo-txncat/tests/test_benchmark_cohort.py lib/raylo-txncat/tests/test_benchmark_lifecycle.py lib/raylo-txncat/tests/test_benchmark_annotation.py",
+      "when": "post-implementation and post-rework",
+      "result": "76 passed"
+    },
+    {
+      "command": "$PY -m pytest -q -m unit -p no:cacheprovider lib/raylo-txncat/tests/test_benchmark.py lib/raylo-txncat/tests/test_benchmark_exposure.py apps/ob-txn-categoriser/tests/unit/test_benchmark_preflight.py",
+      "when": "post-edit startup check",
+      "result": "116 passed"
+    },
+    {
+      "command": "$PY -m pytest -q -m unit -p no:cacheprovider lib/raylo-txncat/tests/test_benchmark_allocation.py lib/raylo-txncat/tests/test_benchmark_authority.py lib/raylo-txncat/tests/test_membership_manifest.py lib/raylo-txncat/tests/test_benchmark_regression.py",
+      "when": "post-edit",
+      "result": "65 passed"
+    },
+    {
+      "command": "$PY -m pytest -q -m unit -p no:cacheprovider lib/raylo-txncat/tests",
+      "when": "post-edit full library unit suite",
+      "result": "1291 passed"
+    },
+    {
+      "command": "ruff check --config $PWD/pyproject.toml <6 changed .py files>",
+      "result": "All checks passed!"
+    },
+    {
+      "command": "ruff format --check --config $PWD/pyproject.toml <6 changed .py files>",
+      "result": "6 files already formatted"
+    },
+    {
+      "command": "git -C /private/tmp/txncat-aie510-g0-app diff --check",
+      "result": "clean, no output"
+    }
+  ],
+  "failed_attempts": [
+    {
+      "check": "first targeted run of the new tests",
+      "result": "72 passed, 2 failed: test_pilot_parent_immutability assumed list-order exceptions while they are emitted in observation-key order, and test_allocation_design_defaults_and_rejections hit the earlier target-sum validator instead of the intended per-view pilot>target branch",
+      "impact": "test fixtures only; assertions corrected without weakening them; no implementation defect"
+    },
+    {
+      "check": "targeted run during the review rework",
+      "result": "an external rewrite of the worktree files briefly reverted in-progress edits; the rework was re-applied against the canonical on-disk bytes and the rerun passed 76 tests",
+      "impact": "tooling/sync artifact; final committed bytes are the verified ones"
+    }
+  ],
+  "synthetic_fixture_counts": {
+    "fixture": "test_benchmark_cohort.full_fixture()",
+    "members_total": 2000,
+    "core_rows": 1500,
+    "supplement_rows": 500,
+    "pilot_rows": {
+      "representative": 250,
+      "unseen_input": 150,
+      "unfamiliar_merchant": 100,
+      "total": 500
+    },
+    "expansion_rows": {
+      "representative": 800,
+      "unseen_input": 150,
+      "unfamiliar_merchant": 50,
+      "total": 1000
+    },
+    "headline_denominator": 1050,
+    "core_tier_counts": {
+      "T1": 25,
+      "T2": 25,
+      "T3": 0,
+      "T5": 595,
+      "T6": 670,
+      "T7": 185
+    },
+    "core_t6_t7_rows": 855,
+    "unfamiliar_t6_t7_share": 0.7,
+    "allocation_status": "complete"
+  },
+  "test_counts": {
+    "lib/raylo-txncat/tests/test_benchmark_cohort.py": {
+      "functions": 30,
+      "collected_cases": 30
+    },
+    "lib/raylo-txncat/tests/test_benchmark_lifecycle.py": {
+      "functions": 13,
+      "collected_cases": 29
+    },
+    "lib/raylo-txncat/tests/test_benchmark_annotation.py": {
+      "functions": 17,
+      "collected_cases": 17,
+      "added_in_this_milestone": 4
+    }
+  },
+  "data_handling": {
+    "real_rows_read": 0,
+    "real_rows_reserved": 0,
+    "real_rows_labelled": 0,
+    "provider_calls": 0,
+    "cloud_changes": 0,
+    "authority_objects_written": 0,
+    "retraining": false,
+    "locked_set_scoring": false,
+    "phase_ledger_real_state": "synthetic-only"
+  },
+  "not_run": [
+    "apps/ob-txn-categoriser full unit suite",
+    "research repository test suite",
+    "ruff over unchanged files",
+    "any BigQuery dry run",
+    "any provider batch acceptance"
+  ]
+}

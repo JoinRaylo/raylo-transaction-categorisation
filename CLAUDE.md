@@ -174,6 +174,33 @@ hash-bound to that lookup, and build re-verifies both inputs. The hardened query
 compiled in an EU no-row dry run; 24 focused tests and 135 regressions pass, and
 Astra approved the protection after three fixes. No real training fetch occurred.
 
+## G0 synthetic two-cohort contracts for the 2,000-row benchmark (2026-09-21)
+
+The canonical code lives in the app monorepo (do not fork):
+`lib/raylo-txncat/src/raylo_txncat/benchmark_cohort.py` and
+`benchmark_lifecycle.py`, plus backward-compatible retry/cancel additions to
+`benchmark_annotation.py`. The mirrored design and evidence packet is
+`docs/benchmark-implementation/g0-synthetic-contracts-2026-09-21/`. Pins: app
+base `366d45b1`, branch `codex/txncat-aie510-g0`, implementation commit
+`48bcfd45`; research base `c5ca731`, branch `codex/txncat-aie510-g0-research`.
+
+The contract fixes the 2,000-row target as an unchanged 1,500-row core (500
+pilot + 1,000 new rows; the 70/20/10 split applies to the core only) plus a
+separately reported 500-row rare-leaf supplement with
+`cohort=rare_leaf_supplement`. Pilot rows are immutable, with eligibility
+defects recorded as exceptions rather than replacements; consumption
+protection is the union of core and supplement keys and fails closed; the
+headline excludes supplement rows; the phase ledger is an explicit
+eight-state no-skip machine halted by failed or unavailable authority
+outcomes; the receipt chain is append-only with stable bindings; a nine-rule
+conflict matrix separates transitive from non-transitive keys; and the
+pre-label proxy selector rejects candidates carrying final labels. 76 focused
+and 1,291 library unit tests pass. Synthetic only: do not perform any
+candidate read, reservation, annotation dispatch, redraw to satisfy rare-leaf
+quotas, or use of final labels for supplement selection. The next gate is G1
+pilot closure (AIE-511 adjudication, AIE-512 importer, AIE-513 enforcement
+evidence).
+
 ## B03-B authenticated receipt boundary (2026-09-17)
 
 The canonical app boundary now includes strict `AuthenticatedReceipt` and
