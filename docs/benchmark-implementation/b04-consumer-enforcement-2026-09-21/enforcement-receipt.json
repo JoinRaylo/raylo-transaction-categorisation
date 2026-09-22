@@ -54,7 +54,11 @@
     "provenance_identity_resolution_through_verified_chain",
     "manifest_identity_byte_contradiction_rejection",
     "reviewed_row_to_raw_fetch_join_required",
-    "export_manifest_unresolved_rows_zero"
+    "export_manifest_unresolved_rows_zero",
+    "uncorroborated_claimed_identity_rejection",
+    "mismatched_provenance_identity_rejection",
+    "unresolvable_provenance_digest_rejection",
+    "derived_inputs_require_verified_chain"
   ],
   "limitations": [
     "Supported paths: Gemini/Sonnet for labelling egress only; the winning transformer is the sole TxCat-1 categorisation model trained and promoted. All Qwen LoRA launchers are retired behind terminal gates and are excluded from the enforced consumer count.",
@@ -65,7 +69,7 @@
     "Grouped corpus builders (pretrain/silver) and narrative-egress evidence queries are gated off because their aggregation cannot carry per-event identity.",
     "final_evaluation's BigQuery use is merchant-level GROUP BY aggregates only; it cannot leak a protected event but cannot prove per-event exclusion either.",
     "Receipt verification binds artifact bytes; it does not attest the human review step between a fetched sample and its reviewed derivative.",
-    "Row manifests bind row bytes, order and declared provenance; effective identity resolves recursively (row bytes, manifest claim, verified input chain). For every non-authoring purpose an unresolved row is a hard failure at issuance, verification, fit and promotion. Merchant-level label artifacts that genuinely cannot carry event identity are classified authoring-only and can never stand in as learning inputs."
+    "Row manifests bind row bytes, order and declared provenance; effective identity resolves recursively (row bytes, manifest claim, verified input chain). Derived artifacts must corroborate every identity through source_row_sha256 — a bare claim stays unresolved. For every non-authoring purpose an unresolved row is a hard failure at issuance, verification, fit and promotion. Merchant-level label artifacts that genuinely cannot carry event identity are classified authoring-only and can never stand in as learning inputs."
   ],
   "authorizes_consumption": false
 }

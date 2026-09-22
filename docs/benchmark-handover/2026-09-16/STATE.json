@@ -772,8 +772,8 @@
     "consumers_total": 126,
     "matrix_sha256": "5177f983bd038e13598a8677e7c30f82a5e7c3308b94211082c1308a4d23e2a8",
     "milestone": "b04-consumer-enforcement-2026-09-21",
-    "receipt_sha256": "9f41fd864d2491af4390ae89263a4fc80cad2ac7f4e7080b28169d0e0a2bc945",
-    "recorded_utc": "2026-09-22T18:30:00Z",
+    "receipt_sha256": "65325b0dca5f96f79439770d2bd547d91981168cc31c135571945859cf8e67bf",
+    "recorded_utc": "2026-09-22T20:10:00Z",
     "release": {
       "membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068",
       "pilot_sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248",
@@ -782,7 +782,7 @@
       "schema_version": "benchmark-release-binding-v1"
     },
     "research_adapter": "src/eval_protection.py",
-    "review_remediation": "R1: strict receipts, guard-bound issuance, pinned promotion binding, gap-fill chains, labelling-egress verification, identity rebuilds, Qwen retired. R2: Ed25519-signed fetch/artifact receipts and guard tokens (private key outside Git), explicit provenance.training_inputs exact-set equality, remaining retired egress paths terminally gated. R3: exclusion-attesting issuance \u2014 fetch receipts (v3) require a live GuardResult correlated with the persisted result file and promotion re-verifies via verify_fetch_file; artifact receipts (v4) bind identity-less outputs to b04-row-manifest-v1 row digests/order and verified-chain provenance; transformer build emits bound train/val receipts chained to every verified input. R4: zero unresolved manifest rows for non-authoring purposes \u2014 effective row identity resolves recursively (row bytes, manifest claim, verified input chain) and unresolved rows fail issuance, verification, fit and promotion; append_t6_residual_topup joins reviewed rows to guarded raw fetches and carries prior manifest entries forward; build_tuning_dataset propagates exact identity into export manifests; merchant-level label artifacts reclassified authoring-only",
+    "review_remediation": "R1: strict receipts, guard-bound issuance, pinned promotion binding, gap-fill chains, labelling-egress verification, identity rebuilds, Qwen retired. R2: Ed25519-signed fetch/artifact receipts and guard tokens (private key outside Git), explicit provenance.training_inputs exact-set equality, remaining retired egress paths terminally gated. R3: exclusion-attesting issuance \u2014 fetch receipts (v3) require a live GuardResult correlated with the persisted result file and promotion re-verifies via verify_fetch_file; artifact receipts (v4) bind identity-less outputs to b04-row-manifest-v1 row digests/order and verified-chain provenance; transformer build emits bound train/val receipts chained to every verified input. R4: zero unresolved manifest rows for non-authoring purposes \u2014 effective row identity resolves recursively (row bytes, manifest claim, verified input chain) and unresolved rows fail issuance, verification, fit and promotion; append_t6_residual_topup joins reviewed rows to guarded raw fetches and carries prior manifest entries forward; build_tuning_dataset propagates exact identity into export manifests; merchant-level label artifacts reclassified authoring-only. R5: derived artifacts must corroborate every effective identity through source_row_sha256 to a verified input row \u2014 a bare manifest or byte-level claim stays unresolved; standalone claims are accepted only on guard-correlated artifacts; exclusion still checks asserted identities; in-place producers carry forward the grandparent verified chain",
     "scope": "prospective only; historical non-use not certified",
     "supported_paths": "Gemini/Sonnet labelling egress only; winning transformer sole TxCat-1 model trained and promoted",
     "ticket": "AIE-513"

@@ -129,7 +129,12 @@ def main():
             raw_rows.append((raw.name, raw_row))
     prior_manifest = {}
     if FINAL.exists():
-        input_receipts.append(eval_protection.verify_artifact(FINAL))
+        # The prior file is overwritten below, so its receipt cannot join the
+        # new input chain — verification re-reads the path.  Carry its
+        # verified inputs forward instead: existing rows keep their original
+        # manifest provenance, which resolves through the grandparent chain.
+        prior_receipt = eval_protection.verify_artifact(FINAL)
+        input_receipts.extend(prior_receipt.get("input_receipts") or [])
         prior_manifest = _prior_manifest(FINAL)
     holdout = {_norm(r["merchant_raw"]) for r in csv.DictReader(open(HOLDOUT))}
     holdout.discard("")
@@ -181,22 +186,18 @@ def main():
 
     existing_manifest = []
     for r in existing:
-        digest = eval_protection.row_content_sha256(r)
-        prior = prior_manifest.get(digest)
+        prior = prior_manifest.get(eval_protection.row_content_sha256(r))
         if prior is not None:
+            # Verbatim copy: the row keeps the exact identity and the
+            # source-row provenance it was issued with.
             existing_manifest.append(
                 {"identity": prior["identity"], "provenance": prior["provenance"]}
             )
         else:
-            existing_manifest.append(
-                {
-                    "identity": None,
-                    "provenance": {
-                        "source": "prior_final",
-                        "source_row_sha256": digest,
-                    },
-                }
-            )
+            # No bound manifest predates this row — it cannot prove which
+            # guarded event produced it, so it stays unresolved and blocks
+            # issuance until an identity-preserving rebuild.
+            existing_manifest.append({"identity": None, "provenance": None})
 
     with open(FINAL, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS)

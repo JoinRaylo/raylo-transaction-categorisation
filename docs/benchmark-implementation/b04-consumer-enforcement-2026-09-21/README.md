@@ -88,7 +88,13 @@ The only approved protected release is pinned in `src/eval_protection.py`
   recursively — byte-level linkage columns first, then the manifest's
   explicit identity claim, then `source_row_sha256` provenance through the
   receipt's verified input chain — and a claim that contradicts the row
-  bytes or its resolved source row fails closed.  For non-authoring
+  bytes or its resolved source row fails closed.  For derived artifacts
+  (verified input chain, no direct guard) every effective identity must be
+  corroborated by a `source_row_sha256` that resolves to a verified input
+  row carrying that same identity: a bare identity — in row bytes or a
+  manifest claim — is an assertion, not evidence, and stays unresolved.
+  Standalone claims are accepted only on guard-correlated artifacts, where
+  the guard's retained set already binds them.  For non-authoring
   purposes (`supervised_training`, `model_selection_validation`,
   `distillation`, evaluation, risk) **zero unresolved rows are permitted**:
   issuance refuses them, verification rejects a signed receipt over them,

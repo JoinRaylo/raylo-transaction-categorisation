@@ -480,6 +480,10 @@ CHECKS = [
     "manifest_identity_byte_contradiction_rejection",
     "reviewed_row_to_raw_fetch_join_required",
     "export_manifest_unresolved_rows_zero",
+    "uncorroborated_claimed_identity_rejection",
+    "mismatched_provenance_identity_rejection",
+    "unresolvable_provenance_digest_rejection",
+    "derived_inputs_require_verified_chain",
 ]
 
 LIMITATIONS = [
@@ -504,7 +508,9 @@ LIMITATIONS = [
     "step between a fetched sample and its reviewed derivative.",
     "Row manifests bind row bytes, order and declared provenance; effective "
     "identity resolves recursively (row bytes, manifest claim, verified input "
-    "chain). For every non-authoring purpose an unresolved row is a hard "
+    "chain). Derived artifacts must corroborate every identity through "
+    "source_row_sha256 — a bare claim stays unresolved. For every "
+    "non-authoring purpose an unresolved row is a hard "
     "failure at issuance, verification, fit and promotion. Merchant-level "
     "label artifacts that genuinely cannot carry event identity are "
     "classified authoring-only and can never stand in as learning inputs.",

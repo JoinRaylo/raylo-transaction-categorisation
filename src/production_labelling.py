@@ -579,7 +579,6 @@ def apply_review(path=None):
     # input chain.
     labels_receipt = eval_protection.verify_artifact(LABELS_CSV)
     rows = list(csv.DictReader(open(LABELS_CSV)))
-    source_digests = [eval_protection.row_content_sha256(r) for r in rows]
     applied = 0
     for r in rows:
         if r["merchant"] in resolutions and r["tier"] == "needs_review":
@@ -591,20 +590,20 @@ def apply_review(path=None):
         w.writeheader()
         w.writerows(rows)
     # Merchant-level label dictionary: rows carry no event identity, so the
-    # artifact is honestly authoring-purpose; each manifest row still binds
-    # to the verified input row it was rewritten from.
+    # artifact is honestly authoring-purpose.  LABELS_CSV is rewritten in
+    # place, so the prior receipt cannot join the new input chain — its
+    # verified inputs carry forward and the manifest rows honestly claim no
+    # identity.
     eval_protection.write_artifact_receipt(
         LABELS_CSV, consumer="production_labelling.apply_review",
-        purpose="dictionary_candidates", input_receipts=[labels_receipt],
+        purpose="dictionary_candidates",
+        input_receipts=labels_receipt.get("input_receipts") or [],
         manifest_identities=[
             {
                 "identity": None,
-                "provenance": {
-                    "source": "labels_csv_review",
-                    "source_row_sha256": digest,
-                },
+                "provenance": {"source": "labels_csv_review"},
             }
-            for digest in source_digests
+            for _ in rows
         ],
     )
 

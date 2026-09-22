@@ -872,16 +872,22 @@ def test_transformer_export_build_to_promotion_chain(
         )
 
 
-def _hand_signed_unresolved_receipt(enforcement, binding, artifact, fetch_receipt):
-    """Hand-sign the reviewer's R4 receipt: arbitrary JSONL, an unrelated
-    guarded-fetch input, and one manifest row claiming nothing.  Issuance
-    refuses this shape, so a manually-signed copy exercises the verify/fit/
-    promotion boundaries — even a validly-signed receipt must fail there."""
+def _hand_signed_unresolved_receipt(
+    enforcement, binding, artifact, fetch_receipt,
+    manifest_entry=None, unresolved_rows=1,
+):
+    """Hand-sign the reviewer's receipt: arbitrary JSONL, an unrelated
+    guarded-fetch input, and one manifest row claiming nothing (or an
+    uncorroborated clean identity).  Issuance refuses this shape, so a
+    manually-signed copy exercises the verify/fit/promotion boundaries —
+    even a validly-signed receipt must fail there."""
 
+    if manifest_entry is None:
+        manifest_entry = {"identity": None, "provenance": None}
     blob, _ids, _provs = enforcement._build_row_manifest(
         artifact,
         [{"text": "arbitrary"}],
-        [{"identity": None, "provenance": None}],
+        [manifest_entry],
     )
     enforcement._manifest_path(artifact).write_bytes(blob)
     payload = enforcement._guard_payload(
@@ -915,7 +921,7 @@ def _hand_signed_unresolved_receipt(enforcement, binding, artifact, fetch_receip
         "guard": guard_block,
         "input_receipts": [dict(fetch_receipt)],
         "manifest_sha256": enforcement.sha256(blob),
-        "unresolved_rows": 1,
+        "unresolved_rows": unresolved_rows,
     }
     receipt["signature"] = enforcement._sign_fields(receipt)
     return receipt
@@ -1149,3 +1155,224 @@ def test_export_manifest_real_path_resolves_every_row(
         out_dir=out_dir, txncat_src=txncat_src
     )
     assert coverage["model_files"]["train"]["rows"] == 1
+
+
+def test_uncorroborated_claim_fails_at_fit_and_promotion(
+    synthetic_release, tmp_path, monkeypatch
+):
+    """R5 regression: the exact reproduction — arbitrary tuning_train.jsonl,
+    an unrelated valid guarded-fetch receipt, and a manifest claiming that
+    fetch's clean identity with ``provenance: null`` — fails at issuance,
+    artifact verification, the fit boundary and promotion."""
+
+    enforcement, membership_path, publication_path = synthetic_release
+    binding = enforcement.ReleaseBinding(**eval_protection.PINNED_BINDING)
+    monkeypatch.setattr(enforcement, "PINNED_RELEASE", binding)
+    monkeypatch.setenv("EVAL_MEMBERSHIP", str(membership_path))
+    monkeypatch.setenv("EVAL_PUBLICATION", str(publication_path))
+    txncat_src = os.environ.get("RAYLOTXNCAT_SRC", os.environ.get("RAYLO_TXNCAT_SRC"))
+
+    out_dir = tmp_path / "outputs"
+    out_dir.mkdir()
+    protection, publication = enforcement.verify_release(
+        membership_path=membership_path,
+        publication_path=publication_path,
+        binding=binding,
+    )
+    txn = {
+        "provider": "plaid",
+        "account_id": "acc-8",
+        "transaction_id": "txn-8",
+        "customer_id": "cust-8",
+        "merchant": "synthetic",
+        "target": "groceries",
+    }
+    retained, guard = enforcement.guard_batch(
+        protection, publication, [txn], purpose="supervised_training"
+    )
+    txns_path = out_dir / "tuning_txns.json"
+    txns_path.write_text(json.dumps(retained))
+    fetch_receipt = enforcement.issue_fetch_receipt(
+        result_path=txns_path,
+        rows=len(retained),
+        binding=binding,
+        guard=guard,
+    )
+    (out_dir / "tuning_txns_receipt.json").write_text(
+        json.dumps(fetch_receipt, indent=2)
+    )
+
+    artifact = out_dir / "tuning_train.jsonl"
+    artifact.write_text('{"text": "arbitrary"}\n')
+    claimed = {
+        "identity": {
+            "provider": "plaid",
+            "account_id": "acc-8",
+            "transaction_id": "txn-8",
+            "customer_id": "cust-8",
+        },
+        "provenance": None,
+    }
+
+    # (a) issuance refuses the uncorroborated claim.
+    with pytest.raises(Exception, match="resolve"):
+        eval_protection.write_artifact_receipt(
+            artifact,
+            consumer="build_tuning_dataset",
+            purpose="supervised_training",
+            input_receipts=[fetch_receipt],
+            manifest_identities=[claimed],
+        )
+
+    # (b) a hand-signed receipt over the same shape fails verification.
+    forged = _hand_signed_unresolved_receipt(
+        enforcement, binding, artifact, fetch_receipt, manifest_entry=claimed
+    )
+    (out_dir / "tuning_train.jsonl.b04-receipt.json").write_text(
+        json.dumps(forged, indent=2)
+    )
+    with pytest.raises(Exception, match="resolve"):
+        eval_protection.verify_artifact(artifact, txncat_src=txncat_src)
+
+    # (c) the fit boundary fails before any fit.
+    with pytest.raises(Exception, match="resolve"):
+        eval_protection.verify_tuning_export(
+            out_dir=out_dir, txncat_src=txncat_src
+        )
+
+    # (d) promotion fails on the same verified coverage.
+    with pytest.raises(Exception, match="resolve"):
+        enforcement.require_promotion_provenance(
+            membership_path=membership_path,
+            publication_path=publication_path,
+            learning_inputs=[artifact],
+            artifact_receipts=[forged],
+            binding=binding,
+        )
+
+
+def test_append_t6_joins_reviewed_rows_to_guarded_fetch(
+    synthetic_release, tmp_path, monkeypatch
+):
+    """R4/R5 real path: every appended row is joined to its guarded raw
+    fetch row and carries that row's exact identity plus source digest —
+    the issued receipt reports zero unresolved rows and verifies."""
+
+    enforcement, membership_path, publication_path = synthetic_release
+    binding = enforcement.ReleaseBinding(**eval_protection.PINNED_BINDING)
+    monkeypatch.setattr(enforcement, "PINNED_RELEASE", binding)
+    monkeypatch.setenv("EVAL_MEMBERSHIP", str(membership_path))
+    monkeypatch.setenv("EVAL_PUBLICATION", str(publication_path))
+
+    import csv as _csv
+    import append_t6_residual_topup as topup
+
+    protection, publication = enforcement.verify_release(
+        membership_path=membership_path,
+        publication_path=publication_path,
+        binding=binding,
+    )
+    raw_row = {
+        "row_id": "r-1",
+        "merchant_raw": "synthetic",
+        "description_raw": "coffee",
+        "amount": "3.50",
+        "direction": "debit",
+        "provider": "plaid",
+        "account_id": "acc-8",
+        "transaction_id": "txn-8",
+        "customer_id": "cust-8",
+    }
+    retained, guard = enforcement.guard_batch(
+        protection, publication, [raw_row], purpose="supervised_training"
+    )
+    raw_path = tmp_path / "t6_sample.csv"
+    with raw_path.open("w", newline="") as stream:
+        writer = _csv.DictWriter(stream, fieldnames=list(raw_row))
+        writer.writeheader()
+        writer.writerows(retained)
+    eval_protection.write_artifact_receipt(
+        raw_path,
+        consumer="t6_residual_fetch",
+        purpose="supervised_training",
+        guard=guard,
+    )
+    reviewed = tmp_path / "t6_sample_reviewed.csv"
+    with reviewed.open("w", newline="") as stream:
+        writer = _csv.DictWriter(
+            stream,
+            fieldnames=[
+                "row_id", "merchant_raw", "description_raw", "amount",
+                "direction", "native_category", "correct_category",
+                "target_leaf",
+            ],
+        )
+        writer.writeheader()
+        writer.writerow(
+            {
+                "row_id": "r-1",
+                "merchant_raw": "synthetic",
+                "description_raw": "coffee",
+                "amount": "3.50",
+                "direction": "debit",
+                "native_category": "",
+                "correct_category": "groceries",
+                "target_leaf": "groceries",
+            }
+        )
+    holdout = tmp_path / "holdout.csv"
+    holdout.write_text("merchant_raw\nunrelated\n")
+    final = tmp_path / "tuning_leaf_topup.csv"
+
+    monkeypatch.setattr(topup, "REVIEWED", [reviewed])
+    monkeypatch.setattr(topup, "FINAL", final)
+    monkeypatch.setattr(topup, "HOLDOUT", holdout)
+    topup.main()
+
+    receipt = json.loads(
+        (tmp_path / "tuning_leaf_topup.csv.b04-receipt.json").read_text()
+    )
+    assert receipt["unresolved_rows"] == 0
+    manifest = json.loads(
+        (tmp_path / "tuning_leaf_topup.csv.b04-manifest.json").read_text()
+    )
+    (entry,) = manifest["rows"]
+    assert entry["identity"]["transaction_id"] == "txn-8"
+    assert entry["provenance"]["source_row_sha256"] == enforcement.sha256(
+        enforcement.canonical_json(raw_row)
+    )
+    eval_protection.verify_artifact(final)
+
+
+def test_append_t6_ambiguous_join_fails_closed(tmp_path):
+    """A reviewed row that matches zero or several raw rows cannot claim an
+    identity — the join terminates the run."""
+
+    import append_t6_residual_topup as topup
+
+    raw_rows = [
+        {
+            "row_id": "r-1",
+            "merchant_raw": "a",
+            "description_raw": "",
+            "amount": "1.00",
+            "direction": "debit",
+        },
+        {
+            "row_id": "r-2",
+            "merchant_raw": "a",
+            "description_raw": "",
+            "amount": "1.00",
+            "direction": "debit",
+        },
+    ]
+    reviewed = {
+        "merchant_raw": "a",
+        "description_raw": "",
+        "amount": "1.00",
+        "direction": "debit",
+    }
+    with pytest.raises(SystemExit, match="matches 2 raw rows"):
+        topup._join_raw(reviewed, raw_rows)
+    with pytest.raises(SystemExit, match="matches 0 raw rows"):
+        topup._join_raw({**reviewed, "amount": "9.99"}, raw_rows)
