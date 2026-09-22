@@ -43,7 +43,7 @@ def _member(account: str, txn: str, customer: str, view: str = "representative")
 def receipt_signing(monkeypatch):
     """Ephemeral Ed25519 pair standing in for the pinned receipt key."""
 
-    cryptography = pytest.importorskip("cryptography")
+    pytest.importorskip("cryptography")
     from cryptography.hazmat.primitives.asymmetric.ed25519 import (
         Ed25519PrivateKey,
     )
@@ -230,35 +230,56 @@ def test_verify_tuning_export_fails_closed(tmp_path):
         eval_protection.verify_tuning_export(out_dir=tmp_path)
 
 
-def _valid_fetch_receipt():
-    receipt = {
-        "schema_version": "tuning-tier-b-fetch-receipt-v2",
-        "anonymous_id_recovery": False,
-        "source_kind": "customer_linked_plaid_materialized",
-        "protected_release": {
-            "schema_version": "benchmark-release-binding-v1",
-            **eval_protection.PINNED_BINDING,
-        },
-        "eval_membership_inputs": [
-            {"sha256": eval_protection.PINNED_BINDING["membership_sha256"]}
-        ],
-        "result_sha256": "a" * 64,
-        "rows": 3,
-    }
-    enforcement = _enforcement_or_skip()
-    receipt["signature"] = enforcement._sign_fields(receipt)
-    return receipt
+def _guarded_fetch(synthetic_release, tmp_path, rows, monkeypatch):
+    """Guard rows through the canonical guard and issue a real fetch receipt."""
+
+    enforcement, membership_path, publication_path = synthetic_release
+    binding = enforcement.ReleaseBinding(**eval_protection.PINNED_BINDING)
+    monkeypatch.setattr(enforcement, "PINNED_RELEASE", binding)
+    protection, publication = enforcement.verify_release(
+        membership_path=membership_path,
+        publication_path=publication_path,
+        binding=binding,
+    )
+    retained, guard = enforcement.guard_batch(
+        protection, publication, rows, purpose="supervised_training"
+    )
+    path = tmp_path / "txns.json"
+    path.write_text(json.dumps(retained))
+    receipt = enforcement.issue_fetch_receipt(
+        result_path=path,
+        rows=len(retained),
+        binding=binding,
+        guard=guard,
+    )
+    return path, receipt, protection
 
 
-def test_verify_fetch_receipt_binding(synthetic_release):
+def _resign(enforcement, document):
+    """Re-sign a tampered receipt so field-level checks (not signature) fire."""
+
+    doc = dict(document)
+    doc["signature"] = enforcement._sign_fields(
+        {k: v for k, v in doc.items() if k != "signature"}
+    )
+    return doc
+
+
+def test_verify_fetch_receipt_binding(synthetic_release, tmp_path, monkeypatch):
     enforcement, membership_path, _ = synthetic_release
-    good = _valid_fetch_receipt()
+    rows = [
+        {"provider": "plaid", "account_id": "acc-8", "transaction_id": "txn-8",
+         "customer_id": "cust-8", "merchant": "synthetic"}
+    ]
+    _path, good, _protection = _guarded_fetch(
+        synthetic_release, tmp_path, rows, monkeypatch
+    )
     eval_protection.verify_fetch_receipt(
         good, txncat_src=os.environ.get("RAYLO_TXNCAT_SRC")
     )
     # A minimal fabricated receipt — schema + membership digest only — fails.
     minimal = {
-        "schema_version": "tuning-tier-b-fetch-receipt-v2",
+        "schema_version": "tuning-tier-b-fetch-receipt-v3",
         "anonymous_id_recovery": False,
         "eval_membership_inputs": [
             {"sha256": eval_protection.PINNED_BINDING["membership_sha256"]}
@@ -268,22 +289,26 @@ def test_verify_fetch_receipt_binding(synthetic_release):
         eval_protection.verify_fetch_receipt(
             minimal, txncat_src=os.environ.get("RAYLO_TXNCAT_SRC")
         )
-    stale = {
-        **good,
-        "eval_membership_inputs": [{"sha256": "1" * 64}],
-    }
+    # Re-signed field tampering still fails strict validation.
+    stale = _resign(
+        enforcement,
+        {**good, "eval_membership_inputs": [{"sha256": "1" * 64}]},
+    )
     with pytest.raises(enforcement.ProtectedMembershipError):
         eval_protection.verify_fetch_receipt(
             stale, txncat_src=os.environ.get("RAYLO_TXNCAT_SRC")
         )
     # A caller-supplied alternate release binding is rejected outright.
-    other = {
-        **good,
-        "protected_release": {
-            **good["protected_release"],
-            "membership_sha256": "2" * 64,
+    other = _resign(
+        enforcement,
+        {
+            **good,
+            "protected_release": {
+                **good["protected_release"],
+                "membership_sha256": "2" * 64,
+            },
         },
-    }
+    )
     with pytest.raises(enforcement.ProtectedMembershipError):
         eval_protection.verify_fetch_receipt(
             other, txncat_src=os.environ.get("RAYLO_TXNCAT_SRC")
@@ -521,3 +546,327 @@ def test_frozen_release_producer_tools_gated(tool):
             module.main()
     finally:
         sys.path.remove(str(ROOT / "tools" / "benchmark"))
+
+
+def test_verify_tuning_export_rejects_unsigned_coverage_substitute(
+    synthetic_release, tmp_path, monkeypatch
+):
+    """R3 regression: a regenerated unsigned membership-coverage file can no
+    longer authorise fit — bound train/val receipts are the trust anchor."""
+
+    enforcement, membership_path, publication_path = synthetic_release
+    binding = enforcement.ReleaseBinding(**eval_protection.PINNED_BINDING)
+    monkeypatch.setattr(enforcement, "PINNED_RELEASE", binding)
+    monkeypatch.setenv("EVAL_MEMBERSHIP", str(membership_path))
+    monkeypatch.setenv("EVAL_PUBLICATION", str(publication_path))
+    txncat_src = os.environ.get("RAYLO_TXNCAT_SRC")
+
+    from training_membership import (
+        TrackedExample,
+        exact_plaid_membership,
+        publish_training_export,
+    )
+
+    out_dir = tmp_path / "outputs"
+    out_dir.mkdir()
+
+    # Tier-B fetch: real guarded fetch receipts, one row per role so the
+    # permanent identities never span train/selection.
+    txn_train = {
+        "provider": "plaid",
+        "account_id": "acc-8",
+        "transaction_id": "txn-8",
+        "customer_id": "cust-8",
+        "merchant": "synthetic",
+        "target": "groceries",
+    }
+    txn_val = {
+        "provider": "plaid",
+        "account_id": "acc-9",
+        "transaction_id": "txn-9",
+        "customer_id": "cust-9",
+        "merchant": "synthetic",
+        "target": "groceries",
+    }
+    protection, publication = enforcement.verify_release(
+        membership_path=membership_path,
+        publication_path=publication_path,
+        binding=binding,
+    )
+    retained, guard = enforcement.guard_batch(
+        protection, publication, [txn_train, txn_val], purpose="supervised_training"
+    )
+    txns_path = out_dir / "tuning_txns.json"
+    txns_path.write_text(json.dumps(retained))
+    fetch_receipt = enforcement.issue_fetch_receipt(
+        result_path=txns_path,
+        rows=len(retained),
+        binding=binding,
+        guard=guard,
+    )
+    (out_dir / "tuning_txns_receipt.json").write_text(
+        json.dumps(fetch_receipt, indent=2)
+    )
+
+    # train/val exports via the real publisher → real coverage+lookup.
+    train_example = TrackedExample(
+        messages={"messages": [{"role": "user", "content": "x"}]},
+        membership=exact_plaid_membership(
+            source="tier_b_customer_linked_plaid", row=txn_train
+        ),
+    )
+    val_example = TrackedExample(
+        messages={"messages": [{"role": "user", "content": "y"}]},
+        membership=exact_plaid_membership(
+            source="tier_b_customer_linked_plaid", row=txn_val
+        ),
+    )
+    publish_training_export(
+        [train_example],
+        [val_example],
+        train_path=out_dir / "tuning_train.jsonl",
+        selection_path=out_dir / "tuning_val.jsonl",
+        lookup_path=out_dir / "tuning_membership_lookup.csv",
+        coverage_path=out_dir / "tuning_membership_coverage.json",
+    )
+
+    # Unsigned coverage alone cannot authorise the export — the receipts
+    # are missing, so the boundary fails closed.
+    with pytest.raises(RuntimeError, match="no bound artifact receipt"):
+        eval_protection.verify_tuning_export(
+            out_dir=out_dir, txncat_src=txncat_src
+        )
+
+    # Bound receipts + manifests complete the chain; fit verifies.
+    def _manifest(txn):
+        return [
+            {
+                "identity": {
+                    "provider": "plaid",
+                    "account_id": txn["account_id"],
+                    "transaction_id": txn["transaction_id"],
+                    "customer_id": txn["customer_id"],
+                },
+                "provenance": {
+                    "source": "tier_b_customer_linked_plaid",
+                    "source_row_sha256": enforcement.sha256(
+                        enforcement.canonical_json(dict(txn))
+                    ),
+                },
+            }
+        ]
+
+    for name, txn, purpose in (
+        ("tuning_train.jsonl", txn_train, "supervised_training"),
+        ("tuning_val.jsonl", txn_val, "model_selection_validation"),
+    ):
+        eval_protection.write_artifact_receipt(
+            out_dir / name,
+            consumer="build_tuning_dataset",
+            purpose=purpose,
+            input_receipts=[fetch_receipt],
+            manifest_identities=_manifest(txn),
+        )
+    coverage = eval_protection.verify_tuning_export(
+        out_dir=out_dir, txncat_src=txncat_src
+    )
+    assert coverage["model_files"]["train"]["rows"] == 1
+
+
+def test_transformer_export_build_to_promotion_chain(
+    synthetic_release, tmp_path, monkeypatch
+):
+    """R3 regression: the supported transformer export's bound receipts pass
+    both the fit boundary and the promotion boundary end to end."""
+
+    enforcement, membership_path, publication_path = synthetic_release
+    binding = enforcement.ReleaseBinding(**eval_protection.PINNED_BINDING)
+    monkeypatch.setattr(enforcement, "PINNED_RELEASE", binding)
+    monkeypatch.setenv("EVAL_MEMBERSHIP", str(membership_path))
+    monkeypatch.setenv("EVAL_PUBLICATION", str(publication_path))
+    txncat_src = os.environ.get("RAYLO_TXNCAT_SRC")
+
+    from training_membership import (
+        TrackedExample,
+        exact_plaid_membership,
+        publish_training_export,
+        unavailable_membership,
+    )
+
+    out_dir = tmp_path / "outputs"
+    out_dir.mkdir()
+    protection, publication = enforcement.verify_release(
+        membership_path=membership_path,
+        publication_path=publication_path,
+        binding=binding,
+    )
+
+    # ---- Tier-B fetch: guarded rows + bound fetch receipt ----
+    txn = {
+        "provider": "plaid",
+        "account_id": "acc-8",
+        "transaction_id": "txn-8",
+        "customer_id": "cust-8",
+        "merchant": "synthetic",
+        "target": "groceries",
+    }
+    retained, guard = enforcement.guard_batch(
+        protection, publication, [txn], purpose="supervised_training"
+    )
+    txns_path = out_dir / "tuning_txns.json"
+    txns_path.write_text(json.dumps(retained))
+    fetch_receipt = enforcement.issue_fetch_receipt(
+        result_path=txns_path,
+        rows=len(retained),
+        binding=binding,
+        guard=guard,
+    )
+    (out_dir / "tuning_txns_receipt.json").write_text(
+        json.dumps(fetch_receipt, indent=2)
+    )
+
+    # ---- Tier-A gold: a derived artifact resolving to the fetch ----
+    gold_row = {
+        "source": "v2",
+        "role": "train",
+        "merchant_raw": "synthetic",
+        "description_raw": "coffee",
+        "amount": "3.50",
+        "direction": "debit",
+        "provider": "",
+        "native_category": "",
+        "gold_leaf": "groceries",
+        "notes": "",
+    }
+    gold_path = out_dir / "gold_transactions.csv"
+    import csv as _csv
+
+    with gold_path.open("w", newline="") as stream:
+        writer = _csv.DictWriter(stream, fieldnames=list(gold_row))
+        writer.writeheader()
+        writer.writerow(gold_row)
+    eval_protection.write_artifact_receipt(
+        gold_path,
+        consumer="build_gold_transactions_unified",
+        purpose="model_selection_validation",
+        input_receipts=[fetch_receipt],
+        manifest_identities=[
+            {
+                "identity": None,
+                "provenance": {
+                    "source": "v2",
+                    "source_row_sha256": enforcement.sha256(
+                        enforcement.canonical_json(dict(txn))
+                    ),
+                },
+            }
+        ],
+    )
+    gold_receipt = json.loads(
+        (out_dir / "gold_transactions.csv.b04-receipt.json").read_text()
+    )
+
+    # ---- Final exports: bound receipts + manifests over both inputs ----
+    train_example = TrackedExample(
+        messages={"messages": [{"role": "user", "content": "x"}]},
+        membership=exact_plaid_membership(
+            source="tier_b_customer_linked_plaid", row=txn
+        ),
+    )
+    val_example = TrackedExample(
+        messages={"messages": [{"role": "user", "content": "y"}]},
+        membership=unavailable_membership(
+            source="tier_a_gold_transactions", row=gold_row, provider="plaid"
+        ),
+    )
+    publish_training_export(
+        [train_example],
+        [val_example],
+        train_path=out_dir / "tuning_train.jsonl",
+        selection_path=out_dir / "tuning_val.jsonl",
+        lookup_path=out_dir / "tuning_membership_lookup.csv",
+        coverage_path=out_dir / "tuning_membership_coverage.json",
+    )
+    input_receipts = [fetch_receipt, gold_receipt]
+    for name, example, purpose in (
+        ("tuning_train.jsonl", train_example, "supervised_training"),
+        ("tuning_val.jsonl", val_example, "model_selection_validation"),
+    ):
+        membership = example.membership
+        identity = None
+        if membership.identity_status == "exact":
+            identity = {
+                "provider": membership.provider,
+                "account_id": membership.account_id,
+                "transaction_id": membership.transaction_id,
+                "customer_id": membership.customer_id,
+            }
+        source_row = txn if membership.identity_status == "exact" else gold_row
+        eval_protection.write_artifact_receipt(
+            out_dir / name,
+            consumer="build_tuning_dataset",
+            purpose=purpose,
+            input_receipts=input_receipts,
+            manifest_identities=[
+                {
+                    "identity": identity,
+                    "provenance": {
+                        "source": membership.source,
+                        "source_row_sha256": enforcement.sha256(
+                            enforcement.canonical_json(dict(source_row))
+                        ),
+                    },
+                }
+            ],
+        )
+
+    # ---- Fit boundary ----
+    coverage = eval_protection.verify_tuning_export(
+        out_dir=out_dir, txncat_src=txncat_src
+    )
+    assert coverage["model_files"]["train"]["rows"] == 1
+
+    # ---- Promotion boundary: the same receipts must satisfy exact-set
+    # coverage, manifest order/identity checks and provenance resolution.
+    train_path = out_dir / "tuning_train.jsonl"
+    val_path = out_dir / "tuning_val.jsonl"
+    train_receipt = json.loads(
+        (out_dir / "tuning_train.jsonl.b04-receipt.json").read_text()
+    )
+    val_receipt = json.loads(
+        (out_dir / "tuning_val.jsonl.b04-receipt.json").read_text()
+    )
+    result = enforcement.require_promotion_provenance(
+        membership_path=membership_path,
+        publication_path=publication_path,
+        learning_inputs=[train_path, val_path],
+        artifact_receipts=[train_receipt, val_receipt],
+        bundle_provenance={
+            "training_inputs": [
+                {
+                    "path": "outputs/tuning_train.jsonl",
+                    "sha256": hashlib.sha256(train_path.read_bytes()).hexdigest(),
+                },
+                {
+                    "path": "outputs/tuning_val.jsonl",
+                    "sha256": hashlib.sha256(val_path.read_bytes()).hexdigest(),
+                },
+            ]
+        },
+        binding=binding,
+    )
+    assert result == {"learning_inputs": 2, "covered_digests": 2}
+
+    # A re-signed-but-misbound manifest (reordered claims) fails promotion.
+    tampered_manifest = out_dir / "tuning_train.jsonl.b04-manifest.json"
+    document = json.loads(tampered_manifest.read_text())
+    document["rows"][0]["identity"]["customer_id"] = "cust-9"
+    tampered_manifest.write_text(json.dumps(document))
+    with pytest.raises(enforcement.ProtectedMembershipError):
+        enforcement.require_promotion_provenance(
+            membership_path=membership_path,
+            publication_path=publication_path,
+            learning_inputs=[train_path, val_path],
+            artifact_receipts=[train_receipt, val_receipt],
+            binding=binding,
+        )

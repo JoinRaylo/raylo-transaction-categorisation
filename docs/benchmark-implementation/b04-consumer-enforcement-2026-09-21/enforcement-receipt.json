@@ -38,7 +38,15 @@
     "provenance_training_inputs_exact_set_equality",
     "renamed_locked_confirmation_set_refusal",
     "qwen_lora_launchers_terminal_gate",
-    "gated_consumers_raise_before_io"
+    "gated_consumers_raise_before_io",
+    "fetch_issuance_requires_guard_correlated_result",
+    "guard_token_replay_onto_unrelated_jsonl_rejection",
+    "guard_token_replay_onto_unrelated_parquet_rejection",
+    "arbitrary_file_fetch_issuance_rejection",
+    "row_manifest_byte_order_and_count_binding",
+    "manifest_provenance_requires_verified_input_chain",
+    "unsigned_final_export_coverage_substitution_rejection",
+    "transformer_export_bound_receipt_chain"
   ],
   "limitations": [
     "Supported paths: Gemini/Sonnet for labelling egress only; the winning transformer is the sole TxCat-1 categorisation model trained and promoted. All Qwen LoRA launchers are retired behind terminal gates and are excluded from the enforced consumer count.",
@@ -48,7 +56,8 @@
     "experiment3/AIE-503 risk-refresh surface is gated off pending a guarded feature-store rebuild.",
     "Grouped corpus builders (pretrain/silver) and narrative-egress evidence queries are gated off because their aggregation cannot carry per-event identity.",
     "final_evaluation's BigQuery use is merchant-level GROUP BY aggregates only; it cannot leak a protected event but cannot prove per-event exclusion either.",
-    "Receipt verification binds artifact bytes; it does not attest the human review step between a fetched sample and its reviewed derivative."
+    "Receipt verification binds artifact bytes; it does not attest the human review step between a fetched sample and its reviewed derivative.",
+    "Row manifests bind row bytes, order and declared provenance; rows whose source cannot be resolved through the verified input chain are marked unresolved rather than silently trusted."
   ],
   "authorizes_consumption": false
 }

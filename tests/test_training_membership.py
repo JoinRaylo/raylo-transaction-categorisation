@@ -70,9 +70,11 @@ def test_exact_identity_requires_both_provider_ids_and_plaid_scope():
     assert membership.identity_status == "exact"
     assert membership.provider == "plaid"
 
-    for missing in ("account_id", "transaction_id"):
+    for missing in ("account_id", "transaction_id", "customer_id"):
         invalid = row | {missing: ""}
-        with pytest.raises(ValueError, match="requires account and transaction"):
+        with pytest.raises(
+            ValueError, match="requires account, transaction and customer"
+        ):
             exact_plaid_membership(source="synthetic_plaid", row=invalid)
 
     with pytest.raises(ValueError, match="customer-linked Plaid"):
@@ -83,6 +85,7 @@ def test_exact_identity_requires_both_provider_ids_and_plaid_scope():
             provider="equifax",
             account_id="account",
             transaction_id="transaction",
+            customer_id="customer",
         )
 
 
@@ -451,24 +454,81 @@ def test_fetched_account_customer_contradiction_fails_closed(tmp_path):
         )
 
 
-def test_tier_b_fetch_receipt_binds_eval_lookup_and_result(tmp_path, monkeypatch):
-    lookup = tmp_path / "eval.csv"
-    write_eval_membership(
-        lookup,
-        [
-            {
-                "provider": "plaid",
-                "account_id": "eval-account",
-                "transaction_id": "eval-transaction",
-                "customer_id": "eval-customer",
-                "role": "eval",
-            }
-        ],
-    )
-    # The strict fetch receipt binds the pinned release: pin the synthetic
-    # membership through PINNED_BINDING/PINNED_RELEASE exactly as the real
-    # adapter does, and stand in an ephemeral Ed25519 pair for the receipt key.
+def _canonical_release(tmp_path, monkeypatch):
+    """Canonical membership + publication pair pinned through the adapter.
+
+    Returns (membership_path, publication_path); both PINNED_BINDING and the
+    module-level PINNED_RELEASE are patched to the synthetic digests so the
+    adapter and the canonical module agree.
+    """
+
     import hashlib as _hashlib
+
+    from raylo_txncat.benchmark_import import (
+        FinalOutcome,
+        OutcomeBinding,
+        import_outcomes,
+    )
+
+    membership_path = tmp_path / "membership.csv"
+    membership_path.write_text(
+        "schema_version,provider,account_id,transaction_id,customer_id,role,"
+        "primary_view,views,pilot_id,source_snapshot_sha256,row_sha256\n"
+        "txncat-private-eval-membership-v1,plaid,acc-e,txn-e,cust-e,eval,"
+        f"representative,representative,pilot-v1-{'0' * 64},{'a' * 64},{'b' * 64}\n"
+    )
+    membership_sha = _hashlib.sha256(membership_path.read_bytes()).hexdigest()
+    items = frozenset(f"pilot-v1-{i:064x}" for i in range(1, 4))
+    outcome_binding = OutcomeBinding(
+        membership_sha256=membership_sha,
+        pilot_sha256="b" * 64,
+        comparison_sha256="c" * 64,
+        proposals_sha256="d" * 64,
+        decisions_sha256="e" * 64,
+        taxonomy_sha256="f" * 64,
+    )
+    publication = import_outcomes(
+        membership_ids=items,
+        unanimous_ids=items,
+        taxonomy_leaves=frozenset({"restaurant_cafe"}),
+        outcomes=tuple(
+            FinalOutcome(
+                item_id=i,
+                final_status="labelled",
+                final_leaf="restaurant_cafe",
+                decision_source="unanimous_votes",
+            )
+            for i in sorted(items)
+        ),
+        expected_binding=outcome_binding,
+        observed_binding=outcome_binding,
+    )
+    publication_path = tmp_path / "publication.json"
+    publication_path.write_text(publication.model_dump_json(indent=2))
+    pinned = {
+        "membership_sha256": membership_sha,
+        "pilot_sha256": "b" * 64,
+        "publication_sha256": publication.publication_sha256,
+        "publication_file_sha256": _hashlib.sha256(
+            publication_path.read_bytes()
+        ).hexdigest(),
+    }
+    monkeypatch.setattr(eval_protection, "PINNED_BINDING", pinned)
+    monkeypatch.setattr(
+        _enforcement_mod,
+        "PINNED_RELEASE",
+        _enforcement_mod.ReleaseBinding(**pinned),
+    )
+    monkeypatch.setenv("EVAL_MEMBERSHIP", str(membership_path))
+    monkeypatch.setenv("EVAL_PUBLICATION", str(publication_path))
+    return membership_path, publication_path
+
+
+def test_tier_b_fetch_receipt_binds_eval_lookup_and_result(tmp_path, monkeypatch):
+    # The strict fetch receipt binds the pinned release: pin a synthetic
+    # canonical membership+publication pair through PINNED_BINDING/
+    # PINNED_RELEASE exactly as the real adapter does, and stand in an
+    # ephemeral Ed25519 pair for the receipt key.
 
     from cryptography.hazmat.primitives.asymmetric.ed25519 import (
         Ed25519PrivateKey,
@@ -490,22 +550,8 @@ def test_tier_b_fetch_receipt_binds_eval_lookup_and_result(tmp_path, monkeypatch
         "RECEIPT_PUBLIC_KEY_HEX",
         key.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw).hex(),
     )
-    monkeypatch.setattr(
-        eval_protection,
-        "PINNED_BINDING",
-        {
-            "membership_sha256": _hashlib.sha256(lookup.read_bytes()).hexdigest(),
-            "pilot_sha256": "b" * 64,
-            "publication_sha256": "c" * 64,
-            "publication_file_sha256": "d" * 64,
-        },
-    )
-    monkeypatch.setattr(
-        _enforcement_mod,
-        "PINNED_RELEASE",
-        _enforcement_mod.ReleaseBinding(**eval_protection.PINNED_BINDING),
-    )
-    protection = builder.load_eval_protection([lookup])
+    membership_path, _publication_path = _canonical_release(tmp_path, monkeypatch)
+    protection = builder.load_eval_protection([membership_path])
     data_path = tmp_path / "txns.json"
     receipt_path = tmp_path / "receipt.json"
     builder.write_tier_b_fetch(
@@ -515,7 +561,7 @@ def test_tier_b_fetch_receipt_binds_eval_lookup_and_result(tmp_path, monkeypatch
         receipt_path=receipt_path,
     )
     assert builder.read_verified_tier_b_fetch(
-        [lookup],
+        [membership_path],
         data_path=data_path,
         receipt_path=receipt_path,
     ) == [plaid_row("safe")]
@@ -530,7 +576,7 @@ def test_tier_b_fetch_receipt_binds_eval_lookup_and_result(tmp_path, monkeypatch
     receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
     with pytest.raises(PermissionError, match="not bound to the protected release"):
         builder.read_verified_tier_b_fetch(
-            [lookup],
+            [membership_path],
             data_path=data_path,
             receipt_path=receipt_path,
         )
@@ -544,7 +590,9 @@ def test_tier_b_fetch_receipt_binds_eval_lookup_and_result(tmp_path, monkeypatch
     data_path.write_text("[]", encoding="utf-8")
     with pytest.raises(ValueError, match="verified eval protection"):
         builder.read_verified_tier_b_fetch(
-            [lookup],
+            [membership_path],
             data_path=data_path,
             receipt_path=receipt_path,
         )
+
+

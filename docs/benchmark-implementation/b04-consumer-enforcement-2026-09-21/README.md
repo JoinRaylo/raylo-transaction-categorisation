@@ -21,15 +21,17 @@ The only approved protected release is pinned in `src/eval_protection.py`
 1. **Canonical module** — `lib/raylo-txncat/src/raylo_txncat/benchmark_enforcement.py`
    owns `ReleaseBinding`, `PINNED_RELEASE`, `ProtectionSet`,
    `load_protected_membership`, `verify_release`, `exclude_protected`,
-   `verify_fetch_receipt`, `issue_fetch_receipt`,
+   `verify_fetch_receipt`, `issue_fetch_receipt`, `verify_fetch_file`,
    `issue_artifact_receipt`/`verify_artifact_receipt`,
+   `issue_row_manifest`/`verify_row_manifest`,
    `require_promotion_provenance`, `ConsumerCoverage`, `CoverageMatrix`,
    `EnforcementReceipt`.  All semantics live here; nothing is forked.
 2. **Research adapter** — `src/eval_protection.py` imports the canonical
    module (`RAYLO_TXNCAT_SRC`/`--txncat-src`), pins the release, and exposes
    `add_args`, `load_release`, `apply`, `apply_env`, `assert_bound`,
-   `verify_fetch_receipt`, `verify_tuning_export`, `verify_artifact`,
-   `write_artifact_receipt`, `gate`.
+   `verify_fetch_receipt`, `verify_fetch_file`, `verify_tuning_export`,
+   `verify_artifact`, `write_artifact_receipt`, `write_row_manifest`,
+   `row_content_sha256`, `gate`.
 
 ## Supported paths
 
@@ -54,13 +56,23 @@ The only approved protected release is pinned in `src/eval_protection.py`
   only the public key pinned in the module.  A hand-written receipt, a
   caller-constructed `GuardResult` without the signed token, or a document
   signed by any other key all fail closed.
+- **Exclusion attestation.**  A signature alone is not enough: receipts
+  must attest that protected-membership exclusion produced the signed
+  bytes.  `issue_fetch_receipt` (`tuning-tier-b-fetch-receipt-v3`)
+  requires a live signed `GuardResult` plus a persisted result file whose
+  row identities and count re-match the guard's retained digest; the
+  result path and byte digest are bound into the receipt.  Promotion does
+  not trust the receipt alone — `verify_fetch_file` re-validates the
+  signature and release binding against the concrete file on disk and
+  re-checks row-level identity correlation with the guard.  A valid guard
+  token replayed onto unrelated JSONL or parquet bytes fails closed.
 - Every fetch of customer-linked rows runs `apply_env`/`apply` (which wraps
   `verify_release` + `exclude_protected`) before persisting.  Rows lacking
   `account_id`/`transaction_id`/`customer_id` fail closed.
 - Exact protected events plus connected account and customer groups are
   excluded; contradictory linkage and duplicate events are rejected.
 - Every persisted artifact gets a signed `*.b04-receipt.json`
-  (`b04-artifact-receipt-v3`): schema, release binding, purpose, consumer,
+  (`b04-artifact-receipt-v4`): schema, release binding, purpose, consumer,
   output path and output byte digest are all validated, and issuance requires
   a verified `GuardResult` or a non-empty chain of already-verified input
   receipts — a caller-provided digest alone cannot mint a sidecar.
@@ -68,9 +80,23 @@ The only approved protected release is pinned in `src/eval_protection.py`
   receipt, a stale release, digest drift (relabelled/changed artifacts), a
   renamed or substituted sidecar, or protected content inside an
   identity-bearing CSV.
-- `.fit` boundaries call `verify_tuning_export` (committed membership coverage
-  + bound fetch receipt) before any model consumes `tuning_train.jsonl` /
-  `tuning_val.jsonl` — including the `mlx_lm.lora` shell scripts.
+- **Row manifests.**  Artifacts without identity columns (CSV/JSONL/parquet
+  aggregates, the final tuning exports) must carry a bound
+  `b04-row-manifest-v1`: every row is pinned to the exact artifact byte
+  digest and a per-row content digest, so row order, contents and count
+  cannot drift.  Manifests may assert identities, carry per-row provenance
+  (`source_row_sha256`) resolvable only through the receipt's verified
+  input chain, or honestly mark rows `unresolved` — but an unresolved row
+  may not claim an input-row digest.  Authoring outputs
+  (`dictionary_candidates`, `rule_candidates`) are the only artifacts
+  exempt from row-level correlation.
+- `.fit` boundaries call `verify_tuning_export` before any model consumes
+  `tuning_train.jsonl` / `tuning_val.jsonl` — including the `mlx_lm.lora`
+  shell scripts.  The supported transformer build emits signed v4 artifact
+  receipts and row manifests for both final exports, each chained to every
+  verified learning input (Tier-B fetch receipt + Tier-A/topup artifact
+  receipts); a regenerated unsigned membership-coverage file cannot
+  substitute for the bound receipts.
 - Promotion (`raylo_txncat.publish_bundle`) pins `PINNED_RELEASE` itself —
   no caller-supplied binding is accepted — and requires
   `require_promotion_provenance` over the bundle's declared learning inputs:
@@ -93,7 +119,7 @@ The only approved protected release is pinned in `src/eval_protection.py`
 14 bound_read), sorted and unique, digested by `matrix_sha256`.
 
 `enforcement-receipt.json` — the aggregate `EnforcementReceipt`: release
-binding + matrix digest + 29 validation checks + limitations.
+binding + matrix digest + 38 validation checks + limitations.
 `authorizes_consumption=false`.
 
 Regenerate with:
@@ -117,3 +143,6 @@ RAYLO_TXNCAT_SRC=<monorepo>/lib/raylo-txncat/src \
   a guarded rebuild.
 - The receipt binds artifact bytes; it does not attest the human review step
   between a fetched sample and its reviewed derivative.
+- Row manifests bind row bytes, order and declared provenance; rows whose
+  source cannot be resolved through the verified input chain are marked
+  `unresolved` rather than silently trusted.

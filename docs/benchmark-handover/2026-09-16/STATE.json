@@ -94,7 +94,12 @@
       "status": "approved",
       "scope": "committed bounded synthetic v3 milestone",
       "blocking_findings": 0,
-      "reviewed_commits": ["82b7750", "0060636", "8d13211", "385fbca"],
+      "reviewed_commits": [
+        "82b7750",
+        "0060636",
+        "8d13211",
+        "385fbca"
+      ],
       "confirmed_deferrals": [
         "conflicting-proposal contention and full serial-commit matrix",
         "live writer list/delete/update/sealed-object restrictions",
@@ -204,7 +209,13 @@
       "lib/raylo-txncat/src/raylo_txncat/membership_manifest.py",
       "lib/raylo-txncat/tests/test_membership_manifest.py"
     ],
-    "roles": ["train", "selection", "eval", "excluded", "neither"],
+    "roles": [
+      "train",
+      "selection",
+      "eval",
+      "excluded",
+      "neither"
+    ],
     "focused_tests": "101 passed",
     "independent_review": {
       "reviewer": "Astra",
@@ -245,7 +256,13 @@
       "src/build_tuning_dataset.py",
       "tests/test_training_membership.py"
     ],
-    "roles": ["train", "selection", "eval", "excluded", "neither"],
+    "roles": [
+      "train",
+      "selection",
+      "eval",
+      "excluded",
+      "neither"
+    ],
     "source_scope": "unambiguous existing assessment_to_checkout_to_user_to_customer linked Plaid only",
     "bigquery_dry_run": {
       "location": "EU",
@@ -333,8 +350,15 @@
       "identifier_free_annotation_payload": true
     },
     "prospective_training_protection": {
-      "required_at": ["fetch", "build"],
-      "protected_groups": ["event", "account", "customer"],
+      "required_at": [
+        "fetch",
+        "build"
+      ],
+      "protected_groups": [
+        "event",
+        "account",
+        "customer"
+      ],
       "receipt_binds_eval_lookup_and_fetched_rows": true,
       "bigquery_dry_run": {
         "project": "raylo-production",
@@ -418,9 +442,27 @@
       "review_rows": 263,
       "incomplete": 0,
       "primary_views": {
-        "representative": {"rows": 250, "unanimous_labelled": 130, "disagreement": 109, "unanimous_non_labelled": 11, "review": 120},
-        "unseen_input": {"rows": 150, "unanimous_labelled": 74, "disagreement": 71, "unanimous_non_labelled": 5, "review": 76},
-        "unfamiliar_merchant": {"rows": 100, "unanimous_labelled": 33, "disagreement": 59, "unanimous_non_labelled": 8, "review": 67}
+        "representative": {
+          "rows": 250,
+          "unanimous_labelled": 130,
+          "disagreement": 109,
+          "unanimous_non_labelled": 11,
+          "review": 120
+        },
+        "unseen_input": {
+          "rows": 150,
+          "unanimous_labelled": 74,
+          "disagreement": 71,
+          "unanimous_non_labelled": 5,
+          "review": 76
+        },
+        "unfamiliar_merchant": {
+          "rows": 100,
+          "unanimous_labelled": 33,
+          "disagreement": 59,
+          "unanimous_non_labelled": 8,
+          "review": 67
+        }
       }
     },
     "private_review": {
@@ -519,14 +561,30 @@
       "manifest_generation": "1789720806638620",
       "manifest_sha256": "655e36e867eaad8a6d2e7ab9c8bb60906df03c2e4212b02f4ecab1ed12a9ae58",
       "manifest_size_bytes": 12148,
-      "cas_statuses": ["stale_epoch", "committed"],
+      "cas_statuses": [
+        "stale_epoch",
+        "committed"
+      ],
       "registry_cas_boundary_reached": true,
       "race_winner_epoch": 6,
       "retry_committed_epoch": 7,
       "final_epoch": 7,
-      "retry_statuses": {"new_operation": "committed", "exact_retry": "already_committed"},
-      "valid_worker_http": {"learning": 200, "selection": 200},
-      "denied_worker_http": {"cross_plane": 403, "contaminated": 403, "pending": 503, "orphan": 403, "changed_reference": 403, "wrong_audience": 401},
+      "retry_statuses": {
+        "new_operation": "committed",
+        "exact_retry": "already_committed"
+      },
+      "valid_worker_http": {
+        "learning": 200,
+        "selection": 200
+      },
+      "denied_worker_http": {
+        "cross_plane": 403,
+        "contaminated": 403,
+        "pending": 503,
+        "orphan": 403,
+        "changed_reference": 403,
+        "wrong_audience": 401
+      },
       "direct_data_plane_access": "all worker and verifier probes denied",
       "kms_disabled_http": 503,
       "kms_recovery_http": 200,
@@ -571,77 +629,76 @@
     "locked_set_scoring": false,
     "phase_state": "synthetic-only",
     "next_gate": "G1 pilot closure: AIE-511/AIE-512/AIE-513 evidence; no real-data action authorised"
-  }
-,
+  },
   "pilot_reconstruction_adjudication_record": {
-      "milestone": "AIE-511-pilot-reconstruction-adjudication",
-      "status": "v2_pilot_recovered_byte_identical_opus_first_pass_lead_review_complete_carlos_decisions_pending",
-      "captured_at": "2026-09-21T20:15:00Z",
-      "research_branch": "codex/txncat-aie510-g0-research",
-      "app_branch": "codex/txncat-aie510-g0",
-      "app_contract_commit": "4a737ad232fa780d65b1dbc6af0213f394019132",
-      "evidence_research": "docs/benchmark-implementation/b03-f-pilot-reconstruction-adjudication-2026-09-21",
-      "evidence_app": "apps/ob-txn-categoriser/research/benchmark-implementation/b03-f-pilot-reconstruction-adjudication-2026-09-21",
-      "re_identification": {
-          "bigquery_job_id": "txncat_pilot_recover_9803b1e5-1434-46d1-955c-403c3a5bcead",
-          "result_rows": 500,
-          "distinct_accounts": 474,
-          "distinct_customers": 464,
-          "pilot_id_set_sha256": "9074da7bb98d2e738681c9854240f35ff1eb14f2a0ffabe8a950c71f101a193f"
+    "milestone": "AIE-511-pilot-reconstruction-adjudication",
+    "status": "v2_pilot_recovered_byte_identical_opus_first_pass_lead_review_complete_carlos_decisions_pending",
+    "captured_at": "2026-09-21T20:15:00Z",
+    "research_branch": "codex/txncat-aie510-g0-research",
+    "app_branch": "codex/txncat-aie510-g0",
+    "app_contract_commit": "4a737ad232fa780d65b1dbc6af0213f394019132",
+    "evidence_research": "docs/benchmark-implementation/b03-f-pilot-reconstruction-adjudication-2026-09-21",
+    "evidence_app": "apps/ob-txn-categoriser/research/benchmark-implementation/b03-f-pilot-reconstruction-adjudication-2026-09-21",
+    "re_identification": {
+      "bigquery_job_id": "txncat_pilot_recover_9803b1e5-1434-46d1-955c-403c3a5bcead",
+      "result_rows": 500,
+      "distinct_accounts": 474,
+      "distinct_customers": 464,
+      "pilot_id_set_sha256": "9074da7bb98d2e738681c9854240f35ff1eb14f2a0ffabe8a950c71f101a193f"
+    },
+    "index_rebuild": {
+      "database_sha256": "61cc0a42ddafb686e9f3ecb437be1eba3f9a78ecbb893f18fdb60eafb7ded5cd",
+      "byte_identical_to_archived": true,
+      "verify_index": "40/40 passed"
+    },
+    "view_reconstruction": {
+      "fingerprint": "all pass",
+      "pilot_sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248",
+      "membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068",
+      "byte_identical_to_approved_v2": true
+    },
+    "provider_recovery": {
+      "valid_votes": {
+        "claude-sonnet-5": 500,
+        "gemini-3.8-flash": 499,
+        "gemini-3.7-flash": 499
       },
-      "index_rebuild": {
-          "database_sha256": "61cc0a42ddafb686e9f3ecb437be1eba3f9a78ecbb893f18fdb60eafb7ded5cd",
-          "byte_identical_to_archived": true,
-          "verify_index": "40/40 passed"
+      "incomplete_items": 2,
+      "review_rows": 265,
+      "milestone_match": false,
+      "decision": "gap accepted by Carlos; no fourth attempt; retry cap respected"
+    },
+    "opus5_adjudication": {
+      "model": "claude-opus-5",
+      "batch": "msgbatch_016mzC71m6c29kcUZDm3aCXU",
+      "valid": "265/265 attempt-1",
+      "outcomes": {
+        "labelled": 156,
+        "ambiguous": 83,
+        "insufficient_evidence": 26
       },
-      "view_reconstruction": {
-          "fingerprint": "all pass",
-          "pilot_sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248",
-          "membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068",
-          "byte_identical_to_approved_v2": true
-      },
-      "provider_recovery": {
-          "valid_votes": {
-              "claude-sonnet-5": 500,
-              "gemini-3.8-flash": 499,
-              "gemini-3.7-flash": 499
-          },
-          "incomplete_items": 2,
-          "review_rows": 265,
-          "milestone_match": false,
-          "decision": "gap accepted by Carlos; no fourth attempt; retry cap respected"
-      },
-      "opus5_adjudication": {
-          "model": "claude-opus-5",
-          "batch": "msgbatch_016mzC71m6c29kcUZDm3aCXU",
-          "valid": "265/265 attempt-1",
-          "outcomes": {
-              "labelled": 156,
-              "ambiguous": 83,
-              "insufficient_evidence": 26
-          },
-          "is_independent_vote": false
-      },
-      "lead_review": {
-          "reviewed": 265,
-          "agree": 204,
-          "disagree": 33,
-          "unsure": 28,
-          "escalated_to_carlos": 61,
-          "policy_groups": 6
-      },
-      "focused_tests": "19 annotation contract tests; 1293 library unit tests",
-      "authorizes_consumption": false,
-      "carlos_decisions": 0,
-      "final_labels_created": 0,
-      "real_rows_labelled": 0,
-      "retraining": false,
-      "locked_set_scoring": false,
-      "deviations": [
-          "model-assisted first pass replaced blind first review (approved by Carlos 2026-09-21)",
-          "two items carry incomplete vote tuples (accepted, unrepaired)"
-      ],
-      "next_gate": "Carlos's 61 escalated decisions + six policy rulings, then AIE-512 receipt-bound importer"
+      "is_independent_vote": false
+    },
+    "lead_review": {
+      "reviewed": 265,
+      "agree": 204,
+      "disagree": 33,
+      "unsure": 28,
+      "escalated_to_carlos": 61,
+      "policy_groups": 6
+    },
+    "focused_tests": "19 annotation contract tests; 1293 library unit tests",
+    "authorizes_consumption": false,
+    "carlos_decisions": 0,
+    "final_labels_created": 0,
+    "real_rows_labelled": 0,
+    "retraining": false,
+    "locked_set_scoring": false,
+    "deviations": [
+      "model-assisted first pass replaced blind first review (approved by Carlos 2026-09-21)",
+      "two items carry incomplete vote tuples (accepted, unrepaired)"
+    ],
+    "next_gate": "Carlos's 61 escalated decisions + six policy rulings, then AIE-512 receipt-bound importer"
   },
   "pilot_final_decisions_record": {
     "authorizes_consumption": false,
@@ -715,8 +772,8 @@
     "consumers_total": 126,
     "matrix_sha256": "5177f983bd038e13598a8677e7c30f82a5e7c3308b94211082c1308a4d23e2a8",
     "milestone": "b04-consumer-enforcement-2026-09-21",
-    "receipt_sha256": "f35d3a33358759af04470f5c144d0277f9d7424ffb4e6d7b862265da070b7ed5",
-    "recorded_utc": "2026-09-22T09:30:00Z",
+    "receipt_sha256": "f3bdde3694c12c203ffb4059d4434d9a4f352b2cc44e66c7651e265a408383d2",
+    "recorded_utc": "2026-09-22T15:45:00Z",
     "release": {
       "membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068",
       "pilot_sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248",
@@ -725,7 +782,7 @@
       "schema_version": "benchmark-release-binding-v1"
     },
     "research_adapter": "src/eval_protection.py",
-    "review_remediation": "R1: strict receipts, guard-bound issuance, pinned promotion binding, gap-fill chains, labelling-egress verification, identity rebuilds, Qwen retired. R2: Ed25519-signed fetch/artifact receipts and guard tokens (private key outside Git), explicit provenance.training_inputs exact-set equality, remaining retired egress paths terminally gated",
+    "review_remediation": "R1: strict receipts, guard-bound issuance, pinned promotion binding, gap-fill chains, labelling-egress verification, identity rebuilds, Qwen retired. R2: Ed25519-signed fetch/artifact receipts and guard tokens (private key outside Git), explicit provenance.training_inputs exact-set equality, remaining retired egress paths terminally gated. R3: exclusion-attesting issuance \u2014 fetch receipts (v3) require a live GuardResult correlated with the persisted result file and promotion re-verifies via verify_fetch_file; artifact receipts (v4) bind identity-less outputs to b04-row-manifest-v1 row digests/order and verified-chain provenance; transformer build emits bound train/val receipts chained to every verified input",
     "scope": "prospective only; historical non-use not certified",
     "supported_paths": "Gemini/Sonnet labelling egress only; winning transformer sole TxCat-1 model trained and promoted",
     "ticket": "AIE-513"

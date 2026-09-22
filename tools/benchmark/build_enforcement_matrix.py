@@ -464,6 +464,14 @@ CHECKS = [
     "renamed_locked_confirmation_set_refusal",
     "qwen_lora_launchers_terminal_gate",
     "gated_consumers_raise_before_io",
+    "fetch_issuance_requires_guard_correlated_result",
+    "guard_token_replay_onto_unrelated_jsonl_rejection",
+    "guard_token_replay_onto_unrelated_parquet_rejection",
+    "arbitrary_file_fetch_issuance_rejection",
+    "row_manifest_byte_order_and_count_binding",
+    "manifest_provenance_requires_verified_input_chain",
+    "unsigned_final_export_coverage_substitution_rejection",
+    "transformer_export_bound_receipt_chain",
 ]
 
 LIMITATIONS = [
@@ -486,6 +494,9 @@ LIMITATIONS = [
     "cannot leak a protected event but cannot prove per-event exclusion either.",
     "Receipt verification binds artifact bytes; it does not attest the human review "
     "step between a fetched sample and its reviewed derivative.",
+    "Row manifests bind row bytes, order and declared provenance; rows whose source "
+    "cannot be resolved through the verified input chain are marked unresolved "
+    "rather than silently trusted.",
 ]
 
 
