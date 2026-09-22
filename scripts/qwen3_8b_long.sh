@@ -2,6 +2,18 @@
 # Retrain Qwen3-8B with a liberal early-stop and score the *latest* ckpt
 # (last run rolled back to iter 2000 best-val and underfit the holdout).
 set -euo pipefail
+
+# ---------------------------------------------------------------------------
+# B04 RETIRED — terminal gate.
+# Qwen LoRA is retired and not part of the intended production path:
+# Gemini/Sonnet are used for labelling only, and the winning transformer is
+# the sole TxCat-1 categorisation model to train and promote.  This launcher
+# must not run; the flow below is kept only as a record of the retired path.
+# ---------------------------------------------------------------------------
+echo "B04: $(basename "$0") is RETIRED — Qwen LoRA is not part of the intended" >&2
+echo "     production path.  Gemini/Sonnet are used for labelling only; the" >&2
+echo "     winning transformer is the sole TxCat-1 categorisation model." >&2
+exit 1
 ROOT="/Users/carlosnoblejesus/Repos/raylo-transaction-categorisation"
 cd "$ROOT"
 PY="$ROOT/.venv/bin/python"

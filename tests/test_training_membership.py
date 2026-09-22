@@ -12,6 +12,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 import build_tuning_dataset as builder  # noqa: E402
+import eval_protection  # noqa: E402
 import training_membership as membership_module  # noqa: E402
 from build_tuning_dataset import build_linked_tier_b_query, tier_b_role  # noqa: E402
 from training_membership import (  # noqa: E402
@@ -449,7 +450,7 @@ def test_fetched_account_customer_contradiction_fails_closed(tmp_path):
         )
 
 
-def test_tier_b_fetch_receipt_binds_eval_lookup_and_result(tmp_path):
+def test_tier_b_fetch_receipt_binds_eval_lookup_and_result(tmp_path, monkeypatch):
     lookup = tmp_path / "eval.csv"
     write_eval_membership(
         lookup,
@@ -462,6 +463,20 @@ def test_tier_b_fetch_receipt_binds_eval_lookup_and_result(tmp_path):
                 "role": "eval",
             }
         ],
+    )
+    # The strict fetch receipt binds the pinned release: pin the synthetic
+    # membership through PINNED_BINDING exactly as the real adapter does.
+    import hashlib as _hashlib
+
+    monkeypatch.setattr(
+        eval_protection,
+        "PINNED_BINDING",
+        {
+            "membership_sha256": _hashlib.sha256(lookup.read_bytes()).hexdigest(),
+            "pilot_sha256": "b" * 64,
+            "publication_sha256": "c" * 64,
+            "publication_file_sha256": "d" * 64,
+        },
     )
     protection = builder.load_eval_protection([lookup])
     data_path = tmp_path / "txns.json"
@@ -481,7 +496,7 @@ def test_tier_b_fetch_receipt_binds_eval_lookup_and_result(tmp_path):
     receipt = json.loads(receipt_path.read_text())
     receipt["eval_membership_inputs"] = [{"sha256": "not-a-hash", "rows": -1}]
     receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
-    with pytest.raises(ValueError, match="verified eval protection"):
+    with pytest.raises(PermissionError, match="not bound to the protected release"):
         builder.read_verified_tier_b_fetch(
             [lookup],
             data_path=data_path,

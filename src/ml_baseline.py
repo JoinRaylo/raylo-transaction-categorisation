@@ -47,6 +47,7 @@ def bq_client():
 
 
 def fetch_train():
+    eval_protection.gate("ml_baseline.fetch_train", reason='equifax_data.open_banking_full_dump is proposal-matched and carries no customer_id/account_id linkage; fetched rows can never pass the protected-release guard. Rebuild against the customer-linked Plaid source before this consumer may run.')
     sub_map, _, _, _, _ = load_crosswalk()
     mech = ", ".join(f"'{p}'" for p in MECH_PRIMARIES)
     query = f"""
@@ -71,16 +72,15 @@ def fetch_train():
     df["provider"] = "equifax"
     # B04: fetched rows must pass the protected-release guard; rows without
     # linkage identity fail closed until the query carries them.
-    df = pd.DataFrame(
-        eval_protection.apply_env(
-            df.to_dict("records"), purpose="supervised_training"
-        )
+    guarded = eval_protection.apply_env(
+        df.to_dict("records"), purpose="supervised_training"
     )
+    df = pd.DataFrame(guarded)
     df = df[["description", "vendor", "amount", "is_credit", "leaf"]]
     df.to_parquet(TRAIN_PARQUET, index=False)
     eval_protection.write_artifact_receipt(
         TRAIN_PARQUET, consumer="ml_baseline.fetch_train",
-        purpose="supervised_training",
+        purpose="supervised_training", guard=guarded.guard,
     )
     print(f"Wrote {TRAIN_PARQUET}: {len(df)} rows, {df['leaf'].nunique()} leaves", file=sys.stderr)
 
@@ -96,9 +96,15 @@ def fetch_eval():
            IFNULL(COALESCE(original_description, transaction_name), '') AS description,
            IFNULL(merchant_name, '') AS vendor,
            ABS(amount) AS amount,
-           CAST(amount < 0 AS INT64) AS is_credit
+           CAST(amount < 0 AS INT64) AS is_credit,
+           TRIM(account_id) AS account_id,
+           TRIM(transaction_id) AS transaction_id,
+           TRIM(customer_id) AS customer_id
     FROM `raylo-production.dbt_production.credit_plaid_open_banking_transactions`
     WHERE merchant_name IS NOT NULL AND TRIM(merchant_name) != ''
+      AND NULLIF(TRIM(account_id), '') IS NOT NULL
+      AND NULLIF(TRIM(transaction_id), '') IS NOT NULL
+      AND NULLIF(TRIM(customer_id), '') IS NOT NULL
       AND LOWER(TRIM(merchant_name)) IN ({in_list})
     QUALIFY ROW_NUMBER() OVER (PARTITION BY LOWER(TRIM(merchant_name)) ORDER BY RAND()) <= 40
     """
@@ -108,17 +114,16 @@ def fetch_eval():
     # B04: this builds a new evaluation set from the linked pool — protected
     # benchmark members must be excluded here too, and rows without linkage
     # identity fail closed until the query carries them.
-    df = pd.DataFrame(
-        eval_protection.apply_env(
-            df.to_dict("records"), purpose="model_selection_validation"
-        )
+    guarded = eval_protection.apply_env(
+        df.to_dict("records"), purpose="model_selection_validation"
     )
+    df = pd.DataFrame(guarded)
     df["amount"] = df["amount"].astype(np.float32)
     df["is_credit"] = df["is_credit"].astype(np.int8)
     df.to_parquet(EVAL_PARQUET, index=False)
     eval_protection.write_artifact_receipt(
         EVAL_PARQUET, consumer="ml_baseline.fetch_eval",
-        purpose="model_selection_validation",
+        purpose="model_selection_validation", guard=guarded.guard,
     )
     print(f"Wrote {EVAL_PARQUET}: {len(df)} txns for {df['merchant'].nunique()} merchants", file=sys.stderr)
 

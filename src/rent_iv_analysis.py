@@ -49,6 +49,15 @@ def fetch():
     dict_landlord_merchants = [m for m, leaf in fe.DICTIONARY.items() if leaf == "rent"]
     print(f"{len(dict_landlord_merchants)} dictionary merchants map to rent", file=sys.stderr)
 
+    eval_protection.gate(
+        "rent_iv_analysis.fetch",
+        reason="the rent candidate and outcome queries run on proposal-matched "
+               "Equifax tables (open_banking_transactions_with_matches, "
+               "ds_first_order_proposal_pia_metrics) which carry no "
+               "customer_id/account_id linkage; fetched rows can never pass "
+               "the protected-release guard. Rebuild against a customer-linked "
+               "source before this consumer may run.",
+    )
     print("Pulling rent-candidate transactions (Equifax, matched to proposals, "
           "excluding name_time matches)...", file=sys.stderr)
     sql = """
@@ -75,15 +84,14 @@ def fetch():
     # B04: row-level transaction egress must pass the protected-release
     # guard; rows without linked customer identity fail closed until the
     # query carries it.
-    df = pd.DataFrame(
-        eval_protection.apply_env(
-            df.to_dict("records"), purpose="evidence_retrieval"
-        )
+    guarded = eval_protection.apply_env(
+        df.to_dict("records"), purpose="evidence_retrieval"
     )
+    df = pd.DataFrame(guarded)
     df.to_parquet(ROOT / "outputs" / "rent_candidates.parquet", index=False)
     eval_protection.write_artifact_receipt(
         ROOT / "outputs" / "rent_candidates.parquet",
-        consumer="rent_iv_analysis.fetch", purpose="evidence_retrieval",
+        consumer="rent_iv_analysis.fetch", purpose="evidence_retrieval", guard=guarded.guard,
     )
 
     print("Pulling outcome cohort restricted to proposals with matched Equifax data "

@@ -101,23 +101,39 @@ def load_release(args):
     )
 
 
+class Guarded(list):
+    """Rows retained by the protected-release guard, carrying its proof.
+
+    Behaves exactly like ``list`` at existing call sites; the ``guard``
+    attribute is the ``GuardResult`` ``issue_artifact_receipt`` requires to
+    mint a bound receipt for the persisted batch.
+    """
+
+    def __init__(self, rows, guard):
+        super().__init__(rows)
+        self.guard = guard
+
+
 def apply(rows, args, *, purpose=None):
     """Guard one fetched batch: verify the release, then exclude protected rows.
 
     Rows lacking linkage identity raise ``ProtectedMembershipError`` — the
-    fetch is gated off until its query carries the identity columns.
+    fetch is gated off until its query carries the identity columns.  Returns
+    ``Guarded`` rows so the persisted artifact can be receipted against the
+    exact guard run that produced it.
     """
 
-    protection, _publication = load_release(args)
+    protection, publication = load_release(args)
     enforcement = _enforcement(getattr(args, "txncat_src", None))
-    retained, counts = enforcement.exclude_protected(
-        protection, rows, purpose=purpose
+    retained, guard = enforcement.guard_batch(
+        protection, publication, rows, purpose=purpose
     )
+    counts = dict(guard.excluded)
     print(
         f"B04 eval protection excluded {sum(counts.values())} rows ({counts})",
         file=sys.stderr,
     )
-    return retained
+    return Guarded(retained, guard)
 
 
 class _EnvArgs:
@@ -175,12 +191,15 @@ def gate(consumer: str, reason: str):
 
 
 def write_artifact_receipt(
-    path, *, consumer: str, purpose: str, inputs=(), txncat_src=None
+    path, *, consumer: str, purpose: str, guard=None, input_receipts=(), txncat_src=None
 ):
     """Persist a release-bound receipt beside a guarded artifact.
 
-    Written after the protected exclusion has run and the artifact has been
-    persisted; downstream consumers verify it with ``verify_artifact``.
+    Issuance requires either ``guard`` — the ``GuardResult`` returned inside
+    ``apply``/``apply_env``'s ``Guarded`` rows — or a non-empty
+    ``input_receipts`` chain of already-verified receipts (derived merges).
+    A file that neither passed the guard nor descends from verified inputs
+    cannot be receipted.
     """
 
     import json
@@ -188,20 +207,45 @@ def write_artifact_receipt(
     enforcement = _enforcement(txncat_src)
     binding = enforcement.ReleaseBinding(**PINNED_BINDING)
     path = pathlib.Path(path)
-    receipt = enforcement.artifact_receipt(
+    receipt = enforcement.issue_artifact_receipt(
         consumer=consumer,
         purpose=purpose,
         output_path=path,
         binding=binding,
-        inputs=[pathlib.Path(p) for p in inputs],
+        guard=guard,
+        input_receipts=input_receipts,
     )
     receipt_path = path.with_name(path.name + ".b04-receipt.json")
     receipt_path.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     return receipt_path
 
 
-def verify_artifact(path, *, txncat_src=None):
-    """Fail closed unless ``path`` carries a bound receipt matching its bytes."""
+def _env_protection(enforcement):
+    """Load the pinned release protection from the environment, if supplied."""
+
+    args = _EnvArgs()
+    if not args.protected_membership or not args.protected_publication:
+        return None
+    binding = enforcement.ReleaseBinding(**PINNED_BINDING)
+    protection, _publication = enforcement.verify_release(
+        membership_path=args.protected_membership,
+        publication_path=args.protected_publication,
+        binding=binding,
+    )
+    return protection
+
+
+def verify_artifact(
+    path, *, expected_consumer=None, expected_purpose=None, txncat_src=None
+):
+    """Fail closed unless ``path`` carries a bound receipt matching its bytes.
+
+    Validates every receipt field strictly — including the recorded output
+    path, the embedded guard block and the input chain — then re-hashes the
+    artifact.  CSVs carrying linkage identity are re-checked against the
+    protected membership itself, so a forged receipt cannot bless protected
+    content.
+    """
 
     import json
 
@@ -215,7 +259,12 @@ def verify_artifact(path, *, txncat_src=None):
         )
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     enforcement.verify_artifact_receipt(
-        receipt, enforcement.ReleaseBinding(**PINNED_BINDING), artifact_path=path
+        receipt,
+        enforcement.ReleaseBinding(**PINNED_BINDING),
+        artifact_path=path,
+        expected_consumer=expected_consumer,
+        expected_purpose=expected_purpose,
+        protection=_env_protection(enforcement),
     )
     return receipt
 

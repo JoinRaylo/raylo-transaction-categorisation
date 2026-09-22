@@ -78,6 +78,7 @@ LIMIT {N_PLAID}
 
 
 def fetch():
+    eval_protection.gate("build_gold_v4_slm_volume.fetch", reason='the fetch mixes equifax_data.open_banking_full_dump legs (proposal-matched, no customer linkage) with identity-discarding Plaid selects; fetched rows can never pass the protected-release guard. Rebuild every leg against the customer-linked Plaid source before this consumer may run.')
     from google.cloud import bigquery
     client = bigquery.Client(project="raylo-production")
 
@@ -114,7 +115,7 @@ def fetch():
         w.writeheader(); w.writerows(all_rows)
     eval_protection.write_artifact_receipt(
         SAMPLE_CSV, consumer="build_gold_v4_slm_volume.fetch",
-        purpose="model_selection_validation",
+        purpose="model_selection_validation", guard=all_rows.guard,
     )
     print(f"Wrote {SAMPLE_CSV}: {len(all_rows)} rows, "
           f"{n_established} ({n_established/len(all_rows):.1%}) already resolvable from established "
@@ -215,6 +216,9 @@ def label(model_key):
 
 
 def sheet():
+    # B04: narratives leave the trust boundary here — the sample must verify
+    # against its bound receipt before any row is read or sent out.
+    eval_protection.verify_artifact(SAMPLE_CSV)
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     haiku = {r["row_id"]: r for r in csv.DictReader(open(PREDICTIONS["haiku"]))} \
         if PREDICTIONS["haiku"].exists() else {}
@@ -309,7 +313,7 @@ def apply_review(path):
     import openpyxl
 
     # B04: the reviewed sample must still match its bound fetch receipt.
-    eval_protection.verify_artifact(SAMPLE_CSV)
+    sample_receipt = eval_protection.verify_artifact(SAMPLE_CSV)
 
     _, _, leaves, gen_of, _ = load_crosswalk()
     ws = openpyxl.load_workbook(path, data_only=True)["Review"]
@@ -349,7 +353,7 @@ def apply_review(path):
     eval_protection.write_artifact_receipt(
         FINAL_CSV, consumer="build_gold_v4_slm_volume.apply_review",
         purpose="model_selection_validation",
-        inputs=[SAMPLE_CSV, pathlib.Path(path)],
+        input_receipts=[sample_receipt],
     )
     print(f"Wrote {FINAL_CSV}: {len(out_rows)} gold transactions "
           f"({blank} left blank/unclassifiable, excluded)", file=sys.stderr)

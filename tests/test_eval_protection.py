@@ -206,21 +206,60 @@ def test_verify_tuning_export_fails_closed(tmp_path):
         eval_protection.verify_tuning_export(out_dir=tmp_path)
 
 
-def test_verify_fetch_receipt_binding(synthetic_release):
-    enforcement, membership_path, _ = synthetic_release
-    membership_sha = eval_protection.PINNED_BINDING["membership_sha256"]
-    good = {
+def _valid_fetch_receipt():
+    return {
         "schema_version": "tuning-tier-b-fetch-receipt-v1",
         "anonymous_id_recovery": False,
-        "eval_membership_inputs": [{"sha256": membership_sha, "rows": 3}],
+        "source_kind": "customer_linked_plaid_materialized",
+        "protected_release": {
+            "schema_version": "benchmark-release-binding-v1",
+            **eval_protection.PINNED_BINDING,
+        },
+        "eval_membership_inputs": [
+            {"sha256": eval_protection.PINNED_BINDING["membership_sha256"]}
+        ],
+        "result_sha256": "a" * 64,
+        "rows": 3,
     }
+
+
+def test_verify_fetch_receipt_binding(synthetic_release):
+    enforcement, membership_path, _ = synthetic_release
+    good = _valid_fetch_receipt()
     eval_protection.verify_fetch_receipt(
         good, txncat_src=os.environ.get("RAYLO_TXNCAT_SRC")
     )
-    stale = {**good, "eval_membership_inputs": [{"sha256": "1" * 64, "rows": 3}]}
+    # A minimal fabricated receipt — schema + membership digest only — fails.
+    minimal = {
+        "schema_version": "tuning-tier-b-fetch-receipt-v1",
+        "anonymous_id_recovery": False,
+        "eval_membership_inputs": [
+            {"sha256": eval_protection.PINNED_BINDING["membership_sha256"]}
+        ],
+    }
+    with pytest.raises(enforcement.ProtectedMembershipError):
+        eval_protection.verify_fetch_receipt(
+            minimal, txncat_src=os.environ.get("RAYLO_TXNCAT_SRC")
+        )
+    stale = {
+        **good,
+        "eval_membership_inputs": [{"sha256": "1" * 64}],
+    }
     with pytest.raises(enforcement.ProtectedMembershipError):
         eval_protection.verify_fetch_receipt(
             stale, txncat_src=os.environ.get("RAYLO_TXNCAT_SRC")
+        )
+    # A caller-supplied alternate release binding is rejected outright.
+    other = {
+        **good,
+        "protected_release": {
+            **good["protected_release"],
+            "membership_sha256": "2" * 64,
+        },
+    }
+    with pytest.raises(enforcement.ProtectedMembershipError):
+        eval_protection.verify_fetch_receipt(
+            other, txncat_src=os.environ.get("RAYLO_TXNCAT_SRC")
         )
 
 
@@ -249,6 +288,20 @@ GATED_CALLS = [
     ("experiment3_champion_granularity", "build_all_rung_features", ()),
     ("audit_experiment3_granularity", "run", ([], 0)),
     ("audit_experiment3_granularity", "audit_same20", ([], 0)),
+    # Identity-discarding and mixed-source fetches: gated off until rebuilt
+    # against the customer-linked Plaid source.
+    ("build_final_gold_v2", "fetch", ()),
+    ("build_final_gold_v2_batch2", "fetch", ()),
+    ("build_gold_v3_volume", "fetch", ()),
+    ("build_gold_v4_slm_volume", "fetch", ()),
+    ("build_gold_v5_locked", "fetch", ()),
+    ("build_gold_v6_locked", "fetch", ()),
+    ("build_tuning_leaf_topup", "fetch", ()),
+    ("build_tuning_leaf_topup", "fetch_gap_fill", ([],)),
+    ("build_equifax_fee_topup", "main", ()),
+    ("ml_baseline", "fetch_train", ()),
+    ("rent_iv_analysis", "fetch", ()),
+    ("build_credit_tranche", "fetch_distil", ()),
 ]
 
 
@@ -298,6 +351,90 @@ def argparse_namespace():
     import argparse
 
     return argparse.Namespace(base="x", max_sentences=None)
+
+
+def test_qwen_launchers_terminally_gated():
+    """Every Qwen LoRA launcher must exit before doing any work."""
+
+    import subprocess
+
+    for name in (
+        "qwen3_8b_cont.sh",
+        "qwen3_8b_long.sh",
+        "qwen3_after_4b.sh",
+        "qwen3_score_then_8b.sh",
+    ):
+        script = ROOT / "scripts" / name
+        assert "B04 RETIRED" in script.read_text()
+        result = subprocess.run(
+            ["bash", str(script)], capture_output=True, text=True, timeout=30
+        )
+        assert result.returncode == 1, name
+        assert "RETIRED" in result.stderr, name
+
+
+def test_unverified_llm_egress_fails_closed(tmp_path, monkeypatch):
+    """label() must verify the sample's bound receipt before any API call."""
+
+    module = _import("build_risk_leaf_topup")
+    sample = tmp_path / "risk_leaf_topup_sample.csv"
+    sample.write_text("row_id,merchant_raw\n1,synthetic\n")
+    monkeypatch.setattr(module, "SAMPLE_CSV", sample)
+    with pytest.raises(RuntimeError, match="no bound artifact receipt"):
+        module.label("gemini")
+
+
+def test_unverified_gap_fill_input_fails_closed(tmp_path, monkeypatch):
+    """gap_fill must verify the existing merged artifact before reading it."""
+
+    module = _import("build_risk_leaf_topup")
+    final = tmp_path / "risk_leaf_topup.csv"
+    final.write_text("merchant_raw,gold_leaf\nsynthetic,groceries\n")
+    monkeypatch.setattr(module, "FINAL_CSV", final)
+    with pytest.raises(RuntimeError, match="no bound artifact receipt"):
+        module.gap_fill()
+
+
+def test_apply_env_rejects_identity_less_rows(synthetic_release, monkeypatch):
+    """A fetched row without linkage identity can never pass the guard."""
+
+    _, membership_path, publication_path = synthetic_release
+    monkeypatch.setenv("EVAL_MEMBERSHIP", str(membership_path))
+    monkeypatch.setenv("EVAL_PUBLICATION", str(publication_path))
+    enforcement = _enforcement_or_skip()
+    with pytest.raises(
+        enforcement.ProtectedMembershipError, match="missing linked identity"
+    ):
+        eval_protection.apply_env(
+            [{"provider": "plaid", "account_id": "a",
+              "transaction_id": "t", "customer_id": ""}],
+            purpose="supervised_training",
+        )
+
+
+def test_verify_artifact_rejects_forged_sidecar(tmp_path, monkeypatch):
+    """A hand-written sidecar beside an arbitrary file fails strict checks."""
+
+    _enforcement_or_skip()
+    artifact = tmp_path / "artifact.csv"
+    artifact.write_text("merchant_raw\nsynthetic\n")
+    forged = {
+        "schema_version": "b04-artifact-receipt-v2",
+        "consumer": "attacker",
+        "purpose": "supervised_training",
+        "anonymous_id_recovery": False,
+        "eval_membership_inputs": [{"sha256": "0" * 64}],
+        "protected_release": {},
+        "output": str(artifact),
+        "output_sha256": hashlib.sha256(artifact.read_bytes()).hexdigest(),
+        "guard": {},
+        "input_receipts": [],
+    }
+    artifact.with_name(artifact.name + ".b04-receipt.json").write_text(
+        json.dumps(forged)
+    )
+    with pytest.raises(Exception, match="receipt"):
+        eval_protection.verify_artifact(artifact)
 
 
 def test_locked_confirmation_set_refusal(tmp_path):

@@ -88,9 +88,10 @@ def main():
         ROOT / "data" / "gold_transactions_v3_volume.csv",
         ROOT / "data" / "gold_transactions_v4_slm_volume.csv",
     ]
+    input_receipts = []
     for _p in merged_sources:
         if _p.exists():
-            eval_protection.verify_artifact(_p)
+            input_receipts.append(eval_protection.verify_artifact(_p))
     holdout_m = holdout_merchants()
     v4_native, v4_notes = v4_native_map()
     out = []
@@ -129,7 +130,7 @@ def main():
         w.writerows(out)
     eval_protection.write_artifact_receipt(
         OUT, consumer="build_gold_transactions_unified",
-        purpose="model_selection_validation", inputs=merged_sources,
+        purpose="model_selection_validation", input_receipts=input_receipts,
     )
     print(f"Wrote {OUT}: {len(out)} rows ({n_train} train, {n_eval} iter_eval); "
           f"{len(holdout_m)} holdout merchants; v4 missing native={missing_v4}",

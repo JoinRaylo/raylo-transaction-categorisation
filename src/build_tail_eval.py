@@ -341,6 +341,9 @@ def sheet():
 
     _, _, leaves, gen_of, notes_of = load_crosswalk()
     examples_of = load_example_merchants()
+    # B04: narratives leave the trust boundary here — the sample must verify
+    # against its bound receipt before any row is read or sent out.
+    eval_protection.verify_artifact(SAMPLE_CSV)
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     ev = load_evidence()
     preds = {}

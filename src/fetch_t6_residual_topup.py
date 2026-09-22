@@ -143,14 +143,18 @@ def fetch_leaf(client, leaf: str, exclude_merchants: list[str]) -> list[dict]:
 
     where = " OR ".join(f"({c})" for c in clauses)
     sql = f"""
-    SELECT merchant, merchant_raw, description_raw, amount, direction, native_category
+    SELECT merchant, merchant_raw, description_raw, amount, direction, native_category,
+           account_id, transaction_id, customer_id
     FROM (
       SELECT LOWER(TRIM(IFNULL(t.merchant_name, ''))) AS merchant,
              IFNULL(t.merchant_name, '') AS merchant_raw,
              IFNULL(COALESCE(t.original_description, t.transaction_name), '') AS description_raw,
              t.amount,
              IF(t.amount < 0, 'credit', 'debit') AS direction,
-             t.credit_category_detailed AS native_category
+             t.credit_category_detailed AS native_category,
+             TRIM(t.account_id) AS account_id,
+             TRIM(t.transaction_id) AS transaction_id,
+             TRIM(t.customer_id) AS customer_id
       FROM {PLAID_TABLE} t
       LEFT JOIN (
         SELECT normalised_merchant
@@ -162,6 +166,9 @@ def fetch_leaf(client, leaf: str, exclude_merchants: list[str]) -> list[dict]:
         AND TRIM(IFNULL(t.merchant_name, '')) != ''
       WHERE ({where})
         AND d.normalised_merchant IS NULL
+        AND NULLIF(TRIM(t.account_id), '') IS NOT NULL
+        AND NULLIF(TRIM(t.transaction_id), '') IS NOT NULL
+        AND NULLIF(TRIM(t.customer_id), '') IS NOT NULL
         AND LOWER(TRIM(IFNULL(t.merchant_name, ''))) NOT IN UNNEST(@excluded)
       QUALIFY ROW_NUMBER() OVER (
         PARTITION BY IF(
@@ -256,6 +263,7 @@ def main():
         "row_id", "target_leaf", "provider", "merchant", "merchant_raw",
         "description_raw", "amount", "direction", "native_category",
         "waterfall_tier", "t6_native_leaf",
+        "account_id", "transaction_id", "customer_id",
     ]
     with open(SAMPLE_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
@@ -263,7 +271,7 @@ def main():
         w.writerows(all_rows)
     eval_protection.write_artifact_receipt(
         SAMPLE_CSV, consumer="fetch_t6_residual_topup",
-        purpose="supervised_training",
+        purpose="supervised_training", guard=all_rows.guard,
     )
 
     lines = [

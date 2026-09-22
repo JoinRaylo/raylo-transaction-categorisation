@@ -49,6 +49,7 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import pathlib
 import random
 import sys
@@ -235,15 +236,17 @@ def write_tier_b_fetch(rows, protection, *, data_path=TXNS_JSON, receipt_path=TX
     data_path = pathlib.Path(data_path)
     receipt_path = pathlib.Path(receipt_path)
     data_path.write_text(json.dumps(rows), encoding="utf-8")
+    binding = eval_protection._enforcement(
+        os.environ.get("RAYLO_TXNCAT_SRC")
+    ).ReleaseBinding(**eval_protection.PINNED_BINDING)
     receipt = {
         "schema_version": "tuning-tier-b-fetch-receipt-v1",
         "source_kind": "customer_linked_plaid_materialized",
         "anonymous_id_recovery": False,
-        "eval_membership_inputs": list(protection["inputs"]),
-        "protected_release": {
-            "membership_sha256": eval_protection.PINNED_BINDING["membership_sha256"],
-            "publication_sha256": eval_protection.PINNED_BINDING["publication_sha256"],
-        },
+        "eval_membership_inputs": [
+            {"sha256": eval_protection.PINNED_BINDING["membership_sha256"]}
+        ],
+        "protected_release": binding.model_dump(mode="json"),
         "rows": len(rows),
         "result_sha256": _file_sha256(data_path),
     }
@@ -262,20 +265,15 @@ def read_verified_tier_b_fetch(
 ):
     data_path = pathlib.Path(data_path)
     receipt_path = pathlib.Path(receipt_path)
-    protection = load_eval_protection(protected_memberships)
+    load_eval_protection(protected_memberships)
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
-    if (
-        receipt.get("schema_version") != "tuning-tier-b-fetch-receipt-v1"
-        or receipt.get("source_kind") != "customer_linked_plaid_materialized"
-        or receipt.get("anonymous_id_recovery") is not False
-        or receipt.get("eval_membership_inputs") != list(protection["inputs"])
-        or receipt.get("protected_release")
-        != {
-            "membership_sha256": eval_protection.PINNED_BINDING["membership_sha256"],
-            "publication_sha256": eval_protection.PINNED_BINDING["publication_sha256"],
-        }
-        or receipt.get("result_sha256") != _file_sha256(data_path)
-    ):
+    # B04: strict canonical validation — the receipt must carry the full
+    # pinned release binding, the linked source kind and a concrete result
+    # digest; a minimal fabricated receipt cannot pass.
+    eval_protection.verify_fetch_receipt(
+        receipt, txncat_src=os.environ.get("RAYLO_TXNCAT_SRC")
+    )
+    if receipt.get("result_sha256") != _file_sha256(data_path):
         raise ValueError("Tier-B fetch is missing its verified eval protection")
     rows = json.loads(data_path.read_text(encoding="utf-8"))
     if type(rows) is not list or receipt.get("rows") != len(rows):

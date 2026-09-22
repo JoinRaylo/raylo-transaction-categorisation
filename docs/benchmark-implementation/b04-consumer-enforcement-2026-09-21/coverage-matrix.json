@@ -68,8 +68,8 @@
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "build_credit_tranche.fetch_distil",
       "kind": "learning",
-      "enforcement": "enforced",
-      "boundary": "apply_env(distillation) before SAMPLE_CSV write; artifact receipt emitted",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: GROUP BY text export carries no row identity and can never prove disjointness",
       "evidence": "src/build_credit_tranche.py"
     },
     {
@@ -91,25 +91,41 @@
     {
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "build_credit_tranche.gate_distil",
-      "kind": "learning",
+      "kind": "labelling",
       "enforcement": "enforced",
-      "boundary": "verify_artifact(SAMPLE_CSV); receipt on DISTIL_OUT",
+      "boundary": "verify_artifact on the receipted sample CSV before consensus merge",
+      "evidence": "src/build_credit_tranche.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_credit_tranche.label",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_credit_tranche.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_credit_tranche.sheet",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before sheet egress",
       "evidence": "src/build_credit_tranche.py"
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "build_credit_tranche.tiebreak",
-      "kind": "learning",
+      "kind": "labelling",
       "enforcement": "enforced",
-      "boundary": "verify_artifact(SAMPLE_CSV) before disagreement sample",
+      "boundary": "verify_artifact on the receipted sample CSV before tiebreak egress",
       "evidence": "src/build_credit_tranche.py"
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "build_equifax_fee_topup.main",
       "kind": "learning",
-      "enforcement": "enforced",
-      "boundary": "verify_artifact on existing FINAL_CSV; apply_env(supervised_training); merge receipt",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: equifax_data.open_banking_full_dump is proposal-matched, no customer linkage",
       "evidence": "src/build_equifax_fee_topup.py"
     },
     {
@@ -124,8 +140,24 @@
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "build_final_gold_v2.fetch",
       "kind": "selection",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: mixed Plaid/Equifax legs discard linkage identity; historical one-shot builder",
+      "evidence": "src/build_final_gold_v2.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_final_gold_v2.label",
+      "kind": "labelling",
       "enforcement": "enforced",
-      "boundary": "apply_env(model_selection_validation); receipt on gold_v2_sample.csv",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_final_gold_v2.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_final_gold_v2.sheet",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before sheet egress",
       "evidence": "src/build_final_gold_v2.py"
     },
     {
@@ -140,8 +172,24 @@
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "build_final_gold_v2_batch2.fetch",
       "kind": "selection",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: mixed Plaid/Equifax legs discard linkage identity; historical one-shot builder",
+      "evidence": "src/build_final_gold_v2_batch2.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_final_gold_v2_batch2.label",
+      "kind": "labelling",
       "enforcement": "enforced",
-      "boundary": "apply_env(model_selection_validation); receipt on gold_v2_sample_batch2.csv",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_final_gold_v2_batch2.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_final_gold_v2_batch2.sheet",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before sheet egress",
       "evidence": "src/build_final_gold_v2_batch2.py"
     },
     {
@@ -158,6 +206,22 @@
       "kind": "selection",
       "enforcement": "enforced",
       "boundary": "apply_env(model_selection_validation); receipt on gold_risk_sample.csv",
+      "evidence": "src/build_gold_risk_categories.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_risk_categories.label",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_gold_risk_categories.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_risk_categories.sheet",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before sheet egress",
       "evidence": "src/build_gold_risk_categories.py"
     },
     {
@@ -180,8 +244,16 @@
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "build_gold_v3_volume.fetch",
       "kind": "selection",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: mixed Plaid/Equifax legs discard linkage identity; historical one-shot builder",
+      "evidence": "src/build_gold_v3_volume.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v3_volume.score",
+      "kind": "labelling",
       "enforcement": "enforced",
-      "boundary": "apply_env(model_selection_validation); artifact receipt",
+      "boundary": "verify_artifact on the receipted sample CSV before scoring egress",
       "evidence": "src/build_gold_v3_volume.py"
     },
     {
@@ -196,8 +268,16 @@
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "build_gold_v4_slm_volume.fetch",
       "kind": "selection",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: mixed Plaid/Equifax legs discard linkage identity; historical one-shot builder",
+      "evidence": "src/build_gold_v4_slm_volume.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v4_slm_volume.sheet",
+      "kind": "labelling",
       "enforcement": "enforced",
-      "boundary": "apply_env(model_selection_validation); receipt on gold_v4_sample.csv",
+      "boundary": "verify_artifact on the receipted sample CSV before sheet egress",
       "evidence": "src/build_gold_v4_slm_volume.py"
     },
     {
@@ -212,8 +292,24 @@
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "build_gold_v5_locked.fetch",
       "kind": "selection",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: v5 retired and immutable; mixed-source fetch also discards linkage identity",
+      "evidence": "src/build_gold_v5_locked.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v5_locked.label",
+      "kind": "labelling",
       "enforcement": "enforced",
-      "boundary": "apply_env(model_selection_validation); receipt on gold_v5_locked_sample.csv",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_gold_v5_locked.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v5_locked.sheet",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before sheet egress",
       "evidence": "src/build_gold_v5_locked.py"
     },
     {
@@ -228,8 +324,24 @@
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "build_gold_v6_locked.fetch",
       "kind": "selection",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: v6 locked for go/no-go and immutable; mixed-source fetch also discards linkage identity",
+      "evidence": "src/build_gold_v6_locked.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v6_locked.label",
+      "kind": "labelling",
       "enforcement": "enforced",
-      "boundary": "apply_env(model_selection_validation); receipt on gold_v6_locked_sample.csv",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_gold_v6_locked.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v6_locked.sheet",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before sheet egress",
       "evidence": "src/build_gold_v6_locked.py"
     },
     {
@@ -254,6 +366,22 @@
       "kind": "learning",
       "enforcement": "enforced",
       "boundary": "apply_env(supervised_training); artifact receipt",
+      "evidence": "src/build_risk_leaf_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_risk_leaf_topup.label",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_risk_leaf_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_risk_leaf_topup.resolve",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before review merge",
       "evidence": "src/build_risk_leaf_topup.py"
     },
     {
@@ -308,16 +436,32 @@
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "build_tuning_leaf_topup.fetch",
       "kind": "learning",
-      "enforcement": "enforced",
-      "boundary": "apply_env(supervised_training); artifact receipt on tuning_topup_sample.csv",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: equifax_data.open_banking_full_dump is proposal-matched, no customer linkage",
       "evidence": "src/build_tuning_leaf_topup.py"
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "build_tuning_leaf_topup.fetch_gap_fill",
       "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: equifax_data.open_banking_full_dump is proposal-matched, no customer linkage",
+      "evidence": "src/build_tuning_leaf_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tuning_leaf_topup.label",
+      "kind": "labelling",
       "enforcement": "enforced",
-      "boundary": "apply_env(supervised_training); artifact receipt",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_tuning_leaf_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tuning_leaf_topup.resolve",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before review merge",
       "evidence": "src/build_tuning_leaf_topup.py"
     },
     {
@@ -602,10 +746,10 @@
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
-      "consumer": "gemini_tiebreak_experiment",
-      "kind": "evaluation_reader",
-      "enforcement": "bound_read",
-      "boundary": "reads committed eval CSVs only",
+      "consumer": "gemini_tiebreak_experiment.get_needs_review",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted labels CSV before Gemini egress",
       "evidence": "src/gemini_tiebreak_experiment.py"
     },
     {
@@ -636,8 +780,8 @@
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "ml_baseline.fetch_train",
       "kind": "learning",
-      "enforcement": "enforced",
-      "boundary": "apply_env(supervised_training); receipt on ml_train.parquet",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: equifax_data.open_banking_full_dump is proposal-matched, no customer linkage",
       "evidence": "src/ml_baseline.py"
     },
     {
@@ -650,11 +794,35 @@
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "production_labelling.apply_review",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted labels CSV before merge; merge receipt on output",
+      "evidence": "src/production_labelling.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "production_labelling.fetch",
       "kind": "authoring",
       "enforcement": "gated_off",
       "boundary": "fetch gate before any BigQuery call",
       "evidence": "APPROX_TOP_COUNT(description,3) verbatim narrative egress"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "production_labelling.label",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted strings CSV before Gemini/Sonnet egress",
+      "evidence": "src/production_labelling.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "production_labelling.tiebreak",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted labels CSV before tiebreak egress",
+      "evidence": "src/production_labelling.py"
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
@@ -676,8 +844,8 @@
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "rent_iv_analysis.fetch",
       "kind": "learning",
-      "enforcement": "enforced",
-      "boundary": "apply_env(evidence_retrieval); receipt on rent_candidates.parquet",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: proposal-matched Equifax tables carry no customer linkage",
       "evidence": "src/rent_iv_analysis.py"
     },
     {
@@ -748,32 +916,32 @@
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "scripts.qwen3_8b_cont",
       "kind": "learning",
-      "enforcement": "enforced",
-      "boundary": "verify_tuning_export in shell before mlx_lm.lora --train",
+      "enforcement": "gated_off",
+      "boundary": "retired: terminal B04 gate exits before any data access",
       "evidence": "scripts/qwen3_8b_cont.sh"
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "scripts.qwen3_8b_long",
       "kind": "learning",
-      "enforcement": "enforced",
-      "boundary": "verify_tuning_export in shell before mlx_lm.lora --train",
+      "enforcement": "gated_off",
+      "boundary": "retired: terminal B04 gate exits before any data access",
       "evidence": "scripts/qwen3_8b_long.sh"
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "scripts.qwen3_after_4b",
       "kind": "learning",
-      "enforcement": "enforced",
-      "boundary": "verify_tuning_export in shell before mlx_lm.lora --train",
+      "enforcement": "gated_off",
+      "boundary": "retired: terminal B04 gate exits before any data access",
       "evidence": "scripts/qwen3_after_4b.sh"
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "scripts.qwen3_score_then_8b",
       "kind": "learning",
-      "enforcement": "enforced",
-      "boundary": "verify_tuning_export in shell before mlx_lm.lora --train",
+      "enforcement": "gated_off",
+      "boundary": "retired: terminal B04 gate exits before any data access",
       "evidence": "scripts/qwen3_score_then_8b.sh"
     },
     {

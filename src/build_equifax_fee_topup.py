@@ -76,6 +76,13 @@ WHERE TransactionTypeId = 2
 
 
 def main():
+    eval_protection.gate(
+        "build_equifax_fee_topup.main",
+        reason="equifax_data.open_banking_full_dump is proposal-matched and "
+               "carries no customer_id/account_id linkage; fetched rows can "
+               "never pass the protected-release guard. Rebuild against the "
+               "customer-linked Plaid source before this consumer may run.",
+    )
     print("Fetching Equifax fee/distress rows...", file=sys.stderr)
     df = bq_client().query(QUERY).result().to_dataframe()
     rows = []
@@ -97,11 +104,12 @@ def main():
             "provider": "equifax",
         })
 
+    # B04: the existing merge output must still match its bound receipt
+    # before new rows are appended onto it; its receipt stays in the chain.
+    prior_receipt = (
+        eval_protection.verify_artifact(FINAL_CSV) if FINAL_CSV.exists() else None
+    )
     existing = list(csv.DictReader(open(FINAL_CSV))) if FINAL_CSV.exists() else []
-    if existing:
-        # B04: the existing merge output must still match its bound receipt
-        # before new rows are appended onto it.
-        eval_protection.verify_artifact(FINAL_CSV)
     seen = {_fp(r) for r in existing}
     added = []
     for r in rows:
@@ -121,7 +129,8 @@ def main():
         w.writerows({k: r[k] for k in FIELDNAMES} for r in added)
     eval_protection.write_artifact_receipt(
         FINAL_CSV, consumer="build_equifax_fee_topup",
-        purpose="supervised_training",
+        purpose="supervised_training", guard=added.guard,
+        input_receipts=[prior_receipt] if prior_receipt else (),
     )
 
     from collections import Counter

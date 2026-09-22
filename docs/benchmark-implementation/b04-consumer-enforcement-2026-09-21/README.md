@@ -19,16 +19,30 @@ The only approved protected release is pinned in `src/eval_protection.py`
 ## Architecture
 
 1. **Canonical module** — `lib/raylo-txncat/src/raylo_txncat/benchmark_enforcement.py`
-   owns `ReleaseBinding`, `ProtectionSet`, `load_protected_membership`,
-   `verify_release`, `exclude_protected`, `verify_fetch_receipt`,
-   `artifact_receipt`/`verify_artifact_receipt`, `require_promotion_provenance`,
-   `ConsumerCoverage`, `CoverageMatrix`, `EnforcementReceipt`.  All semantics
-   live here; nothing is forked.
+   owns `ReleaseBinding`, `PINNED_RELEASE`, `ProtectionSet`,
+   `load_protected_membership`, `verify_release`, `exclude_protected`,
+   `verify_fetch_receipt`, `issue_artifact_receipt`/`verify_artifact_receipt`,
+   `require_promotion_provenance`, `ConsumerCoverage`, `CoverageMatrix`,
+   `EnforcementReceipt`.  All semantics live here; nothing is forked.
 2. **Research adapter** — `src/eval_protection.py` imports the canonical
    module (`RAYLO_TXNCAT_SRC`/`--txncat-src`), pins the release, and exposes
    `add_args`, `load_release`, `apply`, `apply_env`, `assert_bound`,
    `verify_fetch_receipt`, `verify_tuning_export`, `verify_artifact`,
    `write_artifact_receipt`, `gate`.
+
+## Supported paths
+
+- **Labelling**: Gemini/Sonnet are used for labelling egress only.  Every
+  label/sheet/tiebreak/resolve seam calls `verify_artifact` on the receipted
+  sample before a narrative may leave the boundary.
+- **Categorisation model**: the winning transformer is the sole TxCat-1
+  model trained and promoted.  Its corpus (`tuning_train.jsonl` /
+  `tuning_val.jsonl`) passes `verify_tuning_export`, and its bundle passes
+  `require_promotion_provenance` before upload.
+- **Retired**: all four Qwen LoRA launchers (`scripts/qwen3_*.sh`) carry an
+  explicit terminal gate immediately after `set -euo pipefail`.  Qwen is not
+  part of the intended production path; the launchers are classified
+  `gated_off` and excluded from the enforced count.
 
 ## Enforcement semantics
 
@@ -37,15 +51,24 @@ The only approved protected release is pinned in `src/eval_protection.py`
   `account_id`/`transaction_id`/`customer_id` fail closed.
 - Exact protected events plus connected account and customer groups are
   excluded; contradictory linkage and duplicate events are rejected.
-- Every persisted artifact gets a bound `*.b04-receipt.json` (output digest +
-  input digests + release binding).  Downstream consumers call
-  `verify_artifact`, which fails on a missing receipt, a stale release, or
-  digest drift (relabelled/changed artifacts).
+- Every persisted artifact gets a bound `*.b04-receipt.json`
+  (`b04-artifact-receipt-v2`): schema, release binding, purpose, consumer,
+  output path and output byte digest are all validated, and issuance requires
+  a verified `GuardResult` or a non-empty chain of already-verified input
+  receipts — a caller-provided digest alone cannot mint a sidecar.
+  Downstream consumers call `verify_artifact`, which fails on a missing
+  receipt, a stale release, digest drift (relabelled/changed artifacts), a
+  renamed or substituted sidecar, or protected content inside an
+  identity-bearing CSV.
 - `.fit` boundaries call `verify_tuning_export` (committed membership coverage
   + bound fetch receipt) before any model consumes `tuning_train.jsonl` /
   `tuning_val.jsonl` — including the `mlx_lm.lora` shell scripts.
-- Promotion (`raylo_txncat.publish_bundle`) requires
-  `require_promotion_provenance` over declared fetch receipts before upload.
+- Promotion (`raylo_txncat.publish_bundle`) pins `PINNED_RELEASE` itself —
+  no caller-supplied binding is accepted — and requires
+  `require_promotion_provenance` over the bundle's declared learning inputs:
+  every input must be covered by a strictly-validated fetch or artifact
+  receipt bound to the pinned release, and `provenance.json` may not name an
+  uncovered training file.
 - Identity-losing consumers (GROUP BY text-frequency corpora, narrative-egress
   evidence queries, the unbound experiment3 feature store) are hard-gated via
   `eval_protection.gate` — they cannot prove disjointness, so they fail closed
@@ -55,11 +78,11 @@ The only approved protected release is pinned in `src/eval_protection.py`
 
 ## Coverage
 
-`coverage-matrix.json` — 103 consumer entries (62 enforced, 25 gated_off,
-16 bound_read), sorted and unique, digested by `matrix_sha256`.
+`coverage-matrix.json` — 124 consumer entries (68 enforced, 41 gated_off,
+15 bound_read), sorted and unique, digested by `matrix_sha256`.
 
 `enforcement-receipt.json` — the aggregate `EnforcementReceipt`: release
-binding + matrix digest + 17 validation checks + limitations.
+binding + matrix digest + 28 validation checks + limitations.
 `authorizes_consumption=false`.
 
 Regenerate with:
@@ -71,6 +94,8 @@ RAYLO_TXNCAT_SRC=<monorepo>/lib/raylo-txncat/src \
 
 ## Limitations (also in the receipt)
 
+- Qwen LoRA is retired, not repaired — the launchers terminate before any
+  data access and are outside the enforced count.
 - Prospective protection only — historical non-use is not certified.
 - Pre-B04 artifacts without receipts fail closed until a guarded rebuild
   emits them (this is deliberate).

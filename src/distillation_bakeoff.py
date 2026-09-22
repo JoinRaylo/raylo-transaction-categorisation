@@ -91,9 +91,15 @@ def fetch_train():
                IFNULL(merchant_name, '') AS vendor,
                IFNULL(COALESCE(original_description, transaction_name), '') AS description,
                ABS(amount) AS amount,
-               CAST(amount < 0 AS INT64) AS is_credit
+               CAST(amount < 0 AS INT64) AS is_credit,
+               TRIM(account_id) AS account_id,
+               TRIM(transaction_id) AS transaction_id,
+               TRIM(customer_id) AS customer_id
         FROM `raylo-production.dbt_production.credit_plaid_open_banking_transactions`
         WHERE merchant_name IS NOT NULL AND TRIM(merchant_name) != ''
+          AND NULLIF(TRIM(account_id), '') IS NOT NULL
+          AND NULLIF(TRIM(transaction_id), '') IS NOT NULL
+          AND NULLIF(TRIM(customer_id), '') IS NOT NULL
           AND LOWER(TRIM(merchant_name)) IN ({in_list})
         QUALIFY ROW_NUMBER() OVER (PARTITION BY LOWER(TRIM(merchant_name)) ORDER BY RAND()) <= {CAP_PER_MERCHANT}
         """
@@ -107,13 +113,14 @@ def fetch_train():
     df["is_credit"] = df["is_credit"].astype(np.int8)
     # B04: linked-pool fetch must pass the protected-release guard; rows
     # without B02 linkage identity fail closed until the query carries them.
-    df = pd.DataFrame(
-        eval_protection.apply_env(df.to_dict("records"), purpose="distillation")
+    guarded = eval_protection.apply_env(
+        df.to_dict("records"), purpose="distillation"
     )
+    df = pd.DataFrame(guarded)
     df.to_parquet(TRAIN_PARQUET, index=False)
     eval_protection.write_artifact_receipt(
         TRAIN_PARQUET, consumer="distillation_bakeoff.fetch",
-        purpose="distillation",
+        purpose="distillation", guard=guarded.guard,
     )
     print(f"Wrote {TRAIN_PARQUET}: {len(df)} transaction-level rows, "
           f"{df['merchant'].nunique()} merchants, {df['leaf'].nunique()} leaves", file=sys.stderr)

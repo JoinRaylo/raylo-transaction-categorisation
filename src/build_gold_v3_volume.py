@@ -85,6 +85,7 @@ def _established_truth():
 
 
 def fetch():
+    eval_protection.gate("build_gold_v3_volume.fetch", reason='the fetch mixes equifax_data.open_banking_full_dump legs (proposal-matched, no customer linkage) with identity-discarding Plaid selects; fetched rows can never pass the protected-release guard. Rebuild every leg against the customer-linked Plaid source before this consumer may run.')
     from google.cloud import bigquery
     client = bigquery.Client(project="raylo-production")
 
@@ -145,7 +146,7 @@ def fetch():
         w.writeheader(); w.writerows(all_rows)
     eval_protection.write_artifact_receipt(
         SAMPLE_CSV, consumer="build_gold_v3_volume.fetch",
-        purpose="model_selection_validation",
+        purpose="model_selection_validation", guard=all_rows.guard,
     )
     print(f"Wrote {SAMPLE_CSV}: {len(all_rows)} rows ({len(eqx_rows)} eqx / {len(plaid_rows)} plaid), "
           f"{n_established} already resolvable from established v2 truth, "
@@ -329,7 +330,7 @@ def apply_review(path):
     import openpyxl
 
     # B04: the reviewed sample must still match its bound fetch receipt.
-    eval_protection.verify_artifact(SAMPLE_CSV)
+    sample_receipt = eval_protection.verify_artifact(SAMPLE_CSV)
     _, _, leaves, gen_of, _ = load_crosswalk()
     ws = openpyxl.load_workbook(path, data_only=True)["Review"]
     hdr = [c.value for c in ws[1]]
@@ -366,13 +367,16 @@ def apply_review(path):
     eval_protection.write_artifact_receipt(
         FINAL_CSV, consumer="build_gold_v3_volume.apply_review",
         purpose="model_selection_validation",
-        inputs=[SAMPLE_CSV, pathlib.Path(path)],
+        input_receipts=[sample_receipt],
     )
     print(f"Wrote {FINAL_CSV}: {len(out_rows)} gold transactions "
           f"({blank} left blank/unclassifiable, excluded)", file=sys.stderr)
 
 
 def score():
+    # B04: score() consumes the derived final artifact — verify its bound
+    # receipt so only a guard-descended file can feed evaluation.
+    eval_protection.verify_artifact(FINAL_CSV)
     _, _, _, gen_of, _ = load_crosswalk()
     self_sourced = {r["normalised_merchant"] for r in csv.DictReader(open(ROOT / "taxonomy" / "merchant_dictionary.csv"))
                     if r["source"] == "gold_v2_review"}

@@ -95,7 +95,7 @@ def main():
     labels = load(LABELS_IN)
     # B04: production_labels.csv is a fetched artifact; it may only be merged
     # when a bound receipt still verifies against the pinned release.
-    eval_protection.verify_artifact(LABELS_IN)
+    labels_in_receipt = eval_protection.verify_artifact(LABELS_IN)
     n_agent = n_carlos = n_t2 = n_accepted_flip = 0
     out = []
     for r in labels:
@@ -138,7 +138,7 @@ def main():
         w.writerows(out)
     eval_protection.write_artifact_receipt(
         LABELS_OUT, consumer="build_tranche4_final_labels",
-        purpose="supervised_training", inputs=[LABELS_IN],
+        purpose="supervised_training", input_receipts=[labels_in_receipt],
     )
 
     good = DICTIONARY_ELIGIBLE_TIERS

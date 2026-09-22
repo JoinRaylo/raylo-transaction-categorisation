@@ -329,12 +329,18 @@ def run_labelling(cfg, rows, out_path):
 
 
 def label(model_key):
+    # B04: strings leave the trust boundary here — verify the derived
+    # artifact's bound receipt before any row is read or sent out.
+    eval_protection.verify_artifact(STRINGS_CSV)
     rows = list(csv.DictReader(open(STRINGS_CSV)))
     run_labelling(PRODUCTION_MODELS[model_key], rows, PREDICTIONS[model_key])
 
 
 def tiebreak():
     """Run the tiebreaker model over the needs_review strings only."""
+    # B04: needs_review strings egress to the tiebreaker — verify the derived
+    # artifact's bound receipt first.
+    eval_protection.verify_artifact(LABELS_CSV)
     labels = list(csv.DictReader(open(LABELS_CSV)))
     rows = [{"merchant": r["merchant"], "plaid_n": r["plaid_n"]}
             for r in labels if r["tier"] == "needs_review"]
@@ -569,6 +575,10 @@ def apply_review(path=None):
         elif v == "unsure":
             resolutions[m] = ("unclassified_other", "abstain_residual")
 
+    # B04: the labels artifact is rewritten in place — it must verify against
+    # its bound receipt first, and that receipt stays in the new receipt's
+    # input chain.
+    labels_receipt = eval_protection.verify_artifact(LABELS_CSV)
     rows = list(csv.DictReader(open(LABELS_CSV)))
     applied = 0
     for r in rows:
@@ -580,6 +590,10 @@ def apply_review(path=None):
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         w.writeheader()
         w.writerows(rows)
+    eval_protection.write_artifact_receipt(
+        LABELS_CSV, consumer="production_labelling.apply_review",
+        purpose="supervised_training", input_receipts=[labels_receipt],
+    )
 
     total_v = sum(int(r["plaid_n"]) for r in rows)
     print(f"Applied {applied} human verdicts. Final tranche distribution:")

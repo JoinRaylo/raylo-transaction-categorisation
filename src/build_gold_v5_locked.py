@@ -137,6 +137,7 @@ def _seen_merchants():
 
 
 def fetch():
+    eval_protection.gate("build_gold_v5_locked.fetch", reason='the v5 evaluation set is retired and immutable; its mixed Plaid/Equifax fetch also discards linkage identity. Do not refetch.')
     from google.cloud import bigquery
     client = bigquery.Client(project="raylo-production")
 
@@ -192,7 +193,7 @@ def fetch():
         w.writerows(all_rows)
     eval_protection.write_artifact_receipt(
         SAMPLE_CSV, consumer="build_gold_v5_locked.fetch",
-        purpose="model_selection_validation",
+        purpose="model_selection_validation", guard=all_rows.guard,
     )
     print(f"\nWrote {SAMPLE_CSV}: {len(all_rows)} rows, all genuinely novel merchants "
           f"(zero overlap with any existing gold set, production tranche, or the merchant dictionary)",
@@ -205,6 +206,9 @@ def label(model_key):
     system_prompt = (build_system_prompt(leaves, gen_of, notes_of, load_example_merchants())
                       + TXN_ADDENDUM + build_notes_addendum(load_example_notes()))
 
+    # B04: narratives leave the trust boundary here — the sample must verify
+    # against its bound receipt before any row is read or sent out.
+    eval_protection.verify_artifact(SAMPLE_CSV)
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     out_path = PREDICTIONS[model_key]
     predictions = {}
@@ -351,6 +355,9 @@ def label(model_key):
 
 
 def sheet():
+    # B04: narratives leave the trust boundary here — the sample must verify
+    # against its bound receipt before any row is read or sent out.
+    eval_protection.verify_artifact(SAMPLE_CSV)
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     gemini = {r["row_id"]: r for r in csv.DictReader(open(PREDICTIONS["gemini"]))} \
         if PREDICTIONS["gemini"].exists() else {}
@@ -433,7 +440,7 @@ def apply_review(path):
     import openpyxl
 
     # B04: the reviewed sample must still match its bound fetch receipt.
-    eval_protection.verify_artifact(SAMPLE_CSV)
+    sample_receipt = eval_protection.verify_artifact(SAMPLE_CSV)
     _, _, leaves, gen_of, _ = load_crosswalk()
     ws = openpyxl.load_workbook(path, data_only=True)["Review"]
     hdr = [c.value for c in ws[1]]
@@ -482,7 +489,7 @@ def apply_review(path):
     eval_protection.write_artifact_receipt(
         FINAL_CSV, consumer="build_gold_v5_locked.apply_review",
         purpose="model_selection_validation",
-        inputs=[SAMPLE_CSV, pathlib.Path(path)],
+        input_receipts=[sample_receipt],
     )
     print(f"Wrote {FINAL_CSV}: {len(out_rows)} gold transactions "
           f"({blank} left blank/unclassifiable, excluded; {empty_merchant_kept} kept with no merchant field, "
