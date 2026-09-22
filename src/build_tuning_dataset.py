@@ -231,25 +231,17 @@ def exclude_eval_membership(rows, protection):
 
 
 def write_tier_b_fetch(rows, protection, *, data_path=TXNS_JSON, receipt_path=TXNS_RECEIPT):
-    """Publish fetched rows first and their protection receipt last."""
+    """Publish fetched rows first and their signed protection receipt last."""
 
     data_path = pathlib.Path(data_path)
     receipt_path = pathlib.Path(receipt_path)
     data_path.write_text(json.dumps(rows), encoding="utf-8")
-    binding = eval_protection._enforcement(
-        os.environ.get("RAYLO_TXNCAT_SRC")
-    ).ReleaseBinding(**eval_protection.PINNED_BINDING)
-    receipt = {
-        "schema_version": "tuning-tier-b-fetch-receipt-v1",
-        "source_kind": "customer_linked_plaid_materialized",
-        "anonymous_id_recovery": False,
-        "eval_membership_inputs": [
-            {"sha256": eval_protection.PINNED_BINDING["membership_sha256"]}
-        ],
-        "protected_release": binding.model_dump(mode="json"),
-        "rows": len(rows),
-        "result_sha256": _file_sha256(data_path),
-    }
+    enforcement = eval_protection._enforcement(os.environ.get("RAYLO_TXNCAT_SRC"))
+    receipt = enforcement.issue_fetch_receipt(
+        result_path=data_path,
+        rows=len(rows),
+        binding=enforcement.ReleaseBinding(**eval_protection.PINNED_BINDING),
+    )
     receipt_path.write_text(
         json.dumps(receipt, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",

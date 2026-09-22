@@ -21,7 +21,8 @@ The only approved protected release is pinned in `src/eval_protection.py`
 1. **Canonical module** — `lib/raylo-txncat/src/raylo_txncat/benchmark_enforcement.py`
    owns `ReleaseBinding`, `PINNED_RELEASE`, `ProtectionSet`,
    `load_protected_membership`, `verify_release`, `exclude_protected`,
-   `verify_fetch_receipt`, `issue_artifact_receipt`/`verify_artifact_receipt`,
+   `verify_fetch_receipt`, `issue_fetch_receipt`,
+   `issue_artifact_receipt`/`verify_artifact_receipt`,
    `require_promotion_provenance`, `ConsumerCoverage`, `CoverageMatrix`,
    `EnforcementReceipt`.  All semantics live here; nothing is forked.
 2. **Research adapter** — `src/eval_protection.py` imports the canonical
@@ -46,13 +47,20 @@ The only approved protected release is pinned in `src/eval_protection.py`
 
 ## Enforcement semantics
 
+- **Authenticated issuance.**  Every fetch receipt, artifact receipt and
+  guard token is Ed25519-signed by the pinned B04 key: the private key is
+  held outside Git (`B04_RECEIPT_SIGNING_KEY` or `B04_RECEIPT_SIGNING_KEY_FILE`,
+  currently `~/.config/raylo/b04-receipt-signing-key`); verification needs
+  only the public key pinned in the module.  A hand-written receipt, a
+  caller-constructed `GuardResult` without the signed token, or a document
+  signed by any other key all fail closed.
 - Every fetch of customer-linked rows runs `apply_env`/`apply` (which wraps
   `verify_release` + `exclude_protected`) before persisting.  Rows lacking
   `account_id`/`transaction_id`/`customer_id` fail closed.
 - Exact protected events plus connected account and customer groups are
   excluded; contradictory linkage and duplicate events are rejected.
-- Every persisted artifact gets a bound `*.b04-receipt.json`
-  (`b04-artifact-receipt-v2`): schema, release binding, purpose, consumer,
+- Every persisted artifact gets a signed `*.b04-receipt.json`
+  (`b04-artifact-receipt-v3`): schema, release binding, purpose, consumer,
   output path and output byte digest are all validated, and issuance requires
   a verified `GuardResult` or a non-empty chain of already-verified input
   receipts — a caller-provided digest alone cannot mint a sidecar.
@@ -66,9 +74,12 @@ The only approved protected release is pinned in `src/eval_protection.py`
 - Promotion (`raylo_txncat.publish_bundle`) pins `PINNED_RELEASE` itself —
   no caller-supplied binding is accepted — and requires
   `require_promotion_provenance` over the bundle's declared learning inputs:
-  every input must be covered by a strictly-validated fetch or artifact
-  receipt bound to the pinned release, and `provenance.json` may not name an
-  uncovered training file.
+  every input must be covered by exactly one signed, strictly-validated
+  fetch or artifact receipt, and the bundle's explicit
+  `provenance.training_inputs` collection must equal the declared and
+  receipted input digest sets exactly.  Model outputs recorded in
+  `source_files` (`.safetensors`, `.joblib`) are provenance records, not
+  learning inputs.
 - Identity-losing consumers (GROUP BY text-frequency corpora, narrative-egress
   evidence queries, the unbound experiment3 feature store) are hard-gated via
   `eval_protection.gate` — they cannot prove disjointness, so they fail closed
@@ -78,11 +89,11 @@ The only approved protected release is pinned in `src/eval_protection.py`
 
 ## Coverage
 
-`coverage-matrix.json` — 124 consumer entries (68 enforced, 41 gated_off,
-15 bound_read), sorted and unique, digested by `matrix_sha256`.
+`coverage-matrix.json` — 126 consumer entries (68 enforced, 44 gated_off,
+14 bound_read), sorted and unique, digested by `matrix_sha256`.
 
 `enforcement-receipt.json` — the aggregate `EnforcementReceipt`: release
-binding + matrix digest + 28 validation checks + limitations.
+binding + matrix digest + 29 validation checks + limitations.
 `authorizes_consumption=false`.
 
 Regenerate with:
@@ -96,6 +107,9 @@ RAYLO_TXNCAT_SRC=<monorepo>/lib/raylo-txncat/src \
 
 - Qwen LoRA is retired, not repaired — the launchers terminate before any
   data access and are outside the enforced count.
+- Issuance machines need the private signing key via
+  `B04_RECEIPT_SIGNING_KEY[_FILE]`; verification needs nothing beyond the
+  pinned public key.
 - Prospective protection only — historical non-use is not certified.
 - Pre-B04 artifacts without receipts fail closed until a guarded rebuild
   emits them (this is deliberate).

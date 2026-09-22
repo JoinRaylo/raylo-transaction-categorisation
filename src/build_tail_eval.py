@@ -251,6 +251,12 @@ TAIL_ADDENDUM = (
 
 
 def label(model_key):
+    eval_protection.gate(
+        "build_tail_eval.label",
+        reason="fetch is gated off, so no receipted tail-eval sample can "
+               "exist; this narrative-egress path to Anthropic is retired "
+               "and must not run.",
+    )
     import anthropic
 
     cfg = MODELS[model_key]

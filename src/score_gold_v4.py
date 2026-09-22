@@ -27,6 +27,16 @@ from gating_experiment import (  # noqa: E402
     build_system_prompt, build_notes_addendum,
 )
 from build_tail_eval import TAIL_ADDENDUM  # noqa: E402
+import eval_protection  # noqa: E402
+
+# B04 RETIRED — terminal gate.  This module-level scorer reads the pre-B04
+# v4 gold CSV (which can never carry a bound receipt) and egresses rows to
+# Anthropic/Gemini.  The experiment is complete; it must not run.
+eval_protection.gate(
+    "score_gold_v4",
+    reason="retired module-level scorer over an unreceipted pre-B04 eval "
+           "set with Anthropic/Gemini egress; must not run.",
+)
 
 GOLD_CSV = ROOT / "data/gold_transactions_v4_slm_volume.csv"
 MODEL_IDS = {

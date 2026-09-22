@@ -13,6 +13,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import build_tuning_dataset as builder  # noqa: E402
 import eval_protection  # noqa: E402
+import raylo_txncat.benchmark_enforcement as _enforcement_mod  # noqa: E402
 import training_membership as membership_module  # noqa: E402
 from build_tuning_dataset import build_linked_tier_b_query, tier_b_role  # noqa: E402
 from training_membership import (  # noqa: E402
@@ -465,9 +466,30 @@ def test_tier_b_fetch_receipt_binds_eval_lookup_and_result(tmp_path, monkeypatch
         ],
     )
     # The strict fetch receipt binds the pinned release: pin the synthetic
-    # membership through PINNED_BINDING exactly as the real adapter does.
+    # membership through PINNED_BINDING/PINNED_RELEASE exactly as the real
+    # adapter does, and stand in an ephemeral Ed25519 pair for the receipt key.
     import hashlib as _hashlib
 
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import (
+        Ed25519PrivateKey,
+    )
+    from cryptography.hazmat.primitives.serialization import (
+        Encoding,
+        NoEncryption,
+        PrivateFormat,
+        PublicFormat,
+    )
+
+    key = Ed25519PrivateKey.generate()
+    monkeypatch.setenv(
+        "B04_RECEIPT_SIGNING_KEY",
+        key.private_bytes(Encoding.Raw, PrivateFormat.Raw, NoEncryption()).hex(),
+    )
+    monkeypatch.setattr(
+        _enforcement_mod,
+        "RECEIPT_PUBLIC_KEY_HEX",
+        key.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw).hex(),
+    )
     monkeypatch.setattr(
         eval_protection,
         "PINNED_BINDING",
@@ -477,6 +499,11 @@ def test_tier_b_fetch_receipt_binds_eval_lookup_and_result(tmp_path, monkeypatch
             "publication_sha256": "c" * 64,
             "publication_file_sha256": "d" * 64,
         },
+    )
+    monkeypatch.setattr(
+        _enforcement_mod,
+        "PINNED_RELEASE",
+        _enforcement_mod.ReleaseBinding(**eval_protection.PINNED_BINDING),
     )
     protection = builder.load_eval_protection([lookup])
     data_path = tmp_path / "txns.json"
@@ -495,6 +522,11 @@ def test_tier_b_fetch_receipt_binds_eval_lookup_and_result(tmp_path, monkeypatch
 
     receipt = json.loads(receipt_path.read_text())
     receipt["eval_membership_inputs"] = [{"sha256": "not-a-hash", "rows": -1}]
+    # Re-sign with the ephemeral key so field-level validation (not the
+    # signature check) is what must fire.
+    receipt["signature"] = _enforcement_mod._sign_fields(
+        {k: v for k, v in receipt.items() if k != "signature"}
+    )
     receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
     with pytest.raises(PermissionError, match="not bound to the protected release"):
         builder.read_verified_tier_b_fetch(

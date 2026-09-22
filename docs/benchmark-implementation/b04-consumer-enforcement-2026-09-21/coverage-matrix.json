@@ -738,10 +738,26 @@
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
-      "consumer": "gating_experiment",
+      "consumer": "gating_experiment.fetch_ground_truth",
+      "kind": "labelling",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: merchant-aggregate egress without per-row identity; retired experiment",
+      "evidence": "src/gating_experiment.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "gating_experiment.label_all",
+      "kind": "labelling",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: Anthropic egress over an unreceiptable ground-truth CSV; retired experiment",
+      "evidence": "src/gating_experiment.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "gating_experiment.run",
       "kind": "evaluation_reader",
       "enforcement": "bound_read",
-      "boundary": "crosswalk/rules helpers over committed artifacts",
+      "boundary": "reads committed experiment outputs only",
       "evidence": "src/gating_experiment.py"
     },
     {
@@ -866,10 +882,10 @@
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
-      "consumer": "score_frontier_vs_classifier",
-      "kind": "evaluation_reader",
-      "enforcement": "bound_read",
-      "boundary": "reads committed eval CSVs; refuse_confirmation_eval blocks locked sets",
+      "consumer": "score_frontier_vs_classifier.main",
+      "kind": "labelling",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: reads unreceiptable pre-B04 eval CSVs and egresses narratives to Gemini/Anthropic; retired scorer",
       "evidence": "src/score_frontier_vs_classifier.py"
     },
     {

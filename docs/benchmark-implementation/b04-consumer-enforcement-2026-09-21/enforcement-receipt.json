@@ -7,7 +7,7 @@
     "publication_sha256": "2b3c2f6443c99f30272f50075b2f7cf4647b04fb5ccdf1926467a24d3d4e8436",
     "publication_file_sha256": "eaf5a8bba13a60e007fa7d92c9df8729c80e7e7b13a8b830c4c0642458c44f22"
   },
-  "matrix_sha256": "affb7a7b4d98b2daebf8ee5aec98e9369c1e44e1b1993aa8c990033707af821c",
+  "matrix_sha256": "5177f983bd038e13598a8677e7c30f82a5e7c3308b94211082c1308a4d23e2a8",
   "checks": [
     "protected_exact_event_exclusion",
     "connected_account_group_exclusion",
@@ -22,6 +22,8 @@
     "changed_fetch_data_rejection",
     "changed_fetch_receipt_rejection",
     "fabricated_minimal_fetch_receipt_rejection",
+    "unsigned_or_forged_receipt_signature_rejection",
+    "forged_guard_token_rejection",
     "caller_supplied_release_binding_rejection",
     "artifact_digest_drift_rejection",
     "relabelled_dataset_rejection",
@@ -33,13 +35,14 @@
     "fit_boundary_requires_verified_export",
     "promotion_requires_bound_receipts",
     "promotion_requires_complete_input_coverage",
-    "bundle_provenance_uncovered_input_rejection",
+    "provenance_training_inputs_exact_set_equality",
     "renamed_locked_confirmation_set_refusal",
     "qwen_lora_launchers_terminal_gate",
     "gated_consumers_raise_before_io"
   ],
   "limitations": [
     "Supported paths: Gemini/Sonnet for labelling egress only; the winning transformer is the sole TxCat-1 categorisation model trained and promoted. All Qwen LoRA launchers are retired behind terminal gates and are excluded from the enforced consumer count.",
+    "Receipts and guard tokens are Ed25519-signed: issuance requires the private key held outside Git (B04_RECEIPT_SIGNING_KEY[_FILE]); verification uses only the pinned public key.  A hand-written receipt or a caller-constructed GuardResult cannot pass.",
     "Prospective protection only: historical non-use of the pilot rows is not certified.",
     "Unbound pre-B04 artifacts (existing tuning_*_topup.csv, production_labels_*.csv, distill/feature parquets, gold CSVs) carry no receipts; consumers of them fail closed until a guarded rebuild emits receipts.",
     "experiment3/AIE-503 risk-refresh surface is gated off pending a guarded feature-store rebuild.",

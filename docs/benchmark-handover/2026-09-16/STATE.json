@@ -708,15 +708,15 @@
     "authorizes_consumption": false,
     "canonical_module": "raylo_txncat.benchmark_enforcement",
     "consumer_counts": {
-      "bound_read": 15,
+      "bound_read": 14,
       "enforced": 68,
-      "gated_off": 41
+      "gated_off": 44
     },
-    "consumers_total": 124,
-    "matrix_sha256": "affb7a7b4d98b2daebf8ee5aec98e9369c1e44e1b1993aa8c990033707af821c",
+    "consumers_total": 126,
+    "matrix_sha256": "5177f983bd038e13598a8677e7c30f82a5e7c3308b94211082c1308a4d23e2a8",
     "milestone": "b04-consumer-enforcement-2026-09-21",
-    "receipt_sha256": "3ac4ff4768180e8dc45d066b84a1c2925eb7866bfecab7ac1891395936ef985d",
-    "recorded_utc": "2026-09-21T23:45:00Z",
+    "receipt_sha256": "f35d3a33358759af04470f5c144d0277f9d7424ffb4e6d7b862265da070b7ed5",
+    "recorded_utc": "2026-09-22T09:30:00Z",
     "release": {
       "membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068",
       "pilot_sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248",
@@ -725,7 +725,7 @@
       "schema_version": "benchmark-release-binding-v1"
     },
     "research_adapter": "src/eval_protection.py",
-    "review_remediation": "R1: strict fetch/artifact receipts (v2), guard-bound issuance, pinned promotion binding, gap-fill input chains, labelling-egress verification, identity-bearing fetch rebuilds, Qwen LoRA launchers terminally gated/retired",
+    "review_remediation": "R1: strict receipts, guard-bound issuance, pinned promotion binding, gap-fill chains, labelling-egress verification, identity rebuilds, Qwen retired. R2: Ed25519-signed fetch/artifact receipts and guard tokens (private key outside Git), explicit provenance.training_inputs exact-set equality, remaining retired egress paths terminally gated",
     "scope": "prospective only; historical non-use not certified",
     "supported_paths": "Gemini/Sonnet labelling egress only; winning transformer sole TxCat-1 model trained and promoted",
     "ticket": "AIE-513"

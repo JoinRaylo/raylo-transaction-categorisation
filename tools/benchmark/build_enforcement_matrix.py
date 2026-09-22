@@ -403,8 +403,14 @@ ENTRIES = [
     ("final_evaluation", "evaluation_reader", "bound_read",
      "reads committed eval CSVs; BQ egress is merchant-level GROUP BY aggregates only",
      "src/final_evaluation.py"),
-    ("gating_experiment", "evaluation_reader", "bound_read",
-     "crosswalk/rules helpers over committed artifacts",
+    ("gating_experiment.fetch_ground_truth", "labelling", "gated_off",
+     "terminal gate: merchant-aggregate egress without per-row identity; retired experiment",
+     "src/gating_experiment.py"),
+    ("gating_experiment.label_all", "labelling", "gated_off",
+     "terminal gate: Anthropic egress over an unreceiptable ground-truth CSV; retired experiment",
+     "src/gating_experiment.py"),
+    ("gating_experiment.run", "evaluation_reader", "bound_read",
+     "reads committed experiment outputs only",
      "src/gating_experiment.py"),
     ("label_provenance", "evaluation_reader", "bound_read",
      "provenance helpers only",
@@ -412,8 +418,8 @@ ENTRIES = [
     ("score_classifier_risk_categories", "evaluation_reader", "bound_read",
      "reads committed eval CSVs; refuse_confirmation_eval blocks locked sets",
      "src/score_classifier_risk_categories.py"),
-    ("score_frontier_vs_classifier", "evaluation_reader", "bound_read",
-     "reads committed eval CSVs; refuse_confirmation_eval blocks locked sets",
+    ("score_frontier_vs_classifier.main", "labelling", "gated_off",
+     "terminal gate: reads unreceiptable pre-B04 eval CSVs and egresses narratives to Gemini/Anthropic; retired scorer",
      "src/score_frontier_vs_classifier.py"),
     ("score_transformer", "evaluation_reader", "bound_read",
      "reads committed eval CSVs; refuse_confirmation_eval blocks locked sets",
@@ -441,6 +447,8 @@ CHECKS = [
     "changed_fetch_data_rejection",
     "changed_fetch_receipt_rejection",
     "fabricated_minimal_fetch_receipt_rejection",
+    "unsigned_or_forged_receipt_signature_rejection",
+    "forged_guard_token_rejection",
     "caller_supplied_release_binding_rejection",
     "artifact_digest_drift_rejection",
     "relabelled_dataset_rejection",
@@ -452,7 +460,7 @@ CHECKS = [
     "fit_boundary_requires_verified_export",
     "promotion_requires_bound_receipts",
     "promotion_requires_complete_input_coverage",
-    "bundle_provenance_uncovered_input_rejection",
+    "provenance_training_inputs_exact_set_equality",
     "renamed_locked_confirmation_set_refusal",
     "qwen_lora_launchers_terminal_gate",
     "gated_consumers_raise_before_io",
@@ -463,6 +471,10 @@ LIMITATIONS = [
     "transformer is the sole TxCat-1 categorisation model trained and "
     "promoted. All Qwen LoRA launchers are retired behind terminal gates and "
     "are excluded from the enforced consumer count.",
+    "Receipts and guard tokens are Ed25519-signed: issuance requires the "
+    "private key held outside Git (B04_RECEIPT_SIGNING_KEY[_FILE]); "
+    "verification uses only the pinned public key.  A hand-written receipt "
+    "or a caller-constructed GuardResult cannot pass.",
     "Prospective protection only: historical non-use of the pilot rows is not certified.",
     "Unbound pre-B04 artifacts (existing tuning_*_topup.csv, production_labels_*.csv, "
     "distill/feature parquets, gold CSVs) carry no receipts; consumers of them fail "

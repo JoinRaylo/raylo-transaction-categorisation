@@ -39,6 +39,30 @@ def _member(account: str, txn: str, customer: str, view: str = "representative")
     )
 
 
+@pytest.fixture(autouse=True)
+def receipt_signing(monkeypatch):
+    """Ephemeral Ed25519 pair standing in for the pinned receipt key."""
+
+    cryptography = pytest.importorskip("cryptography")
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import (
+        Ed25519PrivateKey,
+    )
+    from cryptography.hazmat.primitives.serialization import (
+        Encoding,
+        NoEncryption,
+        PrivateFormat,
+        PublicFormat,
+    )
+
+    key = Ed25519PrivateKey.generate()
+    seed = key.private_bytes(Encoding.Raw, PrivateFormat.Raw, NoEncryption())
+    public = key.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)
+    monkeypatch.setenv("B04_RECEIPT_SIGNING_KEY", seed.hex())
+    enforcement = _enforcement_or_skip()
+    monkeypatch.setattr(enforcement, "RECEIPT_PUBLIC_KEY_HEX", public.hex())
+    return key
+
+
 @pytest.fixture
 def synthetic_release(tmp_path, monkeypatch):
     """A fabricated membership+publication pair pinned through PINNED_BINDING."""
@@ -207,8 +231,8 @@ def test_verify_tuning_export_fails_closed(tmp_path):
 
 
 def _valid_fetch_receipt():
-    return {
-        "schema_version": "tuning-tier-b-fetch-receipt-v1",
+    receipt = {
+        "schema_version": "tuning-tier-b-fetch-receipt-v2",
         "anonymous_id_recovery": False,
         "source_kind": "customer_linked_plaid_materialized",
         "protected_release": {
@@ -221,6 +245,9 @@ def _valid_fetch_receipt():
         "result_sha256": "a" * 64,
         "rows": 3,
     }
+    enforcement = _enforcement_or_skip()
+    receipt["signature"] = enforcement._sign_fields(receipt)
+    return receipt
 
 
 def test_verify_fetch_receipt_binding(synthetic_release):
@@ -231,7 +258,7 @@ def test_verify_fetch_receipt_binding(synthetic_release):
     )
     # A minimal fabricated receipt — schema + membership digest only — fails.
     minimal = {
-        "schema_version": "tuning-tier-b-fetch-receipt-v1",
+        "schema_version": "tuning-tier-b-fetch-receipt-v2",
         "anonymous_id_recovery": False,
         "eval_membership_inputs": [
             {"sha256": eval_protection.PINNED_BINDING["membership_sha256"]}
@@ -302,6 +329,12 @@ GATED_CALLS = [
     ("ml_baseline", "fetch_train", ()),
     ("rent_iv_analysis", "fetch", ()),
     ("build_credit_tranche", "fetch_distil", ()),
+    # Retired narrative-egress paths: inputs are unreceiptable pre-B04
+    # artifacts, so these must terminate before any read or API call.
+    ("build_tail_eval", "label", ("sonnet",)),
+    ("gating_experiment", "fetch_ground_truth", ()),
+    ("gating_experiment", "label_all", ("sonnet",)),
+    ("score_frontier_vs_classifier", "main", ()),
 ]
 
 
@@ -454,3 +487,37 @@ def test_locked_confirmation_set_refusal(tmp_path):
     ):
         with pytest.raises(SystemExit, match="Renaming does not unlock"):
             eval_sets.refuse_confirmation_eval(renamed)
+
+
+def test_score_gold_v4_module_gate():
+    """The retired v4 scorer must terminate at import, before any data read."""
+
+    pytest.importorskip("pandas")
+    with pytest.raises(RuntimeError, match="B04 gated off"):
+        _import("score_gold_v4")
+
+
+@pytest.mark.parametrize(
+    "tool",
+    [
+        "annotation_pilot",
+        "adjudicate_pilot_opus",
+        "recover_gemini_annotation_batch",
+    ],
+)
+def test_frozen_release_producer_tools_gated(tool):
+    """The frozen pilot's annotation producers must not re-egress narratives."""
+
+    import importlib.util
+
+    sys.path.insert(0, str(ROOT / "tools" / "benchmark"))
+    try:
+        spec = importlib.util.spec_from_file_location(
+            tool, ROOT / "tools" / "benchmark" / f"{tool}.py"
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with pytest.raises(RuntimeError, match="B04 gated off"):
+            module.main()
+    finally:
+        sys.path.remove(str(ROOT / "tools" / "benchmark"))

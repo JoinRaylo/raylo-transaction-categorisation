@@ -1218,6 +1218,18 @@ def _collection_state(
 
 
 def main():
+    # B04 RETIRED — terminal gate.  This tool produced the now-frozen AIE-512
+    # pilot annotation stream; re-running it would re-egress protected
+    # benchmark narratives to a model API, so it must not run.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+    import eval_protection  # noqa: E402
+
+    eval_protection.gate(
+        "annotation_pilot.main",
+        reason="the pilot release is frozen; re-running this producer "
+               "would re-egress protected narratives to a model API. "
+               "Retired — do not run.",
+    )
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--monorepo-root", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
