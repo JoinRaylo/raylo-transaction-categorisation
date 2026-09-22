@@ -786,5 +786,45 @@
     "scope": "prospective only; historical non-use not certified",
     "supported_paths": "Gemini/Sonnet labelling egress only; winning transformer sole TxCat-1 model trained and promoted",
     "ticket": "AIE-513"
+  },
+  "g2_candidate_read_record": {
+    "artifact": "docs/benchmark-implementation/g2-candidate-read-2026-09-22/",
+    "authorizes_consumption": false,
+    "candidate_frame": {
+      "job_id": "txncat_frame_b1873af1-f3f9-475e-802e-7781707c97f0",
+      "result_rows": 10000,
+      "result_sha256": "746ff97680ee623732b0b679b9bec4997eb2ff66c0807833d3157942be4c6319",
+      "bytes_billed": 11686379520,
+      "source_metadata_drift": false
+    },
+    "candidate_lineage": {
+      "job_id": "txncat_lineage_69ea8c9e-1780-49dd-8e17-07a7134e6446",
+      "result_rows": 11259,
+      "result_sha256": "b16a7b21f51f22f1e99eb959c56633b0ac1676d74c15c4dc3fa88e990a118c04",
+      "bytes_billed": 10474225664,
+      "lineage_events": 10000
+    },
+    "frame_profile": {
+      "baseline_tier_counts": {
+        "T1": 17,
+        "T2": 121,
+        "T4": 4579,
+        "T5": 232,
+        "T6": 5051
+      },
+      "history_flags_all_false": true,
+      "pilot_event_overlap_rows": 0,
+      "quarantined_pending_history": 10000,
+      "rows_reserved_or_labelled": 0
+    },
+    "milestone": "g2-candidate-read-2026-09-22",
+    "phase_ledger_sha256": "35303e1cdf912cc3f65add68e6830f8f2500b633fb3b4f2359d8ded4da3a53df",
+    "phase_state": "candidate-read-authorised",
+    "rare_leaf_specification_sha256": "d1d95878b538da77376ee6f4aa05aee374cba7ab96db6680f39154d2a226d8dd",
+    "receipt_chain_head_sha256": "00e6d63769ba08e7ea424f573f7aebd704a8394030c97ee13f711b61353846ed",
+    "recorded_utc": "2026-09-22T18:10:00Z",
+    "scope": "bounded private candidate read and planning profile only; no admission, reservation, annotation, release, training or scoring authorized",
+    "ticket": "AIE-510",
+    "verification_sha256": "ce5a5006ac7da48d055ecc6f491762519d2b5dc970e06363981ad5aa7b0792cf"
   }
 }

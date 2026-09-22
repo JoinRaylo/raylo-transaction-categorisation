@@ -1,0 +1,57 @@
+{
+  "schema_version": "g2-candidate-read-scope-v1",
+  "authorizes_consumption": false,
+  "gate": "candidate-read-authorised",
+  "approved_by": "carlos",
+  "captured_at": "2026-09-22",
+  "approval_evidence": "AIE-510 review thread: 'proceed to the G2 candidate read for the 1,500-row expansion, followed by the rare-leaf supplement spec freeze' (2026-09-22).",
+  "scope_contract": {
+    "source_kind": "customer_linked_plaid_materialized",
+    "source_table": "raylo-production.dbt_production.intermediate_credit_plaid_transactions",
+    "link_rule": "assessment_to_one_checkout_to_one_user_to_one_customer_record",
+    "anonymous_id_recovery": false
+  },
+  "permitted_actions": [
+    "one bounded hash-ranked SELECT over the linked pool producing the private candidate frame",
+    "one bounded candidate-lineage SELECT over plaid history for the drawn keys",
+    "local aggregate profiling against the pinned exposure index, inventory, runtime and pilot membership",
+    "private artifact writes under the protected location only"
+  ],
+  "forbidden_actions": [
+    "benchmark reservation or admission",
+    "annotation, label import or adjudication",
+    "release, training, tuning, model selection, promotion or locked-set scoring",
+    "anonymous-id recovery or any link repair",
+    "cloud mutation of any kind",
+    "printing identifiers or narratives to shared logs"
+  ],
+  "bounds": {
+    "max_candidate_rows": 10000,
+    "max_lineage_rows": 500000,
+    "maximum_bytes_billed_per_query": 20000000000,
+    "seed": "g2-candidate-frame-2026-09-22-v1",
+    "candidate_limit": 10000
+  },
+  "snapshot_method": [
+    "dry_run_select_validation_before_execution",
+    "source_table_metadata_captured_before_and_after",
+    "executed_receipt_binds_job_id_bytes_and_result_sha256",
+    "exclusive_create_private_outputs_mode_0600_dir_0700"
+  ],
+  "protected_artifact_location": "~/.local/share/raylo-txncat/benchmark-expansion-2026-09-22/",
+  "access_policy": "raw identifiers and narratives never leave the private store; only sha256 digests, aggregate counts and opaque keyed artifacts may be committed",
+  "tools": {
+    "frame_extract_sql_sha256": "9102edfc38dd60f0daa30c4e67815d88816c7639263f869b93d28311524c6179",
+    "frame_extract_runner_sha256": "f623de0b9effefd808fd053bb4d3e5896928ecd736c37b066465f0c1a969babe",
+    "frame_profiler_sha256": "d5a8ef20ceac0c7807ccfc0f63568b9888736359a420f4cf76bc18c69e994c54",
+    "lineage_sql_sha256": "d610ec954cf57ce98d3030b318e5844df405592174bd7da50c0a045c43b14a13",
+    "lineage_runner_sha256": "3d0671eed45df48be724bf026d17ea7cc6980f2486813e8b1400c30b6cbd89ee"
+  },
+  "stop_conditions": [
+    "byte_or_row_budget_exceeded",
+    "source_metadata_drift_between_before_and_after",
+    "identifier_or_narrative_leakage_outside_private_store",
+    "scope_contract_violation",
+    "unresolved_or_ambiguous_link_row_present"
+  ]
+}

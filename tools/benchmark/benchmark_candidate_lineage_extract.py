@@ -55,6 +55,12 @@ EXPECTED_HISTORY_FLAGS = frozenset(
         "legacy_index_complete",
     }
 )
+ACCEPTED_CANDIDATE_SCHEMAS = frozenset(
+    {"benchmark-candidate-extract-v1", "benchmark-candidate-frame-extract-v1"}
+)
+ACCEPTED_PROFILE_SCHEMAS = frozenset(
+    {"benchmark-admission-profile-v1", "benchmark-admission-profile-v2"}
+)
 
 
 def digest(path: Path) -> str:
@@ -73,7 +79,7 @@ def _load_candidates(directory: Path) -> tuple[dict[str, Any], list[dict[str, An
     receipt = _load_json(directory / "receipt.json")
     candidate_path = directory / "candidates.jsonl"
     if (
-        receipt.get("schema_version") != "benchmark-candidate-extract-v1"
+        receipt.get("schema_version") not in ACCEPTED_CANDIDATE_SCHEMAS
         or receipt.get("project") != PROJECT
         or receipt.get("location") != LOCATION
         or receipt.get("statement_type") != "SELECT"
@@ -111,7 +117,7 @@ def _validate_profile(profile_path: Path, candidate_receipt: dict[str, Any]) -> 
     profile = _load_json(profile_path)
     history_flags = profile.get("history_flags")
     if (
-        profile.get("schema_version") != "benchmark-admission-profile-v1"
+        profile.get("schema_version") not in ACCEPTED_PROFILE_SCHEMAS
         or profile.get("source_snapshot_sha256")
         != candidate_receipt.get("result_sha256")
         or profile.get("authorizes_consumption") is not False
