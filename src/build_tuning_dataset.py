@@ -314,13 +314,39 @@ def _norm(s):
     return (s or "").strip().lower()
 
 
-def load_tier_a():
+def _canonical_protection(args):
+    """The pinned release's ProtectionSet from args, else the environment."""
+
+    enforcement = eval_protection._enforcement(os.environ.get("RAYLO_TXNCAT_SRC"))
+    if args is not None:
+        protection, _publication = eval_protection.load_release(args)
+        return protection
+    return enforcement and eval_protection._env_protection(enforcement)
+
+
+def _source_membership(source, row, provider=None):
+    """Exact Plaid membership when the source row carries linkage identity.
+
+    Identity-bearing rebuilds of the Tier-A/top-up CSVs produce exact
+    memberships; identity-less legacy rows are honestly ``unavailable`` and
+    their manifest rows resolve only through verified input provenance.
+    """
+
+    if all(
+        isinstance(row.get(key), str) and row[key].strip()
+        for key in ("account_id", "transaction_id", "customer_id")
+    ):
+        return exact_plaid_membership(source=source, row=row)
+    return unavailable_membership(source=source, row=row, provider=provider)
+
+
+def load_tier_a(protection=None):
     """All unified gold rows, keyed by normalised merchant."""
     if not GOLD_TXN_FILE.exists():
         sys.exit(f"Missing {GOLD_TXN_FILE} — run src/build_gold_transactions_unified.py")
     # B04: the unified gold file is a fetched artifact; it may only seed
     # Tier-A training rows when its bound receipt still verifies.
-    receipt = eval_protection.verify_artifact(GOLD_TXN_FILE)
+    receipt = eval_protection.verify_artifact(GOLD_TXN_FILE, protection=protection)
     by_merchant = defaultdict(list)
     for r in csv.DictReader(open(GOLD_TXN_FILE)):
         by_merchant[_norm(r["merchant_raw"])].append(r)
@@ -496,16 +522,17 @@ def fetch(cap_per_merchant, protected_memberships, args=None):
     if args is not None:
         eval_protection.assert_bound(protected_memberships, args)
     protection = load_eval_protection(protected_memberships)
+    canonical_protection = _canonical_protection(args)
     _, _, leaves, _, _ = load_crosswalk()
     excluded_merchants = set()
     for gf in GOLD_V1_FILES:
         excluded_merchants |= {_norm(r["merchant"]) for r in csv.DictReader(open(gf))}
-    tier_a, _tier_a_receipt = load_tier_a()
+    tier_a, _tier_a_receipt = load_tier_a(protection=canonical_protection)
     excluded_merchants |= set(tier_a)  # Tier A supersedes Tier B entirely for any overlapping merchant
 
     # B04: the merged tranche-4 label file is a fetched artifact; it may only
     # drive Tier-B selection when its bound receipt still verifies.
-    eval_protection.verify_artifact(LABELS_SOURCE)
+    eval_protection.verify_artifact(LABELS_SOURCE, protection=canonical_protection)
     rows = list(csv.DictReader(open(LABELS_SOURCE)))
     eligible = []
     for r in rows:
@@ -558,6 +585,7 @@ def _export_manifest_entry(example, source_rows):
     """
 
     membership = example.membership
+    source_row = source_rows.get(membership.source_row_sha256)
     identity = None
     if membership.identity_status == "exact":
         identity = {
@@ -566,11 +594,14 @@ def _export_manifest_entry(example, source_rows):
             "transaction_id": membership.transaction_id,
             "customer_id": membership.customer_id,
         }
+    elif source_row is not None:
+        # Propagate the source row's linkage identity — the export row
+        # carries the exact identity of the verified input it derives from.
+        identity = eval_protection.row_identity(source_row)
     provenance = {
         "source": membership.source,
         "identity_status": membership.identity_status,
     }
-    source_row = source_rows.get(membership.source_row_sha256)
     if source_row is not None:
         enforcement = eval_protection._enforcement(
             os.environ.get("RAYLO_TXNCAT_SRC")
@@ -605,6 +636,8 @@ def build(protected_memberships, args=None):
             membership=membership,
         )
 
+    canonical_protection = _canonical_protection(args)
+
     # ---------- Tier B: production_labels, merchant-level split (unchanged mechanism) ----------
     txns = read_verified_tier_b_fetch(protected_memberships, args=args)
     rng = random.Random(SEED)
@@ -628,7 +661,9 @@ def build(protected_memberships, args=None):
         )
 
     train, val = [], []
-    tier_a_preview, _tier_a_preview_receipt = load_tier_a()
+    tier_a_preview, _tier_a_preview_receipt = load_tier_a(
+        protection=canonical_protection
+    )
     # 2026-09-02: the risk-category gold set was described as "held out" but
     # 77.5% of its rows shared a merchant with Tier B (bookmakers/lenders are
     # tranche-4 merchants too), so the 86.1% risk bar was in-sample. Risk-gold
@@ -650,7 +685,7 @@ def build(protected_memberships, args=None):
           file=sys.stderr)
 
     # ---------- Tier A: unified gold. Holdout merchants frozen from SLM_EVAL_CSV ----------
-    tier_a, tier_a_receipt = load_tier_a()
+    tier_a, tier_a_receipt = load_tier_a(protection=canonical_protection)
     holdout_merchants = frozen_holdout_merchants()
     conflicting = {m for m, rows in tier_a.items() if len({r["gold_leaf"] for r in rows}) > 1}
 
@@ -671,9 +706,8 @@ def build(protected_memberships, args=None):
             # "amount (absolute value, GBP)" and direction carries the sign meaning separately.
             ex = to_example(r["merchant_raw"], r["description_raw"], abs(float(r["amount"])),
                              r["direction"], r["gold_leaf"],
-                             unavailable_membership(
-                                 source="tier_a_gold_transactions",
-                                 row=r,
+                             _source_membership(
+                                 "tier_a_gold_transactions", r,
                                  provider=r.get("provider"),
                              ))
             tier_a_train_examples.extend([ex] * reps)
@@ -691,7 +725,7 @@ def build(protected_memberships, args=None):
     # Files that predate the guard have no receipt and fail closed — refetch
     # them under the guard, re-review, then rebuild.
     topup_receipts = [
-        eval_protection.verify_artifact(_topup)
+        eval_protection.verify_artifact(_topup, protection=canonical_protection)
         for _topup in (TOPUP_FILE, CREDIT_TOPUP_FILE, RISK_TOPUP_FILE)
         if _topup.exists()
     ]
@@ -708,10 +742,7 @@ def build(protected_memberships, args=None):
                 continue
             ex = to_example(r["merchant_raw"], r["description_raw"], abs(float(r["amount"])),
                             r["direction"], r["gold_leaf"],
-                            unavailable_membership(
-                                source="tuning_leaf_topup",
-                                row=r,
-                            ))
+                            _source_membership("tuning_leaf_topup", r))
             topup_examples.append(ex)
             if r["gold_leaf"] in starved_topup:
                 starved_topup[r["gold_leaf"]].append(ex)
@@ -731,10 +762,10 @@ def build(protected_memberships, args=None):
                 abs(float(r["amount"])),
                 r["direction"],
                 r["gold_leaf"],
-                unavailable_membership(
-                    source=("tuning_credit_topup" if _f == CREDIT_TOPUP_FILE
-                            else "tuning_risk_topup"),
-                    row=r,
+                _source_membership(
+                    ("tuning_credit_topup" if _f == CREDIT_TOPUP_FILE
+                     else "tuning_risk_topup"),
+                    r,
                     provider=r.get("provider"),
                 ),
             ))

@@ -536,7 +536,6 @@ def apply_review(path=None):
     model tier. Re-runnable: after a re-gate, re-apply every archived
     workbook (data/production_review_*_completed.xlsx) plus the current one."""
     from openpyxl import load_workbook
-    from collections import Counter
 
     _, _, _, gen_of, _ = load_crosswalk()
     if path is None:
@@ -580,6 +579,7 @@ def apply_review(path=None):
     # input chain.
     labels_receipt = eval_protection.verify_artifact(LABELS_CSV)
     rows = list(csv.DictReader(open(LABELS_CSV)))
+    source_digests = [eval_protection.row_content_sha256(r) for r in rows]
     applied = 0
     for r in rows:
         if r["merchant"] in resolutions and r["tier"] == "needs_review":
@@ -590,12 +590,21 @@ def apply_review(path=None):
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         w.writeheader()
         w.writerows(rows)
+    # Merchant-level label dictionary: rows carry no event identity, so the
+    # artifact is honestly authoring-purpose; each manifest row still binds
+    # to the verified input row it was rewritten from.
     eval_protection.write_artifact_receipt(
         LABELS_CSV, consumer="production_labelling.apply_review",
-        purpose="supervised_training", input_receipts=[labels_receipt],
+        purpose="dictionary_candidates", input_receipts=[labels_receipt],
         manifest_identities=[
-            {"identity": None, "provenance": {"source": "labels_csv_review"}}
-            for _ in rows
+            {
+                "identity": None,
+                "provenance": {
+                    "source": "labels_csv_review",
+                    "source_row_sha256": digest,
+                },
+            }
+            for digest in source_digests
         ],
     )
 

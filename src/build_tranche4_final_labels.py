@@ -136,9 +136,12 @@ def main():
         w = csv.DictWriter(f, fieldnames=fields)
         w.writeheader()
         w.writerows(out)
+    # Merchant-level label dictionary: one row per merchant string carries no
+    # event identity, so the artifact is honestly authoring-purpose — the
+    # manifest still binds each row to its verified input row digest.
     eval_protection.write_artifact_receipt(
         LABELS_OUT, consumer="build_tranche4_final_labels",
-        purpose="supervised_training", input_receipts=[labels_in_receipt],
+        purpose="dictionary_candidates", input_receipts=[labels_in_receipt],
         manifest_identities=[
             {
                 "identity": None,

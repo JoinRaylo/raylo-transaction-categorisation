@@ -108,7 +108,9 @@ def main():
         out.append(row_out(source, r, holdout_m, native, notes))
         manifest_rows.append(
             {
-                "identity": None,
+                "identity": eval_protection.row_identity(
+                    source_row if source_row is not None else r
+                ),
                 "provenance": {
                     "source": source,
                     "source_row_sha256": eval_protection.row_content_sha256(

@@ -5,3 +5,5 @@ outputs/*
 __pycache__/
 *.pyc
 .DS_Store
+*.b04-manifest.json
+*.b04-receipt.json

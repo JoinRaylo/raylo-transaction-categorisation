@@ -191,6 +191,26 @@ def row_content_sha256(row, *, txncat_src=None):
     return enforcement.sha256(enforcement.canonical_json(dict(row)))
 
 
+def row_identity(row):
+    """The row's exact Plaid linkage identity as a manifest claim, or None.
+
+    Producers that transform guarded rows propagate the identity they
+    received; a row without the linkage columns yields ``None`` — it cannot
+    claim an identity it does not carry.
+    """
+
+    provider = str(row.get("provider") or "plaid")
+    if provider != "plaid":
+        return None
+    ids = {
+        key: row.get(key)
+        for key in ("account_id", "transaction_id", "customer_id")
+    }
+    if not all(isinstance(value, str) and value.strip() for value in ids.values()):
+        return None
+    return {"provider": "plaid", **ids}
+
+
 def verify_fetch_file(path, receipt, *, txncat_src=None):
     """Re-run exclusion over a fetched file against its signed receipt.
 
@@ -280,7 +300,8 @@ def _env_protection(enforcement):
 
 
 def verify_artifact(
-    path, *, expected_consumer=None, expected_purpose=None, txncat_src=None
+    path, *, expected_consumer=None, expected_purpose=None, txncat_src=None,
+    protection=None,
 ):
     """Fail closed unless ``path`` carries a bound receipt matching its bytes.
 
@@ -308,7 +329,9 @@ def verify_artifact(
         artifact_path=path,
         expected_consumer=expected_consumer,
         expected_purpose=expected_purpose,
-        protection=_env_protection(enforcement),
+        protection=(
+            protection if protection is not None else _env_protection(enforcement)
+        ),
     )
     return receipt
 
@@ -339,5 +362,8 @@ def verify_tuning_export(*, txncat_src=None, out_dir=None):
 
     receipt = json.loads((out_dir / "tuning_txns_receipt.json").read_text())
     verify_fetch_receipt(receipt, txncat_src=txncat_src)
+    verify_fetch_file(
+        out_dir / "tuning_txns.json", receipt, txncat_src=txncat_src
+    )
     return coverage
 

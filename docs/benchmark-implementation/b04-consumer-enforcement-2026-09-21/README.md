@@ -80,16 +80,28 @@ The only approved protected release is pinned in `src/eval_protection.py`
   receipt, a stale release, digest drift (relabelled/changed artifacts), a
   renamed or substituted sidecar, or protected content inside an
   identity-bearing CSV.
-- **Row manifests.**  Artifacts without identity columns (CSV/JSONL/parquet
-  aggregates, the final tuning exports) must carry a bound
-  `b04-row-manifest-v1`: every row is pinned to the exact artifact byte
-  digest and a per-row content digest, so row order, contents and count
-  cannot drift.  Manifests may assert identities, carry per-row provenance
-  (`source_row_sha256`) resolvable only through the receipt's verified
-  input chain, or honestly mark rows `unresolved` — but an unresolved row
-  may not claim an input-row digest.  Authoring outputs
-  (`dictionary_candidates`, `rule_candidates`) are the only artifacts
-  exempt from row-level correlation.
+- **Row manifests and identity resolution.**  Artifacts without identity
+  columns (CSV/JSONL/parquet aggregates, the final tuning exports) must
+  carry a bound `b04-row-manifest-v1`: every row is pinned to the exact
+  artifact byte digest and a per-row content digest, so row order, contents
+  and count cannot drift.  Every row's *effective* identity is resolved
+  recursively — byte-level linkage columns first, then the manifest's
+  explicit identity claim, then `source_row_sha256` provenance through the
+  receipt's verified input chain — and a claim that contradicts the row
+  bytes or its resolved source row fails closed.  For non-authoring
+  purposes (`supervised_training`, `model_selection_validation`,
+  `distillation`, evaluation, risk) **zero unresolved rows are permitted**:
+  issuance refuses them, verification rejects a signed receipt over them,
+  the fit boundary rejects the export, and promotion rejects the bundle.
+  Authoring outputs (`dictionary_candidates`, `rule_candidates`) are the
+  only artifacts exempt — merchant-level label files that genuinely cannot
+  carry event identity are classified there, not as learning inputs.
+  Derived producers must propagate identity through this chain:
+  `append_t6_residual_topup` deterministically joins every reviewed row
+  back to its guarded raw fetch row and copies prior manifest entries
+  forward; `build_tuning_dataset` propagates exact identity into the
+  export manifests and prefers exact membership whenever a CSV row
+  carries linkage columns.
 - `.fit` boundaries call `verify_tuning_export` before any model consumes
   `tuning_train.jsonl` / `tuning_val.jsonl` — including the `mlx_lm.lora`
   shell scripts.  The supported transformer build emits signed v4 artifact
@@ -145,4 +157,8 @@ RAYLO_TXNCAT_SRC=<monorepo>/lib/raylo-txncat/src \
   between a fetched sample and its reviewed derivative.
 - Row manifests bind row bytes, order and declared provenance; rows whose
   source cannot be resolved through the verified input chain are marked
-  `unresolved` rather than silently trusted.
+  `unresolved` — and for every non-authoring purpose that is a hard failure
+  at issuance, verification, fit and promotion, not a tolerated gap.
+  Merchant-level label artifacts (no per-row event identity exists) are
+  classified `dictionary_candidates`/`rule_candidates`; they may seed
+  human-authored dictionaries only and never stand in as learning inputs.

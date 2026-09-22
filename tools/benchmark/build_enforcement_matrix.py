@@ -472,6 +472,14 @@ CHECKS = [
     "manifest_provenance_requires_verified_input_chain",
     "unsigned_final_export_coverage_substitution_rejection",
     "transformer_export_bound_receipt_chain",
+    "unresolved_manifest_row_issuance_rejection",
+    "unresolved_manifest_row_verification_rejection",
+    "unresolved_manifest_row_fit_rejection",
+    "unresolved_manifest_row_promotion_rejection",
+    "provenance_identity_resolution_through_verified_chain",
+    "manifest_identity_byte_contradiction_rejection",
+    "reviewed_row_to_raw_fetch_join_required",
+    "export_manifest_unresolved_rows_zero",
 ]
 
 LIMITATIONS = [
@@ -494,9 +502,12 @@ LIMITATIONS = [
     "cannot leak a protected event but cannot prove per-event exclusion either.",
     "Receipt verification binds artifact bytes; it does not attest the human review "
     "step between a fetched sample and its reviewed derivative.",
-    "Row manifests bind row bytes, order and declared provenance; rows whose source "
-    "cannot be resolved through the verified input chain are marked unresolved "
-    "rather than silently trusted.",
+    "Row manifests bind row bytes, order and declared provenance; effective "
+    "identity resolves recursively (row bytes, manifest claim, verified input "
+    "chain). For every non-authoring purpose an unresolved row is a hard "
+    "failure at issuance, verification, fit and promotion. Merchant-level "
+    "label artifacts that genuinely cannot carry event identity are "
+    "classified authoring-only and can never stand in as learning inputs.",
 ]
 
 
