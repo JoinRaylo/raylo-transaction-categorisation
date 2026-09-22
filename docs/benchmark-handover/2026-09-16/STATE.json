@@ -826,5 +826,64 @@
     "scope": "bounded private candidate read and planning profile only; no admission, reservation, annotation, release, training or scoring authorized",
     "ticket": "AIE-510",
     "verification_sha256": "ce5a5006ac7da48d055ecc6f491762519d2b5dc970e06363981ad5aa7b0792cf"
+  },
+  "g3_admission_design_record": {
+    "milestone": "g3-admission-design-2026-09-22",
+    "ticket": "AIE-510",
+    "artifact": "docs/benchmark-implementation/g3-admission-design-2026-09-22/",
+    "recorded_utc": "2026-09-22T23:45:00Z",
+    "authorizes_consumption": false,
+    "phase_state": "admission-authorised",
+    "phase_ledger_sha256": "d204404852363e7b64d6b842635e66eeb2e283934d2db954c216e4e0b4982367",
+    "verification_sha256": "02908598af5610118ac0539fecec890650c377a680f824f3f928b677c92becb0",
+    "scope": "bounded admission engineering only: evidence resolution, deterministic proposals, membership bundle; no admission, reservation, annotation, release, training or scoring authorized",
+    "evidence_resolution": {
+      "candidate_accounts_covered": 10000,
+      "transaction_id_collisions": 0,
+      "pending_pairs": 4213,
+      "unresolved_pending_pairs": 0,
+      "churn_accounts": 1,
+      "unresolved_link_accounts": 108,
+      "sibling_accounts": 8483,
+      "uncovered_siblings": 0,
+      "customer_account_pairs": 17293
+    },
+    "core_expansion": {
+      "selected": 1000,
+      "view_fills": {
+        "representative": 800,
+        "unseen_input": 150,
+        "unfamiliar_merchant": 50
+      },
+      "status": "shortfall",
+      "unmet": [
+        "min_route_rows:T1 17/25 available"
+      ]
+    },
+    "supplement": {
+      "pool_rows": 41099,
+      "roster_hit_rows": 2144,
+      "selected": 413,
+      "leaves_filled": 22,
+      "leaves_zero_hits": [
+        "account_misuse",
+        "balance_transfer_fee",
+        "clothing_maternity"
+      ],
+      "status": "shortfall",
+      "headline_denominator_inclusion": false
+    },
+    "membership_bundle": {
+      "manifest_sha256": "f710c9cf04b4b4d796eee5380173c354324c40745e879e9a1edfe0658bc344e7",
+      "manifest_entries": 1413,
+      "protected_events": 1913,
+      "private_membership_csv_sha256": "348337579823f2247e2e9616a98cc52488703509f15eb90e8cdcd9d177375b1e",
+      "enforcement_check": "load_protected_membership parses; check_member rejects member rows fail-closed"
+    },
+    "pending_human_gates": [
+      "declared_corpus_review",
+      "family_registry_review"
+    ],
+    "g4_boundary": "admission authority, managed reservation and consumer gate remain outside G3"
   }
 }
