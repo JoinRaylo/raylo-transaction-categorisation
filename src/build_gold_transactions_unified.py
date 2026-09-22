@@ -95,9 +95,10 @@ def main():
     holdout_m = holdout_merchants()
     v4_native, v4_notes = v4_native_map()
     out = []
+    manifest_rows = []
     seen = set()
 
-    def add(source, r, native, notes=""):
+    def add(source, r, native, notes="", source_row=None):
         k = (*_key(r), source)
         if k in seen:
             return
@@ -105,6 +106,17 @@ def main():
         if not r.get("gold_leaf"):
             return
         out.append(row_out(source, r, holdout_m, native, notes))
+        manifest_rows.append(
+            {
+                "identity": None,
+                "provenance": {
+                    "source": source,
+                    "source_row_sha256": eval_protection.row_content_sha256(
+                        source_row if source_row is not None else r
+                    ),
+                },
+            }
+        )
 
     for path, source in [
         (ROOT / "data" / "gold_transactions_v2.csv", "v2"),
@@ -118,8 +130,7 @@ def main():
 
     for r in csv.DictReader(open(ROOT / "data" / "gold_transactions_v4_slm_volume.csv")):
         k = _key(r)
-        r = {**r, "provider": "plaid"}
-        add("v4", r, v4_native.get(k, ""), v4_notes.get(k, ""))
+        add("v4", {**r, "provider": "plaid"}, v4_native.get(k, ""), v4_notes.get(k, ""), source_row=r)
 
     n_eval = sum(1 for r in out if r["role"] == "iter_eval")
     n_train = len(out) - n_eval
@@ -131,6 +142,7 @@ def main():
     eval_protection.write_artifact_receipt(
         OUT, consumer="build_gold_transactions_unified",
         purpose="model_selection_validation", input_receipts=input_receipts,
+        manifest_identities=manifest_rows,
     )
     print(f"Wrote {OUT}: {len(out)} rows ({n_train} train, {n_eval} iter_eval); "
           f"{len(holdout_m)} holdout merchants; v4 missing native={missing_v4}",

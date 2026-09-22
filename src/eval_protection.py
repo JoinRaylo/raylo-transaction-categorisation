@@ -184,6 +184,41 @@ def verify_fetch_receipt(receipt, *, txncat_src=None):
     )
 
 
+def row_content_sha256(row, *, txncat_src=None):
+    """Canonical per-row digest used by bound row manifests."""
+
+    enforcement = _enforcement(txncat_src)
+    return enforcement.sha256(enforcement.canonical_json(dict(row)))
+
+
+def verify_fetch_file(path, receipt, *, txncat_src=None):
+    """Re-run exclusion over a fetched file against its signed receipt.
+
+    The receipt's embedded guard token attests an exclusion run; this
+    proves the bytes on disk are exactly that run's retained output —
+    every row carries linkage identity, the sorted identity digest equals
+    the guard's retained set and no protected member survives.
+    """
+
+    import json
+
+    enforcement = _enforcement(txncat_src)
+    if isinstance(receipt, (str, pathlib.Path)):
+        receipt = json.loads(pathlib.Path(receipt).read_text(encoding="utf-8"))
+    protection = _env_protection(enforcement)
+    if protection is None:
+        raise RuntimeError(
+            "EVAL_MEMBERSHIP and EVAL_PUBLICATION must name the pinned release "
+            "to re-run exclusion over a fetched artifact"
+        )
+    enforcement.verify_fetch_file(
+        pathlib.Path(path),
+        receipt,
+        enforcement.ReleaseBinding(**PINNED_BINDING),
+        protection=protection,
+    )
+
+
 def gate(consumer: str, reason: str):
     """Hard block for a consumer that cannot satisfy the protected-release guard."""
 
@@ -191,7 +226,14 @@ def gate(consumer: str, reason: str):
 
 
 def write_artifact_receipt(
-    path, *, consumer: str, purpose: str, guard=None, input_receipts=(), txncat_src=None
+    path,
+    *,
+    consumer: str,
+    purpose: str,
+    guard=None,
+    input_receipts=(),
+    manifest_identities=None,
+    txncat_src=None,
 ):
     """Persist a release-bound receipt beside a guarded artifact.
 
@@ -199,7 +241,8 @@ def write_artifact_receipt(
     ``apply``/``apply_env``'s ``Guarded`` rows — or a non-empty
     ``input_receipts`` chain of already-verified receipts (derived merges).
     A file that neither passed the guard nor descends from verified inputs
-    cannot be receipted.
+    cannot be receipted.  ``manifest_identities`` binds per-row identity
+    claims to the artifact's exact rows, in order.
     """
 
     import json
@@ -214,6 +257,7 @@ def write_artifact_receipt(
         binding=binding,
         guard=guard,
         input_receipts=input_receipts,
+        manifest_identities=manifest_identities,
     )
     receipt_path = path.with_name(path.name + ".b04-receipt.json")
     receipt_path.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
@@ -270,16 +314,21 @@ def verify_artifact(
 
 
 def verify_tuning_export(*, txncat_src=None, out_dir=None):
-    """Fit boundary for the supervised export: membership export + fetch receipt.
+    """Fit boundary for the supervised export: bound receipts + manifests.
 
-    ``tuning_train.jsonl``/``tuning_val.jsonl`` may only be consumed when the
-    committed membership coverage verifies *and* the fetch receipt binds the
-    pinned protected release.  Anything else fails closed.
+    ``tuning_train.jsonl``/``tuning_val.jsonl`` may only be consumed when
+    their bound artifact receipts verify — each binds the exact bytes, a
+    per-row identity manifest and the complete verified input chain (tier-B
+    fetch, tier-A gold, top-ups).  The unsigned membership coverage is then
+    checked for internal consistency only; it is not the trust anchor, and
+    regenerating it cannot substitute for a missing or forged receipt.
     """
 
     from training_membership import verify_training_export
 
     out_dir = pathlib.Path(out_dir) if out_dir else pathlib.Path("outputs")
+    verify_artifact(out_dir / "tuning_train.jsonl", txncat_src=txncat_src)
+    verify_artifact(out_dir / "tuning_val.jsonl", txncat_src=txncat_src)
     coverage = verify_training_export(
         train_path=out_dir / "tuning_train.jsonl",
         selection_path=out_dir / "tuning_val.jsonl",

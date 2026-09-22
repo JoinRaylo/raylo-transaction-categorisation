@@ -102,9 +102,23 @@ def main():
         w.writeheader()
         w.writerows(existing)
         w.writerows(added)
+    manifest_rows = [
+        {
+            "identity": None,
+            "provenance": {
+                "source": "prior_final",
+                "source_row_sha256": eval_protection.row_content_sha256(r),
+            },
+        }
+        for r in existing
+    ] + [
+        {"identity": None, "provenance": {"source": "reviewed_t6_residual"}}
+        for _ in added
+    ]
     eval_protection.write_artifact_receipt(
         FINAL, consumer="append_t6_residual_topup",
         purpose="supervised_training", input_receipts=input_receipts,
+        manifest_identities=manifest_rows,
     )
     print(f"was {len(existing)}; added {len(added)}; now {len(existing) + len(added)}; "
           f"skipped {skipped}", file=sys.stderr)

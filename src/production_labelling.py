@@ -593,6 +593,10 @@ def apply_review(path=None):
     eval_protection.write_artifact_receipt(
         LABELS_CSV, consumer="production_labelling.apply_review",
         purpose="supervised_training", input_receipts=[labels_receipt],
+        manifest_identities=[
+            {"identity": None, "provenance": {"source": "labels_csv_review"}}
+            for _ in rows
+        ],
     )
 
     total_v = sum(int(r["plaid_n"]) for r in rows)

@@ -52,6 +52,7 @@ class SourceMembership:
     provider: Provider | None = None
     account_id: str | None = None
     transaction_id: str | None = None
+    customer_id: str | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.source, str) or not _SOURCE.fullmatch(self.source):
@@ -65,12 +66,12 @@ class SourceMembership:
         if self.provider not in {None, "plaid", "equifax"}:
             raise ValueError("unsupported provider")
 
-        identifiers = (self.account_id, self.transaction_id)
+        identifiers = (self.account_id, self.transaction_id, self.customer_id)
         if self.identity_status == "exact":
             if self.provider != "plaid":
                 raise ValueError("exact tuning identity must be customer-linked Plaid")
             if any(not isinstance(value, str) or not value.strip() for value in identifiers):
-                raise ValueError("exact identity requires account and transaction IDs")
+                raise ValueError("exact identity requires account, transaction and customer IDs")
         elif any(value is not None for value in identifiers):
             raise ValueError("unavailable identity cannot assert provider identifiers")
 
@@ -100,6 +101,7 @@ def exact_plaid_membership(*, source: str, row: Mapping[str, object]) -> SourceM
 
     account_id = row.get("account_id")
     transaction_id = row.get("transaction_id")
+    customer_id = row.get("customer_id")
     return SourceMembership(
         source=source,
         identity_status="exact",
@@ -107,6 +109,7 @@ def exact_plaid_membership(*, source: str, row: Mapping[str, object]) -> SourceM
         provider="plaid",
         account_id=account_id if isinstance(account_id, str) else None,
         transaction_id=transaction_id if isinstance(transaction_id, str) else None,
+        customer_id=customer_id if isinstance(customer_id, str) else None,
     )
 
 

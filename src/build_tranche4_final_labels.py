@@ -139,6 +139,16 @@ def main():
     eval_protection.write_artifact_receipt(
         LABELS_OUT, consumer="build_tranche4_final_labels",
         purpose="supervised_training", input_receipts=[labels_in_receipt],
+        manifest_identities=[
+            {
+                "identity": None,
+                "provenance": {
+                    "source": "production_labels_in",
+                    "source_row_sha256": eval_protection.row_content_sha256(r),
+                },
+            }
+            for r in labels
+        ],
     )
 
     good = DICTIONARY_ELIGIBLE_TIERS
