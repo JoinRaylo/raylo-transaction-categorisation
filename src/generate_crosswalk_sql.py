@@ -343,7 +343,7 @@ def t2_misc_leaf(merchant_expr, desc_expr):
         f"      WHEN {merchant_expr}='sky' AND REGEXP_CONTAINS({desc_expr}, r'sky\\s*protect|\\bdgi\\b.*protect|protect.*\\bdgi\\b') THEN 'insurance_other'",
         f"      WHEN {merchant_expr}='child benefits' AND r.direction='credit' AND REGEXP_CONTAINS({desc_expr}, r'dwp\\s*cms|dwpcms|cmsgb2012|child\\s+maintenance') THEN 'income_other_unspecified'",
         f"      WHEN {merchant_expr}='asda' AND REGEXP_CONTAINS({desc_expr}, r'asda\\s*mobile') THEN 'mobile_phone_contract'",
-        f"      WHEN {merchant_expr}='asda' AND REGEXP_CONTAINS({desc_expr}, r'asda\\s*living') THEN 'home_accessories'",
+        f"      WHEN {merchant_expr}='asda' AND REGEXP_CONTAINS({desc_expr}, r'asda\\s*living') THEN 'department_store'",
         f"      WHEN {merchant_expr}='vodafone' AND r.direction='debit' AND REGEXP_CONTAINS({desc_expr}, r'device') THEN 'mobile_handset'",
         f"      WHEN {merchant_expr}='amazon' AND r.direction='debit' AND REGEXP_CONTAINS({desc_expr}, r'prime\\s*video') THEN 'streaming'",
         f"      WHEN {merchant_expr}='bolt' AND REGEXP_CONTAINS({desc_expr}, r'stackblitz') THEN 'software'",
@@ -534,7 +534,8 @@ def match_t2(merchant, direction, description):
     if m == "asda" and re.search(r"asda\s*mobile", desc, flags=re.IGNORECASE):
         return "mobile_phone_contract", "T2_compound_asda_mobile"
     if m == "asda" and re.search(r"asda\s*living", desc, flags=re.IGNORECASE):
-        return "home_accessories", "T2_compound_asda_living"
+        # Carlos benchmark note 2026-09-23: Asda Living is a department-store format.
+        return "department_store", "T2_compound_asda_living"
     if m == "vodafone" and direction == "debit" and re.search(r"device", desc, flags=re.IGNORECASE):
         return "mobile_handset", "T2_compound_vodafone_device"
     if m == "amazon" and direction == "debit" and re.search(r"prime\s*video", desc, flags=re.IGNORECASE):

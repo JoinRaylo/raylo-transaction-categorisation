@@ -244,7 +244,7 @@ now tv,streaming,high,llm_proposed,approved,
 audible,streaming,high,llm_proposed,approved,
 prime,streaming,medium,llm_proposed,approved,Amazon Prime subscription - 161k txns
 apple app store,software,high,llm_proposed,approved,
-google play,software,high,llm_proposed,approved,
+google play,gaming_mobile,high,carlos_benchmark_review_2026-09-23,approved,Carlos 2026-09-23 benchmark ruling: Google Play Apps charges are mobile gaming spend (was software)
 google one,web_services,high,human_override_20260824,approved,Google One cloud storage
 rebtel,mobile_phone_contract,high,human_override_20260824,approved,Rebtel calling app
 bandoo,health_beauty_general,high,human_override_20260824,approved,Bandoo foot-detox retail
@@ -311,7 +311,7 @@ pets at home,pet_supplies,high,llm_proposed,approved,
 vets gen,veterinary,medium,llm_proposed,approved,veterinary practice
 animal friends insurance,insurance_pet,high,llm_proposed,approved,
 royal mail,delivery_courier,high,llm_proposed,approved,
-post office,government_services,medium,llm_proposed,approved,"mixed: postal, banking, bill payment"
+post office,delivery_courier,medium,carlos_benchmark_review_2026-09-23,approved,Carlos 2026-09-23 benchmark note: Post Office counter payments -> delivery_courier (was government_services)
 u.s. post office,delivery_courier,low,llm_proposed,approved,US entity in UK data - likely mislabel
 pure gym,gym_fitness,high,llm_proposed,approved,
 the gym website,gym_fitness,high,llm_proposed,approved,
@@ -25533,7 +25533,7 @@ photoaid,id_documents,medium,production_tranche4_agent_consensus,approved,"LLM-c
 apf lxm xlexhamins,insurance_motor,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
 caley picture house,pub_bar,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
 edmonton market,groceries,medium,production_tranche4_agent_review,approved,"LLM-consensus label, tier=agent_review, tranche=4"
-angel hill site ca,car_parking,medium,production_tranche4_agent_review,approved,"LLM-consensus label, tier=agent_review, tranche=4"
+angel hill site ca,restaurant_cafe,medium,carlos_benchmark_review_2026-09-23,approved,Carlos 2026-09-23 benchmark note: Angel Hill Food Co (OCS) on-site cafeteria (was car_parking)
 scottish prison se,government_services,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
 angela galbraith,transfer_p2p,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"
 lydia uhunoma,transfer_p2p,medium,production_tranche4_agent_tiebreak,approved,"LLM-consensus label, tier=agent_tiebreak, tranche=4"

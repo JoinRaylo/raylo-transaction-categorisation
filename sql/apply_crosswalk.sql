@@ -731,7 +731,7 @@ eqx_resolved AS (
       WHEN LOWER(TRIM(r.vendor))='sky' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'sky\s*protect|\bdgi\b.*protect|protect.*\bdgi\b') THEN 'insurance_other'
       WHEN LOWER(TRIM(r.vendor))='child benefits' AND r.direction='credit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'dwp\s*cms|dwpcms|cmsgb2012|child\s+maintenance') THEN 'income_other_unspecified'
       WHEN LOWER(TRIM(r.vendor))='asda' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'asda\s*mobile') THEN 'mobile_phone_contract'
-      WHEN LOWER(TRIM(r.vendor))='asda' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'asda\s*living') THEN 'home_accessories'
+      WHEN LOWER(TRIM(r.vendor))='asda' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'asda\s*living') THEN 'department_store'
       WHEN LOWER(TRIM(r.vendor))='vodafone' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'device') THEN 'mobile_handset'
       WHEN LOWER(TRIM(r.vendor))='amazon' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'prime\s*video') THEN 'streaming'
       WHEN LOWER(TRIM(r.vendor))='bolt' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'stackblitz') THEN 'software'
@@ -906,6 +906,7 @@ eqx_resolved AS (
       WHEN LOWER(TRIM(r.vendor))='roadchef' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'whsmi') THEN 'convenience_store'
       WHEN LOWER(TRIM(r.vendor))='wembley park' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'expre') THEN 'convenience_store'
       WHEN LOWER(TRIM(r.vendor))='rbs-natwest w/end credit' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'recollection|monzo') THEN 'financial_services_other'
+      WHEN LOWER(TRIM(r.vendor))='usd' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\bto\s+of\s*,') THEN 'adult_entertainment'
       -- T3: MECHANISM-OVERRIDE primaries (mechanism determines leaf regardless of merchant)
       WHEN r.pri='Identified Salary' THEN 'salary'
       WHEN r.pri='Refund' THEN 'refund_received'
@@ -977,6 +978,10 @@ eqx_resolved AS (
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'fair\\s*for\\s*you|fairforyou') AND r.direction = 'debit') THEN 'personal_loan_repayment'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'case:\\s*drs') AND r.direction = 'debit') THEN 'debt_collection'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'travl\\s*(plus|pck)\\s*fee') AND r.direction = 'debit') THEN 'account_charge'
+      WHEN REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '^\\s*added\\s+to\\s+pot\\s*$') THEN 'savings_transfer'
+      WHEN REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '^\\s*withdrew\\s+from\\s+pot\\s*$') THEN 'transfer_own_account'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bangel\\s+hill\\s+site\\b') AND r.direction = 'debit') THEN 'restaurant_cafe'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bytc\\b') AND r.direction = 'debit') THEN 'discount_store'
       -- T6: provider crosswalk fallback (sub = WHAT, primary = mechanism fallback)
       WHEN s.leaf IS NOT NULL THEN s.leaf
       WHEN p.leaf IS NOT NULL THEN p.leaf
@@ -1179,6 +1184,7 @@ eqx_resolved AS (
       WHEN LOWER(TRIM(r.vendor))='roadchef' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'whsmi') THEN 'T2_compound_roadchef_whsmith'
       WHEN LOWER(TRIM(r.vendor))='wembley park' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'expre') THEN 'T2_compound_wembley_park_express'
       WHEN LOWER(TRIM(r.vendor))='rbs-natwest w/end credit' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'recollection|monzo') THEN 'T2_compound_natwest_westend_recollection'
+      WHEN LOWER(TRIM(r.vendor))='usd' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\bto\s+of\s*,') THEN 'T2_compound_usd_onlyfans'
       WHEN r.pri IN ('Identified Salary','Refund','Benefits','Welfare','Pension Payout','Tax Refund',
         'Cash Back','Cash Machine','Cash Deposit','Interest','Interests and Dividends',
         'Balance Transfers','Adjustments') THEN 'T3_mechanism_override'
@@ -1236,6 +1242,10 @@ eqx_resolved AS (
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'fair\\s*for\\s*you|fairforyou') AND r.direction = 'debit') THEN 'T5_rule_R49'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'case:\\s*drs') AND r.direction = 'debit') THEN 'T5_rule_R50'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'travl\\s*(plus|pck)\\s*fee') AND r.direction = 'debit') THEN 'T5_rule_R51'
+      WHEN REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '^\\s*added\\s+to\\s+pot\\s*$') THEN 'T5_rule_R52'
+      WHEN REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '^\\s*withdrew\\s+from\\s+pot\\s*$') THEN 'T5_rule_R53'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bangel\\s+hill\\s+site\\b') AND r.direction = 'debit') THEN 'T5_rule_R54'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bytc\\b') AND r.direction = 'debit') THEN 'T5_rule_R55'
       WHEN s.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
       WHEN p.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
       ELSE 'T7_unclassified'
@@ -1278,7 +1288,7 @@ plaid_resolved AS (
       WHEN LOWER(TRIM(r.merchant_raw))='sky' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'sky\s*protect|\bdgi\b.*protect|protect.*\bdgi\b') THEN 'insurance_other'
       WHEN LOWER(TRIM(r.merchant_raw))='child benefits' AND r.direction='credit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'dwp\s*cms|dwpcms|cmsgb2012|child\s+maintenance') THEN 'income_other_unspecified'
       WHEN LOWER(TRIM(r.merchant_raw))='asda' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'asda\s*mobile') THEN 'mobile_phone_contract'
-      WHEN LOWER(TRIM(r.merchant_raw))='asda' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'asda\s*living') THEN 'home_accessories'
+      WHEN LOWER(TRIM(r.merchant_raw))='asda' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'asda\s*living') THEN 'department_store'
       WHEN LOWER(TRIM(r.merchant_raw))='vodafone' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'device') THEN 'mobile_handset'
       WHEN LOWER(TRIM(r.merchant_raw))='amazon' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'prime\s*video') THEN 'streaming'
       WHEN LOWER(TRIM(r.merchant_raw))='bolt' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'stackblitz') THEN 'software'
@@ -1453,6 +1463,7 @@ plaid_resolved AS (
       WHEN LOWER(TRIM(r.merchant_raw))='roadchef' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'whsmi') THEN 'convenience_store'
       WHEN LOWER(TRIM(r.merchant_raw))='wembley park' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'expre') THEN 'convenience_store'
       WHEN LOWER(TRIM(r.merchant_raw))='rbs-natwest w/end credit' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'recollection|monzo') THEN 'financial_services_other'
+      WHEN LOWER(TRIM(r.merchant_raw))='usd' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\bto\s+of\s*,') THEN 'adult_entertainment'
       WHEN r.direction='credit' AND d.leaf IN ('gambling_betting', 'gambling_casino', 'gambling_bingo', 'gambling_lottery') THEN 'gambling_unspecified'
       WHEN r.direction='credit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\brefund(ed)?\b') AND (d.leaf IS NULL OR d.leaf NOT IN ('gambling_betting', 'gambling_casino', 'gambling_bingo', 'gambling_lottery')) THEN 'refund_received'
       WHEN r.direction='credit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'returned\s+(direct\s+debit|standing\s+order)|direct\s+debit\s+reversal|\breversal of\b') THEN 'returned_payment'
@@ -1509,6 +1520,10 @@ plaid_resolved AS (
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'fair\\s*for\\s*you|fairforyou') AND r.direction = 'debit') THEN 'personal_loan_repayment'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'case:\\s*drs') AND r.direction = 'debit') THEN 'debt_collection'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'travl\\s*(plus|pck)\\s*fee') AND r.direction = 'debit') THEN 'account_charge'
+      WHEN REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '^\\s*added\\s+to\\s+pot\\s*$') THEN 'savings_transfer'
+      WHEN REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '^\\s*withdrew\\s+from\\s+pot\\s*$') THEN 'transfer_own_account'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bangel\\s+hill\\s+site\\b') AND r.direction = 'debit') THEN 'restaurant_cafe'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bytc\\b') AND r.direction = 'debit') THEN 'discount_store'
       -- T6: provider crosswalk fallback
       WHEN x.leaf IS NOT NULL THEN x.leaf
       ELSE 'unclassified_other'
@@ -1707,6 +1722,7 @@ plaid_resolved AS (
       WHEN LOWER(TRIM(r.merchant_raw))='roadchef' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'whsmi') THEN 'T2_compound_roadchef_whsmith'
       WHEN LOWER(TRIM(r.merchant_raw))='wembley park' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'expre') THEN 'T2_compound_wembley_park_express'
       WHEN LOWER(TRIM(r.merchant_raw))='rbs-natwest w/end credit' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'recollection|monzo') THEN 'T2_compound_natwest_westend_recollection'
+      WHEN LOWER(TRIM(r.merchant_raw))='usd' AND r.direction='debit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\bto\s+of\s*,') THEN 'T2_compound_usd_onlyfans'
       WHEN r.direction='credit' AND d.leaf IN ('gambling_betting', 'gambling_casino', 'gambling_bingo', 'gambling_lottery') THEN 'T1_direction_gambling_credit'
       WHEN r.direction='credit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'\brefund(ed)?\b') AND (d.leaf IS NULL OR d.leaf NOT IN ('gambling_betting', 'gambling_casino', 'gambling_bingo', 'gambling_lottery')) THEN 'T2_compound_refund'
       WHEN r.direction='credit' AND REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), r'returned\s+(direct\s+debit|standing\s+order)|direct\s+debit\s+reversal|\breversal of\b') THEN 'T2_compound_returned_payment'
@@ -1761,6 +1777,10 @@ plaid_resolved AS (
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'fair\\s*for\\s*you|fairforyou') AND r.direction = 'debit') THEN 'T5_rule_R49'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'case:\\s*drs') AND r.direction = 'debit') THEN 'T5_rule_R50'
       WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), 'travl\\s*(plus|pck)\\s*fee') AND r.direction = 'debit') THEN 'T5_rule_R51'
+      WHEN REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '^\\s*added\\s+to\\s+pot\\s*$') THEN 'T5_rule_R52'
+      WHEN REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '^\\s*withdrew\\s+from\\s+pot\\s*$') THEN 'T5_rule_R53'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bangel\\s+hill\\s+site\\b') AND r.direction = 'debit') THEN 'T5_rule_R54'
+      WHEN (REGEXP_CONTAINS(LOWER(COALESCE(r.description_raw, '')), '\\bytc\\b') AND r.direction = 'debit') THEN 'T5_rule_R55'
       WHEN x.leaf IS NOT NULL THEN 'T6_provider_crosswalk'
       ELSE 'T7_unclassified'
     END AS resolution_tier
