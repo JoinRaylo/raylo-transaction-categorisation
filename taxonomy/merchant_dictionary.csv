@@ -244,7 +244,7 @@ now tv,streaming,high,llm_proposed,approved,
 audible,streaming,high,llm_proposed,approved,
 prime,streaming,medium,llm_proposed,approved,Amazon Prime subscription - 161k txns
 apple app store,software,high,llm_proposed,approved,
-google play,gaming_mobile,high,carlos_benchmark_review_2026-09-23,approved,Carlos 2026-09-23 benchmark ruling: Google Play Apps charges are mobile gaming spend (was software)
+google play,software,high,llm_proposed,approved,
 google one,web_services,high,human_override_20260824,approved,Google One cloud storage
 rebtel,mobile_phone_contract,high,human_override_20260824,approved,Rebtel calling app
 bandoo,health_beauty_general,high,human_override_20260824,approved,Bandoo foot-detox retail

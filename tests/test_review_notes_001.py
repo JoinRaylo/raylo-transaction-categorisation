@@ -36,7 +36,7 @@ CASES = [
     ("asda_living", "Asda", "debit", "ASDA STORES  ON 21 SEP BDC ASDA LIVING BROUGH",
      "FOOD_RETAIL_GROCERIES", "department_store", "T2_compound_asda_living"),
     ("google_play_apps", "Google Play", "debit", "Google Play Apps  ON 15 MAR CPM GOOGLE PLAY APPS",
-     "ENTERTAINMENT_VIDEO_GAMES", "gaming_mobile", "T4_dictionary"),
+     "ENTERTAINMENT_VIDEO_GAMES", "software", "T4_dictionary"),
     ("daily_od_int", "", "debit", "DAILY OD INT", "BANK_FEES_OVERDRAFT_FEES", "interest_charged", "T5_R56"),
     ("daily_od_int_dated", "", "debit", "DAILY OD INT 11/10", "INTEREST_PAYMENTS_INTEREST_CHARGED",
      "interest_charged", "T5_R56"),
