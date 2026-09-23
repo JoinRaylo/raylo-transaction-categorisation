@@ -8,7 +8,7 @@
     "publication_file_sha256": "eaf5a8bba13a60e007fa7d92c9df8729c80e7e7b13a8b830c4c0642458c44f22",
     "publication_membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068"
   },
-  "matrix_sha256": "997742a39318d708003275925570b5b35018148a1c85d82f1bca953154c11977",
+  "matrix_sha256": "a24d9fa29848114eb6c43151d80bb5d21457924dac6250cba01fa2e223769167",
   "checks": [
     "protected_exact_event_exclusion",
     "connected_account_group_exclusion",

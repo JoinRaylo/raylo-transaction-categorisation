@@ -249,6 +249,13 @@ ENTRIES = [
      "linked Tier-B fetch; exclude_eval_membership + write_tier_b_fetch (canonical guard, "
      "signed fetch receipt); labels from the pinned staging waterfall (T1-T5 only)",
      "src/build_tuning_dataset_retrain.py"),
+    ("build_stage1_labels.main", "learning", "enforced",
+     "consensus receipt verified; rule-labelled linked texts (protected flags, eval-merchant/"
+     "text and benchmark-text screens) + apply(distillation) + signed receipt",
+     "src/build_stage1_labels.py"),
+    ("build_tuning_dataset_retrain.credits", "learning", "enforced",
+     "rule-labelled linked credits; apply(supervised_training) + signed receipt; build screens",
+     "src/build_tuning_dataset_retrain.py"),
     ("build_tuning_dataset_retrain.build", "learning", "enforced",
      "verify_fetch_receipt + verify_artifact on every input; signed receipts and row manifests "
      "on both exports; Tier A dropped",

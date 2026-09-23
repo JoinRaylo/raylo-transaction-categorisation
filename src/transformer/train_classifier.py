@@ -46,11 +46,16 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "src" / "transformer"))
 
 from build_corpus import SILVER_PARQUET, amt_bucket_py, sentence  # noqa: E402
-from distillation_bakeoff import OUT_DIR, _parse_tuning_jsonl  # noqa: E402
+from distillation_bakeoff import OUT_DIR as _DEFAULT_OUT_DIR, _parse_tuning_jsonl  # noqa: E402
 from pretrain_mlm import SAVE_DIR as MLM_DIR, device, log as _log  # noqa: E402
 import eval_protection  # noqa: E402
 
 TAXONOMY = ROOT / "taxonomy" / "taxonomy.csv"
+import os  # noqa: E402
+
+# TXNCAT_TUNING_DIR (2026-09-23): train from a receipted export directory in
+# place, e.g. outputs/retrain_export_v2, so its receipts keep their bound paths.
+OUT_DIR = pathlib.Path(os.environ.get("TXNCAT_TUNING_DIR", _DEFAULT_OUT_DIR))
 TRAIN_JSONL = OUT_DIR / "tuning_train.jsonl"
 VAL_JSONL = OUT_DIR / "tuning_val.jsonl"
 MODELS = ROOT / "outputs" / "distill_models"
@@ -192,9 +197,16 @@ def silver_frame(path=None):
     # (recover_training_identity.py, purpose distillation).  The unguarded T1-T5
     # silver corpus and the legacy consensus parquet have no receipt and fail
     # here.
-    eval_protection.verify_artifact(
-        path, expected_consumer="recover_training_identity", expected_purpose="distillation"
-    )
+    # The retrain's stage-1 set is build_stage1_labels.py's output (consensus +
+    # rule-labelled texts); the consensus-only recovery output is also accepted.
+    try:
+        eval_protection.verify_artifact(
+            path, expected_consumer="build_stage1_labels", expected_purpose="distillation"
+        )
+    except Exception:
+        eval_protection.verify_artifact(
+            path, expected_consumer="recover_training_identity", expected_purpose="distillation"
+        )
     df = pd.read_parquet(path)
     if "leaf" not in df.columns and "final_leaf" in df.columns:
         df = df.rename(columns={"final_leaf": "leaf"})

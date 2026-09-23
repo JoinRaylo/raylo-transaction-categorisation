@@ -307,6 +307,41 @@ def protected_texts() -> set[tuple[str, str, str]]:
     return texts
 
 
+GOLD_EVAL_FILES = (
+    "gold_credit_eval.csv", "gold_merchant_labels.csv", "gold_tail_labels.csv",
+    "gold_transactions.csv", "gold_transactions_risk_categories.csv",
+    "gold_transactions_risk_t6bound.csv", "gold_transactions_v2.csv",
+    "gold_transactions_v2_batch2.csv", "gold_transactions_v3_volume.csv",
+    "gold_transactions_v4_slm_volume.csv", "gold_v2_slm_eval_holdout.csv",
+    "gold_v3_eyeball.csv", "gold_v4_eyeball.csv",
+)
+
+
+def gold_eval_texts() -> set[tuple[str, str]]:
+    """(merchant, description) of every registered gold row; locked v5/v6 are never opened.
+
+    Added 2026-09-23 after the independent disjointness check.  The registry
+    keeps gold sets out of training, and they carry no IDs, so exact text is the
+    available screen.
+    """
+
+    import csv  # noqa: PLC0415
+
+    texts = set()
+    for name in GOLD_EVAL_FILES:
+        path = ROOT / "data" / name
+        if not path.exists():
+            continue
+        with path.open(newline="", encoding="utf-8") as stream:
+            reader = csv.DictReader(stream)
+            if "description_raw" not in (reader.fieldnames or []):
+                continue
+            for row in reader:
+                texts.add(((row.get("merchant_raw") or "").strip().lower(),
+                           (row["description_raw"] or "").strip().lower()))
+    return texts
+
+
 def main() -> None:
     parser = eval_protection.add_args(argparse.ArgumentParser(description=__doc__))
     parser.add_argument("--eqx-sample", type=int, default=20_000_000)
@@ -322,10 +357,13 @@ def main() -> None:
         for d, b, m, s in zip(df["direction"], df["amt_bucket"], df["merchant"], df["description"])
     ]
     guarded_texts = protected_texts()
+    gold = gold_eval_texts()
     key = list(zip(df["direction"], df["merchant"], df["description"]))
     text_hit = pd.Series([k in guarded_texts for k in key], index=df.index)
+    gold_hit = pd.Series([(k[1], k[2]) in gold for k in key], index=df.index) & ~text_hit
     text_dropped = {p: int((text_hit & (df.provider == p)).sum()) for p in ("plaid", "equifax")}
-    df = df[~text_hit]
+    gold_dropped = {p: int((gold_hit & (df.provider == p)).sum()) for p in ("plaid", "equifax")}
+    df = df[~(text_hit | gold_hit)]
     before_dedupe = len(df)
     df = df.drop_duplicates("text").sample(frac=1.0, random_state=42).reset_index(drop=True)
     df["account_id"] = [r["account_id"] for r in df["rep"]]
@@ -387,6 +425,7 @@ def main() -> None:
             "groups_dropped": plaid.attrs.get("ambiguous_account_groups", 0),
         },
         "exact_text_dropped": text_dropped,
+        "gold_eval_text_dropped": gold_dropped,
         "sentences": len(df),
         "duplicate_texts_dropped": before_dedupe - len(df) - duplicate_representatives,
         "duplicate_representatives_dropped": duplicate_representatives,

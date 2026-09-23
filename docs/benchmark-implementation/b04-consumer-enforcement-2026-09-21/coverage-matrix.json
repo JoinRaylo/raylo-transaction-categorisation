@@ -387,6 +387,14 @@
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_stage1_labels.main",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "consensus receipt verified; rule-labelled linked texts (protected flags, eval-merchant/text and benchmark-text screens) + apply(distillation) + signed receipt",
+      "evidence": "src/build_stage1_labels.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "build_tail_eval.fetch",
       "kind": "authoring",
       "enforcement": "gated_off",
@@ -439,6 +447,14 @@
       "kind": "learning",
       "enforcement": "enforced",
       "boundary": "verify_fetch_receipt + verify_artifact on every input; signed receipts and row manifests on both exports; Tier A dropped",
+      "evidence": "src/build_tuning_dataset_retrain.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tuning_dataset_retrain.credits",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "rule-labelled linked credits; apply(supervised_training) + signed receipt; build screens",
       "evidence": "src/build_tuning_dataset_retrain.py"
     },
     {

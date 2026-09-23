@@ -13,6 +13,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import os
 import pathlib
 import subprocess
 import sys
@@ -34,6 +35,9 @@ from distillation_bakeoff import (  # noqa: E402
     build_text,
 )
 import eval_protection  # noqa: E402
+
+# TXNCAT_TUNING_DIR (2026-09-23): fit from a receipted export directory in place.
+OUT_DIR = pathlib.Path(os.environ.get("TXNCAT_TUNING_DIR", OUT_DIR))
 
 LOGREG_PATH = MODELS_DIR / "tfidf_logreg_v2.joblib"
 HINGE_PATH = MODELS_DIR / "tfidf_linearsvm_sgd.joblib"

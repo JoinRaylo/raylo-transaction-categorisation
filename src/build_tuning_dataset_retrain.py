@@ -165,13 +165,103 @@ TOPUPS = {
 def _set_inputs(inputs: pathlib.Path | None) -> None:
     """Point fetch/build at another inputs directory (and a matching export)."""
 
-    global OUT, TXNS, TXNS_RECEIPT, EXPORT, TOPUPS
+    global OUT, TXNS, TXNS_RECEIPT, EXPORT, TOPUPS, RULE_CREDITS_PATH
     if inputs is None:
         return
     OUT = inputs.resolve()
     TXNS, TXNS_RECEIPT = OUT / "tier_b_txns.json", OUT / "tier_b_txns_receipt.json"
     EXPORT = OUT.parent / (OUT.name.replace("retrain_inputs", "retrain_export") or "export")
     TOPUPS = {name: OUT / f"{name}.csv" for name in TOPUPS}
+    RULE_CREDITS_PATH = OUT / "rule_credit_topup.csv"
+    if RULE_CREDITS_PATH.exists():
+        TOPUPS["rule_credit_topup"] = RULE_CREDITS_PATH
+
+
+RULE_CREDITS_PATH = OUT / "rule_credit_topup.csv"
+
+
+def credits(args) -> None:
+    """Free rule-labelled credit top-up (Carlos, 2026-09-23: credits >= 5% of stage 2).
+
+    Row-level credit transactions from clean rows of the 39M-row customer-linked
+    Plaid source.  The rows carry the same protected-release flags as the
+    guarded pretraining corpus.  They are labelled by the pinned staging
+    waterfall; only rows T1-T5 decides are kept, at most ``--per-leaf-cap`` per
+    leaf and ``--target`` in total, ranked by a deterministic hash.  The gate
+    guards and receipts them, and ``build`` applies the same merchant and
+    evaluation-text screens as for every other source.
+    """
+
+    sys.path.insert(0, str(ROOT / "src" / "transformer"))
+    from build_corpus import _run  # noqa: PLC0415
+    from build_stage1_labels import _LINKED_WITH_NATIVE  # noqa: PLC0415
+    from build_pretrain_guarded import verify_protected_table  # noqa: PLC0415
+
+    guard_args = argparse.Namespace(
+        protected_membership=args.protected_membership[0],
+        protected_publication=args.protected_publication,
+        txncat_src=args.txncat_src,
+    )
+    protection, _publication = eval_protection.load_release(guard_args)
+    verify_protected_table(protection)
+    sql = _LINKED_WITH_NATIVE + f"""
+SELECT account_id, transaction_id, customer_id, merchant AS merchant_raw,
+       description AS description_raw, -a AS amount, 'credit' AS direction,
+       native AS native_category
+FROM flagged
+WHERE drop_reason IS NULL AND direction = 'credit'
+  AND MOD(ABS(FARM_FINGERPRINT(CONCAT(account_id, ':', transaction_id))), 1000)
+      < {int(args.keep_per_thousand)}
+"""
+    rows = _run(sql, "rule-credits/linked").to_dict("records")
+    labels = label(
+        [{"merchant": r["merchant_raw"], "description": r["description_raw"], "is_credit": 1,
+          "native_category": r["native_category"]} for r in rows],
+        args.rules_root,
+    )
+    import hashlib  # noqa: PLC0415
+
+    ranked = sorted(
+        zip(rows, labels, strict=True),
+        key=lambda pair: hashlib.sha256(
+            f"{pair[0]['account_id']}:{pair[0]['transaction_id']}".encode()
+        ).hexdigest(),
+    )
+    per_leaf, kept, outcomes, accounts = Counter(), [], Counter(), {}
+    for row, lab in ranked:
+        if lab["leaf"] is None:
+            outcomes["not_rule_decided"] += 1
+            continue
+        if per_leaf[lab["leaf"]] >= args.per_leaf_cap:
+            outcomes["over_leaf_cap"] += 1
+            continue
+        if accounts.setdefault(row["account_id"], row["customer_id"]) != row["customer_id"]:
+            outcomes["account_customer_conflict"] += 1
+            continue
+        per_leaf[lab["leaf"]] += 1
+        kept.append({**{k: ("" if v is None else str(v)) for k, v in row.items()},
+                     "provider": "plaid", "gold_leaf": lab["leaf"], "rule_tier": lab["tier"],
+                     "resolution_source": "staging_rules"})
+        if len(kept) >= args.target:
+            break
+    guarded = eval_protection.apply(kept, guard_args, purpose="supervised_training")
+    if len(guarded) != len(kept):
+        raise RuntimeError("rule credits: the gate excluded rows the linked flags kept; stopping")
+    with RULE_CREDITS_PATH.open("w", newline="", encoding="utf-8") as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(kept[0].keys()))
+        writer.writeheader()
+        writer.writerows(guarded)
+    RULE_CREDITS_PATH.chmod(0o600)
+    receipt = eval_protection.write_artifact_receipt(
+        RULE_CREDITS_PATH, consumer="build_tuning_dataset_retrain.credits",
+        purpose="supervised_training", guard=guarded.guard,
+    )
+    summary = {"sampled_credit_rows": len(rows), "kept": len(guarded),
+               "distinct_leaves": len(per_leaf), "outcomes": dict(outcomes),
+               "per_leaf_cap": args.per_leaf_cap, "target": args.target,
+               "receipt": receipt.name}
+    (OUT / "rule_credit_topup_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    print(json.dumps(summary, indent=1))
 
 
 def _human(row: dict) -> bool:
@@ -319,10 +409,18 @@ def build(args) -> None:
     )
     blocked = btd.load_risk_merchants() | btd.frozen_holdout_merchants()
     starved = {leaf: [] for leaf in btd.STARVED_TOPUP_LEAVES}
+    topup_seen = set()
     for (name, row), lab in zip(topup_rows, labels, strict=True):
         if row["account_id"] in ambiguous_accounts:
             stats[f"{name}_ambiguous_account_rows"] += 1
             continue
+        # One label per transaction: sources are read in TOPUPS order, so the
+        # rule-labelled credits (last) never displace an LLM or human label.
+        event = (row["account_id"], row["transaction_id"])
+        if event in topup_seen:
+            stats[f"{name}_duplicate_of_earlier_topup"] += 1
+            continue
+        topup_seen.add(event)
         leaf = row.get("gold_leaf")
         if not leaf or leaf not in leaves:
             stats[f"{name}_invalid_leaf"] += 1
@@ -353,6 +451,38 @@ def build(args) -> None:
         stats[name] += 1
         if name == "tuning_leaf_topup" and leaf in starved:
             starved[leaf].append(ex)
+
+    # Evaluation-text screen (added 2026-09-23 after the independent
+    # disjointness check).  Drop supervised rows whose exact text, or input
+    # fingerprint, equals a benchmark transaction's, or whose text equals a gold
+    # evaluation row's.  These are other customers' identical narratives, but
+    # the benchmark's unseen-input view and the registry both exclude them.
+    sys.path.insert(0, str(ROOT / "src" / "transformer"))
+    from build_pretrain_guarded import gold_eval_texts, protected_texts  # noqa: PLC0415
+
+    bench_texts, gold_texts = protected_texts(), gold_eval_texts()
+
+    def screened(ex):
+        user = ex.messages["messages"][1]["content"]
+        fields = dict(
+            part.split(": ", 1) for part in user.split("\ndescription: ", 1)[0].split("\n")
+        )
+        merchant = fields.get("merchant", "")
+        description = user.split("\ndescription: ", 1)[1].rsplit("\namount: ", 1)[0]
+        direction = user.rsplit("\ndirection: ", 1)[1]
+        m, d = merchant.strip().lower(), description.strip().lower()
+        if (direction, m, d) in bench_texts:
+            stats["dropped_benchmark_text"] += 1
+            return False
+        if (m, d) in gold_texts:
+            stats["dropped_gold_eval_text"] += 1
+            return False
+        return True
+
+    train = [ex for ex in train if screened(ex)]
+    val = [ex for ex in val if screened(ex)]
+    kept = {id(ex) for ex in train}
+    starved = {leaf: [ex for ex in pool if id(ex) in kept] for leaf, pool in starved.items()}
 
     def leaf_of(ex):
         return ex.messages["messages"][2]["content"]
@@ -433,6 +563,15 @@ def build(args) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
+    cr = sub.add_parser("credits")
+    cr.add_argument("--inputs", type=pathlib.Path, default=None)
+    cr.add_argument("--rules-root", type=pathlib.Path, required=True)
+    cr.add_argument("--target", type=int, default=22_000)
+    cr.add_argument("--per-leaf-cap", type=int, default=1_500)
+    cr.add_argument("--keep-per-thousand", type=int, default=20)
+    cr.add_argument("--protected-membership", action="append", type=pathlib.Path, required=True)
+    cr.add_argument("--protected-publication", type=pathlib.Path, required=True)
+    cr.add_argument("--txncat-src", type=pathlib.Path, default=None)
     b = sub.add_parser("build")
     b.add_argument("--inputs", type=pathlib.Path, default=None)
     b.add_argument("--rules-root", type=pathlib.Path, required=True)
@@ -452,6 +591,8 @@ def main() -> None:
         fetch(args)
     elif args.command == "build":
         build(args)
+    elif args.command == "credits":
+        credits(args)
 
 
 if __name__ == "__main__":

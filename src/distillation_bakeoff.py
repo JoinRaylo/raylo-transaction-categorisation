@@ -254,16 +254,26 @@ def _parse_tuning_jsonl(path):
     build_tuning_dataset.py) back into the vendor/description/amount/is_credit/leaf
     columns this script's feature pipeline expects."""
     import json
+    import re
+
+    # Fixed 2026-09-23: splitting on newlines cut multi-line descriptions at the
+    # first line break (321 train rows), while serving uses the full text.  The
+    # four fields always appear in this order, so parse them positionally.
+    user_format = re.compile(
+        r"\Amerchant: (?P<merchant>.*?)\ndescription: (?P<description>.*)\n"
+        r"amount: (?P<amount>[^\n]*)\ndirection: (?P<direction>[^\n]*)\Z",
+        re.DOTALL,
+    )
     rows = []
     with open(path) as f:
         for line in f:
             ex = json.loads(line)
             user_msg = next(m["content"] for m in ex["messages"] if m["role"] == "user")
             leaf = next(m["content"] for m in ex["messages"] if m["role"] == "assistant")
-            fields = {}
-            for part in user_msg.split("\n"):
-                k, _, v = part.partition(": ")
-                fields[k] = v
+            match = user_format.match(user_msg)
+            if match is None:
+                raise ValueError("tuning row does not match the four-field user format")
+            fields = match.groupdict()
             rows.append({
                 "vendor": fields.get("merchant", ""), "description": fields.get("description", ""),
                 "amount": float(fields.get("amount", 0) or 0),
