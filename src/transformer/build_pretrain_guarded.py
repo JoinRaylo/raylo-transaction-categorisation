@@ -130,6 +130,54 @@ flagged AS (
   WHERE r.merchant != '' OR r.description != '')
 """
 
+# Second Plaid source (added 2026-09-23 at Carlos's request for more data): the
+# 39M-row customer-linked table the guarded Tier-B fetch uses.  Customers resolve
+# only through the approved chain (transaction -> risk assessment -> checkout ->
+# user -> customer, each unique); unresolved or multi-customer accounts fail
+# closed.
+PLAID_LINKED_FLAGGED = f"""
+WITH p AS (SELECT * FROM {PROTECTED_TABLE}),
+c AS (SELECT TRIM(checkout_id) AS checkout_id, ANY_VALUE(TRIM(user_id)) AS user_id,
+             COUNT(DISTINCT TRIM(user_id)) AS nu
+      FROM {CHECKOUTS} WHERE NULLIF(TRIM(checkout_id), '') IS NOT NULL GROUP BY 1),
+u AS (SELECT TRIM(user_id) AS user_id, ANY_VALUE(TRIM(customer_id)) AS customer_id,
+             COUNT(DISTINCT TRIM(customer_id)) AS nc
+      FROM {USERS} WHERE NULLIF(TRIM(user_id), '') IS NOT NULL GROUP BY 1),
+a AS (SELECT checkout_risk_assessment_result_id AS assessment_id,
+             COUNT(DISTINCT checkout_id) AS nck, ANY_VALUE(TRIM(checkout_id)) AS checkout_id
+      FROM `raylo-production.dbt_production.intermediate_raylo_production__checkout_risk_assessment_results_latest`
+      WHERE NULLIF(TRIM(checkout_id), '') IS NOT NULL GROUP BY 1),
+protected_checkouts AS (
+  SELECT checkout_id FROM c WHERE user_id IN (SELECT user_id FROM p WHERE user_id != '')
+  UNION DISTINCT SELECT checkout_id FROM p WHERE checkout_id != ''),
+r AS (
+  SELECT TRIM(i.account_id) AS account_id, TRIM(i.transaction_id) AS transaction_id,
+         IF(a.nck = 1 AND c.nu = 1 AND u.nc = 1, NULLIF(u.customer_id, ''), NULL) AS customer_id,
+         a.checkout_id,
+         LOWER(TRIM(IFNULL(i.merchant_name, ''))) AS merchant,
+         LOWER(TRIM(IFNULL(COALESCE(i.description, i.transaction_name), ''))) AS description,
+         IF(i.amount < 0, 'credit', 'debit') AS direction, ABS(i.amount) AS a
+  FROM `raylo-production.dbt_production.intermediate_credit_plaid_transactions` i
+  LEFT JOIN a ON i.checkout_risk_assessment_result_id = a.assessment_id
+  LEFT JOIN c ON a.checkout_id = c.checkout_id
+  LEFT JOIN u ON c.user_id = u.user_id
+  WHERE NULLIF(TRIM(i.account_id), '') IS NOT NULL AND NULLIF(TRIM(i.transaction_id), '') IS NOT NULL),
+acct AS (SELECT account_id, COUNT(DISTINCT customer_id) AS ncust FROM r
+         WHERE customer_id IS NOT NULL GROUP BY 1),
+flagged AS (
+  SELECT r.*, CASE
+    WHEN r.customer_id IS NULL THEN 'unlinked_customer'
+    WHEN acct.ncust > 1 THEN 'ambiguous_account'
+    WHEN TO_HEX(SHA256(CONCAT('plaid:', r.account_id, ':', r.transaction_id)))
+         IN (SELECT event_key FROM p) THEN 'protected_event'
+    WHEN r.account_id IN (SELECT account_id FROM p) THEN 'protected_account'
+    WHEN r.customer_id IN (SELECT customer_id FROM p) THEN 'protected_customer'
+    WHEN r.checkout_id IN (SELECT checkout_id FROM protected_checkouts) THEN 'protected_user_checkout'
+    ELSE NULL END AS drop_reason
+  FROM r LEFT JOIN acct USING (account_id)
+  WHERE r.merchant != '' OR r.description != '')
+"""
+
 EQX_FLAGGED = f"""
 WITH p AS (SELECT * FROM {PROTECTED_TABLE}),
 c AS (SELECT TRIM(checkout_id) AS checkout_id, TRIM(user_id) AS user_id FROM {CHECKOUTS}),
@@ -154,7 +202,11 @@ flagged AS (
 
 def exclusion_stats() -> dict:
     stats = {}
-    for name, flagged in (("plaid", PLAID_FLAGGED), ("equifax", EQX_FLAGGED)):
+    for name, flagged in (
+        ("plaid", PLAID_FLAGGED),
+        ("plaid_linked", PLAID_LINKED_FLAGGED),
+        ("equifax", EQX_FLAGGED),
+    ):
         df = _run(
             flagged + "SELECT IFNULL(drop_reason, 'kept') AS reason, COUNT(*) AS n "
             "FROM flagged GROUP BY 1",
@@ -165,16 +217,31 @@ def exclusion_stats() -> dict:
 
 
 def plaid_groups() -> pd.DataFrame:
-    return _run(
-        PLAID_FLAGGED
-        + f"""SELECT 'plaid' AS provider, merchant, description, direction, {AMT_CASE} AS amt_bucket,
-       COUNT(*) AS n,
+    frames = []
+    for name, flagged in (("plaid", PLAID_FLAGGED), ("plaid_linked", PLAID_LINKED_FLAGGED)):
+        frames.append(
+            _run(
+                flagged
+                + f"""SELECT 'plaid' AS provider, merchant, description, direction,
+       {AMT_CASE} AS amt_bucket, COUNT(*) AS n,
        ARRAY_AGG(STRUCT(account_id, transaction_id, customer_id)
                  ORDER BY FARM_FINGERPRINT(CONCAT(account_id, ':', transaction_id)) LIMIT 1
                 )[OFFSET(0)] AS rep
 FROM flagged WHERE drop_reason IS NULL GROUP BY 1, 2, 3, 4, 5""",
-        "pretrain/plaid",
-    )
+                f"pretrain/{name}",
+            )
+        )
+    df = pd.concat(frames, ignore_index=True)
+    # The two sources resolve customers by different routes: an account whose
+    # representative customer differs between them fails closed.
+    customers: dict[str, set] = {}
+    for rep in df["rep"]:
+        customers.setdefault(rep["account_id"], set()).add(rep["customer_id"])
+    ambiguous = {a for a, c in customers.items() if len(c) > 1}
+    keep = [rep["account_id"] not in ambiguous for rep in df["rep"]]
+    df.attrs["ambiguous_accounts"] = len(ambiguous)
+    df.attrs["ambiguous_account_groups"] = len(df) - sum(keep)
+    return df[keep].reset_index(drop=True)
 
 
 def equifax_groups(eqx_sample: int) -> pd.DataFrame:
@@ -265,6 +332,12 @@ def main() -> None:
     df["transaction_id"] = [r["transaction_id"] for r in df["rep"]]
     df["customer_id"] = [r["customer_id"] for r in df["rep"]]
     df = df.drop(columns=["rep"])
+    # One representative transaction per sentence: the two Plaid sources can
+    # give one transaction two narratives, and the gate rejects a repeated event.
+    plaid_rows = df.provider == "plaid"
+    repeated = plaid_rows & df.duplicated(["account_id", "transaction_id"])
+    duplicate_representatives = int(repeated.sum())
+    df = df[~repeated].reset_index(drop=True)
     out = args.output
     out.mkdir(parents=True, exist_ok=False)
     os.chmod(out, 0o700)
@@ -309,9 +382,14 @@ def main() -> None:
             "requested": args.eqx_sample,
         },
         "groups": {"plaid": len(plaid), "equifax": len(eqx)},
+        "plaid_cross_source_ambiguous": {
+            "accounts": plaid.attrs.get("ambiguous_accounts", 0),
+            "groups_dropped": plaid.attrs.get("ambiguous_account_groups", 0),
+        },
         "exact_text_dropped": text_dropped,
         "sentences": len(df),
-        "duplicate_texts_dropped": before_dedupe - len(df),
+        "duplicate_texts_dropped": before_dedupe - len(df) - duplicate_representatives,
+        "duplicate_representatives_dropped": duplicate_representatives,
         "by_provider": {p: int((df.provider == p).sum()) for p in ("plaid", "equifax")},
         "credit_share": round(float((df.direction == "credit").mean()), 4),
         "shards": shards,

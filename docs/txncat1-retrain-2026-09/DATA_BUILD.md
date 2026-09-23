@@ -1,5 +1,19 @@
 # TxCat-1 retrain: protected training data (2026-09-23)
 
+> **Current build: v2** ([`data-build-v2.json`](data-build-v2.json)). Carlos asked
+> for more data, not less, without new labelling spend. v2 makes three changes:
+>
+> - It re-matches the legacy labels against the 39M-row customer-linked Plaid
+>   source (`recover_identity_linked.py`, hashed keys only, one-day private
+>   table): +11,392 consensus texts; the top-ups are essentially unchanged.
+> - It raises the Tier-B cap to 20 per merchant: 641,666 rule-labelled rows.
+> - It adds the linked source to the pretraining corpus: 27,507,811 sentences,
+>   of which 7.66M are Plaid (was 1.0M).
+>
+> Result: stage-2 train **562,481** (old 414,400) and validation 5,000; stage-1
+> consensus 273,421 (old 404,982); 266 leaves. Every check passes. v1 is kept
+> below for the record.
+
 Built under the frozen [acceptance plan](ACCEPTANCE_PLAN.md) and the v2 protected
 release: the 3,295-row benchmark membership. The aggregates are in
 [`data-build.json`](data-build.json). The rows themselves, with their IDs, stay in

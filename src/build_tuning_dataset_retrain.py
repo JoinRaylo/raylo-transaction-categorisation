@@ -162,6 +162,18 @@ TOPUPS = {
 }
 
 
+def _set_inputs(inputs: pathlib.Path | None) -> None:
+    """Point fetch/build at another inputs directory (and a matching export)."""
+
+    global OUT, TXNS, TXNS_RECEIPT, EXPORT, TOPUPS
+    if inputs is None:
+        return
+    OUT = inputs.resolve()
+    TXNS, TXNS_RECEIPT = OUT / "tier_b_txns.json", OUT / "tier_b_txns_receipt.json"
+    EXPORT = OUT.parent / (OUT.name.replace("retrain_inputs", "retrain_export") or "export")
+    TOPUPS = {name: OUT / f"{name}.csv" for name in TOPUPS}
+
+
 def _human(row: dict) -> bool:
     """Carlos's own labels and remaps are human; LLM/agent consensus is not."""
 
@@ -422,17 +434,20 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
     b = sub.add_parser("build")
+    b.add_argument("--inputs", type=pathlib.Path, default=None)
     b.add_argument("--rules-root", type=pathlib.Path, required=True)
     b.add_argument("--protected-membership", action="append", type=pathlib.Path, required=True)
     b.add_argument("--protected-publication", type=pathlib.Path, required=True)
     b.add_argument("--txncat-src", type=pathlib.Path, default=None)
     f = sub.add_parser("fetch")
+    f.add_argument("--inputs", type=pathlib.Path, default=None)
     f.add_argument("--cap", type=int, default=btd.DEFAULT_CAP)
     f.add_argument("--rules-root", type=pathlib.Path, required=True)
     f.add_argument("--protected-membership", action="append", type=pathlib.Path, required=True)
     f.add_argument("--protected-publication", type=pathlib.Path, required=True)
     f.add_argument("--txncat-src", type=pathlib.Path, default=None)
     args = parser.parse_args()
+    _set_inputs(args.inputs)
     if args.command == "fetch":
         fetch(args)
     elif args.command == "build":
