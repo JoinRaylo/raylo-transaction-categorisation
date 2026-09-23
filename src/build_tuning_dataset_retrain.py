@@ -235,9 +235,42 @@ def build(args) -> None:
     txns = json.loads(TXNS.read_text(encoding="utf-8"))
     if fetch_receipt.get("result_sha256") != btd._file_sha256(TXNS):
         raise RuntimeError("Tier-B fetch bytes differ from its receipt")
+    # verify_tuning_export expects the fetch beside the export, and receipts
+    # bind their exact path: re-run the canonical guard over the verified rows
+    # into the export directory, and chain the export to that receipt.
+    fetch_receipt = btd.write_tier_b_fetch(
+        txns,
+        protection,
+        args=guard_args,
+        data_path=EXPORT / "tuning_txns.json",
+        receipt_path=EXPORT / "tuning_txns_receipt.json",
+    )
+    txns = json.loads((EXPORT / "tuning_txns.json").read_text(encoding="utf-8"))
     source_rows = {canonical_sha256(dict(t)): t for t in txns}
+    # One transaction, one label and role: a row-level top-up label is more
+    # specific (and may be human), so its Tier-B copy is skipped.
+    topup_ids = set()
+    account_customers: dict[str, set] = {}
+    for t in txns:
+        account_customers.setdefault(t["account_id"], set()).add(t["customer_id"])
+    for path in TOPUPS.values():
+        with path.open(newline="", encoding="utf-8") as stream:
+            for r in csv.DictReader(stream):
+                topup_ids.add((r["account_id"], r["transaction_id"]))
+                account_customers.setdefault(r["account_id"], set()).add(r["customer_id"])
+    # Sources resolve customers by different routes.  An account linked to
+    # more than one customer across them cannot prove its customer is
+    # unprotected, so every row on it fails closed.
+    ambiguous_accounts = {a for a, c in account_customers.items() if len(c) > 1}
+    stats["ambiguous_accounts_dropped"] = len(ambiguous_accounts)
     train, val = [], []
     for t in txns:
+        if t["account_id"] in ambiguous_accounts:
+            stats["tier_b_ambiguous_account_rows"] += 1
+            continue
+        if (t["account_id"], t["transaction_id"]) in topup_ids:
+            stats["tier_b_skipped_in_topup"] += 1
+            continue
         direction = "credit" if int(t["is_credit"]) else "debit"
         target = convention(t["merchant"], t["description"], direction, t["target"], False)
         ex = example(
@@ -275,6 +308,9 @@ def build(args) -> None:
     blocked = btd.load_risk_merchants() | btd.frozen_holdout_merchants()
     starved = {leaf: [] for leaf in btd.STARVED_TOPUP_LEAVES}
     for (name, row), lab in zip(topup_rows, labels, strict=True):
+        if row["account_id"] in ambiguous_accounts:
+            stats[f"{name}_ambiguous_account_rows"] += 1
+            continue
         leaf = row.get("gold_leaf")
         if not leaf or leaf not in leaves:
             stats[f"{name}_invalid_leaf"] += 1
@@ -359,9 +395,6 @@ def build(args) -> None:
             input_receipts=input_receipts,
             manifest_identities=[btd._export_manifest_entry(ex, source_rows) for ex in rows],
         )
-    # verify_tuning_export expects the Tier-B fetch beside the export.
-    for src, dst in ((TXNS, "tuning_txns.json"), (TXNS_RECEIPT, "tuning_txns_receipt.json")):
-        (EXPORT / dst).write_bytes(src.read_bytes())
     (EXPORT / "tuning_system_prompt.txt").write_text(system_prompt)
     summary = {
         "schema_version": "retrain-tuning-export-v1",
