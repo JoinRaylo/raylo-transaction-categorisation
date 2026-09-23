@@ -125,3 +125,4 @@ roadchef_whsmith,roadchef,whsmi,convenience_store,debit,Roadchef WHSmith shop, n
 wembley_park_express,wembley park,expre,convenience_store,debit,Wembley Park Express convenience, not stadium days_out.
 natwest_westend_recollection,rbs-natwest w/end credit,recollection|monzo,financial_services_other,debit,Temporary credit recollection from Monzo — bank ops, not a loan product.
 waitrose_explicit_payroll,waitrose,^[ \t\r\n]*waitrose[ \t]+payroll[ \t\r\n]*$,salary,credit,CREDIT-PAYROLL-001: exact explicit payroll narrative only; no amount inference.
+usd_onlyfans,usd,"\bto\s+of\s*,",adult_entertainment,debit,"'CARD PAYMENT TO OF ,<amt> USD' = OnlyFans; Plaid parses the currency as merchant so T4 usd->foreign_currency would win (Carlos benchmark note 2026-09-23). FP-scanned 23 Sep: pool500k 7, tuning 5, all this form."
