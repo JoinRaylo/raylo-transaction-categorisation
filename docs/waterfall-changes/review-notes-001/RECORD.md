@@ -1,9 +1,10 @@
 # REVIEW-NOTES-001 — T2/T4/T5 corrections from the B05 benchmark review
 
-Status: **accepted for staging. The full repeatable suite passed against the serving
-baseline, and Carlos approved the staging release on 2026-09-23.** The release
-candidate is bundle `1b402aeb…`, the version with Google Play reverted. Created and
-evaluated 2026-09-23.
+Status: **deployed to staging and live-verified on 2026-09-23.** Bundle `1b402aeb…`
+is the version with Google Play reverted; it runs on image `sha256:09a862f3…`,
+revision `ob-txn-categoriser-00024-jhk` and worker revision `00010-pkf`. The full
+repeatable suite passed against the serving baseline, and Carlos approved the
+release. Production is not deployed.
 Owner: Carlos Noble Jesus. Implementation: Claude.
 
 ## Origin, declared
@@ -234,15 +235,38 @@ The historical gold label that disagrees on Asda Living (`home_accessories`) is 
 known convention difference, not an engine error. It stays unedited until a
 versioned gold migration.
 
-## Remaining before promotion
+## Staging release (2026-09-23)
 
-- Staging release, each step with explicit approval:
-  1. Publish `1b402aeb…` to the staging artefacts bucket.
-  2. Move the deployment bundle pin.
-  3. Deploy the image built from this code.
-  4. Rerun the live verifier and the signed synthetic API regression.
-- After acceptance: reload the research T4 BigQuery scratch table
-  (`load_t4_dictionary_bq.py`).
-- Mirrored score-history row and research current-score pointer.
+1. **Publish.** Bundle `1b402aeb…` was published and independently read back
+   ([bundle-build-rn001b](../../bundle-build-rn001b/README.md)).
+2. **Pin.** Monorail staging `ARTEFACT_BUNDLE_SHA` was set to `1b402aeb…`, and both
+   environment copies were verified.
+3. **Deploy.** `feat/ob-txn-categoriser-plan` was fast-forwarded to `c74e53e1`,
+   and CI dispatch run
+   [35877757371](https://github.com/JoinRaylo/internal-services-monorepo/actions/runs/35877757371)
+   succeeded. Service revision `00024-jhk` and worker `00010-pkf` both run image
+   `sha256:09a862f3a4848c7bb879cf6dfd443f5f9aac2f143889f5c6f52e2aadd3171724` with
+   bundle `1b402aeb…`. `/health` and `/ready` return 200.
+4. **Verify.** `verify_staging.py` passed ([receipt](staging_verification.json)).
+   It covers:
+   - bearer-authenticated version and categorisation requests;
+   - rejection of missing and wrong tokens;
+   - an 84-row response;
+   - exact pinned and gzip replay;
+   - archive, publication and ledger read-back using operator credentials.
+
+   Real Taktile traffic, BigQuery delivery and capacity were not in scope.
+5. **Record the image.** Monorail `IMAGE_DIGEST` was updated to the verified
+   image.
+
+An earlier dispatch (run 35875138466, bundle `5d39f720…`) was cancelled before its
+deploy step ran.
+
+## Remaining
+
+- Reload the research T4 BigQuery scratch table (`load_t4_dictionary_bq.py`).
+- Add the research current-score pointer. The research branch is based on serving
+  `f8e47ef`, which predates the mirrored score history.
 - AIE-503: R53 (pot withdrawals → `transfer_own_account`) and R56 (DAILY OD INT →
   `interest_charged`, tier only) may shift risk features.
+- Production rollout needs its own review.
