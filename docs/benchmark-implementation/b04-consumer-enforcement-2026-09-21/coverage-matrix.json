@@ -435,6 +435,22 @@
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tuning_dataset_retrain.build",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_fetch_receipt + verify_artifact on every input; signed receipts and row manifests on both exports; Tier A dropped",
+      "evidence": "src/build_tuning_dataset_retrain.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tuning_dataset_retrain.fetch",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "linked Tier-B fetch; exclude_eval_membership + write_tier_b_fetch (canonical guard, signed fetch receipt); labels from the pinned staging waterfall (T1-T5 only)",
+      "evidence": "src/build_tuning_dataset_retrain.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "build_tuning_leaf_topup.fetch",
       "kind": "learning",
       "enforcement": "gated_off",
@@ -851,6 +867,14 @@
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "recover_training_identity.main",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "legacy label files re-matched to exactly one clean customer-linked transaction (text-level consensus: a clean witness); apply(supervised_training|distillation) + signed receipt",
+      "evidence": "src/recover_training_identity.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "rent_iv_analysis.compute",
       "kind": "learning",
       "enforcement": "enforced",
@@ -1021,9 +1045,9 @@
       "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "transformer.train_classifier.silver_frame",
       "kind": "learning",
-      "enforcement": "gated_off",
-      "boundary": "gate before silver parquet read",
-      "evidence": "silver corpus has no bound fetch receipt"
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(recover_training_identity, distillation) before parquet read; legacy silver/consensus parquets carry no receipt and fail",
+      "evidence": "src/transformer/train_classifier.py"
     }
   ]
 }

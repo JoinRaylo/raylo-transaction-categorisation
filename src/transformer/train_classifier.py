@@ -188,12 +188,12 @@ def silver_frame(path=None):
     a leaf column — e.g. `data/distillation_labels_consensus.parquet` (Gemini==Sonnet consensus
     on the 500k most frequent Plaid texts, 5 Sep)."""
     path = pathlib.Path(path) if path else SILVER_PARQUET
-    # B04: the silver corpus has no bound fetch receipt; only a guarded
-    # rebuild may produce a consumable training artifact.
-    eval_protection.gate(
-        "transformer.train_classifier.silver_frame",
-        "silver corpus has no bound fetch receipt; rebuild via "
-        "build_corpus under the protected-release guard",
+    # B04: only the ID-recovered, guarded consensus labels are consumable
+    # (recover_training_identity.py, purpose distillation).  The unguarded T1-T5
+    # silver corpus and the legacy consensus parquet have no receipt and fail
+    # here.
+    eval_protection.verify_artifact(
+        path, expected_consumer="recover_training_identity", expected_purpose="distillation"
     )
     df = pd.read_parquet(path)
     if "leaf" not in df.columns and "final_leaf" in df.columns:

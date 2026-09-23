@@ -237,9 +237,22 @@ ENTRIES = [
     ("transformer.pretrain_mlm.train", "learning", "enforced",
      "verify_artifact(domain_pretraining) on every guarded shard + manifest digest before read",
      "src/transformer/pretrain_mlm.py"),
-    ("transformer.train_classifier.silver_frame", "learning", "gated_off",
-     "gate before silver parquet read",
-     "silver corpus has no bound fetch receipt"),
+    ("transformer.train_classifier.silver_frame", "learning", "enforced",
+     "verify_artifact(recover_training_identity, distillation) before parquet read; legacy "
+     "silver/consensus parquets carry no receipt and fail",
+     "src/transformer/train_classifier.py"),
+    ("recover_training_identity.main", "learning", "enforced",
+     "legacy label files re-matched to exactly one clean customer-linked transaction (text-level "
+     "consensus: a clean witness); apply(supervised_training|distillation) + signed receipt",
+     "src/recover_training_identity.py"),
+    ("build_tuning_dataset_retrain.fetch", "learning", "enforced",
+     "linked Tier-B fetch; exclude_eval_membership + write_tier_b_fetch (canonical guard, "
+     "signed fetch receipt); labels from the pinned staging waterfall (T1-T5 only)",
+     "src/build_tuning_dataset_retrain.py"),
+    ("build_tuning_dataset_retrain.build", "learning", "enforced",
+     "verify_fetch_receipt + verify_artifact on every input; signed receipts and row manifests "
+     "on both exports; Tier A dropped",
+     "src/build_tuning_dataset_retrain.py"),
     # ---- selection: enforced ----
     # ---- labelling egress: model-API seams verify the receipted artifact
     # before any narrative leaves the boundary ----
