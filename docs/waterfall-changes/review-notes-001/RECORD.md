@@ -1,7 +1,8 @@
 # REVIEW-NOTES-001 — T2/T4/T5 corrections from the B05 benchmark review
 
-Status: **proposed. Implemented on candidate branches, targeted checks passed, full
-repeatable evaluation not run, not promoted.** Created 2026-09-23.
+Status: **evaluated. The full repeatable suite passed against the serving baseline.
+Accepting the two convention trade-offs below is Carlos's decision; staging release
+is pending.** Created and evaluated 2026-09-23.
 Owner: Carlos Noble Jesus. Implementation: Claude.
 
 ## Origin, declared
@@ -105,7 +106,7 @@ showed no false positives:
   The projection replaces the 122 exposed rows with the rule output on the
   measured serving predictions. The production-facing slice goes from 80.4% to
   85.1%; all labelled rows go from 77.6% to 82.1%. 79 predictions change, all
-  wrong→right. This is not a measured candidate bundle.
+  wrong→right. (Superseded by the measured result below.)
 - R56 on the pool: 8,145 rows, research leaf unchanged (T6 crosswalk already said
   `interest_charged`), tier T6 → T5.
 
@@ -118,18 +119,99 @@ showed no false positives:
    provenance.
 4. The fixed-residual cohort is reported, because the change moves rows out of T6.
 
-## Not yet run (blocks promotion)
+## Full repeatable evaluation (2026-09-23)
 
-- **Oracle v2 → candidate bundle → `run_evaluations.py`** (15 sets, both heads,
-  parity, startup), with a baseline/candidate comparison. It is blocked by a
-  pre-existing reproducibility gap. In a fresh checkout without bytecode caches, the
-  frozen `research-v1` exporter audit flags `src/build_tail_eval.py`,
-  `src/build_tuning_dataset.py` and `src/label_provenance.py`. They are imported by
-  pinned `src/transformer/build_corpus.py`, but the oracle provenance does not record
-  them. The fix is an exporter/provenance decision (record the transitive imports in
-  a new oracle version). Bypassing the audit is not a fix.
-- **Research T4 BigQuery scratch table**
-  (`credit_risk_research.merchant_dictionary_t4`): reload through
-  `load_t4_dictionary_bq.py` after acceptance. Not done here, because no cloud writes
-  were made.
-- Mirrored score-history row, staging release and signed API regression.
+**Runs.**
+
+- Candidate bundle `5d39f720…`: research `2d9f730`, B3 oracle `research-v2`,
+  `seed-selection-v2` (seed 123; model files byte-identical to serving).
+- Baseline: serving bundle `a2553f34…`, research `f8e47ef`, oracle `research-v1`.
+- Monorepo code: `17ff133a` for the baseline and `58874910` (this branch) for the
+  candidate. The harness is identical.
+
+Both runs passed all six checks: app/library tests, research tests, lint, schemas,
+research/app deterministic parity and real-model startup. Parity covered 35,200
+synthetic combinations (baseline 34,880) plus 88 golden rows. Each run covered 16
+repeatable datasets and 92 views. Independent verification passed: 92 views
+recounted and 39,984 metric checks. Evidence is in this directory: `summary.json`,
+`validation.json`, `RUN_REPORT.md` and `checks/` (candidate), and `baseline/`.
+
+**Risk and credit: no change.** Risk-leaf correct counts, false negatives and false
+positives on known non-risk gold are **unchanged in all 92 views**. The credit
+evaluation (`gold_credit_eval`) is also unchanged: serving transformer 89.25%.
+
+**Leaf transitions.** There are 197 changed rows, counted across overlapping views.
+Every change is attributed to a cause:
+
+| Cause | Effect on registered development gold |
+|---|---|
+| T4 `google play` → `gaming_mobile` | correct→wrong. Historical gold labels Google Play Apps `software`. The same handful of rows recurs across `gold_pipeline_eval`, `gold_transactions`, `v3_volume`/`v3_eyeball`, `v2_batch2`, `v2_slm_eval_holdout` and `gold_merchant_labels`. |
+| T2 Asda Living → `department_store` | correct→wrong. Historical gold says `home_accessories` (1 unique row, in 3 sets). |
+| T4 `post office` → `delivery_courier` | wrong→correct where gold is `delivery_courier`. Some rows go wrong→different-wrong where gold is `unclassified_other`/`cash_deposit` (research views only). |
+| R54 Angel Hill | wrong→correct |
+
+Serving Plaid transformer, correct leaves, baseline → candidate:
+
+| Set | Baseline | Candidate |
+|---|---:|---:|
+| `gold_pipeline_eval` | 1,169/1,418 | 1,164 (6 c→w, 1 w→c) |
+| `gold_transactions` | 2,899/3,501 | 2,892 (7 c→w) |
+| `gold_transactions_v3_volume` | 806/900 | 800 (6 c→w) |
+| `gold_v3_eyeball` | 803/900 | 797 (6 c→w) |
+| `gold_transactions_v2_batch2` | 507/661 | 506 (1 c→w) |
+| `gold_v2_slm_eval_holdout` | 486/627 | 485 (1 c→w) |
+
+The research-pipeline views on `gold_transactions` and `gold_transactions_v2` gain 5
+and 3 wrong→correct rows respectively (Post Office). `gold_transactions_risk_categories`
+(legacy head+T5) gains 1.
+
+**Acceptance.**
+
+1. Zero *unexplained* right→wrong transitions: met. The explained right→wrong
+   transitions all come from the Google Play and Asda Living conventions, which
+   conflict with historical gold. Under the policy they are **explicit trade-offs
+   for Carlos to accept or reject**. Gold is not edited to make the candidate pass;
+   a versioned convention migration of development gold would be a separate task.
+   There are no salary, refund or risk-leaf regressions.
+2. Salary precision is non-decreasing: met (unchanged).
+3. Parity: met.
+4. Fixed residual: reported per view in `summary.json`
+   (`comparison.comparisons[].fixed_baseline_residual`).
+
+**B05 benchmark, measured candidate bundle** (transformer; development-exposed
+because the rules came from this benchmark's review):
+
+| Slice (labelled rows) | Baseline | Candidate |
+|---|---:|---:|
+| Production-facing: new representative core, weighted (738) | 80.4% (77.2–83.3) | **85.1% (82.4–87.6)** |
+| All labelled (1,761) | 77.6% | 82.1% |
+| Core, all views pooled (1,353) | 82.3% | 86.0% |
+| Rare-leaf supplement (408) | 62.0% | 69.1% |
+
+The measured figures equal the earlier projection. The 1,639 labelled rows that no
+REVIEW-NOTES-001 rule touches score the same on both bundles: 80.72% overall and
+83.71% production-facing. The whole gain comes from the 122 exposed rows.
+
+**Rollback.** The app T2 port (`RESEARCH_SOURCE_SHA256` in `_t2_builtin.py`) and
+`verify_deterministic.py` now pin research generator `73b2e0d8…` (was `93e3a7a5…`).
+Candidate code refuses the old bundle and the reverse, so the image and bundle must
+roll back together.
+
+**Other bundle difference.** Provenance gains a `training_inputs` record. It comes
+from the AIE-513 compiler merged into this branch (`37accf1d`), not from this
+change, and does not change behaviour.
+
+## Remaining before promotion
+
+- Carlos's decision on the Google Play and Asda Living trade-offs: keep, or drop
+  from this change (dropping needs a re-run).
+- Staging release, each step with explicit approval:
+  1. Publish `5d39f720…` to the staging artefacts bucket.
+  2. Move the deployment bundle pin.
+  3. Deploy the image built from this code.
+  4. Rerun the live verifier and the signed synthetic API regression.
+- After acceptance: reload the research T4 BigQuery scratch table
+  (`load_t4_dictionary_bq.py`).
+- Mirrored score-history row and research current-score pointer.
+- AIE-503: R53 (pot withdrawals → `transfer_own_account`) and R56 (DAILY OD INT →
+  `interest_charged`, tier only) may shift risk features.
