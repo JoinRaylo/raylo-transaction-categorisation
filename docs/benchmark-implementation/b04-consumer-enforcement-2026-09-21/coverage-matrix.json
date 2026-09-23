@@ -987,11 +987,19 @@
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "transformer.build_pretrain_guarded",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "BigQuery exclusion before aggregation (event/account/customer/protected-user checkout; unlinked and multi-customer accounts fail closed) + apply(domain_pretraining) per shard; signed artifact receipt per shard; exact-text screen",
+      "evidence": "src/transformer/build_pretrain_guarded.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "transformer.pretrain_mlm.train",
       "kind": "learning",
-      "enforcement": "gated_off",
-      "boundary": "gate before corpus parquet read",
-      "evidence": "pretrain corpus has no bound fetch receipt"
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(domain_pretraining) on every guarded shard + manifest digest before read",
+      "evidence": "src/transformer/pretrain_mlm.py"
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",

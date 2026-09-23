@@ -229,9 +229,14 @@ ENTRIES = [
     ("transformer.build_corpus.build_silver", "learning", "gated_off",
      "gate before BigQuery query",
      "GROUP BY text-frequency export cannot prove disjointness"),
-    ("transformer.pretrain_mlm.train", "learning", "gated_off",
-     "gate before corpus parquet read",
-     "pretrain corpus has no bound fetch receipt"),
+    ("transformer.build_pretrain_guarded", "learning", "enforced",
+     "BigQuery exclusion before aggregation (event/account/customer/protected-user checkout; "
+     "unlinked and multi-customer accounts fail closed) + apply(domain_pretraining) per shard; "
+     "signed artifact receipt per shard; exact-text screen",
+     "src/transformer/build_pretrain_guarded.py"),
+    ("transformer.pretrain_mlm.train", "learning", "enforced",
+     "verify_artifact(domain_pretraining) on every guarded shard + manifest digest before read",
+     "src/transformer/pretrain_mlm.py"),
     ("transformer.train_classifier.silver_frame", "learning", "gated_off",
      "gate before silver parquet read",
      "silver corpus has no bound fetch receipt"),

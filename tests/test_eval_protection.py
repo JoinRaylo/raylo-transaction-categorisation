@@ -396,19 +396,66 @@ def test_distill_fit_boundaries_gated():
         bakeoff.retrain_lightgbm()
 
 
-def test_pretrain_mlm_gated():
+def _pretrain_mlm():
     pytest.importorskip("pandas")
     pytest.importorskip("torch")
     sys.path.insert(0, str(ROOT / "src" / "transformer"))
-    pretrain_mlm = _import("pretrain_mlm")
-    with pytest.raises(RuntimeError, match="B04 gated off"):
-        pretrain_mlm.train(argparse_namespace())
+    return _import("pretrain_mlm")
 
 
-def argparse_namespace():
+def _corpus_args(corpus_dir):
     import argparse
 
-    return argparse.Namespace(base="x", max_sentences=None)
+    return argparse.Namespace(
+        corpus_dir=str(corpus_dir),
+        base="x",
+        max_sentences=None,
+        protected_membership=None,
+        protected_publication=None,
+        txncat_src=None,
+    )
+
+
+def test_pretrain_mlm_refuses_a_corpus_without_a_guarded_manifest(tmp_path):
+    pretrain_mlm = _pretrain_mlm()
+    (tmp_path / "pretrain_corpus.parquet").write_bytes(b"legacy")
+    with pytest.raises(RuntimeError, match="no guarded corpus manifest"):
+        pretrain_mlm.train(_corpus_args(tmp_path))
+
+
+def test_pretrain_mlm_refuses_a_corpus_guarded_against_another_release(tmp_path):
+    pretrain_mlm = _pretrain_mlm()
+    stale = {**pretrain_mlm.eval_protection.PINNED_BINDING, "membership_sha256": "0" * 64}
+    (tmp_path / "MANIFEST.json").write_text(
+        json.dumps({"schema_version": "pretrain-guarded-manifest-v1", "protected_release": stale})
+    )
+    with pytest.raises(RuntimeError, match="different protected release"):
+        pretrain_mlm.load_guarded_corpus(_corpus_args(tmp_path))
+
+
+def test_pretrain_mlm_refuses_an_unreceipted_shard(tmp_path, monkeypatch):
+    pretrain_mlm = _pretrain_mlm()
+    shard = tmp_path / "pretrain-000.parquet"
+    shard.write_bytes(b"not a receipted shard")
+    (tmp_path / "MANIFEST.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "pretrain-guarded-manifest-v1",
+                "protected_release": pretrain_mlm.eval_protection.PINNED_BINDING,
+                "sentences": 1,
+                "shards": [
+                    {
+                        "path": shard.name,
+                        "rows": 1,
+                        "sha256": hashlib.sha256(shard.read_bytes()).hexdigest(),
+                    }
+                ],
+            }
+        )
+    )
+    monkeypatch.setattr(pretrain_mlm.eval_protection, "load_release", lambda args: (None, None))
+    with pytest.raises(RuntimeError, match="no bound artifact receipt"):
+        pretrain_mlm.load_guarded_corpus(_corpus_args(tmp_path))
 
 
 def test_qwen_launchers_terminally_gated():
