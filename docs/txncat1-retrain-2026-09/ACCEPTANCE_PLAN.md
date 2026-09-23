@@ -109,3 +109,36 @@ against these sets. A second attempt needs a new predeclared record.
   labels, which are dropped or re-matched.
 - Production (Taktile) traffic, capacity and BigQuery delivery have their own
   acceptance gates.
+
+## Amendment 1 (2026-09-23, before any candidate was trained)
+
+**Carlos's decision:** train two encoder variants in parallel, and let validation
+choose. The Equifax part of the protected pretraining corpus cannot be linked to
+Raylo customers. Only 94 of its 99,164 references match any Raylo checkout, and
+one of those belongs to a benchmark user. So benchmark-customer exclusion can be
+proved for Plaid text but not for Equifax text.
+
+| Variant | Pretraining corpus | MLM epochs |
+|---|---|---:|
+| **A: Plaid-only** | the 7.65M Plaid sentences of the guarded corpus (every row traced to a known, unprotected customer) | 5 (about the same optimiser steps as B) |
+| **B: Plaid + Equifax** | the full guarded corpus, 27.49M sentences | 2 (serving recipe) |
+
+Everything after pretraining is identical and fixed:
+- the same stage-1 labels (603,285 rows);
+- the same stage-2 export (574,495 train, 5,000 validation);
+- the same hyperparameters and three seeds (42, 7, 123);
+- one shared hinge fallback.
+
+**Variant selection** is fixed before training and never uses the benchmark,
+registered gold sets or locked sets:
+1. For each variant, record the best-epoch stage-2 validation leaf accuracy of
+   each seed.
+2. Choose the variant with the higher mean across its three seeds. A tie within
+   0.1 pp goes to **A**, because its protection is complete.
+3. Within the chosen variant, choose the median seed under the existing policy.
+
+**If B is chosen,** its Equifax protection gap is flagged to Carlos before any
+promotion decision. It is also recorded as a declared limitation against
+criterion A10.
+
+The acceptance criteria A1–A10 apply unchanged to the single chosen candidate.
