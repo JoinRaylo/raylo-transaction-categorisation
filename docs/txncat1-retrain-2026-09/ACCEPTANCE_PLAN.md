@@ -36,11 +36,11 @@ A separate change record is needed for any rule change.
 1. **The registered gold sets stay out of training.** `eval_registry.json` marks
    every registered set `exclude_from: supervised_training`, but the serving
    recipe trained on the `role=train` rows of `gold_transactions` (Tier A, 3,956
-   rows). *Proposed:* follow the registry and drop Tier A from training. The
+   rows). *Decided:* follow the registry and drop Tier A from training. The
    gold sets then remain clean regression evaluations rather than partly-trained
    ones.
 2. **Human and LLM labels that conflict with the rules.**
-   - *Proposed:* where T1–T5 decides a row, LLM and merchant-level labels
+   - *Decided:* where T1–T5 decides a row, LLM and merchant-level labels
      (Tier B, top-ups, consensus stage) take the rule's leaf. Serving never sends
      those rows to the model, so training on a different leaf only adds
      conflicting signal.
