@@ -1,8 +1,8 @@
 # REVIEW-NOTES-001 — T2/T4/T5 corrections from the B05 benchmark review
 
-Status: **evaluated. The full repeatable suite passed against the serving baseline.
-Accepting the two convention trade-offs below is Carlos's decision; staging release
-is pending.** Created and evaluated 2026-09-23.
+Status: **accepted for staging. The full repeatable suite passed against the serving
+baseline. Carlos accepted both convention trade-offs and approved the staging release
+on 2026-09-23.** Created and evaluated 2026-09-23.
 Owner: Carlos Noble Jesus. Implementation: Claude.
 
 ## Origin, declared
@@ -192,6 +192,15 @@ The measured figures equal the earlier projection. The 1,639 labelled rows that 
 REVIEW-NOTES-001 rule touches score the same on both bundles: 80.72% overall and
 83.71% production-facing. The whole gain comes from the 122 exposed rows.
 
+**Release code.** Staging deploys from `feat/ob-txn-categoriser-plan`. The release
+branch `claude/txncat-review-notes-001-promote` is that branch (`59423d0b`) plus this
+change's own commits only. It excludes the unmerged AIE-513 merge (`37accf1d`) that
+the evaluation branch also carried. The full suite was rerun on the release branch
+code (`99c724f7`) with the same bundle, research source and baseline. It passed all
+six checks and independent validation, with metrics **identical in all 92 views**
+and the same 197 changed rows as the evaluated candidate. Evidence:
+`promotion-branch/`.
+
 **Rollback.** The app T2 port (`RESEARCH_SOURCE_SHA256` in `_t2_builtin.py`) and
 `verify_deterministic.py` now pin research generator `73b2e0d8…` (was `93e3a7a5…`).
 Candidate code refuses the old bundle and the reverse, so the image and bundle must
@@ -201,10 +210,15 @@ roll back together.
 from the AIE-513 compiler merged into this branch (`37accf1d`), not from this
 change, and does not change behaviour.
 
+## Decision (2026-09-23)
+
+Carlos accepted both trade-offs. Google Play → `gaming_mobile` and Asda Living →
+`department_store` are the conventions going forward. The historical gold labels
+that disagree (`software`, `home_accessories`) are known convention differences,
+not engine errors. They stay unedited until a versioned gold migration.
+
 ## Remaining before promotion
 
-- Carlos's decision on the Google Play and Asda Living trade-offs: keep, or drop
-  from this change (dropping needs a re-run).
 - Staging release, each step with explicit approval:
   1. Publish `5d39f720…` to the staging artefacts bucket.
   2. Move the deployment bundle pin.
