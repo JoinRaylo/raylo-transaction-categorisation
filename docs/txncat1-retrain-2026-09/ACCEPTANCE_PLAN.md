@@ -1,9 +1,9 @@
 # TxCat-1 retrain: predeclared acceptance plan
 
-Status: **proposed on 2026-09-23 and awaiting Carlos's confirmation.** The criteria
-must be fixed before any candidate model is trained or scored. Once confirmed they
-are frozen: they may only be changed by a dated amendment made *before* the
-affected scores are seen.
+Status: **confirmed by Carlos on 2026-09-23, before any candidate was trained or
+scored.** He accepted the three training-data decisions and the acceptance
+criteria as written. The plan is now frozen: it may only be changed by a dated
+amendment made *before* the affected scores are seen.
 
 ## What changes and what stays fixed
 
@@ -31,7 +31,7 @@ rebuilt data:
 
 A separate change record is needed for any rule change.
 
-## Decisions for Carlos before the training data is built
+## Training-data decisions (confirmed 2026-09-23)
 
 1. **The registered gold sets stay out of training.** `eval_registry.json` marks
    every registered set `exclude_from: supervised_training`, but the serving
