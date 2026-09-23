@@ -1,13 +1,14 @@
 {
   "schema_version": "benchmark-enforcement-receipt-v1",
   "release": {
-    "schema_version": "benchmark-release-binding-v1",
-    "membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068",
+    "schema_version": "benchmark-release-binding-v2",
+    "membership_sha256": "675490115bd07c96d9102118cd8ca27924b88b896bc518f17da53f55e76ddf56",
     "pilot_sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248",
     "publication_sha256": "2b3c2f6443c99f30272f50075b2f7cf4647b04fb5ccdf1926467a24d3d4e8436",
-    "publication_file_sha256": "eaf5a8bba13a60e007fa7d92c9df8729c80e7e7b13a8b830c4c0642458c44f22"
+    "publication_file_sha256": "eaf5a8bba13a60e007fa7d92c9df8729c80e7e7b13a8b830c4c0642458c44f22",
+    "publication_membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068"
   },
-  "matrix_sha256": "5177f983bd038e13598a8677e7c30f82a5e7c3308b94211082c1308a4d23e2a8",
+  "matrix_sha256": "5e566e91c73306643f9d0641f15ad1a5ee4aca6bb509bd49a5fe9ee75f7358aa",
   "checks": [
     "protected_exact_event_exclusion",
     "connected_account_group_exclusion",
