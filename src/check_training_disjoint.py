@@ -146,8 +146,12 @@ def main() -> None:
     source_ids = {}
     for t in json.load(open(args.export / "tuning_txns.json", encoding="utf-8")):
         source_ids[(t["account_id"], t["transaction_id"])] = t["customer_id"]
-    for name in ("tuning_leaf_topup", "tuning_credit_topup", "tuning_risk_topup"):
-        for r in csv.DictReader(open(args.inputs / f"{name}.csv", newline="", encoding="utf-8")):
+    for name in ("tuning_leaf_topup", "tuning_credit_topup", "tuning_risk_topup",
+                 "rule_credit_topup"):
+        path = args.inputs / f"{name}.csv"
+        if not path.exists():
+            continue
+        for r in csv.DictReader(open(path, newline="", encoding="utf-8")):
             source_ids[(r["account_id"], r["transaction_id"])] = r["customer_id"]
     lookup = list(csv.DictReader(open(args.export / "tuning_membership_lookup.csv", newline="")))
     c = Counter(rows=len(lookup))
