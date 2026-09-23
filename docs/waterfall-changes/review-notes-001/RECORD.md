@@ -11,7 +11,7 @@ B05 2,000-row candidate benchmark. The master benchmark design says new rule
 evidence must not originate in the reserved benchmark. Carlos asked for these rules
 anyway, so the dependency is declared rather than hidden:
 
-- the 65 benchmark rows whose deterministic outcome these rules decide are tagged
+- the 122 benchmark rows whose deterministic outcome these rules decide are tagged
   `rule_exposure=["review-notes-001"]` in the private B05 final outcomes;
 - T1–T5 scores on those rows are development diagnostics, not independent
   evidence;
@@ -30,12 +30,12 @@ anyway, so the dependency is declared rather than hidden:
 | T5 R53 | description `^withdrew from pot$` → `transfer_own_account` | pilot ruling C, confirmed 2026-09-23 |
 | T5 R54 | description `\bangel hill site\b`, debit → `restaurant_cafe` | note |
 | T5 R55 | description `\bytc\b`, debit → `discount_store` | note (Yorkshire Trading Company) |
+| T5 R56 | description `^daily od int`, debit → `interest_charged` | 2026-09-23 ruling (supersedes pilot ruling E; same principle as R36) |
 
 Three noted rows needed no change, because the current dictionary already agreed:
 Apple App Store → `software`, IVS France → `confectionary`, U.S. Post Office →
 `delivery_courier`. Other rulings from the same day needed no rule:
 
-- DAILY OD INT → `interest_charged`: T6 already outputs it.
 - Gambling credits → `gambling_unspecified`: T1 already outputs it.
 - Money-transfer providers → `money_transfer_service`: T4 already outputs it.
 
@@ -44,7 +44,7 @@ merchant re-parsing from the narrative, and it is not a single rule.
 
 ## Cases and false-positive scans
 
-Research `tests/test_review_notes_001.py` has 9 positive, 4 negative and 2
+Research `tests/test_review_notes_001.py` has 11 positive, 5 negative and 2
 precedence cases, plus a generated-SQL branch check. App
 `test_tiers.py::test_asda_living_is_department_store_before_the_asda_dictionary_key`
 covers the ported T2 builtin. Every new pattern was scanned on the 500,000-row B05
@@ -57,6 +57,7 @@ showed no false positives:
 | R53 | 9,791 | 0 |
 | R54 | 60 | 11 |
 | R55 | 16 | 54 |
+| R56 | 8,145 | 0 |
 | usd_onlyfans | 7 | 5 |
 
 ## Identities
@@ -71,7 +72,8 @@ showed no false positives:
 
 ## Measured impact (deterministic waterfall, research `our_leaf`, Plaid native path)
 
-- **500,000-row customer-linked pool** (label-free): 25,615 rows (5.1%) change.
+- **500,000-row customer-linked pool** (label-free): 33,760 rows (6.8%) change route.
+  25,615 of them change leaf; the other 8,145 are R56, which changes the tier only.
 
   | Transition | Rows |
   |---|---:|
@@ -90,6 +92,22 @@ showed no false positives:
 - **B05 benchmark, labelled rows (1,761; development-exposed):** deterministic leaf
   accuracy rises from 53.27% to 56.27%. There are 53 wrong→right, 12 right→right
   (tier changed) and 0 right→wrong.
+
+- **Serving engine, B05 benchmark (development-exposed, projected):** serving T6 is
+  the classifier head, so the research-side view above understates some rules and
+  overstates others.
+  - R52 changes nothing in serving: "Added to Pot" is already `savings_transfer`,
+    33/33.
+  - R53 fixes 19/19 "Withdrew from Pot" rows.
+  - R56 fixes the model's split on DAILY OD INT (41 `overdraft_arranged`, 6
+    `bank_charge_other`).
+
+  The projection replaces the 122 exposed rows with the rule output on the
+  measured serving predictions. The production-facing slice goes from 80.4% to
+  85.1%; all labelled rows go from 77.6% to 82.1%. 79 predictions change, all
+  wrong→right. This is not a measured candidate bundle.
+- R56 on the pool: 8,145 rows, research leaf unchanged (T6 crosswalk already said
+  `interest_charged`), tier T6 → T5.
 
 ## Predeclared acceptance (for the full run)
 

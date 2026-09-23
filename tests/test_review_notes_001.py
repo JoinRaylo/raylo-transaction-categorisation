@@ -37,6 +37,9 @@ CASES = [
      "FOOD_RETAIL_GROCERIES", "department_store", "T2_compound_asda_living"),
     ("google_play_apps", "Google Play", "debit", "Google Play Apps  ON 15 MAR CPM GOOGLE PLAY APPS",
      "ENTERTAINMENT_VIDEO_GAMES", "gaming_mobile", "T4_dictionary"),
+    ("daily_od_int", "", "debit", "DAILY OD INT", "BANK_FEES_OVERDRAFT_FEES", "interest_charged", "T5_R56"),
+    ("daily_od_int_dated", "", "debit", "DAILY OD INT 11/10", "INTEREST_PAYMENTS_INTEREST_CHARGED",
+     "interest_charged", "T5_R56"),
     ("post_office_counter", "Post Office", "debit", "POST OFFICE  25OCT",
      "TRANSFER_OUT_CHECKS_AND_ATM", "delivery_courier", "T4_dictionary"),
 ]
@@ -47,6 +50,7 @@ NEGATIVE = [
     ("ytc_credit_not_spend", "", "credit", "YTC SKIPTON REFUND", "TRANSFER_IN_OTHER", None, "T5_R55"),
     ("usd_other_merchant", "USD", "debit", "CARD PAYMENT TO AMAZON ,9.00 USD, RATE 0.74/GBP",
      "TRANSFER_OUT_OTHER", "adult_entertainment", None),
+    ("od_int_refund_credit", "", "credit", "DAILY OD INT REFUND", "TRANSFER_IN_OTHER", None, "T5_R56"),
     ("angel_hill_place_name", "", "debit", "ANGEL HILL SURGERY", "MEDICAL_OTHER_MEDICAL",
      "restaurant_cafe", None),
 ]
@@ -93,7 +97,7 @@ def test_generated_sql_contains_each_new_branch_once():
         for value in ("adult_entertainment", "T2_compound_usd_onlyfans"):
             branch = generator._t2_collision_when(row, merchant, generator.EQX_DESC_EXPR, value)
             assert sql.count(branch) == 1
-    for rule_id in ("R52", "R53", "R54", "R55"):
+    for rule_id in ("R52", "R53", "R54", "R55", "R56"):
         assert sql.count(f"THEN 'T5_rule_{rule_id}'") == 2
     assert sql.count("r'asda\\s*living') THEN 'department_store'") == 2
     assert "r'asda\\s*living') THEN 'home_accessories'" not in sql
