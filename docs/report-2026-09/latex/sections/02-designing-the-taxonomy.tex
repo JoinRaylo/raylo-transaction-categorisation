@@ -1,0 +1,15 @@
+% Edit this section directly. Styling is in raylo-report.sty.
+\section{Designing the taxonomy}
+The taxonomy has two levels: 275 detailed categories, which we call leaves, rolling up into 29 general categories. It was verified programmatically to leave no uncovered value across all 255 Equifax subcategories, 47 Equifax primary categories and 91 Plaid detailed categories, so any transaction either provider can describe has a home.
+
+Three design decisions shaped it.
+
+\subsection{Cross-cutting concerns are flags, not levels of the hierarchy}
+Whether a category is essential spending, whether it is debt, whether it is a priority debt in the UK debt-advice sense, whether it is age-restricted, and whether it carries a risk flag are all recorded as separate attributes of each leaf. They cannot be levels in a tree because they are not tree-shaped: rent and mortgage are both essential, but only mortgage is debt. Folding debt into the hierarchy would have made an essential-spend feature exclude mortgage for homeowners and include rent for renters, a tenure-based distortion inside a credit decision with obvious fairness implications.
+
+\subsection{Predictive power does not decide which categories exist}
+An early version pruned leaves that did not predict arrears and had to be rebuilt. Low predictive power only tells you where it is safe to aggregate for one particular outcome. The clearest case is gambling: the combined gambling category carries almost no signal, while lottery alone carries the strongest signal of any gambling subtype. Merging the subtypes would have destroyed information that later turned out to matter, and a test now guards against it.
+
+\subsection{The general level is a strict rollup}
+Every leaf has exactly one parent. Equifax's own two category fields are not a hierarchy (222 of its 255 subcategories appear under multiple primaries), which is part of why its output is hard to reason about. A strict tree means a general-level feature always means the same thing.
+

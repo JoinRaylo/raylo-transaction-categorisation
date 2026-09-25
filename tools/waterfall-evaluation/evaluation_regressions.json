@@ -1,0 +1,83 @@
+{
+  "schema_version": "synthetic-credit-regressions-v1",
+  "note": "Diagnostic examples only. Bare Waitrose credits have user-specified intended meanings that are not recoverable from their visible inputs alone. Never use as a representative accuracy estimate or invent amount thresholds. No candidate acceptance asserted.",
+  "cases": [
+    {
+      "merchant_raw": "McDonalds",
+      "description_raw": "McDonalds",
+      "amount": "6.99",
+      "direction": "debit",
+      "provider": "plaid",
+      "native_category": "",
+      "gold_leaf": "takeaway",
+      "source": "user_synthetic_intent",
+      "context": "user synthetic debit"
+    },
+    {
+      "merchant_raw": "Waitrose",
+      "description_raw": "Waitrose",
+      "amount": "25.44",
+      "direction": "debit",
+      "provider": "plaid",
+      "native_category": "",
+      "gold_leaf": "groceries",
+      "source": "user_synthetic_intent",
+      "context": "user synthetic debit"
+    },
+    {
+      "merchant_raw": "Waitrose",
+      "description_raw": "Waitrose",
+      "amount": "2.99",
+      "direction": "credit",
+      "provider": "plaid",
+      "native_category": "",
+      "gold_leaf": "refund_received",
+      "source": "user_synthetic_intent",
+      "context": "user-intended refund; narrative is ambiguous"
+    },
+    {
+      "merchant_raw": "Waitrose",
+      "description_raw": "Waitrose",
+      "amount": "1989.11",
+      "direction": "credit",
+      "provider": "plaid",
+      "native_category": "",
+      "gold_leaf": "salary",
+      "source": "user_synthetic_intent",
+      "context": "user-intended salary; narrative is ambiguous"
+    },
+    {
+      "merchant_raw": "SkyBet",
+      "description_raw": "SkyBet",
+      "amount": "50",
+      "direction": "debit",
+      "provider": "plaid",
+      "native_category": "",
+      "gold_leaf": "gambling_betting",
+      "source": "user_synthetic_intent",
+      "context": "user synthetic debit"
+    },
+    {
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE REFUND",
+      "amount": "2.99",
+      "direction": "credit",
+      "provider": "plaid",
+      "native_category": "",
+      "gold_leaf": "refund_received",
+      "source": "user_synthetic_intent",
+      "context": "explicit refund"
+    },
+    {
+      "merchant_raw": "Waitrose",
+      "description_raw": "WAITROSE PAYROLL",
+      "amount": "1989.11",
+      "direction": "credit",
+      "provider": "plaid",
+      "native_category": "",
+      "gold_leaf": "salary",
+      "source": "user_synthetic_intent",
+      "context": "explicit payroll"
+    }
+  ]
+}

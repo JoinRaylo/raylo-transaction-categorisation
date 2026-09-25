@@ -41,6 +41,9 @@ from build_final_gold_v2 import TXN_ADDENDUM  # noqa: E402
 from eval_sets import v6_excluded_merchants  # noqa: E402
 
 SAMPLE_CSV = OUT_DIR / "gold_v6_locked_sample.csv"
+# Gemini thinking budget for labelling calls (None = model default). The credit
+# tranche (2 Sep) sets 0: thinking tripled latency and added nothing at temperature 0.
+GEMINI_THINKING_BUDGET = None
 V6_MODELS = {
     "gemini": {"backend": "gemini", "id": "gemini-3.7-flash", "extra": {}},
     "sonnet": {"backend": "anthropic", "id": "claude-sonnet-5", "max_tokens": 16000, "extra": {}},
@@ -192,7 +195,10 @@ def label(model_key):
                 return {}
             by_idx = {j + 1: r for j, r in enumerate(batch)}
             out = {}
-            for res in tool_use.input.get("results", []):
+            results = tool_use.input.get("results", []) if isinstance(tool_use.input, dict) else []
+            for res in results if isinstance(results, list) else []:
+                if not isinstance(res, dict):
+                    continue  # malformed item (a string / list) — skip; the retry loop re-asks for missing rows
                 r = by_idx.get(res.get("index"))
                 if not r:
                     continue
@@ -206,7 +212,10 @@ def label(model_key):
         from google import genai
         from google.genai import types
 
-        client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"], vertexai=False)
+        # Per-request timeout: without it a hung connection blocks a shard forever
+        # (all four distillation shards froze at the same minute on 4 Sep).
+        client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"], vertexai=False,
+                              http_options=types.HttpOptions(timeout=120_000))
         leaf_list = sorted(leaves)
         index_addendum = "\n\n## Category index (output this number, not the name)\n" + "\n".join(
             f"{i + 1}. {leaf}" for i, leaf in enumerate(leaf_list))
@@ -231,18 +240,27 @@ def label(model_key):
             "required": ["results"],
         }
 
+        gen_kwargs = {}
+        if GEMINI_THINKING_BUDGET is not None:
+            gen_kwargs["thinking_config"] = types.ThinkingConfig(thinking_budget=GEMINI_THINKING_BUDGET)
+
         def classify_batch(batch, tag, attempt=0):
+            import time as _time
             user_msg = ("Classify each of these real transactions:\n\n"
                         + "\n".join(render(j + 1, r) for j, r in enumerate(batch)))
+            _t0 = _time.time()
             try:
                 resp = client.models.generate_content(
                     model=cfg["id"], contents=user_msg,
                     config=types.GenerateContentConfig(
                         system_instruction=gemini_system,
                         response_mime_type="application/json", response_schema=schema, temperature=0.0,
+                        **gen_kwargs,
                     ),
                 )
                 data = json.loads(resp.text)
+                if _time.time() - _t0 > 20:
+                    print(f"  [{tag}] slow call {_time.time() - _t0:.0f}s", file=sys.stderr)
             except Exception as e:
                 if attempt < 2:
                     print(f"  [{tag}] error ({e}), retrying...", file=sys.stderr)
@@ -253,7 +271,10 @@ def label(model_key):
                 return {}
             by_idx = {j + 1: r for j, r in enumerate(batch)}
             out = {}
-            for res in data.get("results", []):
+            results = data.get("results", []) if isinstance(data, dict) else []
+            for res in results if isinstance(results, list) else []:
+                if not isinstance(res, dict):
+                    continue
                 cat_idx = res.get("category_index")
                 r = by_idx.get(res.get("index"))
                 if not r or not (isinstance(cat_idx, int) and 1 <= cat_idx <= len(leaf_list)):
@@ -271,12 +292,18 @@ def label(model_key):
         num = i // BATCH + 1
         if num % 5 == 1:
             print(f"[{model_key}] batch {num}/{n_batches}", file=sys.stderr)
-        predictions.update(classify_batch(batch, f"b{num:03d}"))
+        def _safe(fn, *a):
+            try:
+                return fn(*a)
+            except Exception as e:  # noqa: BLE001 — a malformed model response must not kill a 100k-row shard
+                print(f"  [{a[1]}] batch parse error {type(e).__name__}: {e}", file=sys.stderr)
+                return {}
+        predictions.update(_safe(classify_batch, batch, f"b{num:03d}"))
         for attempt in (1, 2):
             missing = [r for r in batch if r["row_id"] not in predictions]
             if not missing:
                 break
-            predictions.update(classify_batch(missing, f"b{num:03d}_r{attempt}"))
+            predictions.update(_safe(classify_batch, missing, f"b{num:03d}_r{attempt}"))
         if num % 10 == 0:
             flush()
     flush()

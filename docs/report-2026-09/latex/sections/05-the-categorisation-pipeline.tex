@@ -1,0 +1,39 @@
+% Edit this section directly. Styling is in raylo-report.sty.
+\section{The categorisation pipeline}
+Every transaction resolves at the first tier that fires, and records which tier decided it. Provenance is mandatory: ``resolved by exact merchant match on Tesco'' is defensible in a fair-lending review, ``the model predicted 0.87'' is much weaker. The deterministic tiers run first, the machine-learning tier serves what they miss, and the provider's own category is used only when nothing else can decide.
+
+\begin{tcolorbox}[colback=BlueTint,colframe=BlueTint,arc=2mm]
+\textcolor{Blue}{\textbf{T1}}\quad \textbf{Direction-dependent overrides.} A bookmaker credit is winnings, not a stake. A supermarket credit is a refund, not a shop.
+\end{tcolorbox}
+{\small\color{Muted} no match $\downarrow$\par}
+\begin{tcolorbox}[colback=BlueTint,colframe=BlueTint,arc=2mm]
+\textcolor{Blue}{\textbf{T2}}\quad \textbf{Compound merchant-plus-narrative rules.} Plaid collapses Tesco Bank, Tesco Petrol and Tesco Phone Insurance onto bare ``Tesco''; narrative checks split them before the dictionary can say ``groceries''. HMRC child benefit credits versus tax payments are the same shape.
+\end{tcolorbox}
+{\small\color{Muted} no match $\downarrow$\par}
+\begin{tcolorbox}[colback=BlueTint,colframe=BlueTint,arc=2mm]
+\textcolor{Blue}{\textbf{T3}}\quad \textbf{Mechanism overrides.} Equifax's ``Identified Salary'' is salary regardless of merchant, even salary paid by a supermarket. Thirteen such primaries decide the category on their own.
+\end{tcolorbox}
+{\small\color{Muted} no match $\downarrow$\par}
+\begin{tcolorbox}[colback=BlueTint,colframe=BlueTint,arc=2mm]
+\textcolor{Blue}{\textbf{T4}}\quad \textbf{Merchant dictionary, 90,264 curated entries.} Overrides both providers on any exact match. This is the tier that makes the taxonomy provider-independent.
+\end{tcolorbox}
+{\small\color{Muted} no match $\downarrow$\par}
+\begin{tcolorbox}[colback=BlueTint,colframe=BlueTint,arc=2mm]
+\textcolor{Blue}{\textbf{T5}}\quad \textbf{Deterministic regex rules, 51 of them.} Council tax, sheriff court, StepChange, card-issuer and overdraft narratives, including on blank or truncated merchants.
+\end{tcolorbox}
+{\small\color{Muted} no match $\downarrow$\par}
+\begin{tcolorbox}[colback=BlueTint,colframe=BlueTint,arc=2mm]
+\textcolor{Blue}{\textbf{T5b}}\quad \textbf{Machine-learning classifier.} Serves everything the rules miss, on CPU, with no external calls. Abstains rather than guessing when its margin is thin. The subject of sections 8 and 9.
+\end{tcolorbox}
+{\small\color{Muted} abstains $\downarrow$\par}
+\begin{tcolorbox}[colback=BlueTint,colframe=BlueTint,arc=2mm]
+\textcolor{Blue}{\textbf{T6}}\quad \textbf{Provider crosswalk.} Plaid's or Equifax's own category mapped onto our taxonomy, used only when the classifier abstains.
+\end{tcolorbox}
+{\small\color{Muted} no usable category $\downarrow$\par}
+\begin{tcolorbox}[colback=BlueTint,colframe=BlueTint,arc=2mm]
+\textcolor{Blue}{\textbf{T7}}\quad \textbf{Explicit unclassified.} Monitored, never guessed.
+\end{tcolorbox}
+On live Plaid traffic the deterministic tiers resolve about 58\% of transactions before the classifier is consulted. The dictionary alone covers 56.5\% of rows, which is 89\% of the transactions that carry a merchant name at all; 37\% arrive with the merchant field blank. Everything the rules miss goes to the classifier, and the classifier serves all of it. We tested falling back to the provider's category when the classifier was unsure, and it lowered accuracy at every threshold.
+
+The pipeline exists in two forms that must agree: the SQL that runs in BigQuery, and a Python mirror used for evaluation. A parity check now runs the SQL's own rule bodies over the evaluation rows and asserts row-level agreement. It passes 2,000 of 2,000, and when it was first written it found that 34 hand-written rules had never fired in production because of an escaping bug in the SQL generator. That is the kind of silent failure this discipline exists to catch.
+

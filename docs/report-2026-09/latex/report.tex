@@ -1,0 +1,45 @@
+% Compile with Texifier Unicode / XeLaTeX / Tectonic.
+% !TEX encoding = UTF-8 Unicode
+\documentclass[10pt,a4paper]{article}
+\usepackage{raylo-report}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\pagecolor{Blue}\color{white}
+\includegraphics[width=30mm]{assets/raylo-white.png}\hfill {\small SEPTEMBER 2026}\par
+\vspace*{27mm}
+{\small\bfseries AI ACCELERATION\quad /\quad RESEARCH REPORT\par}
+\vspace{10mm}
+{\fontsize{36}{40}\selectfont\bfseries Open Banking\\Transaction\\Categorisation\\and Credit Risk\par}
+\vspace{12mm}
+{\large A taxonomy Raylo owns, the pipeline that applies it, the models tested for the hardest part of that pipeline, and the evidence that the resulting features improve credit decisions.\par}
+\vfill
+\vspace{10mm}
+{\small Carlos Noble Jesus | AI Engineering\hfill Updated 9th September 2026}
+\vspace{5mm}
+%{\footnotesize Confidential, internal use only\hfill raylo.com\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\nopagecolor\color{Charcoal}
+\input{sections/00-abstract}
+\clearpage
+\tableofcontents
+
+\clearpage
+\input{sections/01-why-a-taxonomy-raylo-owns.tex}
+\input{sections/02-designing-the-taxonomy.tex}
+\input{sections/03-how-many-categories-is-the-right-number.tex}
+\input{sections/04-labelling-the-data.tex}
+\clearpage
+\input{sections/05-the-categorisation-pipeline.tex}
+\input{sections/06-measuring-honestly.tex}
+\input{sections/07-categorisation-performance-against-the-providers.tex}
+\input{sections/08-the-machine-learning-tier-the-linear-classifier.tex}
+\input{sections/09-the-machine-learning-tier-transformer-models.tex}
+\input{sections/10-the-credit-risk-model-and-the-new-champion.tex}
+\input{sections/11-adding-text-to-the-risk-model.tex}
+\input{sections/12-why-these-architectures-and-not-others.tex}
+\clearpage
+\input{sections/13-status-caveats-and-next-steps.tex}
+\input{sections/14-evidence.tex}
+\end{document}

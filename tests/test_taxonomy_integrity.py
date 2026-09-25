@@ -762,3 +762,157 @@ def test_plaid_legacy_category_map_valid_leaves():
     paths = [r["category_path"] for r in rows]
     dupes = [k for k, n in collections.Counter(paths).items() if n > 1]
     assert not dupes, f"duplicate category_path: {dupes}"
+
+
+def test_t4_has_no_tranche4_context_dependent_agent_keys():
+    """2026-09-02: 1,633 T4 keys were merchants tranche 4 marked context_dependent
+    (`miss`, `dad`, `credit`, `trading`, ...). Agent-sourced ones must be gone;
+    human packs may keep a key with the collision in view."""
+    t4 = ROOT / "data" / "production_labels_tranche4.csv"
+    ctx = {r["merchant"].strip().lower() for r in csv.DictReader(t4.open())
+           if r["tier"] == "context_dependent"}
+    assert len(ctx) > 5000
+    agent_prefixes = ("production_tranche3_", "production_tranche4_")
+    bad = [r["normalised_merchant"] for r in csv.DictReader(DICT.open())
+           if r["normalised_merchant"] in ctx and r["source"].startswith(agent_prefixes)]
+    assert bad == [], bad[:20]
+    keys = {r["normalised_merchant"] for r in csv.DictReader(DICT.open())}
+    for tok in ("miss", "dad", "mum", "credit", "trading", "new zealand", "savannah"):
+        assert tok not in keys, tok
+
+
+def test_python_waterfall_orders_t1_t3_before_t4_like_sql():
+    """The eval mirror must fire Equifax T1/T3 before the dictionary, as the SQL does."""
+    sys.path.insert(0, str(ROOT / "src"))
+    import final_evaluation as fe
+    from score_t5b_residual import _init_waterfall, resolve_tier
+
+    _init_waterfall()
+    assert fe.DICTIONARY.get("tesco") == "groceries"
+    # T3 mechanism override beats T4 on an Equifax salary-from-a-supermarket row.
+    leaf, tier = resolve_tier("tesco", "credit", "TESCO STORES SALARY",
+                              "Identified Salary | General Groceries", "equifax")
+    assert (leaf, tier) == ("salary", "T3_mechanism_override")
+    # T1 native gambling credit beats T4 on Equifax.
+    leaf, tier = resolve_tier("sky bet", "credit", "SKYBET",
+                              "Gambling and Betting | Betting", "equifax")
+    assert (leaf, tier) == ("gambling_unspecified", "T1_direction")
+    # Plaid T1 native gambling credit beats T4.
+    leaf, tier = resolve_tier("bet365", "credit", "BET365",
+                              "ENTERTAINMENT_CASINOS_AND_GAMBLING", "plaid")
+    assert (leaf, tier) == ("gambling_unspecified", "T1_direction")
+    # Plain debit still resolves via T4.
+    leaf, tier = resolve_tier("tesco", "debit", "TESCO STORES 3213",
+                              "Shopping | General Groceries", "equifax")
+    assert (leaf, tier) == ("groceries", "T4_dictionary")
+    # Unmapped Plaid category with nothing else -> T7, not T6.
+    leaf, tier = resolve_tier("zzqx unknown", "debit", "ZZQX", "", "plaid")
+    assert tier == "T7_unclassified" and leaf == "unclassified_other"
+
+
+def test_sql_case_bodies_are_shared_with_parity_checker():
+    """generate() and check_waterfall_parity.py must use the same CASE bodies."""
+    sys.path.insert(0, str(ROOT / "src"))
+    import generate_crosswalk_sql as gxw
+
+    sql = (ROOT / "sql" / "apply_crosswalk.sql").read_text()
+    for fn in (gxw.eqx_leaf_case, gxw.eqx_tier_case, gxw.plaid_leaf_case, gxw.plaid_tier_case):
+        body = fn()
+        assert body.strip().startswith("CASE")
+        assert body in sql, fn.__name__
+    parity = (ROOT / "src" / "check_waterfall_parity.py").read_text()
+    for name in ("eqx_leaf_case", "eqx_tier_case", "plaid_leaf_case", "plaid_tier_case"):
+        assert f"gxw.{name}()" in parity
+
+
+def test_training_build_excludes_risk_gold_merchants():
+    """The risk-category gold set is held out of Tier A, Tier B and the top-up."""
+    src = (ROOT / "src" / "build_tuning_dataset.py").read_text()
+    assert "def load_risk_merchants" in src
+    assert 'if t["merchant"] in risk_merchants' in src
+    assert "if m in risk_merchants" in src
+    assert "(holdout_merchants | risk_merchants)" in src
+
+
+def test_card_issuer_and_overdraft_t5_rules_no_labelled_false_positives():
+    """R33–R37 (3 Sep) must not fire against a different gold leaf on the labelled sets,
+    beyond the known Amex charge-card split and the older ACC-NWEST own-account rows."""
+    import re
+    sys.path.insert(0, str(ROOT / "src"))
+    from final_evaluation import _rule_matches
+    rules = [r for r in csv.DictReader(RULES.open()) if r["rule_id"] in {"R33", "R34", "R35", "R36", "R37"}]
+    assert len(rules) == 5
+    for r in rules:
+        re.compile(r["pattern"], re.I)
+        if r["exclude_pattern"]:
+            re.compile(r["exclude_pattern"], re.I)
+    order = sorted(rules, key=lambda r: (int(r["priority"]), r["rule_id"]))
+
+    def fire(desc, direction):
+        for r in order:
+            if _rule_matches(r, "", desc, direction):
+                return r["detailed_category"]
+        return None
+
+    fixtures = [
+        ("AMERICAN EXP 3773 PB4525******88522", "debit", "charge_card_repayment"),
+        ("HSBC BNK VSA454638454638******4482", "debit", "credit_card_repayment"),
+        ("LLOYDS BANK PLATIN 300000001626157001", "debit", "credit_card_repayment"),
+        ("CREDIT CARD 600000001610288678", "debit", "credit_card_repayment"),
+        ("AQUA CREDIT CARD XXXXXXXXXXXX8527 FIRST DDR PAYMENT DDR Aqua", "debit", "credit_card_repayment"),
+        ("UNARRANGED OVERDRAFT CHARGES 16JUN23-14JUL23", "debit", "overdraft_unarranged"),
+        ("OVERDRAFT INTERESTTO 12SEP2025", "debit", "interest_charged"),
+        ("Arranged Overdraft Interest", "debit", "overdraft_arranged"),
+        ("August overdraft fees", "debit", "overdraft_arranged"),
+        ("Overdraft", "debit", "overdraft_arranged"),
+        ("HSBC BNK VSA454638454638******4482", "credit", None),   # credits never fire
+        ("Aqua vitae restaurant", "debit", None),                  # issuer word without a card token
+        ("card payment to tesco stores", "debit", None),           # 'card payment' alone is not an issuer
+    ]
+    for desc, direction, expected in fixtures:
+        assert fire(desc, direction) == expected, (desc, direction, fire(desc, direction))
+    # dictionary merchants: the rules must not relabel any T4 key
+    for r in csv.DictReader(DICT.open()):
+        f = fire(r["normalised_merchant"], "debit")
+        assert f is None or f == r["detailed_category"], (r["normalised_merchant"], f, r["detailed_category"])
+    # holdout + pipeline eval: any firing must agree with gold except the Amex split
+    for name in ("gold_v2_slm_eval_holdout.csv",):
+        for r in csv.DictReader((ROOT / "data" / name).open()):
+            f = fire(r.get("description_raw", ""), r.get("direction", "").lower())
+            if f and f != r["gold_leaf"]:
+                assert {f, r["gold_leaf"]} <= {"credit_card_repayment", "charge_card_repayment"}, (name, r["description_raw"], f, r["gold_leaf"])
+
+
+def test_blank_merchant_t5_rules_r38_r51_fixtures():
+    """3 Sep risk-tranche description rules: fire on the blank-merchant narrative forms of
+    known T4 keys / accepted conventions, never on credits, never on Zettle (a rail)."""
+    sys.path.insert(0, str(ROOT / "src"))
+    from final_evaluation import _rule_matches
+    ids = {"R38", "R39", "R40", "R41", "R44", "R45", "R46", "R47", "R48", "R49", "R50", "R51"}
+    rules = sorted((r for r in csv.DictReader(RULES.open()) if r["rule_id"] in ids),
+                   key=lambda r: (int(r["priority"]), r["rule_id"]))
+    assert len(rules) == 12
+
+    def fire(desc, direction="debit"):
+        for r in rules:
+            if _rule_matches(r, "", desc, direction):
+                return r["detailed_category"]
+        return None
+
+    for desc, expected in [
+        ("1218 04JUL25 YOUR PLAN CARD PAYMENT CREATI", "credit_card_repayment"),
+        ("DFH FINANCIAL SOLUTIONS DD", "debt_management_plan"),
+        ("CARD PAYMENT TO FGFS LTD ON 12-08-2025", "retail_finance_repayment"),
+        ("Hme Rtl Grp Cards, 00008921900III2163", "revolving_credit_repayment"),
+        ("ACIUKLTD 12345", "debt_collection"),
+        ("WWW.PAYMENT-ASSISTMELTON MOWBRA", "bnpl"),
+        ("CARD PAYMENT TO WWW.FAIRFORYOU.CO.UK", "personal_loan_repayment"),
+        ("CASE: DRS123456 CARD: ****1234", "debt_collection"),
+        ("TRAVL PLUS FEE REF 123 PDP", "account_charge"),
+        ("ZETTLE_*ESPRESS ORGANI", None),
+    ]:
+        assert fire(desc) == expected, (desc, fire(desc))
+    assert fire("CARD PAYMENT TO FGFS LTD", "credit") is None
+    for r in csv.DictReader(DICT.open()):
+        f = fire(r["normalised_merchant"])
+        assert f is None or f == r["detailed_category"], (r["normalised_merchant"], f, r["detailed_category"])

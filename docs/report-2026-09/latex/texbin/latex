@@ -1,0 +1,15 @@
+#!/bin/bash
+# Minimal Texifier compatibility adapter. Tectonic embeds Unicode XeTeX.
+set -eu
+if [[ "${1:-}" == "--version" || "${1:-}" == "-version" ]]; then
+  exec /opt/homebrew/bin/tectonic --version
+fi
+texfile=""
+for arg in "$@"; do
+  case "$arg" in *.tex) texfile="$arg" ;; esac
+done
+if [[ -z "$texfile" ]]; then
+  echo 'Use the report.tpbuild project script or pass a .tex filename.' >&2
+  exit 1
+fi
+exec /opt/homebrew/bin/tectonic --keep-logs --keep-intermediates "$texfile"

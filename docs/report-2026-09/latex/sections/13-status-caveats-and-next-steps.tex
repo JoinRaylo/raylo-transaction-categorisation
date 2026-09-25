@@ -1,0 +1,29 @@
+% Edit this section directly. Styling is in raylo-report.sty.
+\section{Status, caveats and next steps}
+\subsection{Where things stand}
+The taxonomy, pipeline, dictionary and evaluation methodology are complete. Classifier v8 and the transformer are both measured against merchant-disjoint evaluation sets, and the transformer clears every accuracy criterion. The 50-feature single-XGBoost champion is the reference credit model, with the uncapped champion as the ceiling. The text-score recipe is locked (+0.024 GINI on the capped model) and the two-score version (0.629) is the registered challenger. Nothing is yet referenced by a production model or scheduled job.
+
+\subsection{Caveats to carry into any decision}
+\begin{itemize}
+\item The champion's 0.588 (capped, single XGBoost) and 0.618 (uncapped blend) are development numbers. Their test windows were used in earlier work, and the like-for-like uplift over the live model is the whole bundle of taxonomy, features and learner; a same-feature-count ablation was inconclusive.
+\item Each out-of-time window rests on a few hundred bad outcomes. The gaps to the live model are far larger than that noise; the text-score and encoder-score lifts are not, and both recipes have been evaluated repeatedly against this one window. The prospective cohort is the only clean arbiter left.
+\item The 400-row risk evaluation set is unseen rows of a known population, not an unseen population. Two risk leaves (debt collection, casino) remain thin.
+\item Half of all transactions resolve through provider-derived tiers, so no feature built from categories is fully provider-blind. Transfer from Equifax history to Plaid traffic is verified empirically rather than assumed.
+\end{itemize}
+\subsection{The validation gate}
+Every credit-model number in this report is a development result: the out-of-time windows were used in earlier experiment work, and the learned scores have been evaluated many times against the same 397 bad outcomes. One test settles what they are worth, and it is specified now so it cannot be tuned later.
+
+\begin{itemize}
+\item \textbf{What is frozen.} The taxonomy, the merchant dictionary, the rules, the T5b classifier, the feature SQL and the 50-feature champion recipe, all stamped with an effective date. Nothing in the path is retrained or edited after that date.
+\item \textbf{The cohort.} Applications from February to April 2026, none of which appear in any training or validation window. Their six-month outcomes mature around November 2026.
+\item \textbf{What is scored, once.} Two registered recipes: the 50-feature champion plus the text score as the primary, and the same plus the sequence-encoder score as the challenger. Each is scored with bge-base and with our own encoder as the text model. The uncapped champion and the live model are scored alongside for reference. GINI and PR-AUC with paired intervals, calibration against the observed bad rate, and recall on the risk categories.
+\item \textbf{What would justify promotion.} The pass bars (minimum GINI uplift over the live model, non-inferiority of the challenger to the primary, calibration tolerance) are to be agreed with the credit-risk team before the cohort matures, and are recorded as an open item. Whatever clears them is promoted as scored; nothing is re-tuned on the cohort.
+\end{itemize}
+The locked 1,100-row categorisation confirmation set is scored once at the same go/no-go, and never before.
+
+\subsection{Next steps}
+\begin{enumerate}
+\item \textbf{Work out how the service should run outside Taktile.} Put together plans for both the current machine-learning categoriser and the transformer categoriser, to help understand the challenges with each and which we want to deploy. For each, decide what should host it (including whether Google Cloud is the natural home), where the models, features and transaction data sit, and how it connects back into today's Taktile flows. The same design needs to cover ownership, fallbacks and monitoring: whether inputs are complete, categories and confidence are drifting, predictions are reaching Taktile, and performance holds once outcomes mature.
+\item \textbf{Start with the categories, then add complexity if it earns its place.} A sensible first stage is the governed taxonomy, deterministic tiers and current classifier as one categorisation service. Once that path is stable and measured in the live flow, the transformer categoriser and the text or sequence encoder scores can be added separately. Staging the work this way makes it possible to see what each layer adds and where each new operational risk comes from.
+\item \textbf{Keep the size of the gain in view.} Most of the improvement comes from giving the risk model Raylo's categories instead of the provider's. The transformer and encoder models add a smaller, but still worthwhile, lift. They also bring another serving path and more to monitor. That trade-off should decide how far the first deployment goes. In parallel, more labelled data and further domain pretraining are worth testing to see whether the learned models can earn a larger role.
+\end{enumerate}

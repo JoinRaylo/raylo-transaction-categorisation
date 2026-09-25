@@ -1,0 +1,6 @@
+.texpadtmp/
+*.aux
+*.log
+*.out
+*.toc
+*.xdv

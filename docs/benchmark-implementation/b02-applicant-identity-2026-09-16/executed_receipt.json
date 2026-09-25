@@ -1,0 +1,995 @@
+{
+  "aggregate_result": {
+    "canonical_email_lookup_agrees_with_actual_customer": 0,
+    "canonical_email_lookup_conflicts_with_actual_customer": 0,
+    "canonical_email_lookup_multiple_customers": 0,
+    "canonical_email_lookup_one_customer": 0,
+    "canonical_email_lookup_zero_customers": 49,
+    "checkouts_with_current_user_customer": 0,
+    "checkouts_with_missing_referenced_user": 0,
+    "checkouts_with_nonblank_canonical_email": 49,
+    "checkouts_without_user_id": 49,
+    "cohort_rows": 49,
+    "cohort_unique_checkouts": 49,
+    "missing_checkout_rows": 0,
+    "missing_current_checkout_rows": 0,
+    "missing_current_customer_info_rows": 0,
+    "missing_customer_info_rows": 0,
+    "repeated_active_checkout_rows": 0,
+    "repeated_active_customer_info_rows": 0,
+    "repeated_checkout_rows": 0,
+    "repeated_customer_info_rows": 0
+  },
+  "bytes_processed": 1326528222,
+  "cohort_rows_validated_privately": 99,
+  "dry_run_bytes": 1326528222,
+  "ended_at": "2026-09-16T12:05:37.401067+00:00",
+  "executed": true,
+  "job_id": "49822944-a1e7-4651-b92f-f5cdec844b31",
+  "links_pin": {
+    "links_receipt_sha256": "20f9941252ef94fa9c66bed0b1c7eb5e13a992776e6a2390feb842bea958e6fa",
+    "links_result_rows": 99,
+    "links_result_sha256": "f90ea0244f9248a0fad1dbe71cc53920626c934262187819d54362d038447f5d",
+    "links_rows_sha256": "f90ea0244f9248a0fad1dbe71cc53920626c934262187819d54362d038447f5d",
+    "links_runner_sha256": "b16c787bd37f27acbaea12a401bd14424439dfcf5fd513a5e3c4c6034ffff23c",
+    "links_source_day": "2026-09-15",
+    "links_sql_sha256": "9ef368684029c921283359ac90a189a972a2c99cba71ef71de57aa68c1c53599",
+    "links_statement_type": "SELECT"
+  },
+  "links_receipt_sha256": "20f9941252ef94fa9c66bed0b1c7eb5e13a992776e6a2390feb842bea958e6fa",
+  "location": "EU",
+  "maximum_bytes_billed": 20000000000,
+  "metadata_after": [
+    {
+      "created": "2026-03-22T15:42:53.214000+00:00",
+      "etag": "rocNrccR4k5tRFEpOKgi+g==",
+      "modified": "2026-09-16T11:54:13.220000+00:00",
+      "num_bytes": 1876849255,
+      "num_rows": 6338933,
+      "schema": [
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_raw_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_extracted_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_meta",
+          "type": "JSON"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_airbyte_generation_id",
+          "type": "INTEGER"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "state",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "token",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "user_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "address_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "created_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "expires_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "updated_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_lsn",
+          "type": "NUMERIC"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "merchant_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "invitation_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "organization_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "for_organization",
+          "type": "BOOLEAN"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_deleted_at",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_updated_at",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "friendly_reference",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "previous_address_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "recent_change_of_address",
+          "type": "BOOLEAN"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "recent_change_of_country",
+          "type": "BOOLEAN"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "privacy_policy_accepted_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "terms_and_conditions_accepted_at",
+          "type": "DATETIME"
+        }
+      ],
+      "table": "raylo-production.airbyte_raylo_prod.checkouts"
+    },
+    {
+      "created": "2026-03-22T17:32:27.171000+00:00",
+      "etag": "OlTeTpkSO3eDiQy+S+LTXA==",
+      "modified": "2026-09-16T11:54:12.949000+00:00",
+      "num_bytes": 1365385912,
+      "num_rows": 4193705,
+      "schema": [
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_raw_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_extracted_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_meta",
+          "type": "JSON"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_airbyte_generation_id",
+          "type": "INTEGER"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "email",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "last_name",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "created_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "employment",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "first_name",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "updated_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_lsn",
+          "type": "NUMERIC"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "checkout_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "middle_name",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "date_of_birth",
+          "type": "DATE"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "canonical_email",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "intercom_lead_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_deleted_at",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_updated_at",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "marketing_opt_in_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "mobile_phone_number",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "marketing_referral_source",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "transient_sms_notifications_opt_out_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "transient_email_notifications_opt_out_at",
+          "type": "DATETIME"
+        }
+      ],
+      "table": "raylo-production.airbyte_raylo_prod.checkout_customer_infos"
+    },
+    {
+      "created": "2026-03-22T17:32:40.203000+00:00",
+      "etag": "28WNpE2wlYSmJjziWr9lzw==",
+      "modified": "2026-09-16T11:54:17.259000+00:00",
+      "num_bytes": 67457156,
+      "num_rows": 286279,
+      "schema": [
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_raw_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_extracted_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_meta",
+          "type": "JSON"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_airbyte_generation_id",
+          "type": "INTEGER"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "auth_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "created_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "updated_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_lsn",
+          "type": "NUMERIC"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "customer_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "intercom_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_deleted_at",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_updated_at",
+          "type": "STRING"
+        }
+      ],
+      "table": "raylo-production.airbyte_raylo_prod.users"
+    },
+    {
+      "created": "2026-03-22T17:32:24.497000+00:00",
+      "etag": "bGCAbrEuOege0C3EXqesdw==",
+      "modified": "2026-09-16T11:54:15.738000+00:00",
+      "num_bytes": 87061767,
+      "num_rows": 286178,
+      "schema": [
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_raw_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_extracted_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_meta",
+          "type": "JSON"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_airbyte_generation_id",
+          "type": "INTEGER"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "email",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "last_name",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "address_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "created_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "first_name",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "updated_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_lsn",
+          "type": "NUMERIC"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "middle_name",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "date_of_birth",
+          "type": "DATE"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "canonical_email",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "review_opt_out_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_deleted_at",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_updated_at",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "marketing_opt_in_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "mobile_phone_number",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "referral_rewarded_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "referrer_external_reference",
+          "type": "STRING"
+        }
+      ],
+      "table": "raylo-production.airbyte_raylo_prod.customers"
+    }
+  ],
+  "metadata_before": [
+    {
+      "created": "2026-03-22T15:42:53.214000+00:00",
+      "etag": "rocNrccR4k5tRFEpOKgi+g==",
+      "modified": "2026-09-16T11:54:13.220000+00:00",
+      "num_bytes": 1876849255,
+      "num_rows": 6338933,
+      "schema": [
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_raw_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_extracted_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_meta",
+          "type": "JSON"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_airbyte_generation_id",
+          "type": "INTEGER"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "state",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "token",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "user_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "address_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "created_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "expires_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "updated_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_lsn",
+          "type": "NUMERIC"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "merchant_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "invitation_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "organization_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "for_organization",
+          "type": "BOOLEAN"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_deleted_at",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_updated_at",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "friendly_reference",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "previous_address_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "recent_change_of_address",
+          "type": "BOOLEAN"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "recent_change_of_country",
+          "type": "BOOLEAN"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "privacy_policy_accepted_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "terms_and_conditions_accepted_at",
+          "type": "DATETIME"
+        }
+      ],
+      "table": "raylo-production.airbyte_raylo_prod.checkouts"
+    },
+    {
+      "created": "2026-03-22T17:32:27.171000+00:00",
+      "etag": "OlTeTpkSO3eDiQy+S+LTXA==",
+      "modified": "2026-09-16T11:54:12.949000+00:00",
+      "num_bytes": 1365385912,
+      "num_rows": 4193705,
+      "schema": [
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_raw_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_extracted_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_meta",
+          "type": "JSON"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_airbyte_generation_id",
+          "type": "INTEGER"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "email",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "last_name",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "created_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "employment",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "first_name",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "updated_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_lsn",
+          "type": "NUMERIC"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "checkout_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "middle_name",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "date_of_birth",
+          "type": "DATE"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "canonical_email",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "intercom_lead_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_deleted_at",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_updated_at",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "marketing_opt_in_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "mobile_phone_number",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "marketing_referral_source",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "transient_sms_notifications_opt_out_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "transient_email_notifications_opt_out_at",
+          "type": "DATETIME"
+        }
+      ],
+      "table": "raylo-production.airbyte_raylo_prod.checkout_customer_infos"
+    },
+    {
+      "created": "2026-03-22T17:32:40.203000+00:00",
+      "etag": "28WNpE2wlYSmJjziWr9lzw==",
+      "modified": "2026-09-16T11:54:17.259000+00:00",
+      "num_bytes": 67457156,
+      "num_rows": 286279,
+      "schema": [
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_raw_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_extracted_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_meta",
+          "type": "JSON"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_airbyte_generation_id",
+          "type": "INTEGER"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "auth_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "created_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "updated_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_lsn",
+          "type": "NUMERIC"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "customer_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "intercom_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_deleted_at",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_updated_at",
+          "type": "STRING"
+        }
+      ],
+      "table": "raylo-production.airbyte_raylo_prod.users"
+    },
+    {
+      "created": "2026-03-22T17:32:24.497000+00:00",
+      "etag": "bGCAbrEuOege0C3EXqesdw==",
+      "modified": "2026-09-16T11:54:15.738000+00:00",
+      "num_bytes": 87061767,
+      "num_rows": 286178,
+      "schema": [
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_raw_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_extracted_at",
+          "type": "TIMESTAMP"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "_airbyte_meta",
+          "type": "JSON"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_airbyte_generation_id",
+          "type": "INTEGER"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "email",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "last_name",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "address_id",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "created_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "first_name",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "updated_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_lsn",
+          "type": "NUMERIC"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "middle_name",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "date_of_birth",
+          "type": "DATE"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "canonical_email",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "review_opt_out_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_deleted_at",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "_ab_cdc_updated_at",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "marketing_opt_in_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "mobile_phone_number",
+          "type": "STRING"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "referral_rewarded_at",
+          "type": "DATETIME"
+        },
+        {
+          "mode": "NULLABLE",
+          "name": "referrer_external_reference",
+          "type": "STRING"
+        }
+      ],
+      "table": "raylo-production.airbyte_raylo_prod.customers"
+    }
+  ],
+  "missing_user_rows_validated_privately": 49,
+  "project": "raylo-production",
+  "result_columns": [
+    "canonical_email_lookup_agrees_with_actual_customer",
+    "canonical_email_lookup_conflicts_with_actual_customer",
+    "canonical_email_lookup_multiple_customers",
+    "canonical_email_lookup_one_customer",
+    "canonical_email_lookup_zero_customers",
+    "checkouts_with_current_user_customer",
+    "checkouts_with_missing_referenced_user",
+    "checkouts_with_nonblank_canonical_email",
+    "checkouts_without_user_id",
+    "cohort_rows",
+    "cohort_unique_checkouts",
+    "missing_checkout_rows",
+    "missing_current_checkout_rows",
+    "missing_current_customer_info_rows",
+    "missing_customer_info_rows",
+    "repeated_active_checkout_rows",
+    "repeated_active_customer_info_rows",
+    "repeated_checkout_rows",
+    "repeated_customer_info_rows"
+  ],
+  "runner_sha256": "1275bd58136311d30c6a38fc57d8010d9a9a1199d15dff98ef4d4e299cdaa510",
+  "schema_version": "txncat-applicant-identity-v1",
+  "sql_sha256": "9c234256417af859f3a42e03c56e10bc8d54ed96c7db25b10872fc84ce433a16",
+  "started_at": "2026-09-16T12:05:31.731627+00:00",
+  "statement_type": "SELECT",
+  "total_bytes_billed": 1327497216
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "benchmark-index-v2",
+  "policy_version": "three-views-v1",
+  "key_id": "synthetic-key-1",
+  "epoch": 1,
+  "lineage_manifest_sha256": "0713f136ea316c8f3e274d55012e3bf10d05b5263837187a39593ff0d8838dfa",
+  "identity_history_complete": true,
+  "input_history_complete": true,
+  "family_history_complete": true,
+  "legacy_manifest_sha256": "c49fea7425fa7f8699897a97c159c6690267d9003bb78c53fafa8fc15c325d84",
+  "required_projections": [
+    "transformer-sentence-v1"
+  ],
+  "legacy_transaction_keys": [],
+  "legacy_merchant_keys": [],
+  "legacy_family_keys": [],
+  "members": [
+    {
+      "subject": {
+        "schema_version": "benchmark-subject-v2",
+        "key_id": "synthetic-key-1",
+        "source_snapshot_sha256": "16a0eeb0791b6c92451fd284dd9f599e0a7dbe7f6ebea6e2d2d06c7f74aec112",
+        "identity_evidence_sha256": "6f2ac9ed85ee9bb86b75d4c2fa5581b3d36451a22ab2f98be6fa997087b52d68",
+        "identity_status": "verified",
+        "observation": "fa36fe6283e50203df78a15fc3f40cb1bbdf9af9c8f2bc9857bdec49fc1fea7a",
+        "event_aliases": [],
+        "accounts": [
+          "5a7cf8347beeb86e49ea4da9f833778743fec1d58dad5b09ba7d4790ec9980ac"
+        ],
+        "customers": [
+          "7ffa5227de8e6779122784cba64b75ddc1c3801017bccaacbea6b0d67a1d8e79"
+        ],
+        "merchant": "afd53a809ee6a20c4cf6afe770b1924f1d2f709747f70822827a627e6e3f8fd4",
+        "family": "07fa07eafa800c63e31201b967825835dfe0c7a106e194fc09a313a7f5ef19a6",
+        "family_status": "reviewed",
+        "projections": [
+          {
+            "version": "transformer-sentence-v1",
+            "token": "e24fbe9285083189af51d74fef07758c0f6ee233c2c528abf6c0aec16ab3ce4c"
+          }
+        ],
+        "legacy_transaction_key": "6d348ea491293973cad390a2eb1927010bb8c2bd5ab6cc139a6b00f1fac2af23",
+        "legacy_merchant_key": "36fcbad13ac571acb1adadfb4e2295359af76dc9ba79540f3bfcc5de34a7552c",
+        "legacy_family_key": "c481985644ea2fc809935c4e6583aa57cc21400a80fd8ca8edb6b4a69e1de4cd",
+        "near_duplicate_status": "clear"
+      },
+      "purpose": "domain_pretraining",
+      "views": [],
+      "partition": null,
+      "lifecycle": "exposed"
+    }
+  ]
+}

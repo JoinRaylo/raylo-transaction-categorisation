@@ -1,0 +1,44 @@
+{
+  "status": "passed",
+  "source": "research/tools/waterfall-evaluation/run_evaluations.py",
+  "baseline_summary_sha256": "dd2c3413513d4c2d28139947b360eb2cdd2bcdfb7434003cad743b626c3f3a1a",
+  "replay_summary_sha256": "c2c370eb51acab61011a293bef6e851be6682d79a60799a70f3ec4bf310bd2d4",
+  "harness_sha256": {
+    "evaluation_inventory.json": "9ef9ecef82e7fb35011dd5b6d7b7dc4f91fa2ea327520f3a4240dbb4a6d7b174",
+    "evaluation_metrics.py": "fec7798d78fd89dbd78ae6c878c24b4e8aa8cf8107fded5c948ab46713bd3f91",
+    "evaluation_regressions.json": "d662524f4e94042a5fc569748c6fb8b8e4dc2056d5aafafe9869fe343dbfe326",
+    "run_evaluations.py": "3914c4e7fc925ef08510df788836c289d3e2a6cbd842f4b297529dbe5d989f61",
+    "verify_evaluation_report.py": "3608c00be65239707dabbe43aafd61e9addaf96d6e7760e886b8be08a7cc0218"
+  },
+  "changed_rows_n": 0,
+  "compared_views": 92,
+  "private_prediction_rows": 134227,
+  "private_rows_identical": true,
+  "all_aggregate_metrics_identical": true,
+  "all_required_checks": {
+    "app_library_tests": "passed",
+    "deterministic_parity": "passed",
+    "lint": "passed",
+    "real_model_startup": "passed",
+    "research_tests": "passed",
+    "schemas": "passed"
+  },
+  "independent_validation": {
+    "methods": [
+      "original research analyse (AST-only, no module I/O)",
+      "independent specific counts",
+      "sklearn precision/recall/F1",
+      "slice totals"
+    ],
+    "metric_checks": 39984,
+    "research_analyser_sha256": "8192fd82881c98f2f934d66baf98d988704482ef6bc76dbaf4d1bdb07cc014cf",
+    "status": "passed",
+    "verifier_sha256": "3608c00be65239707dabbe43aafd61e9addaf96d6e7760e886b8be08a7cc0218",
+    "views_recounted": 92
+  },
+  "completed_at": "2026-09-15T16:14:31.117173+00:00",
+  "prior_three_dataset_metrics_reproduced": 30,
+  "selected_transformer_validation_correct": 3961,
+  "selected_transformer_validation_rows": 5000,
+  "private_replay_directory": "/private/tmp/txncat-waterfall-research-replay-20260915-v2"
+}

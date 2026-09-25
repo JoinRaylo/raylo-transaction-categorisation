@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "Different full sentences collide after actual token-48 truncation",
+    "Direction remains distinct",
+    "Tokenizer bytes match B01 audited selected-seed artefact"
+  ],
+  "inputs": "synthetic only",
+  "local_files_only": true,
+  "model_weights_loaded": false,
+  "status": "passed",
+  "tokenizer_sha256": "219eac2f5111d95774ae63aaafc7fe47d436f9da175a349d563db3548c530f4c",
+  "training_performed": false
+}

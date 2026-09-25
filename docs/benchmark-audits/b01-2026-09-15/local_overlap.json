@@ -1,0 +1,1334 @@
+{
+  "dataset_rows": {
+    "gold_credit_eval": 2000,
+    "gold_pipeline_eval": 2000,
+    "gold_transactions": 5335,
+    "gold_transactions_risk_categories": 711,
+    "gold_transactions_risk_t6bound": 400,
+    "gold_transactions_v2": 1500,
+    "gold_transactions_v2_batch2": 1500,
+    "gold_transactions_v3_volume": 1500,
+    "gold_transactions_v4_slm_volume": 900,
+    "gold_v2_slm_eval_holdout": 1055,
+    "gold_v3_eyeball": 1500,
+    "gold_v4_eyeball": 900,
+    "tuning_validation": 5000
+  },
+  "method": "Exact full transformer sentences and hinge text/numeric inputs; no tokenized or near-duplicate absence claim.",
+  "sources": {
+    "data/distillation_labels_consensus.parquet": {
+      "hinge_logical_numeric": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 1509
+        }
+      },
+      "transformer_sentence": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 2280
+        }
+      },
+      "transformer_sentence_after_current_frozen_mask_filter": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 2280
+        }
+      }
+    },
+    "outputs/distill_train.parquet": {
+      "hinge_logical_numeric": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 53
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 416
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 968
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 221
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 32
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 268
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 234
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 174
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 304
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 216
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 174
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 304
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 1617
+        }
+      },
+      "transformer_sentence": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 56
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 434
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 1005
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 229
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 34
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 275
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 242
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 181
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 319
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 224
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 181
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 319
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 1624
+        }
+      },
+      "transformer_sentence_after_current_frozen_mask_filter": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 52
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 432
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 997
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 229
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 34
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 273
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 236
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 181
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 319
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 222
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 181
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 319
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 1623
+        }
+      }
+    },
+    "outputs/transformer/pretrain_corpus.parquet": {
+      "first_million_sentence_inputs_to_vocab_builder": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 387
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 313
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 769
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 146
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 68
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 229
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 163
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 198
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 189
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 135
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 198
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 189
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 997
+        }
+      },
+      "transformer_sentence": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 2000
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 1540
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 3884
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 711
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 400
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1159
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 824
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1047
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 900
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 702
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1047
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 900
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 4999
+        }
+      }
+    },
+    "outputs/transformer/pretrain_corpus_full.parquet": {
+      "first_million_sentence_inputs_to_vocab_builder": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 103
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 97
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 257
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 26
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 14
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 63
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 82
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 70
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 45
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 64
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 70
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 45
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 215
+        }
+      },
+      "transformer_sentence": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 2000
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 1970
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 5255
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 711
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 400
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1490
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1451
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1482
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 900
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 1030
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1482
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 900
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 4999
+        }
+      }
+    },
+    "outputs/transformer/silver_labels.parquet": {
+      "transformer_sentence": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 60
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 25
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 1403
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 38
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 429
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 269
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 373
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 354
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 373
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 354
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 2564
+        }
+      },
+      "transformer_sentence_after_current_frozen_mask_filter": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 59
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 25
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 1390
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 38
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 424
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 264
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 370
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 354
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 370
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 354
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 2563
+        }
+      }
+    },
+    "outputs/tuning_train.jsonl": {
+      "hinge_logical_numeric": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 1
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 3669
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 7
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 966
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 898
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1035
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 809
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1035
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 809
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 7
+        }
+      },
+      "transformer_sentence": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 12
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 3670
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 26
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 966
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 899
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1036
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 809
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1036
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 809
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 8
+        }
+      },
+      "transformer_sentence_after_current_frozen_mask_filter": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 12
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 3670
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 26
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 966
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 899
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1036
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 809
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1036
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 809
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 8
+        }
+      }
+    },
+    "outputs/tuning_train_v4.jsonl": {
+      "hinge_logical_numeric": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 3
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 110
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 3953
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 140
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 15
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1030
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 912
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1212
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 843
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1212
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 843
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 1306
+        }
+      },
+      "transformer_sentence": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 3
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 164
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 3953
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 209
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 16
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1030
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 912
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1213
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 843
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1213
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 843
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 1431
+        }
+      },
+      "transformer_sentence_after_current_frozen_mask_filter": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 2
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 163
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 3952
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 208
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 16
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1029
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 912
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1213
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 843
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 1213
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 843
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 1431
+        }
+      }
+    },
+    "outputs/tuning_val.jsonl": {
+      "hinge_logical_numeric": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 5000
+        }
+      },
+      "transformer_sentence": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 5000
+        }
+      },
+      "transformer_sentence_after_current_frozen_mask_filter": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 0
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 4996
+        }
+      }
+    },
+    "outputs/tuning_val_v4.jsonl": {
+      "hinge_logical_numeric": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 1
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 6
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 8
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 62
+        }
+      },
+      "transformer_sentence": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 1
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 9
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 11
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 102
+        }
+      },
+      "transformer_sentence_after_current_frozen_mask_filter": {
+        "gold_credit_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 1
+        },
+        "gold_pipeline_eval": {
+          "evaluated_rows": 2000,
+          "matching_rows": 9
+        },
+        "gold_transactions": {
+          "evaluated_rows": 5335,
+          "matching_rows": 0
+        },
+        "gold_transactions_risk_categories": {
+          "evaluated_rows": 711,
+          "matching_rows": 11
+        },
+        "gold_transactions_risk_t6bound": {
+          "evaluated_rows": 400,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v2_batch2": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v3_volume": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_transactions_v4_slm_volume": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "gold_v2_slm_eval_holdout": {
+          "evaluated_rows": 1055,
+          "matching_rows": 0
+        },
+        "gold_v3_eyeball": {
+          "evaluated_rows": 1500,
+          "matching_rows": 0
+        },
+        "gold_v4_eyeball": {
+          "evaluated_rows": 900,
+          "matching_rows": 0
+        },
+        "tuning_validation": {
+          "evaluated_rows": 5000,
+          "matching_rows": 102
+        }
+      }
+    }
+  }
+}

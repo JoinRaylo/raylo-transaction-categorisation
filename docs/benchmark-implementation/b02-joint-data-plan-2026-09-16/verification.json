@@ -1,0 +1,40 @@
+{
+  "authorizes_consumption": false,
+  "checks": {
+    "all_eight_profiled_training_source_hashes_stable": true,
+    "independent_cached_sample_reaggregation": true,
+    "independent_training_and_validation_reaggregation": true,
+    "population_aggregate_reconciliations": true,
+    "population_metadata_unchanged": true,
+    "population_receipt_hashes": true,
+    "private_identity_and_contact_scan": true,
+    "protected_path_guards": 4,
+    "relative_document_links": true,
+    "ruff_check_audit_python": true,
+    "ruff_format_current_python": true,
+    "training_aggregate_reconciliations": true
+  },
+  "files": {
+    "PLAN.md": "81309a7f47727600aa9433fbf3c35c847e70accd19b004b94ea4ab5591289ce2",
+    "README.md": "5b47e8750591c71b28095b04849eb123bdee7d4c6544e03b833c9e6e162518ca",
+    "population/dry_run_receipt.json": "150970a0dba50c675f53f8c051fe5ba129e5fece448e4bb41144344622dca77b",
+    "population/executed_receipt.json": "0ed8f1d6a2da4cd322463d54a4f16d76605977c4e05e0f0a4aa4b2858a1186e0",
+    "population/executed_runner.py.txt": "58a7c7506190acc6d9af390ff303116cd7bf21d727df4e3a0460bd139370f635",
+    "population/linked_pool_profile.sql": "97ea75dbe9015bfe5075ce483e39cf9eafa52f0ce0b922609f3e52a0c73e50bf",
+    "population/linked_pool_profile_result.json": "24054e18c67bd49e318fdb627088c2a002a57cbe355ea549abcb3fb9537b4ca1",
+    "sample/aggregate.json": "105c09efa629b2db1e139e70474c1dceef66ccf42cb353370c4ffb85bb16add0",
+    "sample/aggregate_linked.py": "7d08981e05d1851ec461673d9d6f7c81dbfea270c5de9ccae7814f7404bb5a0a",
+    "sample/output-receipt.json": "fa34e1217e0f859b55d5c5feed8d08609c9cd1b39d21df3ff63a93c219a701c4",
+    "training/TRAINING_AUGMENTATION.md": "eac3028d4a5008debb441a007baaa319657f9057519bb95aedf10d026be41329",
+    "training/aggregate_profile.json": "735a7ec2fc695d9f9179e8306eb56951bce142f643735ee454b614ad00b09a8a",
+    "training/independent_training_check.json": "8dcb3963520fcc0dd8c20917fbb8d820c1d7380660efbd6f3b9198868dea7a9c",
+    "training/profile_training_inputs.py": "18080ca08f373ae8f90d0806b48e5145cc44eb5cd37026ccabb025b151b6ba9e",
+    "training/recipe_evidence.json": "d0bde6b219797ce820d4f6d83d0416cc97f18a355ab1b0f5a7083934f958c5f7"
+  },
+  "limitations": [
+    "Population runner exact executed bytes are retained as a text snapshot; it passed Ruff lint before execution but is not reformatted.",
+    "These are aggregate audit checks, not model evaluations, admission receipts or original fit-consumption attestations.",
+    "No new warehouse query was used for the cached sample or training profile."
+  ],
+  "schema_version": "joint-data-audit-v1"
+}

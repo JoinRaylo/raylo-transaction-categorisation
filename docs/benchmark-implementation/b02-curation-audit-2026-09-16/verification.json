@@ -1,0 +1,69 @@
+{
+  "all_nineteen_cached_score_groups_identical": true,
+  "app_library_full_suite": {
+    "passed": 1368,
+    "skip_reason": "offline Arrow module absent in service test environment; all six cases passed separately",
+    "skipped": 1,
+    "warning": "existing Starlette/httpx deprecation"
+  },
+  "authorizes_consumption": false,
+  "benchmark_members_reserved": 0,
+  "earlier_implementation_pins_unchanged": true,
+  "effective_screen_verification": "exposure-verification.json",
+  "historical_cached_predictions_rescored": true,
+  "implementation_pins_checked": 28,
+  "integrity_and_link_checks": 93,
+  "locked_labels_read": false,
+  "maintained_app_library_ruff_check": "passed",
+  "models_or_masks_changed": false,
+  "new_code_format_check": "passed",
+  "new_labels_created": false,
+  "new_model_accuracy_run": false,
+  "new_source_model_inference": false,
+  "offline_audit_runtime": {
+    "packages": {
+      "joblib": "1.5.3",
+      "numpy": "2.5.2",
+      "pyarrow": "25.0.1",
+      "scikit-learn": "1.9.0",
+      "scipy": "1.18.0",
+      "tokenizers": "0.22.2",
+      "transformers": "5.15.1"
+    },
+    "python": "3.14.4"
+  },
+  "offline_effective_projection_tests": {
+    "passed": 6,
+    "python": "3.14"
+  },
+  "private_storage": {
+    "managed_b03_storage": false,
+    "outside_git": true,
+    "owner_only": true,
+    "verified_local_files": 24
+  },
+  "public_evidence_raw_identity_scan": "no_original_source_identifiers_found",
+  "remaining_gaps": [
+    "anonymous_applicant_identity",
+    "pending_posted_reconnect_aliases",
+    "historical_event_customer_consumption_ancestry",
+    "reviewed_merchant_family_history",
+    "protected_legacy_identity_only_export",
+    "durable_reservations_and_all_consumer_gates"
+  ],
+  "repeated_effective_scan_prior_source_counts_identical": true,
+  "research_mirrors": {
+    "adapters_including_sql": 10,
+    "byte_identical": true,
+    "evidence_and_doc_files": 13
+  },
+  "research_replay": {
+    "cohort_members_conflicts_summary_byte_identical": true,
+    "identity_sidecar_summary_byte_identical": true
+  },
+  "schema_version": "historical-curation-audit-verification-v1",
+  "staging_deployed": false,
+  "status": "passed",
+  "training_run": false,
+  "waterfall_changed": false
+}

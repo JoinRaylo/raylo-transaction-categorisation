@@ -1,5 +1,22 @@
 # CLAUDE.md — context for continuing this work
 
+## Canonical names (2026-09-17)
+
+Call the complete T1–T7 pipeline the **Raylo Transaction Categorisation Engine**
+or **Raylo TxCat Engine**. Call the transformer used at T6 **TxCat-1**. TxCat-1
+does not name the hinge rollback or the full engine. Use these names in new
+service documentation, reports and external communication; preserve historical
+artefact wording. See [`docs/NAMING.md`](docs/NAMING.md).
+
+## Final serving tier names (2026-09-17)
+
+The pre-launch service contract now names accepted classifier output `T6` and
+keeps `T7` for unclassified/abstained rows. Provider-native fallback is diagnostic
+only and is not a served tier. Historical artefacts are immutable: historical
+`T5b` means final classifier `T6`, and historical `T6` means the retired provider
+fallback. Read `docs/waterfall-changes/tier-naming-001/RECORD.md` before changing
+current serving terminology.
+
 Research repo for Raylo's unified transaction categorisation. Read this before touching anything.
 
 Full design rationale and stakeholder-facing write-up:
@@ -7,9 +24,245 @@ Full design rationale and stakeholder-facing write-up:
 
 Owner: Carlos (AI Engineer, AI Acceleration team). This is **research**, not production. Nothing here is referenced by any dbt model or scheduled job, and it must stay that way until explicitly promoted.
 
-**Reading order for a new agent:** this current-state block → `docs/project-summary.md` §8 + 27 Aug progress-log lines → `data/classifier_v5_retrain_report.md` if touching the classifier → `AGENT_RULES.md` for locked product conventions (the 100k review itself is closed). Do not treat `docs/architecture-remediation-handoff.md` as live coverage numbers (25 Aug proposal). Do not score `data/gold_transactions_v5_LOCKED.csv` (retired) or `data/gold_transactions_v6_LOCKED.csv` (locked; Carlos labelled the 8 flags 27 Aug; `apply` written). Do not score v6 until go/no-go.
+**Reading order for a new agent:** the 7 Sep block, then the 2 Sep block → `docs/project-summary.md` §8 + 27 Aug progress-log lines → `data/classifier_v5_retrain_report.md` if touching the classifier → `AGENT_RULES.md` for locked product conventions (the 100k review itself is closed). Do not treat `docs/architecture-remediation-handoff.md` as live coverage numbers (25 Aug proposal). Do not score `data/gold_transactions_v5_LOCKED.csv` (retired) or `data/gold_transactions_v6_LOCKED.csv` (locked; Carlos labelled the 8 flags 27 Aug; `apply` written). Do not score v6 until go/no-go.
 
-## Current state (2026-08-27) — read this first
+## Standing waterfall change process (2026-09-15)
+
+Carlos requires conservative, individually documented waterfall changes, a full
+repeatable evaluation run after every candidate revision, and mirrored code plus
+updated scores in this repo and the app monorepo. Read
+[the change policy](docs/waterfall-changes/POLICY.md) and
+[score history](docs/waterfall-changes/README.md) before editing classification
+behaviour. Keep v5 retired and v6 reserved for final go/no-go. The [fresh complete baseline](docs/waterfall-changes/baseline-2026-09-15/RECORD.md)
+now covers 15 permitted datasets plus seven synthetic examples across 92 views.
+The [latest candidate, CREDIT-PAYROLL-001](docs/waterfall-changes/credit-payroll-001/RECORD.md),
+adds exactly one Waitrose + complete PAYROLL narrative + credit collision to T2.
+All 15 permitted datasets and both heads have identical real-data scores to the
+baseline, with zero regressions; the explicit synthetic payroll changes groceries
+T4 to salary T2 (5/7 synthetic cases now pass, previously 4/7). Bare credits remain
+ambiguous and unchanged. There are no exact-merchant Waitrose credits in existing
+evaluation sets, so the result does not establish generalisation. Research replay
+is identical; 1,201 app/library and 74 research tests passed. SQL was regenerated;
+four added predicates passed local RE2 checks, not a new live BigQuery execution.
+See [RUNNING.md](docs/waterfall-changes/RUNNING.md) and the candidate reproduction guide.
+Current seed-123 serving Plaid specific accuracy remains: holdout 77.51% (627),
+credits 89.25% (2,000), targeted risk 72.25% (400). Mixed-provider research exact
+accuracy remains 83.80% on 2,000 rows for this seed; the older 83.2% headline below
+is a three-seed result. The candidate source/SQL is local research code, not a
+production promotion. Models/masks and staging are unchanged; retain the original
+staging bundle until a separate release decision.
+
+## Dataset continuation handover (2026-09-16)
+
+For dataset work, read [HANDOVER.md](docs/benchmark-handover/2026-09-16/HANDOVER.md)
+and [the initial assignment](docs/benchmark-handover/2026-09-16/NEXT_AGENT_PROMPT.md)
+first. They preserve the approved linked-only scope, three-view distinctions,
+training augmentation, exact repo/evidence state and open gates. B03-A is a bounded
+synthetic reservation-protocol milestone requiring review before real authority or
+dataset admission. It is not completion of B03/B04. Use dedicated worktrees/branches
+to avoid conflicting with the ongoing app work; preserve this checkout's unrelated
+changes and unpublished history. The tested startup command passes 115 tests.
+No benchmark membership, labels, model, metrics or staging changed in the handover.
+
+## Joint benchmark and retraining data plan (2026-09-16)
+
+Read [the full-pool profile and joint plan](docs/benchmark-implementation/b02-joint-data-plan-2026-09-16/README.md)
+before new curation or retraining. Current production materialization: 36,312,899
+rows, of which 20,473,397 have unambiguous existing customer links (46,049 customers,
+71,103 accounts). Linked credits are 22.85%; blank merchants are 35.22%, including
+90.26% of credits. These are already transaction-ID-deduplicated materialized rows,
+not proven unique economic events or clean benchmark examples. This clarifies the
+older “raw rows before deduplication” wording; original dated audit evidence stays
+unchanged. Anonymous recovery remains out of scope.
+
+The 414,400-row supervised file has 342,268 distinct exact input messages, 133
+conflicting-label groups, 7.31% credits and 7.91% blank merchants. Four taxonomy
+leaves are absent; 21 represented leaves have fewer than 20 distinct input/label
+examples. Old selection validation has nine credits and no blank merchants; keep
+its documented exposure limitations. The transformer also inherits the separate
+404,982-text consensus/MLM ancestry, so these proportions are not its total exposure.
+
+The proposed envelope retains the 20,000-row master and separate 500-row annotation
+pilot, and adds a new 5,000-row selection set plus up to 10,000 training additions.
+These are planning budgets, not reserved or labelled data. Implement B03/B04
+reservation/consumer admission, verify linked candidate ancestry and group blocks,
+then reserve the pilot. Protect evaluation/selection memberships before fitting
+either head; never use failed or unknown admission as a training fallback. Review
+the existing label conflicts without automatic relabelling. No new MLM/vocabulary
+extension is proposed for the final supervised retrain. Capture direction-mask
+changes explicitly and rerun/mirror the complete permitted evaluations after any
+real model/waterfall change. Models, current scores, v5/v6 restrictions and staging
+are unchanged. The scoped 39,427-event linked engineering exposure cross-profile
+does not certify the full 20.47M-row population.
+
+## Historical regression and identity/exposure increment (2026-09-16)
+
+Read [the frozen cohort and audit](docs/benchmark-implementation/b02-curation-audit-2026-09-16/README.md)
+before creating or consuming benchmark data. Historical-regression-v1 has 8,212
+transaction input cases (3,927 explicit training-origin diagnostics, 4,285 other
+historical cases), 641 head-only cases and 1,810 dictionary cases. Withhold the 28
+conflicting-label groups; preserve the existing 5,000-row selection-validation role.
+These are development cases with known/uncertain historical exposure, not independent
+master events. Reuse their fixed membership with `benchmark_score_legacy.py` after
+each complete permitted evaluation run. Baseline cached predictions give 85.10%
+specific leaf accuracy for seed-123 Plaid serving on the 3,704 other-historical cases;
+this new denominator is neither a performance gain nor a population accuracy claim.
+All 19 groups and original label/role provenance are preserved separately.
+
+The identity audit recovers 263 direct links in current checkout/user tables without
+changing the old extract. Remaining 39,110 observations / 38,498 account-event keys
+lack customer identity (mainly cancelled/abandoned checkouts). Do not substitute a
+checkout-customer-info ID for a stable person. Effective-token, sparse and lexical
+screens cover declared retained corpora/training/top-up/legacy inputs; exact known
+merchant presence covers retained dictionaries, collisions and merchant-label data.
+Unknown historical identity, aliases, reviewed merchant families, protected legacy
+exports and B03/B04 enforcement still block fresh reservations and labelling. See
+[FOLLOW_UP.md](docs/benchmark-implementation/b02-curation-audit-2026-09-16/FOLLOW_UP.md).
+No v5/v6 contents, new-source predictions, waterfall/model changes or deployment.
+The adapters import the canonical monorepo package; do not fork their algorithms.
+
+## Linked-customer population decision (2026-09-16)
+
+Read [the v1 scope decision](docs/benchmark-implementation/b02-linked-customer-scope-2026-09-16/DECISION.md)
+first. V1 benchmark candidates use the audited linked-customer Plaid pool with
+unambiguous existing assessment → checkout → user → customer links; unresolved or
+ambiguous rows are excluded from admission, with source records preserved. The last
+audited Plaid source had 20,084,276 of 35,553,295 raw rows linked (56.49%), covering
+45,617 users/customers; these raw counts precede deduplication/exposure checks, are
+not unique economic transactions, and are not admitted labelled examples. Other-
+provider and historical regression evaluation remains separate.
+The earlier requirement to recover anonymous identity before v1 is superseded.
+No new identity system is required.
+
+Next work profiles the linked pool and handles deduplication, aliases, and
+view-specific exposure before sampling. Category coverage needs independent labels;
+provider labels and model outputs are not category truth.
+
+## Applicant identity and transport review (2026-09-16)
+
+The fixed 49-checkout aggregate query found 49 nonblank canonical emails, 49 without
+user IDs, zero direct user/customer matches and zero exact matches to known customers;
+see [MEASUREMENTS.md](docs/benchmark-implementation/b02-applicant-identity-2026-09-16/MEASUREMENTS.md).
+This is scoped evidence only; no other anonymous checkouts were joined. Alias, ancestry,
+reviewed-family, B03 and B04 gates remain pending.
+
+Read [the applicant identity review](docs/benchmark-implementation/b02-applicant-identity-2026-09-16/README.md)
+before using applicant/customer identity in benchmark work. Assessment, checkout,
+provider, account and transaction identifiers support correlation and repeat-event
+grouping; anonymous applicant ownership remains unresolved. Use the assessment-first
+warehouse/sidecar join and authoritative User/Customer or separately reviewed link
+evidence where available. AIE-496 caller-context persistence is replay lineage work,
+not a solution to anonymous identity. No categoriser DTO, runtime, provider or
+auth-flow change is implied. Keep aggregate measurements in the separate
+`MEASUREMENTS.md` artifact for the fixed-cohort aggregate and its limitations.
+
+## Master benchmark design (2026-09-15)
+
+Read [the design](docs/benchmark-design/master-v1/DESIGN.md),
+[identity/separation contract](docs/benchmark-design/master-v1/DATA_CONTRACT.md) and
+[implementation plan](docs/benchmark-design/master-v1/IMPLEMENTATION_PLAN.md) before
+creating new evaluation or training datasets. Proposed master-v1 has core/challenge/
+sealed confirmation cohorts and permanent event/customer/effective-input exclusions
+covering supervised learning, MLM, distillation, fitted preprocessing and enrichment.
+The current suite remains development evidence; historical non-exposure is not yet
+certified. This is a design, not implemented enforcement or permission to open v6.
+Start with source/exposure inventory and the shared identity/admission contract,
+then integrate all consumers before reserving and labelling the final master.
+
+## Historical exposure and source-identity audit (2026-09-15)
+
+Read [B01 findings and evidence](docs/benchmark-audits/b01-2026-09-15/REPORT.md)
+before treating older held-out/merchant-disjoint claims as ancestry-wide separation.
+All 2,000 credit and 400 targeted-risk inputs match exact sentences in the preserved
+21.5M MLM corpus, although neither set matches the current supervised tuning file.
+Independent reconstruction of the distillation parent matches 1,885/5,000 selection
+validation inputs, 1,741 with matching labels. This is corroborated history, not an
+original fit-consumption receipt; full tokenized/near-duplicate exposure remains open.
+The 35,553,295-row current Plaid source resolves existing user/customer IDs for
+56.49% of rows; 43.51% remain unresolved. All 428,949 report IDs are null; source
+identity/context repairs and shared exposure admission precede master collection.
+Keep current scores as development evidence, with these limitations; this audit
+does not quantify accuracy inflation, certify a clean cohort or change any model.
+The old risk/sequence-model experiments have separate ancestry and are not certified
+by this categorizer audit. No v5/v6 content was opened, and staging is unchanged.
+
+## Benchmark source/index increment (2026-09-16)
+
+Read [the source/index report](docs/benchmark-implementation/b02-source-index-2026-09-16/REPORT.md)
+and pinned reproduction manifest. The private 78,537-observation engineering sample
+recovers report ID, Item/institution, transaction currency and pending fields from raw
+Taktile/Plaid requests. These are present in the raw source despite the flattened
+schema gaps. The sample has 77,925 distinct account/transaction events, 612 repeat
+observations and 39,373 observations without an unambiguous user/customer link.
+The canonical `raylo_txncat.benchmark_exposure` index covers all 21,524,807 preserved
+MLM sentences, their vocabulary prefix, consensus, tuning and selection sources.
+All 40 B01 overlap checks agree after correcting the index adapter to use historical
+raw consensus text; full app/library suite 1,337 passed, final targeted checks 39 passed.
+The adapters in `tools/benchmark/` import the same monorepo package; private key,
+source rows and SQLite files are outside Git. Do not consume them for learning or
+labelling: no clean benchmark has been admitted. Identity/alias reconstruction,
+effective token/sparse/near-duplicate indexes, controlled merchant families,
+legacy memberships and B03/B04 enforcement remain pending. Current pipeline,
+model bytes, accuracy scores and staging are unchanged. No locked labels were read.
+
+## Benchmark curation foundation (2026-09-15)
+
+The approved [three-view amendment](docs/benchmark-implementation/b02-initial/CONTRACT_AMENDMENT.md)
+supersedes master-v1's universal input-novelty requirement: representative new events
+may naturally repeat historical model inputs; strict unseen-input and unfamiliar-family
+views keep their additional exclusions. All views protect event/customer/account
+separation. Views may overlap within a partition; they are not independent datasets.
+The canonical local preflight code is in the monorepo `raylo_txncat.benchmark`.
+Run the mirrored `tools/benchmark/benchmark_preflight.py` with that checkout and
+the hash-pinned implementation manifest; do not fork the exclusion algorithm here.
+[Evidence](docs/benchmark-implementation/b02-initial/README.md): 1,298 app/library
+and 93 payload-extractor tests passed; synthetic app/research profiling is checked
+against the same source. Every result has `authorizes_consumption=false`. These are
+local checks, not B03 reservation receipts or B04 consumer enforcement. Source identity
+repair/backfill, complete historical projections/indexes and a real candidate export
+remain pending. No labels, training, model scores, waterfall or deployment changed.
+
+## Current state (2026-09-07) — read this first
+
+Headline numbers as of 7 Sep. Everything below this block (2 Sep, 27 Aug) is still accurate history unless contradicted here. Stakeholder report: `docs/report-2026-09/OB_Transaction_Categorisation_Report_Sep2026.{html,pdf}` (Chrome-rendered; edit the HTML, re-print). Programme summary: `docs/programme-summary-2026-09-05.md`.
+
+- **Training data:** jsonl **414,400** rows (de-leaked 381,560 + credit top-up 27,979 + risk top-up 4,998; credit share 7.4%). New eval sets, all merchant-disjoint from every training source: `data/gold_credit_eval.csv` (2,000), `data/gold_transactions_risk_t6bound.csv` (400; the honest risk metric is its 174 risk-leaf rows). Distillation labels `data/distillation_labels_consensus.parquet` (404,982 texts where Gemini 3.7 Flash == Sonnet 5, no tiebreak; training signal only, never eval/dictionary). Holdout MD5 `7456da977a2c761119368637658232b6`.
+- **Rules:** T5 R33–R51 (card issuer / overdraft / blank-merchant description rules). Dictionary **90,264**, BQ reloaded. Parity **2,000/2,000**.
+- **Hinge v8** (`tfidf_linearsvm_sgd_v8_risk.joblib`) is the reference hinge for every transformer comparison: holdout 57.1 / 64.3, credit eval **85.9%**, T6-bound risk-leaf acc **75.9%** (n=174; above the 70% bar honestly for the first time; 48% → 59% came from rules R33–R37, → 76% from the risk tranche). Serving dump is still **v5** and is 24pp behind on credits and 28pp on T6-bound risk; promoting v8 is the zero-risk interim. `data/classifier_v8_risk_report.md`.
+- **Transformer categoriser, iteration 8 = best T5b candidate:** DistilBERT (66M) + 4,000 domain tokens, MLM on the full 21.5M-sentence corpus (GCP L4, 6.5 GPU-h, ~£7), first fine-tune pass on the consensus labels, then uncapped gold pass; 3 seeds vs hinge v8: holdout T6-bound **64.5 vs 59.4** (+5.1 [+1.8, +8.8]), pipeline residual **65.0 vs 59.8** (+5.2 [+2.0, +8.2]), credit eval **88.8 vs 85.9** (+2.9), T6-bound risk leaves **85.6 vs 75.9** (+9.8 [+5.2, +15.1]), full pipeline **83.2 vs 82.2**, general +7–13pp. Every accuracy criterion passes with CIs excluding zero. **CPU 360 rows/s (hinge ~1,050); Carlos accepts this for now.** Artefacts `outputs/distill_models/txn_classifier_gold_distilled_s{42,7,123}`, encoder `txn_encoder_mlm_distilbert_full` (tgz in `gs://raylo-txn-categorisation-scratch/transformer/`). `data/transformer_classifier_report.md` iterations 4–8. The BERT-small MLM encoder `txn_encoder_mlm` was overwritten by a smoke test; regenerate on GPU if ever needed.
+- **Experiment 3 champion, capped at 50 features (carried forward):** the development champion (`experiment3_champion_month6.joblib`, 0.7 XGB + 0.3 LGB on 1,654–3,150 leaf-level columns) scores **0.533 / 0.618** but is not governable. Same recipe under a hard cap, features ranked by pre-OOT gain across both families and 3 seeds (`src/experiment3_champion_capped.py`): **50 → 0.508 / 0.583**, 100 → 0.520 / 0.589, 200 → 0.529 / 0.600 (month3 / month6). Six-month gap to uncapped at 50 is −0.035 [−0.057, −0.014]; ~1/3 of the champion's gain is recipe, ~2/3 is width. **Decision (Carlos, 7 Sep): the 50-feature capped champion is the reference for the prospective test; uncapped kept as ceiling. Later the same day: single XGBoost, not the blend** — at cap 50 the XGB component alone scores **0.508 / 0.588** vs blend 0.508 / 0.583 and LGB alone 0.500 / 0.559; re-choosing the blend weight on capped folds picks pure XGB for month6. Reference artefacts `outputs/experiment3_champion_capped_xgb_month{3,6}_50.joblib` (blend versions `_capped_month{3,6}_50.joblib` kept); `data/experiment3_champion_capped_report.md`. Quote **0.508 / 0.588** as the carried-forward model; the blend is "tried, no gain at any cap, dropped for simplicity". Only 21 of its 50 features overlap the August 50-feature XGB (0.477 / 0.562); the rest are leaf-level shares/averages the August model could not choose from.
+- **Granularity on the champion recipe (7 Sep, `src/experiment3_champion_granularity.py`, `data/experiment3_champion_granularity{,_uncapped}_report.md`):** uncapped, month6 rewards detail (275 leaves 0.612 XGB vs today's 69 0.586, monotone down to 0.510 at 4 groups); month3 does not (69 peak 0.536, 275 0.528). Capped at 50 by gain from the raw rung pool, 275 leaves is the **worst** rung on both targets (0.409 / 0.511) — cap crowding: only 2 of 31 spine columns survive at 275 vs 9 at 17 groups. **Quote the August-recipe "275/69/29 indistinguishable" only as the August-recipe result**; the stakeholder report section 3 now gives both. Keep 275 governed; the capped champion selects from a curated base (spine + KEY_LEAVES blocks + leaf features), which is why it reaches 0.588 where the raw-pool 275 rung capped reaches 0.511.
+- **OB-transformer hand-offs (that repo, `docs/phase1-benchmark.md`, `docs/phase2-pretraining.md`, `docs/summary-comparison.md`):** on the **single-XGBoost 50-feature champion** (their refit 0.265 PR-AUC / 0.588 Gini, 6,252 OOT / 397 bad; OB-transformer commit b43fa0e, 7 Sep pm), one bge-base text score adds **+0.034 PR-AUC / +0.024 Gini** (both sig.; was +0.012 / +0.009 on the uncapped champion); the frozen 15M sequence-encoder score adds +0.031 / +0.029; **both together 0.322 / 0.629**, above the uncapped champion (0.291 / 0.616) with 52 columns. (Blended-base run earlier that day: 0.261 / 0.580 base, both scores 0.316 / 0.621 — deltas within 0.003.) Text-only recipe stays **locked** (bge-base); text + encoder is the **registered challenger** for the prospective test. Full 8-encoder sweep on the single-XGB capped champion (7 Sep pm): +0.017 to +0.034 PR-AUC, all Gini CIs exclude zero, one band; bge-base 0.299 / 0.611 and our domain-pretrained DistilBERT 0.296 / 0.613 share the top with e5-large, 568M bge-m3 buys nothing, our category-fine-tuned encoder is weakest. **Decision (Carlos, 7 Sep): keep bge-base locked; our DistilBERT (half the serving cost, no third-party model, but its MLM corpus included the OOT period's text) is the named alternative to be scored alongside it in the prospective test.** Sequence encoder sizes 5.5M / 15M / 51M were tried: flat from 15M up. Harness picks the reference artefact via `OB_CHAMPION_MODEL`.
+
+**Do not (added 7 Sep):** describe the carried-forward model as a blend (it is a single XGBoost at 50 features; the blend is the uncapped ceiling only); swap the text encoder to our DistilBERT before the prospective test; quote 0.618 without 0.583 beside it; compare a transformer against any hinge other than **v8**; call the sequence transformer "parked" without the capped-champion result; treat the champion recipe as promotable before the Feb–Apr 2026 prospective cohort; run the OB-transformer stacking script without `--ref champion_refit` when the champion is the intended reference (its default is the August 50-feature XGB).
+
+**Next:** promote v8 (then the transformer once a serving artefact exists — ONNX/int8 if 360 rows/s becomes a constraint); scheduled per-row categorisation job keyed by transaction id; one-shot score of locked v6 at go/no-go; prospective test with two registered recipes; thin risk leaves (`debt_collection` 22 rows, `gambling_casino` 9); human blind slice on the risk tranche; 90-day Asset Report request (Plaid integration owner).
+
+## Current state (2026-09-02) — read this first
+
+**2 Sep programme review + Week-1 fixes landed** (`docs/review-2026-09-02-state-and-next-steps.md`; all evidence there). What changed and what you must now quote:
+
+- **Risk bar:** `gold_transactions_risk_categories.csv` was *in* the training jsonl (77.5% merchant overlap via Tier B). `build_tuning_dataset.py` now excludes risk-gold merchants everywhere; jsonl **381,560**. Fresh hinge on it (`tfidf_linearsvm_sgd_v6_deleaked.joblib`): holdout **56.0%**, **risk bar 62.7% FAIL** (T6-bound rows only: 77.5%, n=40). **Do not quote 86.1%.** Serving dump is still v5 weights (no serving reason to switch; the fix is measurement). `data/classifier_v6_deleaked_report.md`.
+- **Credits:** 24.7% of live Plaid rows (50% of GBP, 90% blank merchant) but 0.65% of the jsonl. Pipeline **debit 84.2% vs credit 57.8%**. `confusion_analysis.py` / `compare_classifier_versions.py` / `score_waterfall_pipeline.py` now print per-direction accuracy and a **credit-side bar** (`CREDIT_BAR_LEAVES`, 70%). Credit labelling tranche is the Week-2 item.
+- **T4 purge:** 1,575 agent-sourced keys that tranche 4 marks `context_dependent` (`miss`, `dad`, `trading`, `new zealand`…) plus bare `credit` dropped by `build_merchant_dictionary.py` (tranche-4 downgrade guard). Dictionary **90,261**; BQ table reloaded. Test `test_t4_has_no_tranche4_context_dependent_agent_keys`.
+- **Python = SQL waterfall:** `final_evaluation.our_leaf()` now fires Equifax T1/T2-gig/T3 and Plaid T1 **before** T4, as the SQL does; unmapped native → `T7_unclassified`. `src/check_waterfall_parity.py` runs the generator's own CASE bodies in BigQuery over the pipeline eval and asserts row-level agreement: **2,004/2,004**. It caught a real SQL bug: the 42 `T2_CARLOS_PACK` rules were double-escaped inside raw strings (`r'payin\\s*3'`), so 34 of them never fired in BigQuery — fixed in `_t2_carlos_when`; SQL regenerated (~204 KB). Run the parity check after any T2/T5/generator change.
+- **Pipeline headline:** re-measured on **2,004** row-disjoint rows (risk rows freed by the de-leak): T1–T5 then hinge **81.8%** leaf / 87.3% general; rules-only 73.0%; **human-adjudicated v2 rows 77.7% vs LLM-drafted rows 86.1%**. Quote the split, not just the blend.
+- **Experiment 3:** Equifax fetch now has an as-of filter (`PostDate <= created_at`, 189-day window; 5.5% of Equifax proposals had post-proposal rows) and the live XGB is refit on the full Plaid window. Capped headline unchanged (0.477 / 0.562); **like-for-like = Plaid-train-only 0.445 / 0.504 vs full-refit live 0.382 / 0.385** (single seed). Ladder / stress test / champion not re-run on the as-of features. 2 Sep addendum in `data/experiment3_xgb_report.md`.
+- **Granularity wording:** "275, 69 and 29 indistinguishable; 17 close but may lose month-6 signal; 9 and below degrade; 4-group uplift over live not conclusive on month3" — not "flat 275→17, every rung beats live". **"69" is not a 69-leaf taxonomy or "69 of the 275 leaves in use."** It is today's model-*feature* grouping: 40 of the 275 leaves each get their own feature block (`KEY_LEAVES` in `experiment3_xgb_pipeline.py`), the other 235 fold into their 29 general categories, 40+29=69 feature groups. All 275 leaves are still classified; none are dropped. The taxonomy itself is still 275→29. **This finding is specific to the August recipe (plain XGB, rung-level months/n/amount features) and is now stale as a "how good is our best model" reference — the 7 Sep champion (below) is materially stronger and has not been re-tested across rungs.** The champion's own pre-OOT selection table shows its richer leaf-level feature view (share-of-total, per-leaf averages/CVs — not just more leaves) beating its "current"-equivalent (69-rung) view by +0.023 (month3) / +0.037 (month6) GINI at identical algorithm/depth (uncapped). **Re-run 7 Sep, capped at 50 features (`src/experiment3_champion_granularity.py`, `data/experiment3_champion_granularity_report.md`):** at a fixed feature budget the picture flips — **275 leaves is the worst rung on both targets** (month3 0.409, month6 0.506), below every coarser rung including the 4-group floor. Mechanism, not noise: at 275 leaves ~2,877 candidate columns compete for 50 slots and `credit_product_months` (2nd-strongest debt feature in the project) doesn't survive the cap on month6 at all; at 17 groups it does. The August-recipe shape reappears once capped — plateau ~69/29/17 (month6 0.548/0.542/0.542), fall below 9 (0.534→0.495). **Uncapped follow-up, same day (`experiment3_champion_granularity.py uncapped`, `data/experiment3_champion_granularity_uncapped_report.md`): splits by target.** month6 — granularity genuinely helps uncapped: 275 leaves 0.616 beats today's 69 (0.586) monotonically down to 4 groups (0.507). month3 — it does not: 275 (0.528) is marginally below today's 69, the actual peak (0.536). Longer-horizon prediction rewards fine per-leaf detail; the noisier month3 horizon doesn't. Since nobody is proposing to ship an uncapped ~2,900-feature model, the capped result (275 worst, above) stays the operationally relevant one; this just answers "does richness help at all" (yes for month6, no for month3), not "should we ship it."
+- **Beyond-275 shadow pilot (2 Sep):** three supported parents (`streaming`, `marketplace_general`, `payment_intermediary`) were split into 15 frozen merchant/description buckets without changing production taxonomy. Against exact parent controls, rolling Plaid GINI deltas were **lean −0.0045 / −0.0068** and **rich −0.0020 / −0.0111** (month3 / month6); all combined 95% CIs include zero, while payment-intermediary alone is a small clear month3 loss. Development OOT is flat. **No evidence that 287 leaves improves risk GINI; keep 275 and use shadow children only.** `data/experiment3_subleaf_pilot_report.md`.
+
+- **Transformer categoriser (started 2 Sep, Carlos's call to begin before the credit tranche):** `src/transformer/` — `build_corpus.py` (5.08M-sentence MLM corpus, 23.7% credit; 1.90M T1–T5 silver labels, 17.8% credit, holdout/risk merchants excluded), `pretrain_mlm.py` (BERT-small `google/bert_uncased_L-4_H-512_A-8` + 4,000 domain tokens, whole-word MLM; DistilBERT was 2× slower on MPS), `train_classifier.py` (leaf + general heads, hierarchy-consistency loss, `cash_flow_type` direction mask; silver pass then gold jsonl pass, class-balanced; direction-illegal labels dropped — 0.27% of gold, 3.6% of silver), `score_transformer.py` (kill criteria vs the **de-leaked** hinge; writes `data/transformer_classifier_report.md`). Sentence format `[DEBIT|CREDIT] [AMT_bucket] merchant | description`. Artefacts under `outputs/distill_models/txn_*`. **First full cycle done 2 Sep** (`data/transformer_classifier_report.md`, iter 1 in `_iter1_report.md`): holdout T6-bound **61–64% vs hinge 56.9%** (credits 41–56% vs 31%); pipeline residual flat (56–59% vs 58%); T6-bound risk slice **32–35% vs 77.5%** (n=40; overdraft arranged/unarranged, account-switch transfers, cash-advance disbursement credits). Single seed; iterations differ by 3–11pp on small cuts. Iterations 2–3 carried a stale-mask bug (buffers inherited from the silver checkpoint; fixed in `load_heads()`). **Iteration 4 (correct mask, uncapped gold pass, best epoch by Tier-B val): 4/5 kill criteria pass** — holdout T6-bound **61.7% vs 56.9%**, credits 53.1 vs 31.2, T6-bound risk 77.5 = 77.5, credit bar 28.9 vs 17.8, 1,058 rows/s; only the residual (+3pp) misses at 57.6 vs 58.0. Hybrid 50/50: 62.4 / 58.4 / 80.0 / 81.4 full pipeline. **Confirmed on 3 seeds (42/7/123): holdout T6-bound mean 62.3% vs 56.9%, residual 58.7 vs 58.0, T6-bound risk 80.8 vs 77.5, credit bar 31.8 vs 17.8, full pipeline 81.5 vs 81.3; every seed passes 4/5.** Candidate to replace T5b at that point. **3 Sep — credit tranche applied (`data/production_labels_credit_tranche.csv` 30,379 rows, Carlos 813 human_reviewed, blind-slice agreement 84.3%; `gold_credit_eval.csv` 2,000 merchant-disjoint; `gold_transactions_risk_t6bound.csv` 400; top-up 27,979; jsonl 409,417, credit share 7.4%).** Hinge **v7** on that file: credit eval **62.2 → 85.0%**, holdout credits 43.7 → 61.2%, debits unchanged (`data/classifier_v7_credit_report.md`). Transformer retrained on the same file, 3 seeds vs v7: holdout T6-bound **60.9 vs 57.2** (+3.7, CI excludes 0), credit eval **87.4 vs 85.0** (+2.4, CI excludes 0), pipeline residual 57.9 vs 59.2 (tie), **T6-bound risk 47–51% for both** (n=174; honest number, far below 70%), full pipeline 81.3 vs 81.6, general accuracy +1–6pp everywhere. **Verdict: keep hinge v7 as T5b; the credit lead was a data effect.** Reference hinge for all comparisons is now `tfidf_linearsvm_sgd_v7_credit.joblib`; serving dump still v5. Next: T6-bound risk tranche + card-issuer/overdraft rules; scaled pretraining on GCP (L4/A100 quota exists in europe-west2) if the transformer is to be pursued. `data/transformer_classifier_report.md` (iter 4) and `_iter{1,2,3}_report.md`.
+
+- **T5 R33–R37 (3 Sep, from the 400-row T6-bound risk gold):** Amex → `charge_card_repayment`; card issuer + masked card token → `credit_card_repayment`; unarranged/unauthorised overdraft → `overdraft_unarranged`; bare `OVERDRAFT INTEREST` → `interest_charged`; arranged / `<Month> overdraft fees` / bare `Overdraft` → `overdraft_arranged`. FP-tested on the jsonl, dictionary, holdout and eval sets (`test_card_issuer_and_overdraft_t5_rules_no_labelled_false_positives`); parity 2,004/2,004. Effect with hinge v7: **T6-bound risk-leaf acc 48.3% → 58.6%** (n=174), 711-row risk bar 63.0 → 66.4%, holdout credits 61.2 → 67.0%; rules-only pipeline 73.0 → 74.2%. SQL ~213 KB.
+- **Gemini 3.8 Flash (3 Sep):** drop-in vs saved 3.7 on the 2,004 unique frontier fingerprints. Holdout **83.7% vs 83.9%** (McNemar p≈0.86); slightly worse on T6-bound leftover and risk gold; **1.08 rows/s vs 3.35**. **Keep 3.7** in `production_labelling.py`. `data/gemini38_vs_37_report.md`.
+
+**Do not (added 3 Sep):** train on merchants in `gold_credit_eval.csv` or `gold_transactions_risk_t6bound.csv` (`load_risk_merchants()` now covers both); quote the 40-row risk slice — use the 400-row T6-bound set; compare a transformer against any hinge other than v7; switch labelling from Gemini 3.7 Flash to 3.8 Flash.
+
+**Do not (added 2 Sep):** quote the 86.1% risk bar; quote 80.5%/81.8% without the human-vs-LLM split; train on risk-gold merchants; add a T4 key tranche 4 marks `context_dependent`; hand-edit `sql/apply_crosswalk.sql` (regenerate, then run `check_waterfall_parity.py`); tune abstention or oversampling against the risk set to recover 70%.
+
+---
+
+## Previous current state (2026-08-27) — still accurate except where the block above overrides it
 
 Tranche-4 100k review is **closed**. Dual-model abstains got two recovery passes, then **stop** (no third pass). Dictionary ingest and classifier retrain are done. **v5 is retired** as confirmation gold (tranche-4 novelty leak); **v6 is the replacement locked set** (Carlos labelled the 8 flags 27 Aug; `data/gold_transactions_v6_LOCKED.csv` written, **1,100** rows) **and is not scored until go/no-go.**
 
@@ -19,7 +272,7 @@ Tranche-4 100k review is **closed**. Dual-model abstains got two recovery passes
 | T4 dictionary | `taxonomy/merchant_dictionary.csv` — **91,824** keys (27 Aug Trading 212). Matching requires `review_status=approved` and a classifiable leaf (`generate_crosswalk_sql.load_t4_dictionary`). Dropped 36 pending/unclassified (play.com, marketplace, junk strings, gold_v2 `unclassified_*`). Original seed (Tesco etc.) is **approved** — `pending` was a stale flag, not “unreviewed”. Skip `context_dependent`, abstains, T2 collision keys. Exceptions: `gamesys operation` → `gambling_unspecified`, `grab a` → `taxi_rideshare`. `creditspring` → `personal_loan_repayment`. `loans2go` → `payday_loan`. Plaid `icelandair` → `groceries` (Iceland Foods). Bare `morr` / `cd morr` → `groceries` (T2 petrol/cafe first). `barclays bank` → `mortgage` (Carlos). `admiral` → `insurance_general` (T2 `casino` → `gambling_casino`). `royal london` → `insurance_life` (`royal london pensions` stays `pension_contribution`). `ocado` → `groceries` (T2 `CENTRAL SERV` credit → `salary`). `trading 212` / `trading212` → `investment_trading`. `paypal credit` → `revolving_credit_repayment` (Pay in 3/4 stay `bnpl`). Bare `now` is **not** T4 (T2/T5 `Entertai` / `PAYPAL *NOW` → `streaming`). Do not T4 `lloyds bank`, `flex`, `water`, `mercedes-benz`, `plus`, `gem`, `home`, `city`, `orbit`, `spring`. |
 | SQL | `sql/apply_crosswalk.sql` — T4 is a join to `raylo-production.credit_risk_research.merchant_dictionary_t4` (**reload after 91,824**; dataset EU). Regenerated SQL is **~200 KB**. Inline UNNEST of 91k merchants exceeded BQ's ~1 MB query limit — do not paste an old copy. Load with `python src/load_t4_dictionary_bq.py`. |
 | Training | `src/build_tuning_dataset.py` reads tranche 4. `outputs/tuning_train.jsonl` = **383,066** rows (382,739 + 327 risk-guard copies of `car_lease` / DMP / revolving on non-risk-gold merchants). Holdout MD5 `7456da977a2c761119368637658232b6`. Do not reshuffle merchants. |
-| Classifier dumps | Serving names `outputs/distill_models/tfidf_logreg_v2.joblib` and `tfidf_linearsvm_sgd.joblib` are **tranche-4 (v5)** weights. v5b/v5c/v5d are `*_v5b.joblib` / `*_v5c.joblib` / `*_v5d.joblib` — **do not serve**; risk bar dropped vs v5. Frozen tranche-3: `*_v4.joblib`. Liblinear not retrained on 382k. |
+| Classifier dumps | **Serving head decided 2026-08-27: hinge SVM** (`tfidf_linearsvm_sgd.joblib`, v5 weights); `tfidf_logreg_v2.joblib` (also v5) is kept as rollback only. Abstention is margin-based (`decision_function` top1−top2), not `predict_proba`. v5b/v5c/v5d are `*_v5b.joblib` / `*_v5c.joblib` / `*_v5d.joblib` — **do not serve**; risk bar dropped vs v5. Frozen tranche-3: `*_v4.joblib`. Liblinear not retrained on 382k. |
 | Eval | Iteration suite = `gold_v2_slm_eval_holdout.csv` + `gold_transactions_risk_categories.csv` + `confusion_analysis.py`. **v5 retired** (keep the CSV; do not score). **v6** locked file written (`data/gold_transactions_v6_LOCKED.csv`, **1,100** rows). Carlos labelled the 8 flags 27 Aug. Scorers call `eval_sets.refuse_confirmation_eval()`. Scored once at go/no-go. Pipeline remeasure 27 Aug (after R31/R32 + PayPal Credit T4): T1–T5 then hinge **80.5%** leaf (n=1,884); residual **500**. T5 R31 (StepChange) **16/16**. T5b Plaid gold T6 residual **231**; holdout T6-bound hinge **57.7%**. **Frontier framing (27 Aug, full labelling prompt, not for runtime):** holdout leaf hinge **53.9%** / Gemini 3.7 Flash **83.9%** / Sonnet 5 **79.1%**; leftover 59.2 / **73.0** / 67.4; T1–T5 then model 80.5 / **84.2** / 82.7. `data/frontier_vs_classifier_report.md`. T6 residual packs 1+2 labelled and in `tuning_leaf_topup.csv` (**1,426** rows; +556). Base jsonl after ingest **382,739**; with risk-guard copies **383,066**. v5b retrain (on 382,739): hinge holdout **+0.7pp**, risk bar **86.1% → 79.8%**. v5c risk-guard (383,066): holdout **55.2%**, `car_lease` **20/20**, risk bar **79.0%** — **serving stays v5.** Residual+proto hinge (drop T1–T5 jsonl rows, keep ≤20 head rows/leaf): **hurts** holdout T6-bound 57.7%→36.0% and pipeline residual 60.1%→38.0%. Fine-tuned MiniLM (1 epoch): leftover **17.5%** vs hinge **57.7%**. T6 stays **PFC `credit_category_detailed`** (list `category`/`category_path` 15.7% vs 18.6% leaf on T6-bound gold). `data/residual_prototype_train_report.md` · `data/encoder_finetune_minilm_report.md` · `data/plaid_legacy_category_t6_report.md`. |
 
 **Plaid live coverage (remeasured 2026-08-26, 91,822 dictionary):** T4 exact merchant join **56.5%** of 4,279,707 rows (2,416,625; **89.0%** of filled-merchant volume; 36.6% blank merchant). 20% sample waterfall: T1–T4 **57.0%**, T1–T5 **57.7%**, T6 42.3%. Same day earlier: 91k keys T4 **52.1%** / T1–T4 **53.2%**; 91,730 keys T4 **55.9%**.
@@ -34,13 +287,13 @@ Tranche-4 100k review is **closed**. Dual-model abstains got two recovery passes
 | Risk gold leaf / general (711, held out of training) | 67.2 / 76.2 | 76.8 / 82.1 | **80.6 / 85.5** |
 | Risk-category bar (n=619, ≥70%) | 74.0 OK | 81.4 OK | **86.1 OK** |
 
-Hinge beats logreg on argmax **and** on leaf F1 (holdout weighted 51.5% vs 49.0%; risk-bar macro F1 86.9% vs 83.4%). It has no `predict_proba` (margin gate only). Parent-level macro F1 slightly favours logreg because hinge zeros a few thin classes (`fees_charges`, `salary`). Original bake-off kept logreg for auditability + probabilities; **Carlos is leaning hinge; serving dumps not switched.** Full pack: `data/classifier_v5_head_metrics_report.md`. Liblinear LinearSVC last time (25 Aug, ~167k rows) finished in **40s** as parallel OvR, ranked *below* hinge on every metric (T6 residual 73.1 vs hinge 79.0; risk residual bar 68.8 FAIL vs hinge 75.3 OK) — not worth retraining.
+Hinge beats logreg on argmax **and** on leaf F1 (holdout weighted 51.5% vs 49.0%; risk-bar macro F1 86.9% vs 83.4%). It has no `predict_proba` (margin gate only). Parent-level macro F1 slightly favours logreg because hinge zeros a few thin classes (`fees_charges`, `salary`). Original bake-off kept logreg for auditability + probabilities; **decided 2026-08-27: hinge SVM is the serving head.** The probability's two jobs are both settled empirically — gated fallback to T6 is measured harmful at every threshold (`data/t5b_residual_gate_report.md`), and abstain-to-unclassified works on the hinge margin. Logreg dump kept as rollback; Platt-scale the margins if calibrated confidence is ever needed. Full pack: `data/classifier_v5_head_metrics_report.md`. Liblinear LinearSVC last time (25 Aug, ~167k rows) finished in **40s** as parallel OvR, ranked *below* hinge on every metric (T6 residual 73.1 vs hinge 79.0; risk residual bar 68.8 FAIL vs hinge 75.3 OK) — not worth retraining.
 
 **29-way general head (same jsonl, 26 Aug):** hinge parent **63.4%** holdout vs leaf-rollup **60.3%**; **83.4% vs 85.5%** on risk gold (high-cost distress parent 92.4% → 81.9%). Fresh TF-IDF matched frozen. **Do not cascade.** `data/classifier_general_bakeoff_report.md`.
 
 **Do not:** ingest collisions/abstains/`unclassified_*` into T4; dictionary `cd glasgow` / Drayton Court / Fountain Hotel / bare `now` / `lloyds bank`; treat FPS as `transfer_p2p` by default; resume `pack_abstain3_*`; score locked v5 or v6; serve `*_v5b.joblib` or `*_v5c.joblib` or `*_v5d.joblib`; switch T6 from PFC detailed to list `category`/`category_path`; quote 47.8% / 18,825 / “~40% T1–T4” as current; call agent labels `human_reviewed`; overwrite `production_predictions_opus.csv` (write `production_predictions_opus_filled.csv`); paste the old inline-UNNEST SQL into BigQuery.
 
-**Key reports:** `data/frontier_vs_classifier_report.md` (27 Aug: Gemini/Sonnet vs serving hinge on holdout/risk/pipeline; framing only) · `data/classifier_v5_retrain_report.md` (26 Aug retrain + hinge + Equifax no) · `data/classifier_v5_head_metrics_report.md` (logreg vs hinge F1 / per-class; hinge wins leaf + risk bar) · `data/classifier_general_bakeoff_report.md` (29-way general vs leaf rollup; holdout +3.1pp parent, risk −2.1pp; do not cascade yet) · `data/waterfall_pipeline_report.md` (one row-disjoint set, n=1,884; T1–T5 then hinge **80.4%**; residual 516 hinge 60.1% vs T6 26.2%) · `data/t5b_residual_gate_report.md` (27 Aug remeasure: Plaid residual 231, holdout hinge 57.7%; always-ML still beats T6) · `data/residual_prototype_train_report.md` (27 Aug: drop T4-covered train rows **hurts** residual ~22pp) · `data/encoder_finetune_minilm_report.md` (CLS pooling, leftover 17.5%) · `data/encoder_finetune_minilm_meanpool_report.md` (pooling fix: holdout 52.1% vs hinge 53.8%; leftover and risk still lose) · `data/classifier_v5b_retrain_report.md` (T6 top-up jsonl; do not serve) · `data/classifier_v5c_retrain_report.md` (risk-guard oversample; lease recovered, bar still 79.0%) · `data/classifier_v5d_retrain_report.md` (hinge-only same jsonl; holdout 56.6%, bar 82.2%) · `data/plaid_legacy_category_t6_report.md` (list `category` vs PFC detailed; keep PFC) · `data/t6_residual_topup_fetch.md` (pack 1) · `data/t6_residual_topup2_fetch.md` (142 keyword-vetted, not Plaid-native) · `data/experiment3_xgb_report.md` (27 Aug feature rebuild + XGBoost; signed Mar–Apr month3 OOT **0.478** vs live logistic **0.328**) · `data/experiment3_iv_report.md` (24 Aug logistic analog; unsigned 0.308 vs 0.328; historical) · `data/gold_v4_scoring_report.md` (Option 1 confirmed).
+**Key reports:** `data/frontier_vs_classifier_report.md` (27 Aug: Gemini/Sonnet vs serving hinge on holdout/risk/pipeline; framing only) · `data/classifier_v5_retrain_report.md` (26 Aug retrain + hinge + Equifax no) · `data/classifier_v5_head_metrics_report.md` (logreg vs hinge F1 / per-class; hinge wins leaf + risk bar) · `data/classifier_general_bakeoff_report.md` (29-way general vs leaf rollup; holdout +3.1pp parent, risk −2.1pp; do not cascade yet) · `data/waterfall_pipeline_report.md` (one row-disjoint set, n=1,884; T1–T5 then hinge **80.4%**; residual 516 hinge 60.1% vs T6 26.2%) · `data/t5b_residual_gate_report.md` (27 Aug remeasure: Plaid residual 231, holdout hinge 57.7%; always-ML still beats T6) · `data/residual_prototype_train_report.md` (27 Aug: drop T4-covered train rows **hurts** residual ~22pp) · `data/encoder_finetune_minilm_report.md` (CLS pooling, leftover 17.5%) · `data/encoder_finetune_minilm_meanpool_report.md` (pooling fix: holdout 52.1% vs hinge 53.8%; leftover and risk still lose) · `data/classifier_v5b_retrain_report.md` (T6 top-up jsonl; do not serve) · `data/classifier_v5c_retrain_report.md` (risk-guard oversample; lease recovered, bar still 79.0%) · `data/classifier_v5d_retrain_report.md` (hinge-only same jsonl; holdout 56.6%, bar 82.2%) · `data/plaid_legacy_category_t6_report.md` (list `category` vs PFC detailed; keep PFC) · `data/t6_residual_topup_fetch.md` (pack 1) · `data/t6_residual_topup2_fetch.md` (142 keyword-vetted, not Plaid-native) · `data/experiment3_xgb_report.md` (27 Aug feature rebuild + XGBoost; headline = 50-feature cap: month3 OOT **0.477** / month6 **0.564** vs live **XGB** 0.403 / 0.386 — the live OB model is XGBoost, not the logistic analog; uncapped 0.478 / 0.560 as reference) · `data/experiment3_iv_report.md` (24 Aug logistic analog; unsigned 0.308 vs 0.328; historical) · `data/gold_v4_scoring_report.md` (Option 1 confirmed).
 
 Review conventions (Creditspring, 32 Red, Lime/Voi, Morr+town, payday = HCSTC only, …) still live in `AGENT_RULES.md` (review itself is closed).
 
@@ -232,7 +485,7 @@ The TF-IDF 32.0% row is the **21 August** dump on this same holdout. After tranc
 1. ~~Four-field categoriser~~ — **done 2026-08-20** (bake-off adopted TF-IDF + logreg). **2026-08-26:** retrained on tranche 4; SGD hinge SVM now beats logreg on holdout/risk argmax (see current-state table). Serving dump is still logreg until Carlos picks a head. See `data/classifier_v5_retrain_report.md`.
 2. ~~Merge dictionary additions + write direction rules~~ — **done 2026-08-20** (535 entries at that milestone). Now **91,527** after tranche 4 + residual T4 pack + n≥50 Plaid-miss aliases.
 3. ~~Wire T4 + T5 into the crosswalk SQL~~ — **done 2026-08-20**. Historical sample: Equifax T4 34.8% / Plaid T4 30.5%. **2026-08-26 live remeasure:** Plaid T4 52.1%, T1–T4 53.2%; Equifax T4 37.4%. **Same day:** T4 served as a table join (`credit_risk_research.merchant_dictionary_t4`); generated SQL **~167 KB**. Reloaded at **91,527**.
-4. ~~Recompute feature IVs / Experiment 3~~ — **rebuilt 2026-08-27**. T1–T5 + T5b hinge + T6/T7 on the labelled Equifax+Plaid cohort, then a screened XGBoost. **Signed** Mar–Apr 2026 OOT `month3_1plus_pia`: taxonomy selected XGB **0.478** (Plaid-train only **0.467**) vs live Plaid logistic **0.328** / live XGB **0.403**. `month6_3plus_pia_from_subscription` OOT Nov 2025–Jan 2026: taxonomy XGB **0.560** (Plaid-train only **0.532**) vs live logistic **0.405**. Script `src/experiment3_xgb_pipeline.py`. Report: `data/experiment3_xgb_report.md`. The 24 Aug logistic analog run (`data/experiment3_iv_report.md`, unsigned 0.308 vs 0.328) is historical.
+4. ~~Recompute feature IVs / Experiment 3~~ — **rebuilt 2026-08-27**. T1–T5 + T5b hinge + T6/T7 on the labelled Equifax+Plaid cohort, then a screened XGBoost. **The live OB model is the XGBoost on Plaid-category features (0.403 month3 / 0.386 month6) — quote comparisons against it, not the logistic analog (0.328 / 0.405, simpler-learner reference only).** Headline = the **50-feature-capped** retrains (`experiment3_xgb_month3_50.joblib` / `_month6_50.joblib`; `created` excluded): signed Mar–Apr 2026 OOT `month3_1plus_pia` **0.477** (Plaid-train only **0.449**); `month6_3plus_pia_from_subscription` OOT Nov 2025–Jan 2026 **0.564** (Plaid-train only **0.488**). Uncapped reference: 0.478 / 0.560 at 102 / 96 features. Script `src/experiment3_xgb_pipeline.py`. Report: `data/experiment3_xgb_report.md` (50-cap addendum). The 24 Aug logistic analog run (`data/experiment3_iv_report.md`, unsigned 0.308 vs 0.328) is historical.
 5. ~~Investigate the `rent` detection gap~~ — **done 2026-08-22**: R13 re-enabled with a targeted false-positive exclusion. IV essentially flat. Kept for audit-trail/fair-lending defensibility.
 6. ~~Score `data/gold_transactions_v4_slm_volume.csv`~~ — **done 2026-08-23**: Option 1 confirmed; see §6a and `data/gold_v4_scoring_report.md`.
 7. ~~Resume the `production_labelling.py` Option-1 refactor~~ — **done 2026-08-23**, then used for tranche 4.
@@ -243,10 +496,10 @@ The TF-IDF 32.0% row is the **21 August** dump on this same holdout. After tranc
 12. ~~Tranche 4 100k review + T4 ingest~~ — **done 2026-08-25**. Snapshot `data/production_labels_tranche4.csv`. Two abstain recovery passes then stop.
 13. ~~Rebuild classifier/SLM training on tranche 4~~ — **classifier done 2026-08-26**. SLM fine-tune **not** re-run on the new jsonl.
 14. ~~Equifax high-volume fall-through tranche~~ — **rejected 2026-08-26** (4.4% of Equifax volume; blank vendor is 58%). Alias pass only if Experiment 3 still needs Equifax history.
-15. **Decide serving head (logreg vs hinge SVM)** — hinge wins leaf accuracy, weighted/macro F1, and the risk bar; logreg keeps `predict_proba` and slightly better parent **macro** F1 (thin classes: fees/salary). Carlos leaning hinge. Metrics: `data/classifier_v5_head_metrics_report.md`. Not switched in serving dumps.
+15. ~~Decide serving head (logreg vs hinge SVM)~~ — **decided 2026-08-27: hinge SVM.** Wins leaf accuracy, weighted/macro F1, the risk bar (86.1 vs 81.4), and the T6 residual; logreg's `predict_proba` has no remaining consumer (T6 fallback gating measured harmful; abstain runs on margin). Logreg dump kept as rollback. Metrics: `data/classifier_v5_head_metrics_report.md`.
 16. ~~Re-score Experiment 3~~ — **done 2026-08-27** (feature rebuild + XGBoost; signed GINI). See backlog item 4 and `data/experiment3_xgb_report.md`.
 17. ~~Finish v6 locked sample~~ — **applied 27 Aug.** Carlos labelled the 8 flags. `data/gold_transactions_v6_LOCKED.csv` **1,100** rows, 0 blank. Do not score until go/no-go.
-18. **Full-pipeline readout** — `python src/score_waterfall_pipeline.py`. **Remeasured 2026-08-27** after 91,822 T4: n=1,884, T1–T5 then hinge **80.4%** (was 74.9%); residual 516 (was 788). Same merchants OK. Re-run after material T2/T4/T5 changes. Not locked v5/v6.
+18. **Full-pipeline readout** — `python src/score_waterfall_pipeline.py`. **Remeasured 2026-08-27** after 91,822 T4: n=1,884, T1–T5 then hinge **80.4%** (was 74.9%); residual 516 (was 788). Same merchants OK. Re-run after material T2/T4/T5 changes. Not locked v5/v6. **Provider-native-only baseline (2026-08-31):** same 1,884 rows, mapping only the provider's own category through T6 (no T1–T5, no classifier) = **31.8%** leaf / **44.1%** general — the third number next to 80.5% (T1–T5 then hinge) and 72.0% (T1–T7 rules-only). Already in `data/waterfall_pipeline_report.md`, now a headline row there.
 19. ~~Dedicated general-category classifier~~ — **measured 2026-08-26**. 29-way hinge **+3.1pp** holdout parent (63.4% vs leaf-rollup 60.3%) but **−2.1pp** on risk gold (83.4% vs 85.5%); high-cost distress parent recall 92.4% → 81.9%. Fresh TF-IDF matched frozen. **Do not cascade / do not switch serving.** Report: `data/classifier_general_bakeoff_report.md`. Specialists not trained.
 20. ~~Label T6 residual top-up~~ — **ingested 27 Aug.** Packs 1+2 (`correct_category`) appended to `data/tuning_leaf_topup.csv` (+556; file **1,426**). jsonl **382,739**. Holdout MD5 unchanged.
 21. ~~Retrain classifier on jsonl with T6 residual top-up~~ — **measured 27 Aug.** Hinge holdout 53.8% → 54.5%; risk bar **86.1% → 79.8%** (`car_lease` 20/20 → 3/20). Serving stays v5. Report: `data/classifier_v5b_retrain_report.md`.
@@ -254,6 +507,8 @@ The TF-IDF 32.0% row is the **21 August** dump on this same holdout. After tranc
 23. ~~Fine-tuned encoder (MiniLM) on current jsonl~~ — **CLS pooling rejected; mean-pool retry 2026-08-27.** Wrong `[CLS]` head: leftover 17.5%. Mean-pool probe+unfreeze: holdout **52.1% vs hinge 53.8%**, leftover **53.0% vs 57.7%**, risk bar **68.7% FAIL vs 86.1%**. Do not serve. `data/encoder_finetune_minilm_meanpool_report.md`.
 24. ~~Switch T6 to Plaid list `category` / `category_path`~~ — **rejected 2026-08-27.** T6-bound gold: PFC detailed **18.6%** leaf vs list field **15.7%**. Keep `credit_category_detailed` in `sql/apply_crosswalk.sql`. Map: `taxonomy/plaid_legacy_category_map.csv`. `data/plaid_legacy_category_t6_report.md`.
 25. ~~Risk-guard oversample + retrain (v5c)~~ — **measured 27 Aug.** +327 copies of lease/DMP/revolving on non-risk-gold merchants. Hinge holdout **55.2%**; `car_lease` **20/20** again; risk bar **86.1% → 79.0%**. Serving stays v5. `data/classifier_v5c_retrain_report.md`.
+
+26. ~~Category-granularity sensitivity~~ — **measured 2026-09-01; stress-tested 3 seeds + paired bootstrap the same day.** Same Experiment 3 cohort/windows/XGB, features rebuilt at 275 / 69 / 29 / 17 / 9 / 7 / 4 categories (69 = today's model-feature grouping — 40 individually-tracked leaves + the 235 remaining leaves rolled into 29 generals — not a 69-leaf taxonomy; see the Granularity wording note above). **275, current 69 and 29 groups are statistically indistinguishable; 17 is close but may lose month-6 signal (−0.026, 95% CI −0.051 to −0.003); 9 and below degrade; the 4-group uplift over live is not conclusive on month3.** Do not quote "flat 275→17, every rung beats live". Finer than today buys nothing; the live comparator in the ladder is an in-repo reconstruction (full refit 0.392 / 0.411). Rungs in `taxonomy/granularity_ladder.csv` (taxonomy.csv untouched). `src/experiment3_granularity_ladder.py` · `src/audit_experiment3_granularity.py` · `data/experiment3_granularity_ladder_report.md` · `data/experiment3_granularity_stress_test_report.md`.
 
 ## 8. Feature-layer findings (affect how features are built, not the taxonomy)
 
@@ -339,11 +594,21 @@ Prompted by comparing notes against Bud's published transaction-categorisation t
 
 **2026-08-27 — Experiment 3 feature rebuild + XGBoost.** T1–T5 then T5b hinge on leftover (Plaid 1.81M keys, Equifax 6,259 vendors), then screened GBM. Signed GINI: month3 Mar–Apr OOT taxonomy XGB **0.478** (Plaid-train only **0.467**) vs live logistic **0.328** / live XGB **0.403**. month6 Nov 2025–Jan 2026 OOT taxonomy XGB **0.560** (Plaid-train only **0.532**) vs live logistic **0.405**. `src/experiment3_xgb_pipeline.py`. `data/experiment3_xgb_report.md`.
 
+**2026-08-27 — Experiment 3 framing fix + 50-feature cap.** Carlos: the live OB model is the **XGBoost** on Plaid-category features, so the live comparator is 0.403 / 0.386, not the logistic analog. Retrained with a hard 50-feature cap by inner-train gain (`created` excluded): month3 OOT **0.477** (Plaid-train only 0.449), month6 **0.564** (0.488) — capping barely moves the headline vs 102/96 features, so the signal fits a governable feature set. Capped dumps `outputs/experiment3_xgb_month3_50.joblib` / `_month6_50.joblib`. Addendum at the bottom of `data/experiment3_xgb_report.md`. Stakeholder report + charts quote the capped numbers vs live XGB.
+
 **2026-08-27 — frontier vs serving hinge (framing).** Gemini 3.7 Flash and Sonnet 5, full labelling prompt, unique union of holdout + risk + pipeline (2,004 fingerprints). Holdout leaf hinge **53.9%** / Gemini **83.9%** / Sonnet **79.1%**. Pipeline leftover 59.2 / **73.0** / 67.4. T1–T5 then model 80.5 / **84.2** / 82.7. Do not serve LLMs at runtime. `src/score_frontier_vs_classifier.py`. `data/frontier_vs_classifier_report.md`.
 
 **2026-08-27 — v6 locked file applied.** Carlos labelled the 8 flags. `data/gold_transactions_v6_LOCKED.csv` **1,100** rows. Do not score until go/no-go.
 
+**2026-08-27 — serving head decided: hinge SVM.** Carlos confirmed hinge (`tfidf_linearsvm_sgd.joblib`, v5) as the serving head; logreg (`tfidf_logreg_v2.joblib`, v5) is rollback only. Rationale: hinge wins every promotion-gating metric (holdout leaf 52.8 vs 50.9, weighted/macro F1, risk gold 80.6 vs 76.8, risk bar 86.1 vs 81.4, T6 residual 74.9 vs 68.0); logreg's probabilities have no consumer — T6-fallback gating was measured harmful at every threshold, and abstain-to-unclassified works on the `decision_function` margin (global threshold tuned on holdout to hold the risk bar; per-class only if monitoring shows a leaf abstaining badly). If calibrated confidence is ever required, Platt-scale the margins rather than reverting the head. Pipeline scorers already use hinge, so the 80.5% headline is unchanged. Locked v6 not scored for this.
+
 **2026-08-27 — hinge-only v5d.** Same 383,066 jsonl, fresh TF-IDF, no logreg. Holdout **56.6%**; risk bar **82.2%** (v5 **86.1%**). Serving stays v5. `data/classifier_v5d_retrain_report.md`.
+
+**2026-09-01 — category-granularity sensitivity: first pass, single seed (superseded same day).** Stakeholder question after the Experiment 3 readout. Seven rungs, same cohort/windows/XGB/screen. A single-seed, no-CI run read as "flat 275 → 17; every rung beats live 0.403/0.386" — **this framing does not survive stress-testing and must not be quoted.** See the corrected entry immediately below.
+
+**2026-09-01 — category-granularity sensitivity, corrected: 3-seed stress test + paired bootstrap (`src/audit_experiment3_granularity.py`).** 275, current 69 (today's model-feature grouping — 40 leaves kept individually + the rest rolled into 29 generals, not a 69-leaf taxonomy) and 29 groups are statistically indistinguishable on both targets (no paired comparison among them excludes zero). 17 groups is close on month3 but has a real, small month6 loss vs 69 (−0.026, 95% CI −0.051 to −0.003 — excludes zero). 9 and below show material, unambiguous degradation. The ladder's live comparator was an in-repo reconstruction refit on the full train window, not the production artefact — seed-mean 0.392/0.411 (single earlier run read 0.403/0.386 from an inner-80%-split-only variant). Every rung's point estimate beats this reconstruction, but the smallest-rung (4-group, capped) uplift is **not conclusive on month3** (+0.035, 95% CI −0.004 to +0.074); month6 is conclusive (+0.058, CI +0.012 to +0.100). A same-20-feature taxonomy-vs-live ablation is inconclusive on both targets and flips sign by target, so the large headline uplift belongs to the whole feature/model bundle, not to taxonomy granularity alone. Recommendation: keep 275 as governed source of truth; treat 29 as the evidence-backed model rollup; keep 17 as a challenger pending direct-head retraining and temporal validation; do not go to 9 or fewer. Full methodological caveats (post-OOT merchant-vocabulary leakage, rollup-vs-direct-retrain gap, comparator fidelity) in the report. `data/experiment3_granularity_stress_test_report.md`, `docs/taxonomy-granularity-conclusion.md`.
+
+**2026-09-01 — category *expansion* pilot (the opposite direction): inconclusive, do not adopt.** Three parents (`streaming`, `marketplace_general`, `payment_intermediary`) split into 15 frozen shadow child buckets (275 → 287 if adopted), rules on merchant/description only, frozen before outcomes inspected. Parent-control vs parent+children comparison isolates the split's own value. Rolling pre-OOT Plaid: parent control 0.513/0.571; +lean split 0.508/0.564 (Δ −0.0045/−0.0068, both CIs include zero); +rich split 0.511/0.560 (Δ −0.0020/−0.0111, both CIs include zero). Not low-support — shadow categories present in 54,369/64,209 rows. `payment_intermediary` alone gave a small, statistically clear month3 **loss**. **Do not adopt the 287-leaf expansion**; test further splits in shadow without recategorising history. `src/experiment3_subleaf_pilot.py`, `data/experiment3_subleaf_pilot_report.md`.
 
 **2026-08-26 — 29-way general classifier bake-off.** Same 382k jsonl, same TF-IDF/SGD budget as v5; labels are the taxonomy rollup (no new labelling). Dedicated hinge **63.4%** holdout general vs leaf-rollup **60.3%** (+3.1pp); risk gold **83.4% vs 85.5%** (−2.1pp). High-cost distress parent recall dropped 92.4% → 81.9%. Fresh vocabulary = frozen vocabulary. Serving dumps not touched. Do not build specialists on this evidence. `data/classifier_general_bakeoff_report.md`. Scorer: `src/score_general_classifier.py`.
 
@@ -382,6 +647,10 @@ Prompted by comparing notes against Bud's published transaction-categorisation t
 **2026-08-27 — residual+prototype hinge (train/serve mismatch).** Dropped the 95% of jsonl that T1–T5 catch; kept 18,487 residual rows + ≤20 head prototypes/leaf (23,520 train, 268 classes). Fresh-TF-IDF SGD hinge vs serving v5 hinge: holdout T6-bound **57.7% → 36.0%**; pipeline residual **60.1% → 38.0%**; risk bar 86.1% → 59.1% FAIL. Head examples transfer; do not train residual-only. Serving dumps not touched. `src/experiment_residual_prototype.py`. `data/residual_prototype_train_report.md`.
 
 **2026-08-27 — pipeline + T5b remeasure; T6 residual fetch.** After 91,822 T4: same n=1,884 eval, T1–T5 then hinge **80.4%** (was 74.9%); residual **516** (was 788), hinge 60.1% vs T6 26.2%. Plaid gold T6 residual **231** (was 695); holdout T6-bound hinge **57.7%** (was 39.1%). Always-ML still beats T6. Unlabelled fetch: `outputs/t6_residual_topup_sample.csv` **414** rows (`data/t6_residual_topup_fetch.md`). Classifier not retrained.
+
+**2026-09-02 — programme review + Week-1 fixes.** Review doc `docs/review-2026-09-02-state-and-next-steps.md`. Fixes: risk-gold merchants excluded from training (jsonl 381,560; honest risk bar **62.7%** vs leaked 86.1%; `data/classifier_v6_deleaked_report.md`); T4 tranche-4 downgrade guard (−1,575 keys + bare `credit`; dictionary **90,261**, BQ reloaded); Python waterfall reordered to SQL tier order + `check_waterfall_parity.py` (2,004/2,004 agree) which caught the Carlos-pack raw-string double-escaping bug (34 T2 rules dead in SQL until now); direction + provenance splits in all scorers with a credit-side bar; pipeline re-measured **81.8%** on 2,004 rows (credit 57.8% / debit 84.2%; human-v2 77.7% / LLM-drafted 86.1%); Experiment 3 as-of filter + full-refit live comparator (capped 0.477 / 0.562; Plaid-only 0.445 / 0.504 vs live 0.382 / 0.385). Tests 34. Locked v5/v6 not scored.
+
+**2026-08-31 — provider-native-only baseline surfaced.** Same n=1,884 pipeline eval: mapping only the provider's own category through T6 (no T1–T5, no classifier) = **31.8%** leaf / **44.1%** general. This number already existed in `data/waterfall_pipeline_report.md`'s "Provider-native only" section; promoted to a headline row in that report's main table and referenced in `docs/project-summary.md` and `README.md` as the third apples-to-apples figure alongside 80.5% (T1–T5 then hinge) and 72.0% (T1–T7 rules-only). No new measurement, no retrain.
 
 ## Suggested skills
 

@@ -1,0 +1,40 @@
+{
+  "document_type": "design_consistency_checks",
+  "checked_on": "2026-09-15",
+  "app_source_commit_before_design": "cf9088046dc38587d75d916f96310ccb3fdcb618",
+  "research_source_commit_before_design": "24000b7d79b6a15624e1898476508e8aa903822a",
+  "checks": {
+    "json_parse": "pass",
+    "internal_markdown_links": "pass",
+    "partition_targets_sum": 20000,
+    "confirmation_cohort_targets_sum": 5000,
+    "critical_leaves_exist_in_current_taxonomy": 39,
+    "taxonomy_leaves": 275,
+    "taxonomy_general_categories": 29,
+    "unique_acceptance_scenario_ids": 42,
+    "learning_enrichment_purposes": 9,
+    "additional_selection_purposes": 1,
+    "historical_audit_files_byte_identical": 4
+  },
+  "limits": {
+    "acceptance_scenarios_executed": false,
+    "new_master_created": false,
+    "enforcement_implemented": false,
+    "historical_never_seen_certified": false,
+    "model_evaluation_run": false,
+    "locked_set_contents_read": false,
+    "runtime_or_model_change": false
+  },
+  "files_sha256": {
+    "DATA_CONTRACT.md": "8f2dc04cf1a3fc233a40f3efff474dcde4fa694ccd28108d45a965a702aecc6c",
+    "DESIGN.md": "3214b9963c9da3a0d026f3a8dfe23342202a84e2ae51214e6c8368d2efc4851f",
+    "IMPLEMENTATION_PLAN.md": "2553ecd1dfc40d80dae80f6c157e45b34279bfcff9414bb4d3556542619c13c1",
+    "acceptance-cases.json": "4130f1c713315782bce69261ca541bc73c04f1003c0e677ed426ce278678d057",
+    "audit/README.md": "3d1c5d69fca8c43544b9ad2f7cd141d1f083f8393678b8ff17d65b8c24014c8f",
+    "audit/REPORT.md": "f0b830a158e3d3188ecd39e6d200a6c0af0aadefc85d7065aeecbcca055111d0",
+    "audit/audit.py": "1e73fe3ccdd867f53fb76a70bc719b1eb9526dfd3dccd4789ca06f021aace182",
+    "audit/coverage.json": "d2961f28a732293e93ff76602a084372d473dec142dbd76de23e0c2ce1bf357f",
+    "audit/validation.json": "8c50790143113bc70d9441d61a3f3d946e902115e726b3f1557f4169dbbc2500",
+    "benchmark-plan.json": "914c3762fcd49db8116f002527d3a60e92eb605040a708302e4d1ea4a3f158fc"
+  }
+}
