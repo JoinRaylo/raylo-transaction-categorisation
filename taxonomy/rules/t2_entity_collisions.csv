@@ -61,19 +61,19 @@ c_unique_mobile,c unique,unique\s+mobile|\bmobile\b,mobile_handset,any,Unique Mo
 mexpress_medexpress,mexpress uk cd,medexpress|med\s*express,pharmacy,any,MedExpress. Observed rows are often just MEXPRESS UK CD + digits.
 mexpress_molina,mexpress uk cd,molina,delivery_courier,any,Molina Express. courier_logistics is not a leaf.
 wik_repayment,wik,repayment,loan_repayment_manual,any,"Payee name captured as the merchant; 'repayment' means loan_repayment_manual."
-p2p_payee_collision_1,wik,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbgc\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
+p2p_payee_collision_1,wik,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference; not BGC, which is also used for wages) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
 artbox_scoop,artbox,scoop,restaurant_cafe,any,ARTBOX Scoop & Crumb. coffee_shop_cafe is not a leaf.
 artbox_shop,artbox,artbox,stationery,any,ARTBOX stationery.
 cd_best_vapes,cd best,best4vapes|best\s*4\s*vapes,vaping,any,Best4Vapes. vape_shop is not a leaf.
 cd_best_one,cd best,best\s+one,convenience_store,any,Best One convenience.
-p2p_payee_collision_2,fitzsimons,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbgc\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
+p2p_payee_collision_2,fitzsimons,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference; not BGC, which is also used for wages) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
 fitzsimons_pub,fitzsimons,fitzsimons,pub_bar,any,Fitzsimons EUR card tap.
 banquet_paypal,banquet,paypal,music_other,any,PayPal Banquet Records. music_retail is not a leaf.
 banquet_sq,banquet,sq\s*\*|nottingham,restaurant_cafe,any,Square Banquet Nottingham hospitality.
 thurrock_community,thurrock,community,government_services,any,Thurrock Community direct debit.
 thurrock_ips,thurrock,borough|-ips,car_parking,any,Thurrock Borough IPS parking.
 derek_loan_repayment,derek,loan\s+repayment|repayment,loan_repayment_manual,any,"Payee name captured as the merchant; loan repayment wording means loan_repayment_manual."
-p2p_payee_collision_3,derek,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbgc\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
+p2p_payee_collision_3,derek,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference; not BGC, which is also used for wages) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
 the_black_chip,the black,black\s+country,takeaway,any,The Black Country Chip.
 the_black_heath,the black,blackheath,pub_bar,any,The Blackheath.
 east_bridgford_garden,east bridgford,gdn|garden,garden,any,East Bridgford Garden Centre. garden_centre is not a leaf.
@@ -89,7 +89,7 @@ cd_green_valley,cd green,green\s+valley,groceries,any,Green Valley London grocer
 egg_zettle,egg,zettle|eggbugland,retail_other,any,ZETTLE Eggbuckland Plymouth POS. pub_bar/retail_other were both listed; till is not identifiable as a pub.
 egg_energy,egg,162224|direct\s+debit|\begg\b,energy,any,Egg Charging / Phoenix Renewables. home_energy is not a leaf; 16-22-24 is not loan_repayment_manual.
 jasmine_restaurant,jasmine,restaurant,restaurant_cafe,any,Jasmine Restaurant card spend.
-p2p_payee_collision_4,jasmine,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbgc\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
+p2p_payee_collision_4,jasmine,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference; not BGC, which is also used for wages) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
 paymyvet_groom,paymy.vet,groom,pet_other,any,PAYMY.VET Pets Groomi Farnham. pet_grooming is not a leaf.
 paymyvet_vets,paymy.vet,vets?|bolton,veterinary,any,PAYMY.VET Bolton Vets.
 bills_nanny,bill's,nanny,takeaway,any,Nanny Bill's.
@@ -99,15 +99,15 @@ reddish_pfs,reddish,service\s+stati,fuel,any,Reddish Service Station.
 reddish_shop,reddish,convenience,convenience_store,any,Reddish Convenience St.
 hafod_sq,hafod,sq\s*\*,restaurant_cafe,any,Square Hafod dining tap.
 hafod_housing,hafod,housing,rent,any,Hafod Housing Association DD.
-p2p_payee_collision_5,hart,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbgc\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
+p2p_payee_collision_5,hart,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference; not BGC, which is also used for wages) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
 hart_council,hart,district\s+council|\bcouncil\b,council_tax,any,Hart District Council Hampshire.
-p2p_payee_collision_6,blackwell's,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbgc\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
+p2p_payee_collision_6,blackwell's,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference; not BGC, which is also used for wages) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
 blackwells_books,blackwell's,blackwell,books,any,Blackwell's bookshop / Oxford.
 gamesys_unspecified,gamesys operation,gamesys,gambling_unspecified,any,"Gamesys runs bingo and casino brands; keep unspecified, do not T4-ingest casino."
 ups_ppoint,the ups store,ppoint|g\s+and\s+s\s+stores,convenience_store,any,PayPoint G and S Stores collapsed onto The UPS Store.
 ups_store,the ups store,ups\s+store,delivery_courier,any,Genuine UPS Store card tap.
 hiba_bibs,hiba,bibs|clothing,clothing_general,any,"Sole trader trading as Bibs clothing. clothing_retail is not a leaf."
-p2p_payee_collision_7,hiba,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbgc\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
+p2p_payee_collision_7,hiba,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference; not BGC, which is also used for wages) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
 collection_pot_dining,collection pot,collection\s+pot,restaurant_cafe,any,Dining POS. gifts_presents is not a leaf (would be gifts_flowers) — no money-pot narrative in this pack.
 wirral_atp,wirral mbc,\batp\b,car_parking,any,Wirral MBC ATP parking. parking is not a leaf.
 wirral_council,wirral mbc,wirral\s+mbc,council_tax,any,Wirral MBC council-tax scale DD/card.
@@ -116,7 +116,7 @@ barbican_theatre,barbican,barbican,theatre,any,Barbican Centre. arts_centre is n
 wine_lodge_ppoint,wine lodge,ppoint,alcohol_beer_spirits,any,PayPoint Wine Lodge London. off_licence is not a leaf.
 wine_lodge_pub,wine lodge,wine\s+lodge,pub_bar,any,Yates's Wine Lodge pub.
 pier_chips,pier,fish|chips,takeaway,any,Pier 7 Fish N Chips.
-p2p_payee_collision_8,pier,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbgc\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
+p2p_payee_collision_8,pier,sortcode|faster\s*payment|\bfps\b|\bmob\b|\bft\b|\bbank\s+transfer\b|\btransfer\b|\d{10},transfer_p2p,any,"Payee name captured as the merchant; transfer markers (sort code / FPS / faster payment / mobile or online transfer / long reference; not BGC, which is also used for wages) mean transfer_p2p. Redacted 2026-09-25: no personal names or account details in rules."
 pier_36,pier,pier\s+36|donaghadee,pub_bar,any,Pier 36 Donaghadee.
 amber_valley_ips,amber valley borough council,-ips|\bips\b,car_parking,debit,Amber Valley IPS parking (Doncaster GBR fingerprint), not council tax.
 roadchef_whsmith,roadchef,whsmi,convenience_store,debit,Roadchef WHSmith shop, not the restaurant leaf.
