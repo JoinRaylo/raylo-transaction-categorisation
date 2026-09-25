@@ -1,0 +1,62 @@
+{
+  "schema_version": "benchmark-authority-binding-review-v1",
+  "milestone": "B03-B-authority-binding-review",
+  "scope": "pre_apply_proposal_only",
+  "status": "proposal_waiting_security_approval",
+  "authorizes_consumption": false,
+  "branch": "codex/txncat-b03a-research",
+  "base_commit": "e2be22f",
+  "project": {
+    "id": "raylo-txncat-authority-prod",
+    "number": "357892832103",
+    "region": "europe-west2",
+    "firestore_database": "txncat-benchmark-authority",
+    "receipt_key": "txncat-benchmark-receipts",
+    "storage_key": "txncat-benchmark-storage",
+    "bucket": "proposed_raylo-txncat-authority-prod-europe-west2_confirm_before_creation"
+  },
+  "proposed_identities": [
+    "txncat-authority-writer",
+    "txncat-receipt-verifier",
+    "txncat-learning-worker",
+    "txncat-selection-worker"
+  ],
+  "mutations_performed": {
+    "iam_bindings_changed": false,
+    "service_accounts_created": false,
+    "authority_resources_created": false,
+    "customer_data_accessed": false,
+    "objects_or_documents_written": false,
+    "labels_or_benchmark_membership_changed": false,
+    "training_retraining_or_scoring": false
+  },
+  "required_reviews": [
+    "govern or replace direct Carlos roles/owner through the approved privileged or JIT path before real data",
+    "exact custom role permission sets and resource conditions",
+    "ancestor IAM and privileged-group membership",
+    "service-account impersonation paths",
+    "HSM key policy and Cloud Storage CMEK service-agent grant",
+    "caller authentication, namespace, key-state and verify-only code gaps",
+    "retention and audit-log ownership"
+  ],
+  "sol_review": {
+    "model": "gpt-5.6-sol",
+    "agent": "Dewey",
+    "status": "APPROVE_WITH_CONTROL_PLANE_CONDITIONS",
+    "conditions": [
+      "keep this as a design-and-diff review only; it does not authorize mutation",
+      "complete organization-to-project effective IAM review",
+      "govern or replace the direct Carlos Owner grant before real data",
+      "record collection time, exact inventory commands, raw-output hashes or operation identifiers",
+      "populate exact identities, unique IDs, names, CEL conditions and effective deny matrix before binding"
+    ]
+  },
+  "blocked_actions": [
+    "apply IAM bindings",
+    "create service identities or authority resources",
+    "enable Cloud Run or Artifact Registry",
+    "write synthetic or customer-derived fixtures",
+    "admit or consume benchmark rows"
+  ],
+  "next_gate": "separate security approval of this exact binding packet"
+}

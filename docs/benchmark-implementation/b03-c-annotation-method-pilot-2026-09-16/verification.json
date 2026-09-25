@@ -1,0 +1,72 @@
+{
+  "schema_version": "benchmark-annotation-pilot-verification-v1",
+  "purpose": "annotation_method_experiment",
+  "authorizes_consumption": false,
+  "base": {
+    "app_commit": "7bf7ad1001193fa31ca035fae7f9bf0a302e7bd0",
+    "app_branch": "codex/txncat-b03a-app",
+    "research_commit": "be75d88d183c312a2a1ddcbd64bcc4514028f63f",
+    "research_branch": "codex/txncat-b03a-research"
+  },
+  "changed_source_sha256": {
+    "app/lib/raylo-txncat/src/raylo_txncat/benchmark_annotation.py": "3ee095f5af1380c3807642c1aca9aef72246d4517c82b973f241b7843a0af3a1",
+    "app/lib/raylo-txncat/tests/test_benchmark_annotation.py": "b328ee3f76cc19e04a7a8e71442594b880967ebe4c476efb7b54e032148a9986",
+    "research/tools/benchmark/annotation_pilot.py": "c21b58952b081ff6a3832991c9ed9652516a3389f0da8f911190d0bef6a25c1d",
+    "research/tools/benchmark/test_annotation_pilot.py": "6153169d1f0104870e19c2135695db07efa3a7fe02f5a86543c88d42438d3d74"
+  },
+  "tests": [
+    {
+      "command": "startup synthetic unit checks",
+      "result": "115 passed"
+    },
+    {
+      "command": "focused authority and annotation unit checks",
+      "result": "128 passed"
+    },
+    {
+      "command": "lib/raylo-txncat/tests plus apps/ob-txn-categoriser/tests/unit",
+      "result": "1379 passed, 1 warning"
+    },
+    {
+      "command": "research/tools/benchmark/test_annotation_pilot.py",
+      "result": "12 passed"
+    },
+    {
+      "command": "ruff check and format check on changed Python files",
+      "result": "passed"
+    },
+    {
+      "command": "research runner bytecode compilation",
+      "result": "passed"
+    }
+  ],
+  "synthetic_provider_evidence": {
+    "fixture_items": 1,
+    "real_rows_exported": 0,
+    "real_rows_labelled": 0,
+    "online": {
+      "claude-sonnet-5": "1 strict vote received",
+      "gemini-3.8-flash": "1 strict vote received",
+      "gemini-3.7-flash": "1 strict vote received"
+    },
+    "batch": {
+      "claude-sonnet-5": "1 valid vote collected; 1 invalid non-labelled confidence rejected",
+      "gemini_api": "job completed; missing required rationale recorded as schema_failed",
+      "unknown_metadata_id": "rejected before output"
+    },
+    "manifest_file_binding": "synthetic manifest, guide and taxonomy digests matched",
+    "real_manifest_execution": "rejected before provider execution"
+  },
+  "mutations": {
+    "bigquery": false,
+    "cloud_authority": false,
+    "iam_kms_retention": false,
+    "training_selection_or_locked_evaluation": false
+  },
+  "limitations": [
+    "No 500-row pilot manifest exists.",
+    "No customer-linked rows were downloaded or labelled.",
+    "Physical authority, authenticated receipts, complete history/alias evidence, eligibility and B04 consumer gates remain open.",
+    "Model annotations are not human gold; disagreements require Carlos adjudication."
+  ]
+}

@@ -38,6 +38,7 @@ from distillation_bakeoff import (  # noqa: E402
 )
 from eval_sets import refuse_confirmation_eval  # noqa: E402
 from score_t5b_residual import scores_and_margin  # noqa: E402
+import eval_protection  # noqa: E402
 
 HOLDOUT = ROOT / "data" / "gold_v2_slm_eval_holdout.csv"
 RISK = ROOT / "data" / "gold_transactions_risk_categories.csv"
@@ -78,6 +79,9 @@ def _fit_sgd(X, y, loss):
 def train(skip_fresh: bool):
     gen_of, _ = load_taxonomy()
     print(f"Loading {TRAIN_JSONL}...", file=sys.stderr)
+    # B04: the supervised export must verify against its membership coverage
+    # and the pinned protected release before .fit may consume it.
+    eval_protection.verify_tuning_export(out_dir=OUT_DIR)
     df = _parse_tuning_jsonl(TRAIN_JSONL)
     missing = sorted({lf for lf in df["leaf"].unique() if lf not in gen_of})
     if missing:

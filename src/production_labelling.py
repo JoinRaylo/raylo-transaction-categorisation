@@ -63,6 +63,7 @@ from gating_experiment import (  # noqa: E402
     load_crosswalk, load_example_merchants, load_example_notes, build_notes_addendum,
 )
 from build_tail_eval import TAIL_ADDENDUM, POPULATION_QUERY, bq_json  # noqa: E402
+import eval_protection  # noqa: E402
 
 STRINGS_CSV = OUT_DIR / "production_strings.csv"
 EVIDENCE_JSON = OUT_DIR / "production_evidence.json"
@@ -96,6 +97,16 @@ GOLD_FILES = [ROOT / "data" / "gold_merchant_labels.csv", ROOT / "data" / "gold_
 
 
 def fetch(n):
+    # B04 gated off: the population and evidence queries run over the
+    # unexcluded linked pool — merchant counts include protected rows and
+    # APPROX_TOP_COUNT(description, 3) egresses verbatim narratives with no
+    # B02 identity.  Rebuild requires the exclusion applied in-SQL before
+    # aggregation.
+    eval_protection.gate(
+        "production_labelling.fetch",
+        "pool aggregates and per-merchant narrative egress cannot prove "
+        "disjointness from protected events",
+    )
     print("Querying unmatched Plaid merchant population...", file=sys.stderr)
     pop = sorted(((r["m"], int(r["n"])) for r in bq_json(POPULATION_QUERY)), key=lambda x: -x[1])
     already_gold = set()
@@ -318,12 +329,18 @@ def run_labelling(cfg, rows, out_path):
 
 
 def label(model_key):
+    # B04: strings leave the trust boundary here — verify the derived
+    # artifact's bound receipt before any row is read or sent out.
+    eval_protection.verify_artifact(STRINGS_CSV)
     rows = list(csv.DictReader(open(STRINGS_CSV)))
     run_labelling(PRODUCTION_MODELS[model_key], rows, PREDICTIONS[model_key])
 
 
 def tiebreak():
     """Run the tiebreaker model over the needs_review strings only."""
+    # B04: needs_review strings egress to the tiebreaker — verify the derived
+    # artifact's bound receipt first.
+    eval_protection.verify_artifact(LABELS_CSV)
     labels = list(csv.DictReader(open(LABELS_CSV)))
     rows = [{"merchant": r["merchant"], "plaid_n": r["plaid_n"]}
             for r in labels if r["tier"] == "needs_review"]
@@ -519,7 +536,6 @@ def apply_review(path=None):
     model tier. Re-runnable: after a re-gate, re-apply every archived
     workbook (data/production_review_*_completed.xlsx) plus the current one."""
     from openpyxl import load_workbook
-    from collections import Counter
 
     _, _, _, gen_of, _ = load_crosswalk()
     if path is None:
@@ -558,6 +574,10 @@ def apply_review(path=None):
         elif v == "unsure":
             resolutions[m] = ("unclassified_other", "abstain_residual")
 
+    # B04: the labels artifact is rewritten in place — it must verify against
+    # its bound receipt first, and that receipt stays in the new receipt's
+    # input chain.
+    labels_receipt = eval_protection.verify_artifact(LABELS_CSV)
     rows = list(csv.DictReader(open(LABELS_CSV)))
     applied = 0
     for r in rows:
@@ -569,6 +589,23 @@ def apply_review(path=None):
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         w.writeheader()
         w.writerows(rows)
+    # Merchant-level label dictionary: rows carry no event identity, so the
+    # artifact is honestly authoring-purpose.  LABELS_CSV is rewritten in
+    # place, so the prior receipt cannot join the new input chain — its
+    # verified inputs carry forward and the manifest rows honestly claim no
+    # identity.
+    eval_protection.write_artifact_receipt(
+        LABELS_CSV, consumer="production_labelling.apply_review",
+        purpose="dictionary_candidates",
+        input_receipts=labels_receipt.get("input_receipts") or [],
+        manifest_identities=[
+            {
+                "identity": None,
+                "provenance": {"source": "labels_csv_review"},
+            }
+            for _ in rows
+        ],
+    )
 
     total_v = sum(int(r["plaid_n"]) for r in rows)
     print(f"Applied {applied} human verdicts. Final tranche distribution:")

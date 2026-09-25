@@ -41,6 +41,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from eval_sets import refuse_confirmation_eval  # noqa: E402
 from gating_experiment import ROOT, OUT_DIR, load_crosswalk  # noqa: E402
 from ml_baseline import bq_client, GOLD_HEAD, GOLD_TAIL, EVAL_PARQUET  # noqa: E402
+import eval_protection  # noqa: E402
 
 TRAIN_PARQUET = OUT_DIR / "distill_train.parquet"
 MODELS_DIR = OUT_DIR / "distill_models"
@@ -90,9 +91,15 @@ def fetch_train():
                IFNULL(merchant_name, '') AS vendor,
                IFNULL(COALESCE(original_description, transaction_name), '') AS description,
                ABS(amount) AS amount,
-               CAST(amount < 0 AS INT64) AS is_credit
+               CAST(amount < 0 AS INT64) AS is_credit,
+               TRIM(account_id) AS account_id,
+               TRIM(transaction_id) AS transaction_id,
+               TRIM(customer_id) AS customer_id
         FROM `raylo-production.dbt_production.credit_plaid_open_banking_transactions`
         WHERE merchant_name IS NOT NULL AND TRIM(merchant_name) != ''
+          AND NULLIF(TRIM(account_id), '') IS NOT NULL
+          AND NULLIF(TRIM(transaction_id), '') IS NOT NULL
+          AND NULLIF(TRIM(customer_id), '') IS NOT NULL
           AND LOWER(TRIM(merchant_name)) IN ({in_list})
         QUALIFY ROW_NUMBER() OVER (PARTITION BY LOWER(TRIM(merchant_name)) ORDER BY RAND()) <= {CAP_PER_MERCHANT}
         """
@@ -104,7 +111,17 @@ def fetch_train():
     df = df.dropna(subset=["leaf"])
     df["amount"] = df["amount"].astype(np.float32)
     df["is_credit"] = df["is_credit"].astype(np.int8)
+    # B04: linked-pool fetch must pass the protected-release guard; rows
+    # without B02 linkage identity fail closed until the query carries them.
+    guarded = eval_protection.apply_env(
+        df.to_dict("records"), purpose="distillation"
+    )
+    df = pd.DataFrame(guarded)
     df.to_parquet(TRAIN_PARQUET, index=False)
+    eval_protection.write_artifact_receipt(
+        TRAIN_PARQUET, consumer="distillation_bakeoff.fetch",
+        purpose="distillation", guard=guarded.guard,
+    )
     print(f"Wrote {TRAIN_PARQUET}: {len(df)} transaction-level rows, "
           f"{df['merchant'].nunique()} merchants, {df['leaf'].nunique()} leaves", file=sys.stderr)
 
@@ -119,6 +136,9 @@ def train():
     from sklearn.feature_extraction.text import HashingVectorizer, TfidfVectorizer
     from sklearn.linear_model import SGDClassifier
 
+    # B04: the parquet must carry a bound fetch receipt from a guarded
+    # fetch; a pre-guard parquet has no receipt and fails closed.
+    eval_protection.verify_artifact(TRAIN_PARQUET)
     MODELS_DIR.mkdir(exist_ok=True)
     df = pd.read_parquet(TRAIN_PARQUET)
     rng = np.random.default_rng(SEED)
@@ -170,6 +190,9 @@ def retrain_lightgbm():
     and early-stopping patience widened to match the slower learning rate.
     Same TF-IDF features as B (already-fitted vectorizer, no re-fit) so
     architecture remains the only variable versus B."""
+    # B04: the parquet must carry a bound fetch receipt from a guarded
+    # fetch; a pre-guard parquet has no receipt and fails closed.
+    eval_protection.verify_artifact(TRAIN_PARQUET)
     import joblib
     import lightgbm as lgb
     from collections import Counter
@@ -231,16 +254,26 @@ def _parse_tuning_jsonl(path):
     build_tuning_dataset.py) back into the vendor/description/amount/is_credit/leaf
     columns this script's feature pipeline expects."""
     import json
+    import re
+
+    # Fixed 2026-09-23: splitting on newlines cut multi-line descriptions at the
+    # first line break (321 train rows), while serving uses the full text.  The
+    # four fields always appear in this order, so parse them positionally.
+    user_format = re.compile(
+        r"\Amerchant: (?P<merchant>.*?)\ndescription: (?P<description>.*)\n"
+        r"amount: (?P<amount>[^\n]*)\ndirection: (?P<direction>[^\n]*)\Z",
+        re.DOTALL,
+    )
     rows = []
     with open(path) as f:
         for line in f:
             ex = json.loads(line)
             user_msg = next(m["content"] for m in ex["messages"] if m["role"] == "user")
             leaf = next(m["content"] for m in ex["messages"] if m["role"] == "assistant")
-            fields = {}
-            for part in user_msg.split("\n"):
-                k, _, v = part.partition(": ")
-                fields[k] = v
+            match = user_format.match(user_msg)
+            if match is None:
+                raise ValueError("tuning row does not match the four-field user format")
+            fields = match.groupdict()
             rows.append({
                 "vendor": fields.get("merchant", ""), "description": fields.get("description", ""),
                 "amount": float(fields.get("amount", 0) or 0),
@@ -262,6 +295,9 @@ def train_v2():
     from sklearn.feature_extraction.text import TfidfVectorizer
     from sklearn.linear_model import SGDClassifier
 
+    # B04: tuning export must verify against its membership coverage and the
+    # pinned protected release before .fit may consume it.
+    eval_protection.verify_tuning_export(out_dir=OUT_DIR)
     MODELS_DIR.mkdir(exist_ok=True)
     train_path = OUT_DIR / "tuning_train.jsonl"
     print(f"Loading {train_path}...", file=sys.stderr)
@@ -343,6 +379,9 @@ def train_embed():
     import joblib
     from sklearn.linear_model import SGDClassifier
 
+    # B04: tuning export must verify against its membership coverage and the
+    # pinned protected release before .fit may consume it.
+    eval_protection.verify_tuning_export(out_dir=OUT_DIR)
     MODELS_DIR.mkdir(exist_ok=True)
     train_path = OUT_DIR / "tuning_train.jsonl"
     print(f"Loading {train_path}...", file=sys.stderr)
@@ -452,6 +491,8 @@ def evaluate():
     from collections import Counter
 
     _, _, _, gen_of, _ = load_crosswalk()
+    # B04: the eval parquet must still match its bound fetch receipt.
+    eval_protection.verify_artifact(EVAL_PARQUET)
     txns = pd.read_parquet(EVAL_PARQUET)
     txns["merchant"] = txns["merchant"].str.strip().str.lower()
 

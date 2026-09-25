@@ -1,0 +1,77 @@
+{
+  "schema_version": "benchmark-g3-verification-v1",
+  "purpose": "g3_admission_engineering_evidence_not_authority",
+  "authorizes_consumption": false,
+  "captured_at": "2026-09-22",
+  "scope_doc_sha256": "12adfafab4029ad76e7205cd952ccb4aafedcb4d612af5a2ae3ce6cb4db291d9",
+  "artifacts": {
+    "account_evidence_summary_sha256": "f7d2f148973c335ad816ccb1b149681aed2406e3cb963c23c69a84e377fb8868",
+    "sibling_evidence_summary_sha256": "f3fef0e3e48b064b96f8c7f3c3278afaaae2370ebd92f6bbfd685b350d3acbc3",
+    "declared_corpus_sha256": "3cc6a2a2ec69c5b8bdc15762851fe04ffc7a8389c81e7b163b59c8e58443dd9f",
+    "legacy_membership_index_sha256": "83fdae95bd88f6cbb54415ac8348fa7094cd3c2616d3e089650b0dc039894938",
+    "family_registry_proposal_sha256": "70e15d249edf05492ff558f39c836f51b46d68e0b5c27e6c931209a689ef542b",
+    "resolved_summary_sha256": "7d7ad0304b4bce3cb944a7bb1aac224f2d2b4267af899d2c6129cf5bacab388e",
+    "selection_asis_report_sha256": "f2fd960e759848bee952d92db53b37db266c22d7add422271a45f01da211a86b",
+    "selection_ifsigned_report_sha256": "0a11f3ce352a44524d5bc0b2652fe47613f3fbbb5d98a605e4bb4968a9f29832",
+    "selection_ifsigned_members_sha256": "d331166d7f78840d10cf94370682da917a7f61131ce3cdd2c72f654ac9fa4189",
+    "supplement_pool_receipt_sha256": "9af97752c1ba38aad3f31b10deb8bcc4646c46309f64efa77a679f3984351d27",
+    "supplement_profile_sha256": "868b9dd99c705ebb29da9a86eb20b567654345e05312a3c7c8821e570059766b",
+    "supplement_hits_receipt_sha256": "90f097c77a9b395f40f77a939b2383f40f6316ff5c7991ddef1023ac7168f879",
+    "supplement_hits_account_evidence_sha256": "ab26c63e361a65c6f50ee3c65be070c272939ff39bb471667ef0656c1dff6d6d",
+    "supplement_hits_sibling_evidence_sha256": "7641ed4a5c2815f9c3454635d4e462c45e1187e67ee2f6e51880d139b6678085",
+    "leaf_predicates_sha256": "804ff74b9b8932c1f603c6f58293ec7e33310209734f2abd52662e9853b0cbd4",
+    "supplement_resolved_sha256": "509ebf65198bab44ebb57967f950736187586687dc4db696f0888d8433ed3b5d",
+    "supplement_selection_report_sha256": "8ed3622f2cb989cc1b432d3ffdbc02ad94d41050e9ce49acde872ad0ec52869f",
+    "supplement_members_sha256": "34ac16fc8b38dfc1b5487fe4474060c612ca87af4c301e869ce1f5bbbd1fd001",
+    "membership_bundle_sha256": "7814addf1506e182f44e03cdb5e389713b361e3403ff0a1087be156fd190a63a",
+    "membership_manifest_sha256": "f710c9cf04b4b4d796eee5380173c354324c40745e879e9a1edfe0658bc344e7",
+    "proposed_protected_membership_csv_sha256": "348337579823f2247e2e9616a98cc52488703509f15eb90e8cdcd9d177375b1e",
+    "protected_keys_sha256": "601e19d8adceb31b9332adb620abd54d7aa986a647bf3eebb2a1516f690b9a8b",
+    "protected_key_map_sha256": "99dacc13898dc73bb0f89d41e8741e8db6d3b3abf021c3dbc865702137b75764"
+  },
+  "core_expansion_result": {
+    "status": "shortfall",
+    "selected": 1000,
+    "view_fills": {"representative": 800, "unseen_input": 150, "unfamiliar_merchant": 50},
+    "unmet_constraints": ["min_route_rows:T1 (17 available in frame + 0 pilot vs 25 required)"],
+    "note": "T1 scarcity is a data-availability finding; no synthetic or duplicate rows were substituted"
+  },
+  "supplement_result": {
+    "status": "shortfall",
+    "selected": 413,
+    "leaves_with_selection": 22,
+    "leaves_without_hits": ["account_misuse", "balance_transfer_fee", "clothing_maternity"],
+    "partial_leaves": {
+      "camping_equipment": "9/20",
+      "card_payment_unspecified": "17/20",
+      "housing_benefit": "10/20",
+      "transfer_mobile_app": "17/20"
+    },
+    "excluded_core_overlap": 87,
+    "quarantined_ownership": 61,
+    "cap_rejections": 29,
+    "headline_denominator_inclusion": false
+  },
+  "evidence_resolution": {
+    "candidates": 10000,
+    "accounts_covered": 10000,
+    "candidates_with_uncovered_siblings": 0,
+    "candidates_churned_accounts": 1,
+    "candidates_unresolved_link_accounts": 108,
+    "candidates_with_legacy_hits": 673,
+    "supplement_hits": 2144,
+    "supplement_hits_resolved_eligible": 2083
+  },
+  "pending_human_gates": {
+    "declared_corpus_review": "pending_human_review",
+    "family_registry_review": "pending_human_review"
+  },
+  "unresolved_items": [
+    "38 legacy transaction-regression members outside the exact exposure index (projection tokens retained)",
+    "104 candidate accounts with unresolved links (evidence) / 108 resolved-frame count",
+    "344 customer-account relationships lacking attribute coverage",
+    "T1 route quota shortfall: 17 available vs 25 required",
+    "Supplement per-leaf shortfalls: 87 rows across 6 leaves",
+    "admission remains blocked until final adjudication, receipt binding and B04 consumer checks complete"
+  ]
+}

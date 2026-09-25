@@ -34,6 +34,7 @@ from gating_experiment import (MODELS, build_system_prompt, build_tool_schema,  
 from build_final_gold_v2 import TXN_ADDENDUM  # noqa: E402
 from build_final_gold_v2_batch2 import _leaf_equifax_queries  # noqa: E402
 from label_provenance import DICTIONARY_ELIGIBLE_TIERS  # noqa: E402
+import eval_protection  # noqa: E402
 
 SAMPLE_CSV = OUT_DIR / "tuning_topup_sample.csv"
 PREDICTIONS = {k: OUT_DIR / f"tuning_topup_predictions_{k}.csv" for k in MODELS}
@@ -75,6 +76,7 @@ def _existing_merchant_exclusions():
 
 
 def fetch():
+    eval_protection.gate("build_tuning_leaf_topup.fetch", reason='equifax_data.open_banking_full_dump is proposal-matched and carries no customer_id/account_id linkage; fetched rows can never pass the protected-release guard. Rebuild against the customer-linked Plaid source before this consumer may run.')
     from google.cloud import bigquery
     client = bigquery.Client(project="raylo-production")
 
@@ -131,6 +133,7 @@ def fetch():
                     "target_leaf": leaf, "merchant": m, "merchant_raw": r["merchant_raw"],
                     "description_raw": r["description_raw"] or "", "amount": r["amount"],
                     "direction": r["direction"], "native_category": r["native_category"],
+                    "provider": "equifax",
                 })
         if not found_any:
             no_data.append(leaf)
@@ -142,10 +145,17 @@ def fetch():
     print(f"Genuinely no Equifax data found for {len(no_data)} leaves: {no_data}", file=sys.stderr)
 
     OUT_DIR.mkdir(exist_ok=True)
+    # B04: fetched rows must pass the protected-release guard; rows without
+    # linkage identity fail closed until the query carries them.
+    rows = eval_protection.apply_env(rows, purpose="supervised_training")
     fieldnames = ["row_id"] + [k for k in rows[0].keys() if k != "row_id"]
     with open(SAMPLE_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader(); w.writerows(rows)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="build_tuning_leaf_topup.fetch",
+        purpose="supervised_training", guard=rows.guard,
+    )
     print(f"Wrote {SAMPLE_CSV}", file=sys.stderr)
 
 
@@ -158,6 +168,9 @@ def label(model_key):
                       + TXN_ADDENDUM + build_notes_addendum(load_example_notes()))
     tool = build_tool_schema(leaves)
 
+    # B04: narratives leave the trust boundary here — the sample must verify
+    # against its bound receipt before any row is read or sent to a model API.
+    eval_protection.verify_artifact(SAMPLE_CSV)
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     out_path = PREDICTIONS[model_key]
     predictions = {}
@@ -239,10 +252,16 @@ def resolve():
     """Agreement-based trust, same model as production_labels: both models agree ->
     accept as a training example. Disagree -> drop (we only need a handful of good
     examples per class, not every sampled row)."""
+    # B04: the labelled sample and the existing output both feed this merge —
+    # each must verify against its bound receipt before any row is read.
+    sample_receipt = eval_protection.verify_artifact(SAMPLE_CSV)
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     haiku = {r["row_id"]: r for r in csv.DictReader(open(PREDICTIONS["haiku"]))}
     sonnet = {r["row_id"]: r for r in csv.DictReader(open(PREDICTIONS["sonnet"]))}
 
+    prior_receipt = (
+        eval_protection.verify_artifact(FINAL_CSV) if FINAL_CSV.exists() else None
+    )
     accepted, dropped_disagree, dropped_offtarget = [], 0, 0
     for r in rows:
         h, s = haiku.get(r["row_id"]), sonnet.get(r["row_id"])
@@ -269,6 +288,13 @@ def resolve():
         w.writeheader()
         for r in accepted:
             w.writerow({k: r[k] for k in fieldnames if k in r} | {"gold_leaf": r["gold_leaf"]})
+    eval_protection.write_artifact_receipt(
+        FINAL_CSV, consumer="build_tuning_leaf_topup.resolve",
+        purpose="supervised_training",
+        input_receipts=[
+            receipt for receipt in (sample_receipt, prior_receipt) if receipt
+        ],
+    )
 
     print(f"Accepted (models agreed): {len(accepted)} / {len(rows)}", file=sys.stderr)
     print(f"Dropped (models disagreed): {dropped_disagree}", file=sys.stderr)
@@ -279,6 +305,7 @@ def resolve():
 
 
 def fetch_gap_fill(gap_leaves):
+    eval_protection.gate("build_tuning_leaf_topup.fetch_gap_fill", reason='equifax_data.open_banking_full_dump is proposal-matched and carries no customer_id/account_id linkage; fetched rows can never pass the protected-release guard. Rebuild against the customer-linked Plaid source before this consumer may run.')
     """Second pass for leaves that got zero new examples with the exclusion on --
     those categories have so few real Equifax merchants that the exclusion (skip
     anything already in Tier A/B) leaves nothing. Relaxes the exclusion: still
@@ -290,6 +317,12 @@ def fetch_gap_fill(gap_leaves):
     client = bigquery.Client(project="raylo-production")
 
     tax_rows = {r["detailed_category"]: r for r in csv.DictReader(open(ROOT / "taxonomy" / "taxonomy.csv"))}
+    # B04: the existing sample is merged into the new output — its bound
+    # receipt must verify first, and its receipt is preserved in the merged
+    # artifact's input chain.
+    prior_receipt = (
+        eval_protection.verify_artifact(SAMPLE_CSV) if SAMPLE_CSV.exists() else None
+    )
     existing = list(csv.DictReader(open(SAMPLE_CSV))) if SAMPLE_CSV.exists() else []
     seen = {r["merchant"] for r in existing}
     next_id = max((int(r["row_id"]) for r in existing), default=-1) + 1
@@ -338,6 +371,7 @@ def fetch_gap_fill(gap_leaves):
                     "target_leaf": leaf, "merchant": m, "merchant_raw": r["merchant_raw"],
                     "description_raw": r["description_raw"] or "", "amount": r["amount"],
                     "direction": r["direction"], "native_category": r["native_category"],
+                    "provider": "equifax",
                 })
         if not found_any:
             still_no_data.append(leaf)
@@ -350,11 +384,19 @@ def fetch_gap_fill(gap_leaves):
           f"{len(gap_leaves) - len(still_no_data)} of {len(gap_leaves)} leaves", file=sys.stderr)
     print(f"Still genuinely zero Equifax data at all for {len(still_no_data)} leaves: {still_no_data}", file=sys.stderr)
 
+    # B04: newly fetched rows must pass the protected-release guard; rows
+    # without linkage identity fail closed until the query carries them.
+    rows = eval_protection.apply_env(rows, purpose="supervised_training")
     all_rows = existing + rows
     fieldnames = ["row_id"] + [k for k in all_rows[0].keys() if k != "row_id"]
     with open(SAMPLE_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader(); w.writerows(all_rows)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="build_tuning_leaf_topup.fetch_gap_fill",
+        purpose="supervised_training", guard=rows.guard,
+        input_receipts=[prior_receipt] if prior_receipt else (),
+    )
     print(f"Wrote {SAMPLE_CSV}: {len(all_rows)} total rows", file=sys.stderr)
 
 

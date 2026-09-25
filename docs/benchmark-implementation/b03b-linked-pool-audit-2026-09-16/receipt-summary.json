@@ -1,0 +1,28 @@
+{
+  "schema_version": "txncat-b03b-linked-pool-audit-v1",
+  "status": "executed_read_only_aggregate",
+  "authorizes_consumption": false,
+  "query_name": "linked_pool_profile",
+  "project": "raylo-production",
+  "location": "EU",
+  "statement_type": "SELECT",
+  "maximum_bytes_billed": 20000000000,
+  "dry_run_total_bytes_processed": 10448039166,
+  "total_bytes_processed": 10448039166,
+  "total_bytes_billed": 10449059840,
+  "metadata_unchanged": true,
+  "sql_sha256": "97ea75dbe9015bfe5075ce483e39cf9eafa52f0ce0b922609e3f52a0c73e50bf",
+  "runner_sha256": "58a7c7506190acc6d9af390ff303116cd7bf21d727df4e3a0460bd139370f635",
+  "result_sha256": "c5c93f9eb2633020f2ac3e99a0ca73273ac2e61abc963a0683aca4fdcc358e6a",
+  "source_code_hashes": {
+    "manifest": "e7dab14dd35911c7c08d70ef3aceb7e59a8c9710a39b355abf98e5dc56f972f3",
+    "materialized_model": "0a65ac5341eda882ebbff35e4e88950779d7f1d302c0eceee1d61c615b50f750",
+    "assessment_model": "a1f187d395eb3dee000a5227b1a321e37cf60ad48e321af7ca3e9e30ca30edee",
+    "checkout_model": "f29b56e5477bf0250193985f1c0a07875fb6b83ca9086c19d7ae200960a80a5a",
+    "user_model": "c573165748be62448c9f136fbdabb7a0d67f376599a4059bbd264fd720873cb9",
+    "customer_model": "ed75ff9009eed74b06f05b9d2a9ce2a9651c859247c83ff43a36d34310105236"
+  },
+  "result_path": "/private/tmp/txncat-b03b-linked-pool-audit-20260916-escalated/linked_pool_profile_result.json",
+  "executed_receipt_path": "/private/tmp/txncat-b03b-linked-pool-audit-20260916-escalated/executed_receipt.json",
+  "captured_at": "2026-09-16T15:48:28.698875+00:00"
+}

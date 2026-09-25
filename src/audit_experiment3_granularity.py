@@ -40,6 +40,7 @@ sys.path.insert(0, str(ROOT / "src"))
 import experiment3_granularity_ladder as ladder  # noqa: E402
 import experiment3_xgb_pipeline as x3  # noqa: E402
 from credit_metrics import signed_gini  # noqa: E402
+import eval_protection  # noqa: E402
 
 OUT_JSON = x3.OUT_DIR / "experiment3_granularity_stress_test.json"
 OUT_PREDICTIONS = x3.OUT_DIR / "experiment3_granularity_stress_predictions.parquet"
@@ -280,6 +281,11 @@ def _validate_inputs(base: pd.DataFrame, long_df: pd.DataFrame) -> dict:
 
 def run(seeds: list[int], n_boot: int) -> dict:
     started = time.time()
+    # B04 gated off: the parquet feature stores predate bound provenance.
+    eval_protection.gate(
+        "audit_experiment3_granularity.run",
+        "unbound feature store; rebuild under the protected-release guard",
+    )
     long_df = pd.read_parquet(ladder.LONG_PARQUET)
     base = pd.read_parquet(x3.FEAT_PARQUET)
     base["financial_proposal_id"] = base["financial_proposal_id"].astype(str)
@@ -445,6 +451,11 @@ def audit_same20(seeds: list[int], n_boot: int) -> dict:
     the same XGBoost procedure.  One side uses the saved Plaid-native features;
     the other rebuilds those definitions from the taxonomy leaves.
     """
+    # B04 gated off: the parquet feature stores predate bound provenance.
+    eval_protection.gate(
+        "audit_experiment3_granularity.audit_same20",
+        "unbound feature store; rebuild under the protected-release guard",
+    )
     base = x3._prepare(pd.read_parquet(x3.FEAT_PARQUET))
     live_cols = [f"live_{c}" for c in x3.LIVE_FEATURES]
     our_cols = [x3.LIVE_ANALOG[c] for c in x3.LIVE_FEATURES]

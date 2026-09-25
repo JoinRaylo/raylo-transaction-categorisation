@@ -9,6 +9,7 @@ from collections import Counter
 from pathlib import Path
 
 from label_provenance import DICTIONARY_ELIGIBLE_TIERS
+import eval_protection  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 OPUS = ROOT / "outputs" / "production_predictions_opus.csv"
@@ -26,6 +27,11 @@ def main():
     if not OPUS.exists():
         raise SystemExit(f"missing read-only Opus file: {OPUS}")
 
+    # B04: fetched label artifacts may only be merged when their bound
+    # receipts still verify against the pinned protected release.
+    for _p in (LABELS, T4):
+        if _p.exists():
+            eval_protection.verify_artifact(_p)
     labels = {r["merchant"]: r for r in csv.DictReader(open(LABELS))} if LABELS.exists() else {}
     t4 = {r["merchant"]: r for r in csv.DictReader(open(T4))} if T4.exists() else {}
     opus_rows = list(csv.DictReader(open(OPUS)))

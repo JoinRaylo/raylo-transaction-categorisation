@@ -1,0 +1,161 @@
+{
+  "export": {
+    "conventions_version": "txncat-label-conventions-2026-09-23-v1",
+    "distinct_train_leaves": 266,
+    "membership_coverage": {
+      "current_unique_exact_transactions": 397954,
+      "effective_output_rows": 398353,
+      "lookup_sha256": "39c8ef384f6526966511e176220cdeaab3b5130c8bc1a80bd7a40f7157d74c61",
+      "permanent_unique_exact_transactions": 397954,
+      "schema_version": "tuning-membership-coverage-v2"
+    },
+    "sources": {
+      "ambiguous_accounts_dropped": 1,
+      "convention_R03_google_play_software": 1,
+      "convention_R06_gambling_credit_unspecified": 8,
+      "convention_R07_ruling_b_sort_code_no_name": 2,
+      "convention_R08_ruling_a_named_individual": 12,
+      "convention_R09_pots": 77,
+      "risk_guard_oversample_copies": 194,
+      "starved_oversample_copies": 205,
+      "tier_b": 441746,
+      "tier_b_ambiguous_account_rows": 15,
+      "tier_b_skipped_in_topup": 23,
+      "tuning_credit_topup": 15160,
+      "tuning_credit_topup_ambiguous_account_rows": 4,
+      "tuning_credit_topup_rule_override": 138,
+      "tuning_leaf_topup": 549,
+      "tuning_leaf_topup_blocked_merchant": 25,
+      "tuning_leaf_topup_rule_override": 62,
+      "tuning_risk_topup": 2955,
+      "tuning_risk_topup_rule_override": 2
+    },
+    "tier_a": "dropped (decision 1)",
+    "train_rows": 393353,
+    "val_rows": 5000
+  },
+  "human_label_rule_conflicts": [
+    {
+      "human_leaf": "income_other_unspecified",
+      "rows": 2,
+      "rule_leaf": "refund_received",
+      "rule_tier": "T2",
+      "source": "tuning_credit_topup"
+    },
+    {
+      "human_leaf": "returned_payment",
+      "rows": 2,
+      "rule_leaf": "gym_fitness",
+      "rule_tier": "T4",
+      "source": "tuning_credit_topup"
+    },
+    {
+      "human_leaf": "income_other_unspecified",
+      "rows": 2,
+      "rule_leaf": "rent",
+      "rule_tier": "T4",
+      "source": "tuning_credit_topup"
+    },
+    {
+      "human_leaf": "income_other_unspecified",
+      "rows": 1,
+      "rule_leaf": "gym_fitness",
+      "rule_tier": "T4",
+      "source": "tuning_credit_topup"
+    },
+    {
+      "human_leaf": "returned_payment",
+      "rows": 1,
+      "rule_leaf": "insurance_motor",
+      "rule_tier": "T4",
+      "source": "tuning_credit_topup"
+    }
+  ],
+  "plaid_index_drop_reasons": {
+    "kept": 2464272,
+    "protected_account": 168588,
+    "protected_customer": 48781,
+    "protected_event": 424,
+    "unlinked_customer": 1597642
+  },
+  "protected_release_membership_sha256": "675490115bd07c96d9102118cd8ca27924b88b896bc518f17da53f55e76ddf56",
+  "recovery": {
+    "distillation_labels_consensus": {
+      "outcomes": {
+        "convention_R03_google_play_software": 1,
+        "convention_R06_gambling_credit_unspecified": 395,
+        "convention_R07_ruling_b_sort_code_no_name": 13,
+        "convention_R08_ruling_a_named_individual": 6,
+        "convention_R09_pots": 127,
+        "dropped_no_clean_transaction": 142614,
+        "dropped_protected_text": 327,
+        "kept": 262041,
+        "rule_override": 12370
+      },
+      "recovered_rows": 262041,
+      "source_rows": 404982
+    },
+    "tuning_credit_topup": {
+      "outcomes": {
+        "ambiguous_match": 3585,
+        "dropped_protected_account": 916,
+        "dropped_protected_customer": 152,
+        "dropped_unlinked_customer": 8030,
+        "duplicate_event": 132,
+        "recovered": 15164,
+        "recovered_repeated_same_customer": 2169
+      },
+      "recovered_rows": 15164,
+      "source_rows": 27979
+    },
+    "tuning_leaf_topup": {
+      "outcomes": {
+        "ambiguous_match": 109,
+        "dropped_protected_account": 39,
+        "dropped_protected_customer": 9,
+        "dropped_unlinked_customer": 225,
+        "recovered": 574,
+        "recovered_repeated_same_customer": 100,
+        "unmatched": 470
+      },
+      "recovered_rows": 574,
+      "source_rows": 1426
+    },
+    "tuning_risk_topup": {
+      "outcomes": {
+        "ambiguous_match": 415,
+        "dropped_protected_account": 178,
+        "dropped_protected_customer": 19,
+        "dropped_protected_event": 1,
+        "dropped_unlinked_customer": 1372,
+        "duplicate_event": 58,
+        "recovered": 2955,
+        "recovered_repeated_same_customer": 383
+      },
+      "recovered_rows": 2955,
+      "source_rows": 4998
+    }
+  },
+  "schema_version": "txncat1-retrain-data-build-v1",
+  "tier_b_fetch": {
+    "cap_per_merchant": 10,
+    "eligible_merchants": 88102,
+    "eval_protection_excluded": {
+      "account_group": 31470,
+      "customer_group": 6644,
+      "exact_event": 162
+    },
+    "fetched_rows": 480060,
+    "kept_rule_decided_rows": 441784,
+    "rule_tier_counts": {
+      "T1": 17,
+      "T2": 1254,
+      "T4": 478789
+    }
+  },
+  "verification": {
+    "consensus_artifact": "verified (recover_training_identity, distillation)",
+    "research_tests": 286,
+    "verify_tuning_export": "passed"
+  }
+}

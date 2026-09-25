@@ -30,6 +30,7 @@ from final_evaluation import (  # noqa: E402
     plaid_native_leaf,
 )
 import final_evaluation as fe  # noqa: E402
+import eval_protection  # noqa: E402
 
 MAP_CSV = ROOT / "taxonomy" / "plaid_legacy_category_map.csv"
 TAX = ROOT / "taxonomy" / "taxonomy.csv"
@@ -125,6 +126,15 @@ def fp(r):
 def fetch_plaid_paths(client, gold_rows):
     from google.cloud import bigquery
 
+    # B04 gated off: row-level narrative egress keyed by fingerprint carries
+    # no B02 identity, so disjointness from the protected release cannot be
+    # proven.  Rebuild requires identity columns carried through for the
+    # batch exclusion before fingerprinting.
+    eval_protection.gate(
+        "score_plaid_legacy_category.fetch_plaid_paths",
+        "row-level fingerprint egress cannot prove disjointness from "
+        "protected events",
+    )
     merchants = sorted({_norm(r["merchant"]) for r in gold_rows if _norm(r["merchant"])})
     # blank-merchant gold: also pull by description hash would be huge; include blanks via
     # a second query on amount+direction is worse. Pull all blank-merchant rows that

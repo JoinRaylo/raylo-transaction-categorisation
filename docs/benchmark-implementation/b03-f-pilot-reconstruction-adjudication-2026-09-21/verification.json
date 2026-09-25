@@ -1,0 +1,556 @@
+{
+  "authorizes_consumption": false,
+  "carlos_decisions": 0,
+  "deviations": [
+    "model-assisted first pass replaced blind first review (approved by Carlos 2026-09-21)",
+    "Opus proposals are adjudication aids, not independent votes",
+    "two items carry incomplete vote tuples (accepted, unrepaired)"
+  ],
+  "durable_retention": {
+    "file_count": 72,
+    "files": [
+      {
+        "bytes": 4800,
+        "path": "adjudication-opus5/acceptance/attempt-1-attempts.jsonl",
+        "sha256": "f5131e16511f4d8187d466609ec328e9d6dc875c2e7a105101d7fb289e5a5ca1"
+      },
+      {
+        "bytes": 1383,
+        "path": "adjudication-opus5/acceptance/attempt-1-id-map.json",
+        "sha256": "72548b38b530df0da3ee857fd48a7921baa521b142aaf8e225dbb8f4fb162f12"
+      },
+      {
+        "bytes": 2913,
+        "path": "adjudication-opus5/acceptance/attempt-1-prompt-meta.json",
+        "sha256": "513c4013e83ef8c299a148bbaa63b4699c00ade9bec59c32c524dee58747aff0"
+      },
+      {
+        "bytes": 0,
+        "path": "adjudication-opus5/acceptance/attempt-1-proposals.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 695,
+        "path": "adjudication-opus5/acceptance/attempt-1-state.json",
+        "sha256": "d6d0f8455aef1dc69ad233f5b29d2b11ce07ff5c055067f55e0a8c09828e1b38"
+      },
+      {
+        "bytes": 5140,
+        "path": "adjudication-opus5/acceptance-v2/attempt-1-attempts.jsonl",
+        "sha256": "54673810e06baea7307521781cb464ec9e1d559a481bd74d897fee94c1887ea0"
+      },
+      {
+        "bytes": 1383,
+        "path": "adjudication-opus5/acceptance-v2/attempt-1-id-map.json",
+        "sha256": "72548b38b530df0da3ee857fd48a7921baa521b142aaf8e225dbb8f4fb162f12"
+      },
+      {
+        "bytes": 2913,
+        "path": "adjudication-opus5/acceptance-v2/attempt-1-prompt-meta.json",
+        "sha256": "513c4013e83ef8c299a148bbaa63b4699c00ade9bec59c32c524dee58747aff0"
+      },
+      {
+        "bytes": 11372,
+        "path": "adjudication-opus5/acceptance-v2/attempt-1-proposals.jsonl",
+        "sha256": "38d3263008eeccfb57410b2a451ed603d456379a4d70c5c9adc4776d2cf9e22e"
+      },
+      {
+        "bytes": 695,
+        "path": "adjudication-opus5/acceptance-v2/attempt-1-state.json",
+        "sha256": "e9790ec8e144a6e72dfb1a71389f0d9f58c2cfdfe478d1e7575f7cdd07380f1f"
+      },
+      {
+        "bytes": 5180,
+        "path": "adjudication-opus5/acceptance-v2/failed-parse-collect/attempt-1-attempts.jsonl",
+        "sha256": "eb01dc2e59d3d9d289dd642276933629dc120934d6e186a80c293be3987124d2"
+      },
+      {
+        "bytes": 0,
+        "path": "adjudication-opus5/acceptance-v2/failed-parse-collect/attempt-1-proposals.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 5180,
+        "path": "adjudication-opus5/acceptance-v2/failed-parse-collect-2/attempt-1-attempts.jsonl",
+        "sha256": "eb01dc2e59d3d9d289dd642276933629dc120934d6e186a80c293be3987124d2"
+      },
+      {
+        "bytes": 0,
+        "path": "adjudication-opus5/acceptance-v2/failed-parse-collect-2/attempt-1-proposals.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 25792,
+        "path": "adjudication-opus5/adjudicate_pilot_opus.py.snapshot",
+        "sha256": "de741d2d5545fb5767492c7e3bfa432b89625f8ace5d0f7b7f31df9725adbdea"
+      },
+      {
+        "bytes": 136210,
+        "path": "adjudication-opus5/real/attempt-1-attempts.jsonl",
+        "sha256": "936336c9deb65e67a1983da2e564161a93ca1812857e31c678cbceeb02a55074"
+      },
+      {
+        "bytes": 36573,
+        "path": "adjudication-opus5/real/attempt-1-id-map.json",
+        "sha256": "274356dbcbf294d067d9bb139151f6f7518d8a0bfd143ed10605fc83ce489a13"
+      },
+      {
+        "bytes": 300,
+        "path": "adjudication-opus5/real/attempt-1-inputs.json",
+        "sha256": "c5a6aeb8a0e5e13268c520c7a4213ecc80fb2d6d52f9fb49e3ad025b873d182c"
+      },
+      {
+        "bytes": 77118,
+        "path": "adjudication-opus5/real/attempt-1-prompt-meta.json",
+        "sha256": "f4ff3a55cca6c53df8326c229bba37a468f4edcedda68a9c4285d0c36c3faa24"
+      },
+      {
+        "bytes": 341708,
+        "path": "adjudication-opus5/real/attempt-1-proposals.jsonl",
+        "sha256": "c286cb225c03acc8ef2dc52bc6a9f6fd3dc298762a67aac5b88ee3b44602deac"
+      },
+      {
+        "bytes": 687,
+        "path": "adjudication-opus5/real/attempt-1-state.json",
+        "sha256": "f07aaacfb25b6c9e2530a9abb27f013de557af4ea47d5ec5cfe7c80b8f744881"
+      },
+      {
+        "bytes": 309859,
+        "path": "adjudication-opus5/real/lead-review/agreed-for-bulk-confirmation.csv",
+        "sha256": "911e2dc3e9462293acd730fec7b49fa690081ef09434091ab660da763693d61e"
+      },
+      {
+        "bytes": 164595,
+        "path": "adjudication-opus5/real/lead-review/carlos_adjudication_review_2026-09-21.xlsx",
+        "sha256": "4366e21c8ae7c918c28bf91d1ca3c002dab9c369089c76d01554c1891fb3ea93"
+      },
+      {
+        "bytes": 94816,
+        "path": "adjudication-opus5/real/lead-review/escalation-for-carlos.csv",
+        "sha256": "c41d2487ba9eda7731726e28465f74729cd7f0f0e102ff0e4335420510b2e223"
+      },
+      {
+        "bytes": 101467,
+        "path": "adjudication-opus5/real/lead-review/lead-review.jsonl",
+        "sha256": "dec7423637c92215544c302684144f645e36ca499c74b267084539a04b323650"
+      },
+      {
+        "bytes": 16819,
+        "path": "adjudication-opus5/real/lead-review/lead_review_pilot_adjudication.py",
+        "sha256": "e7de21770db8b0fdc590154acb92b2f61a46a16f1b0d6335add278bc066ab1c7"
+      },
+      {
+        "bytes": 2689,
+        "path": "adjudication-opus5/real/lead-review/policy-questions.md",
+        "sha256": "854f5aa89865d5922bbf4bef8573bcee06a4d5765791e19f4ed2bd5563383a78"
+      },
+      {
+        "bytes": 404335,
+        "path": "adjudication-opus5/real/lead-review/review-all-265.csv",
+        "sha256": "78eeb94c1cbd7c5aa754e96f8c92db8d323854c8d8ec64d9660781354dff8fc8"
+      },
+      {
+        "bytes": 1240,
+        "path": "adjudication-opus5/real/lead-review/summary.json",
+        "sha256": "f7e400d7341f8557817f7c536e790e13aa5b465abfeae66a153c721b831c1866"
+      },
+      {
+        "bytes": 1116,
+        "path": "adjudication-opus5/real/lead-review/workbook-receipt.json",
+        "sha256": "b7db07733a5be84628abad37dc2fef555979db9edb4ef70cf54c7c2d38240066"
+      },
+      {
+        "bytes": 344262,
+        "path": "adjudication-opus5/real/review-sheet.txt",
+        "sha256": "520e197ad1133ebaf1985109cbe095c4f11b1a85954b0e20e1384aee1d6da67b"
+      },
+      {
+        "bytes": 2112569344,
+        "path": "index/inputs.sqlite",
+        "sha256": "61cc0a42ddafb686e9f3ecb437be1eba3f9a78ecbb893f18fdb60eafb7ded5cd"
+      },
+      {
+        "bytes": 2724,
+        "path": "index/receipt.json",
+        "sha256": "2106efa7ad30c4669620c4ac514ac797b8bba8700d5f4e0b5f02c98c72d1e654"
+      },
+      {
+        "bytes": 389,
+        "path": "index-build.log",
+        "sha256": "0c5292fa61e525e19c36ea11ecd14ddc0f26b46d075cfd6f9e92a908e0ed7e7f"
+      },
+      {
+        "bytes": 9498,
+        "path": "index-verify",
+        "sha256": "b7921fef90c7382e55edb8bd0d024282c1eaaf1f067b7766837e85163d5459a4"
+      },
+      {
+        "bytes": 60,
+        "path": "index-verify.log",
+        "sha256": "439327a6b8813b12b3608bcdce94ea78547b1fc15d43e420e50b4405a86a0107"
+      },
+      {
+        "bytes": 151149,
+        "path": "payloads/annotation-content.jsonl",
+        "sha256": "f916141872c5cee7d6823ceee014bf29db5de4171cb99152e266534424133885"
+      },
+      {
+        "bytes": 2944,
+        "path": "provider-recovery/anthropic-batches.json",
+        "sha256": "dd6995162e2453d99046dd2b31048417a3dac0b5aba9012473c0fabba1ef361d"
+      },
+      {
+        "bytes": 532264,
+        "path": "provider-recovery/anthropic-msgbatch_01GFrYE77BM3Rao63Ehks4GP.results.jsonl",
+        "sha256": "1d3eb8e7f3e23832c8ad2671aecc5f3cc81b7a6e343bc730b40b6f75151a527d"
+      },
+      {
+        "bytes": 1449,
+        "path": "provider-recovery/anthropic-msgbatch_01JDW92xp5xXiwsU8mTvCD98.results.jsonl",
+        "sha256": "a168c39b66f97479fd812f9a11998bebe8ccb9bf732b83770f0e5982867cbef9"
+      },
+      {
+        "bytes": 1083,
+        "path": "provider-recovery/anthropic-msgbatch_01UH1CVazfHCHvHC83EamrGE.results.jsonl",
+        "sha256": "68cf643741980efe9737548de55a5a7667bf699f6f64e04df728777670c14744"
+      },
+      {
+        "bytes": 3289,
+        "path": "provider-recovery/gemini-batches-595bzwvfgdssmx2izkgjganmfhsp765rhxzp.json",
+        "sha256": "683226e9874701d9d44261110e3df24de7d380a2bc43af788eb85b73af4db505"
+      },
+      {
+        "bytes": 1232305,
+        "path": "provider-recovery/gemini-batches-8tjwldfwn2d4vh9tqmuxn7wrwubhgylv7w54.json",
+        "sha256": "67c434d9413b9d964129aa815a0d185f929f2d89ae610bb4c9f54850df4768b4"
+      },
+      {
+        "bytes": 18975,
+        "path": "provider-recovery/gemini-batches-gpwtfeb8121j0mbjyz1b30nyjfk0kl408b0f.json",
+        "sha256": "93403b793d91cb029bfaf7d9172f0dffebbedbd610b198a7b81368bd58506ee3"
+      },
+      {
+        "bytes": 2416005,
+        "path": "provider-recovery/gemini-batches-i3qaltxah7e05rb2fgv40pqsvw0e23eb4cv8.json",
+        "sha256": "70c04f30e2667ec22ca54ecb78a0a8c5582225f71f813e9979996333d2558dbd"
+      },
+      {
+        "bytes": 285673,
+        "path": "provider-recovery/gemini-batches-idbxtixvxi69h44lunl9v9jc4q0ue139rvc8.json",
+        "sha256": "9076f9b03a64bf8080dbac40bf4b59c1071604192226ffa91e7f8559287e4f0c"
+      },
+      {
+        "bytes": 20261,
+        "path": "provider-recovery/gemini-batches-jmh666llf6p3pq3pctx6at5vw9ojn3orp6mu.json",
+        "sha256": "67cd0ca1678aa72e0d58e09dd97ffd1cad97e112df21a825131ebe8d181e7942"
+      },
+      {
+        "bytes": 6763,
+        "path": "provider-recovery/gemini-batches-mlsckoiaa99da3n5ntz4vuhohl59bxd3oksl.json",
+        "sha256": "28ca459f23a064360c9fdd0c2821dfe11b77807ea3064fd6ab7ff078030b1e97"
+      },
+      {
+        "bytes": 2784271,
+        "path": "provider-recovery/gemini-batches-psb1vpping57qmcslfiuumec1mf7icvijp8i.json",
+        "sha256": "68cc509b56264ee4665d3e3c03ee456a92598fc1bfbac56bfcd01bd2b953f3c8"
+      },
+      {
+        "bytes": 108931,
+        "path": "provider-recovery/gemini-batches-tjy9nx474dvc280uhfirioalex6vkypkkld2.json",
+        "sha256": "4b16cbf33697da6777cc64d01572547a6dfd6c47f5f1eb132910967d6f69733a"
+      },
+      {
+        "bytes": 29189,
+        "path": "provider-recovery/gemini-batches-u1akk1j5vpnrzc7q7z3wiazgu13rdio0cerh.json",
+        "sha256": "6e05ab332d63b82d24400c196884e13c3b884e1f19f7f8032f5ca47348af4215"
+      },
+      {
+        "bytes": 7451,
+        "path": "provider-recovery/gemini-batches-vhjytbbkzfre4p6gt783dc7qxww5sgolzq29.json",
+        "sha256": "c2a8bb3db1b5810532159d5aba411b1aff4b6ade44d4678e22f4f94bde542a59"
+      },
+      {
+        "bytes": 6659,
+        "path": "provider-recovery/gemini-batches.json",
+        "sha256": "ea78dccc9db0a311191b2dd1aa6ed724f40344d61dd19639fe21b104f56f9d5c"
+      },
+      {
+        "bytes": 8023,
+        "path": "provider-recovery/recovery-manifest.json",
+        "sha256": "a8ff5a06a9cb7f1fb4cf4e6dd2e8fed2d1199c72795fe08237e4344bd34c368a"
+      },
+      {
+        "bytes": 544241,
+        "path": "recovery/candidates.jsonl",
+        "sha256": "4c92d0148e4720b3f0da9f098501ee47bd00cd4a6583b9f07e2c49ee3f3d1afc"
+      },
+      {
+        "bytes": 3,
+        "path": "recovery/missing-pilot-ids.json",
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      },
+      {
+        "bytes": 6284,
+        "path": "recovery/receipt.json",
+        "sha256": "b1136a9681f6102c07f7c3927db7bb19151c546c6250d768f73c165e4328c275"
+      },
+      {
+        "bytes": 3687,
+        "path": "recovery-dryrun/receipt.json",
+        "sha256": "1121f187c877a551a0ecd22c9cae9d8b6b7e6d7f8620f62311a5181c05b3a652"
+      },
+      {
+        "bytes": 204604,
+        "path": "views/membership.csv",
+        "sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068"
+      },
+      {
+        "bytes": 183593,
+        "path": "views/pilot.jsonl",
+        "sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248"
+      },
+      {
+        "bytes": 1242,
+        "path": "views/receipt.json",
+        "sha256": "d24da4156f50de80a930cae26af8ee529f7c7f6977a170448c49f7e404c17c1e"
+      },
+      {
+        "bytes": 3542,
+        "path": "views/summary.json",
+        "sha256": "1b5346979bd18d264b834690df85db1f4b3784124b03c2e64a39a2272f48e9fc"
+      },
+      {
+        "bytes": 112811,
+        "path": "views/views.jsonl",
+        "sha256": "8e360a87df8b3df93c67c16d235a17fd8f21358e6aee3369e9c7800886988784"
+      },
+      {
+        "bytes": 874,
+        "path": "views-build.log",
+        "sha256": "4e36ee6f9ff6d7b89c0c61e7b2ad406a1b15a199750ac04334cde69b60749ac0"
+      },
+      {
+        "bytes": 282000,
+        "path": "votes/attempts-claude-sonnet-5.jsonl",
+        "sha256": "13c9d5f10ba51d6b6622024e29d19840ecbe97f153f47508214cc77bf99bbcf5"
+      },
+      {
+        "bytes": 367136,
+        "path": "votes/attempts-gemini-3.7-flash.jsonl",
+        "sha256": "a8a2427492a12c046c62d29706aa86c1024c30d0a8a2bf8df3575cc861601075"
+      },
+      {
+        "bytes": 465605,
+        "path": "votes/attempts-gemini-3.8-flash.jsonl",
+        "sha256": "5e02ad9af015658d775e9a716a26f3f5699b7830a8d013c9ec2d871a85c055ec"
+      },
+      {
+        "bytes": 164613,
+        "path": "votes/comparison.jsonl",
+        "sha256": "50bc3bada67eaa4ed8aa8593151a2d5dac4d1bdf6737ae9477390248ed6050ae"
+      },
+      {
+        "bytes": 332336,
+        "path": "votes/votes-claude-sonnet-5.jsonl",
+        "sha256": "8f1002b93fe357f4636d8b6257c23b36b6622296385cb0d2b3e85ea24a36caac"
+      },
+      {
+        "bytes": 268626,
+        "path": "votes/votes-gemini-3.7-flash.jsonl",
+        "sha256": "e44e7beb8cabd671b65b6964ddc468310ed0bfa431c6bffbc488dce7ce2fe6fe"
+      },
+      {
+        "bytes": 279217,
+        "path": "votes/votes-gemini-3.8-flash.jsonl",
+        "sha256": "b103c2d91ddc0da0ad9a89e54c3ab2d230f7705fec5e95da26fbe10e06a77d80"
+      },
+      {
+        "bytes": 4442,
+        "path": "votes/votes-receipt.json",
+        "sha256": "9d8abb14bd6983c2388a058c0f798025fd5284ca0806eb2aeb2293962e30a1c7"
+      }
+    ],
+    "permissions": "dirs 0700, files 0600",
+    "retention_owner": "Carlos",
+    "root": "~/.local/share/raylo-txncat/benchmark-eval-pilot/reconstruction-2026-09-21/"
+  },
+  "final_labels_created": 0,
+  "index_rebuild": {
+    "byte_identical_to_archived": true,
+    "database_sha256": "61cc0a42ddafb686e9f3ecb437be1eba3f9a78ecbb893f18fdb60eafb7ded5cd",
+    "key_check": "49105456e938e9c9f5ef2730442d3e4e05570a90774b8080d8abff1f62ae6c20",
+    "verify_index_checks_passed": "40/40"
+  },
+  "lead_review": {
+    "agree": 204,
+    "disagree": 33,
+    "escalated": 61,
+    "escalated_by_view": {
+      "representative": 31,
+      "unfamiliar_merchant": 11,
+      "unseen_input": 19
+    },
+    "policy_groups": {
+      "A_named_individual_counterparty": 101,
+      "B_sort_code_transfer": 4,
+      "C_withdrew_from_pot": 4,
+      "D_intermediary_with_visible_merchant": 9,
+      "E_daily_od_int": 6,
+      "F_mobile_channel_mechanism": 7
+    },
+    "receipt": "adjudication-opus5/real/lead-review/workbook-receipt.json",
+    "reviewed": 265,
+    "unsure": 28,
+    "workbook_sha256": "4366e21c8ae7c918c28bf91d1ca3c002dab9c369089c76d01554c1891fb3ea93"
+  },
+  "opus5_adjudication": {
+    "alias_blinding": "per item",
+    "channel": "anthropic_message_batches_only",
+    "model": "claude-opus-5",
+    "outcomes": {
+      "ambiguous": 83,
+      "insufficient_evidence": 26,
+      "labelled": 156
+    },
+    "outcomes_by_primary_view": {
+      "representative": {
+        "ambiguous": 41,
+        "insufficient_evidence": 5,
+        "labelled": 75
+      },
+      "unfamiliar_merchant": {
+        "ambiguous": 18,
+        "insufficient_evidence": 11,
+        "labelled": 38
+      },
+      "unseen_input": {
+        "ambiguous": 24,
+        "insufficient_evidence": 10,
+        "labelled": 43
+      }
+    },
+    "real_run": {
+      "attempts": 1,
+      "batch": "msgbatch_016mzC71m6c29kcUZDm3aCXU",
+      "retries": 0,
+      "tokens": {
+        "input": 3512668,
+        "output": 88684
+      },
+      "valid": "265/265"
+    },
+    "schema_sha256": "e67b52bebc92edc03350047149a50c797288a6d3ef2d2c18b3132216a223db06",
+    "synthetic_acceptance_attempt1": {
+      "batch": "msgbatch_01AK3qyS9itM1GtZFCWq4NUW",
+      "result": "10/10 API-errored on deprecated temperature parameter; instrument corrected, prompts unchanged"
+    },
+    "synthetic_acceptance_v2": {
+      "batch": "msgbatch_015xUFcA91sJo3v2oEuUtrhs",
+      "strict_valid": "10/10"
+    },
+    "system_sha256": "5c2cb63d865b0e61dabb4b0e04c2fafbf9f99304cb52fe7beaf16b207ce3aad5"
+  },
+  "packet": "b03-f-pilot-reconstruction-adjudication-2026-09-21",
+  "provider_recovery": {
+    "anthropic_batch": "msgbatch_01GFrYE77BM3Rao63Ehks4GP",
+    "anthropic_results": 500,
+    "comparison": {
+      "disagreement": 239,
+      "incomplete": 2,
+      "review_rows": 265,
+      "unanimous": 259,
+      "unanimous_breakdown": {
+        "ambiguous": 11,
+        "insufficient_evidence": 13,
+        "labelled": 235
+      }
+    },
+    "decision": "no fourth Gemini attempt; retry cap of 3 respected; gap accepted 2026-09-21",
+    "gemini_batches": 11,
+    "missing_votes": {
+      "cause": "unretried attempt-1 MAX_TOKENS, one item per Gemini model",
+      "count": 2
+    },
+    "receipt": "votes/votes-receipt.json",
+    "reviewed_milestone": {
+      "disagreement": 239,
+      "incomplete": 0,
+      "review_rows": 263,
+      "unanimous": 261
+    },
+    "valid_votes": {
+      "claude-sonnet-5": 500,
+      "gemini-3.7-flash": 499,
+      "gemini-3.8-flash": 499
+    }
+  },
+  "re_identification": {
+    "bigquery_job_id": "txncat_pilot_recover_9803b1e5-1434-46d1-955c-403c3a5bcead",
+    "bytes_billed": 9009364992,
+    "distinct_accounts": 474,
+    "distinct_customers": 464,
+    "dry_run_bytes": 9008761395,
+    "missing_pilot_ids": 0,
+    "pilot_id_set_sha256": "9074da7bb98d2e738681c9854240f35ff1eb14f2a0ffabe8a950c71f101a193f",
+    "pinned_candidate_result_sha256": "f9c549ee7a8a6bbfaec8999d3edaf2dca22f0d4f4fa463a486dcc3fd5a8f32ef",
+    "recovery_sql_sha256": "d0c151e295c57e87a15d67b8c811b53f0f46b939a85e0a661f22029e04066ee6",
+    "result_rows": 500,
+    "runner_sha256": "2a7fd0708f976eea5cecf22e320ffb63b255f7423b01df7054376a2545b513cd"
+  },
+  "schema_version": "benchmark-implementation-verification-v1",
+  "tool_shas": {
+    "adjudicate_pilot_opus.py": "de741d2d5545fb5767492c7e3bfa432b89625f8ace5d0f7b7f31df9725adbdea",
+    "rebuild_pilot_payloads.py": "52d1e5f50854ff9086ad97d12a385c5ca65c6d1de9bfd6c8cadfce879525e4f8",
+    "rebuild_pilot_votes.py": "4dd279321ce83055f1bf0cd510bbacc6e75d63d9ef31dedd156f0ec477e83cb0",
+    "reconstruct_eval_pilot_views.py": "bc39098036e9312bfc74b2e1b3f79615c31ff8eca9bb1b10fc201e573a1f6ffa",
+    "recover_eval_pilot_membership.py": "2a7fd0708f976eea5cecf22e320ffb63b255f7423b01df7054376a2545b513cd"
+  },
+  "view_reconstruction": {
+    "byte_identical_to_approved_v2": true,
+    "comparison_join": {
+      "abstention_by_view": {
+        "representative": 11,
+        "unfamiliar_merchant": 8,
+        "unseen_input": 5
+      },
+      "disagreement_by_view": {
+        "representative": 109,
+        "unfamiliar_merchant": 59,
+        "unseen_input": 71
+      },
+      "incomplete_items_land_in": [
+        "representative",
+        "unseen_input"
+      ],
+      "unanimous_labelled_with_incomplete_restored": {
+        "representative": 130,
+        "unfamiliar_merchant": 33,
+        "unseen_input": 74
+      }
+    },
+    "fingerprint": {
+      "all_pass": true,
+      "historical_input_overlap": {
+        "representative": 111,
+        "unfamiliar_merchant": 0,
+        "unseen_input": 0
+      },
+      "max_rows_per_customer": 4,
+      "pilot_customers": 464,
+      "primary_views": {
+        "representative": 250,
+        "unfamiliar_merchant": 100,
+        "unseen_input": 150
+      },
+      "unfamiliar_subset_of_unseen": true,
+      "view_tags": {
+        "representative": 500,
+        "unfamiliar_merchant": 156,
+        "unseen_input": 389
+      }
+    },
+    "membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068",
+    "pilot_sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248",
+    "receipt": "views/receipt.json"
+  }
+}

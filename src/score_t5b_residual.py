@@ -50,6 +50,7 @@ from final_evaluation import (  # noqa: E402
     plaid_native_leaf,
 )
 import final_evaluation as fe  # noqa: E402
+import eval_protection  # noqa: E402
 
 GOLD_V3 = ROOT / "data" / "gold_transactions_v3_volume.csv"
 GOLD_V4 = ROOT / "data" / "gold_transactions_v4_slm_volume.csv"
@@ -219,6 +220,9 @@ def train_linearsvc(logreg_bundle, force=False):
     train_path = OUT_DIR / "tuning_train.jsonl"
     print(f"Training linear SVM (SGD hinge, same budget as logreg v2) on {train_path}...",
           file=sys.stderr)
+    # B04: the supervised export must verify against its membership coverage
+    # and the pinned protected release before .fit may consume it.
+    eval_protection.verify_tuning_export(out_dir=OUT_DIR)
     df = _parse_tuning_jsonl(train_path)
     rng = np.random.default_rng(SEED)
     df = df.iloc[rng.permutation(len(df))].reset_index(drop=True)

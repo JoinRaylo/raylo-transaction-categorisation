@@ -35,6 +35,7 @@ from gating_experiment import (  # noqa: E402
     build_notes_addendum, load_crosswalk,
 )
 from build_final_gold_v2 import TXN_ADDENDUM  # noqa: E402
+import eval_protection  # noqa: E402
 
 SAMPLE_CSV = OUT_DIR / "risk_leaf_topup_sample.csv"
 MODELS = {
@@ -169,16 +170,23 @@ def _fetch_leaf(client, leaf, n, exclude_merchants, exclude_descs, keyword_pat=N
 
     where = " OR ".join(f"({c})" for c in clauses)
     sql = f"""
-    SELECT merchant, merchant_raw, description_raw, amount, direction, native_category
+    SELECT merchant, merchant_raw, description_raw, amount, direction, native_category,
+           account_id, transaction_id, customer_id
     FROM (
       SELECT LOWER(TRIM(IFNULL(merchant_name, ''))) AS merchant,
              IFNULL(merchant_name, '') AS merchant_raw,
              IFNULL(COALESCE(original_description, transaction_name), '') AS description_raw,
              amount,
              IF(amount < 0, 'credit', 'debit') AS direction,
-             credit_category_detailed AS native_category
+             credit_category_detailed AS native_category,
+             TRIM(account_id) AS account_id,
+             TRIM(transaction_id) AS transaction_id,
+             TRIM(customer_id) AS customer_id
       FROM `raylo-production.dbt_production.credit_plaid_open_banking_transactions`
       WHERE ({where})
+        AND NULLIF(TRIM(account_id), '') IS NOT NULL
+        AND NULLIF(TRIM(transaction_id), '') IS NOT NULL
+        AND NULLIF(TRIM(customer_id), '') IS NOT NULL
         {merchant_filter}
         AND NOT (
           TRIM(IFNULL(merchant_name, '')) = ''
@@ -245,12 +253,20 @@ def fetch():
             row_id += 1
 
     OUT_DIR.mkdir(exist_ok=True)
+    # B04: fetched rows must pass the protected-release guard; rows without
+    # linkage identity fail closed until the query carries them.
+    all_rows = eval_protection.apply_env(all_rows, purpose="supervised_training")
     fieldnames = ["row_id", "target_leaf", "merchant", "merchant_raw", "description_raw",
-                  "amount", "direction", "native_category", "provider"]
+                  "amount", "direction", "native_category", "provider",
+                  "account_id", "transaction_id", "customer_id"]
     with open(SAMPLE_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(all_rows)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="build_risk_leaf_topup.fetch",
+        purpose="supervised_training", guard=all_rows.guard,
+    )
     by_leaf = Counter(r["target_leaf"] for r in all_rows)
     print(f"\nWrote {SAMPLE_CSV}: {len(all_rows)} rows", file=sys.stderr)
     for leaf in TARGET_LEAVES:
@@ -267,6 +283,8 @@ def gap_fill():
 
     if not FINAL_CSV.exists():
         sys.exit("gap_fill requires an existing resolve -- run resolve first")
+    # B04: the resolved file steers this fetch — verify its bound receipt first.
+    eval_protection.verify_artifact(FINAL_CSV)
     accepted = list(csv.DictReader(open(FINAL_CSV)))
     counts = Counter(r["gold_leaf"] for r in accepted)
     need = [l for l in STARVED if counts.get(l, 0) < MIN_ACCEPTED_STARVED]
@@ -277,6 +295,12 @@ def gap_fill():
 
     client = bigquery.Client(project="raylo-production")
     exclude_m, exclude_d, fingerprints = _load_exclusion_files()
+    # B04: the existing sample is merged into the new output — its bound
+    # receipt must verify first, and its receipt is preserved in the merged
+    # artifact's input chain.
+    prior_receipt = (
+        eval_protection.verify_artifact(SAMPLE_CSV) if SAMPLE_CSV.exists() else None
+    )
     existing = list(csv.DictReader(open(SAMPLE_CSV))) if SAMPLE_CSV.exists() else []
     next_id = max((int(r["row_id"]) for r in existing), default=-1) + 1
     seen = {(_norm(r["merchant"]), _norm(r["description_raw"]), r["target_leaf"]) for r in existing}
@@ -301,13 +325,22 @@ def gap_fill():
             new_rows.append({"row_id": next_id, "target_leaf": leaf, "provider": "plaid", **r})
             next_id += 1
 
+    # B04: newly fetched rows must pass the protected-release guard; rows
+    # without linkage identity fail closed until the query carries them.
+    new_rows = eval_protection.apply_env(new_rows, purpose="supervised_training")
     all_rows = existing + new_rows
     fieldnames = ["row_id", "target_leaf", "merchant", "merchant_raw", "description_raw",
-                  "amount", "direction", "native_category", "provider"]
+                  "amount", "direction", "native_category", "provider",
+                  "account_id", "transaction_id", "customer_id"]
     with open(SAMPLE_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(all_rows)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="build_risk_leaf_topup.gap_fill",
+        purpose="supervised_training", guard=new_rows.guard,
+        input_receipts=[prior_receipt] if prior_receipt else (),
+    )
     print(f"Gap-fill added {len(new_rows)} rows -> {SAMPLE_CSV} now {len(all_rows)}", file=sys.stderr)
 
 
@@ -317,6 +350,9 @@ def label(model_key):
     system_prompt = (build_system_prompt(leaves, gen_of, notes_of, load_example_merchants())
                       + TXN_ADDENDUM + build_notes_addendum(load_example_notes()))
 
+    # B04: narratives leave the trust boundary here — the sample must verify
+    # against its bound receipt before any row is read or sent to a model API.
+    eval_protection.verify_artifact(SAMPLE_CSV)
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     out_path = PREDICTIONS[model_key]
     predictions = {}
@@ -522,7 +558,12 @@ def _amt_key(v):
         return str(v or "")
 
 
-def _append_topup_rows(new_rows):
+def _append_topup_rows(new_rows, *, guard=None):
+    # B04: the existing top-up file is merged into the output — verify its
+    # bound receipt first so the merge preserves a complete input chain.
+    prior_receipt = (
+        eval_protection.verify_artifact(FINAL_CSV) if FINAL_CSV.exists() else None
+    )
     existing = list(csv.DictReader(open(FINAL_CSV))) if FINAL_CSV.exists() else []
     existing_fp = {
         (_norm(r["merchant_raw"]), _norm(r["description_raw"]),
@@ -544,6 +585,11 @@ def _append_topup_rows(new_rows):
         w.writeheader()
         w.writerows(existing)
         w.writerows(added)
+    eval_protection.write_artifact_receipt(
+        FINAL_CSV, consumer="build_risk_leaf_topup._append_topup_rows",
+        purpose="supervised_training", guard=guard,
+        input_receipts=[prior_receipt] if prior_receipt else (),
+    )
     return existing, added
 
 
@@ -561,6 +607,9 @@ def promote_starved():
     """
     from google.cloud import bigquery
 
+    prior_receipt = (
+        eval_protection.verify_artifact(FINAL_CSV) if FINAL_CSV.exists() else None
+    )
     existing = list(csv.DictReader(open(FINAL_CSV))) if FINAL_CSV.exists() else []
     n_relabel = 0
     for r in existing:
@@ -580,6 +629,11 @@ def promote_starved():
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(existing)
+    eval_protection.write_artifact_receipt(
+        FINAL_CSV, consumer="build_risk_leaf_topup.promote_starved",
+        purpose="supervised_training",
+        input_receipts=[prior_receipt] if prior_receipt else (),
+    )
     print(f"Relabelled {n_relabel} Amex debit rows -> charge_card_repayment", file=sys.stderr)
 
     _, _, fingerprints = _load_exclusion_files()
@@ -591,9 +645,15 @@ def promote_starved():
            IFNULL(COALESCE(original_description, transaction_name), '') AS description_raw,
            ABS(amount) AS amount,
            IF(amount < 0, 'credit', 'debit') AS direction,
-           credit_category_detailed AS native_category
+           credit_category_detailed AS native_category,
+           TRIM(account_id) AS account_id,
+           TRIM(transaction_id) AS transaction_id,
+           TRIM(customer_id) AS customer_id
     FROM `raylo-production.dbt_production.credit_plaid_open_banking_transactions`
-    WHERE (
+    WHERE NULLIF(TRIM(account_id), '') IS NOT NULL
+      AND NULLIF(TRIM(transaction_id), '') IS NOT NULL
+      AND NULLIF(TRIM(customer_id), '') IS NOT NULL
+      AND (
         LOWER(TRIM(IFNULL(COALESCE(original_description, transaction_name), ''))) = 'cash advance'
         OR (
           credit_category_detailed = 'LOAN_PAYMENTS_CASH_ADVANCES'
@@ -629,6 +689,9 @@ def promote_starved():
             "native_category": row["native_category"],
             "gold_leaf": "cash_advance",
             "target_leaf": "cash_advance",
+            "account_id": row["account_id"],
+            "transaction_id": row["transaction_id"],
+            "customer_id": row["customer_id"],
         })
     print(f"cash_advance candidates after eval exclusion: {len(cash_rows)}", file=sys.stderr)
 
@@ -637,9 +700,15 @@ def promote_starved():
            IFNULL(COALESCE(original_description, transaction_name), '') AS description_raw,
            ABS(amount) AS amount,
            IF(amount < 0, 'credit', 'debit') AS direction,
-           credit_category_detailed AS native_category
+           credit_category_detailed AS native_category,
+           TRIM(account_id) AS account_id,
+           TRIM(transaction_id) AS transaction_id,
+           TRIM(customer_id) AS customer_id
     FROM `raylo-production.dbt_production.credit_plaid_open_banking_transactions`
-    WHERE LOWER(TRIM(IFNULL(merchant_name, ''))) IN ('curve', 'elfin market', 'fe fundinfo')
+    WHERE NULLIF(TRIM(account_id), '') IS NOT NULL
+      AND NULLIF(TRIM(transaction_id), '') IS NOT NULL
+      AND NULLIF(TRIM(customer_id), '') IS NOT NULL
+      AND LOWER(TRIM(IFNULL(merchant_name, ''))) IN ('curve', 'elfin market', 'fe fundinfo')
       AND IF(amount < 0, 'credit', 'debit') = 'debit'
       AND (
         LOWER(TRIM(IFNULL(merchant_name, ''))) IN ('elfin market', 'fe fundinfo')
@@ -665,11 +734,20 @@ def promote_starved():
             "native_category": row["native_category"],
             "gold_leaf": "financial_services_other",
             "target_leaf": "financial_services_other",
+            "account_id": row["account_id"],
+            "transaction_id": row["transaction_id"],
+            "customer_id": row["customer_id"],
         })
     print(f"financial_services_other candidates after eval exclusion: {len(fso_rows)}",
           file=sys.stderr)
 
-    _, added = _append_topup_rows(cash_rows + fso_rows)
+    # B04: the fetched starved rows pass the protected-release guard before
+    # they may merge into the top-up file.
+    starved = eval_protection.apply_env(
+        [{**r, "provider": "plaid"} for r in cash_rows + fso_rows],
+        purpose="supervised_training",
+    )
+    _, added = _append_topup_rows(starved, guard=starved.guard)
     all_rows = list(csv.DictReader(open(FINAL_CSV)))
     counts = Counter(r["gold_leaf"] for r in all_rows)
     print(f"Appended {len(added)} starved-leaf rows; file now {len(all_rows)}", file=sys.stderr)
@@ -681,10 +759,16 @@ def promote_starved():
 
 
 def resolve():
+    # B04: the labelled sample and the existing output both feed this merge —
+    # each must verify against its bound receipt before any row is read.
+    sample_receipt = eval_protection.verify_artifact(SAMPLE_CSV)
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     gemini = {r["row_id"]: r for r in csv.DictReader(open(PREDICTIONS["gemini"]))}
     sonnet = {r["row_id"]: r for r in csv.DictReader(open(PREDICTIONS["sonnet"]))}
 
+    prior_receipt = (
+        eval_protection.verify_artifact(FINAL_CSV) if FINAL_CSV.exists() else None
+    )
     existing = list(csv.DictReader(open(FINAL_CSV))) if FINAL_CSV.exists() else []
     existing_fp = {
         (_norm(r["merchant_raw"]), _norm(r["description_raw"]), r["gold_leaf"])
@@ -725,6 +809,13 @@ def resolve():
         w.writeheader()
         w.writerows(existing)
         w.writerows(accepted)
+    eval_protection.write_artifact_receipt(
+        FINAL_CSV, consumer="build_risk_leaf_topup.resolve",
+        purpose="supervised_training",
+        input_receipts=[
+            receipt for receipt in (sample_receipt, prior_receipt) if receipt
+        ],
+    )
 
     new_counts = Counter(r["gold_leaf"] for r in accepted)
     all_counts = Counter(r["gold_leaf"] for r in existing + accepted)

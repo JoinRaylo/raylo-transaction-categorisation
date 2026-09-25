@@ -36,6 +36,7 @@ from score_t5b_residual import (  # noqa: E402
     scores_and_margin,
 )
 from score_t5b_residual import _init_waterfall  # noqa: E402
+import eval_protection  # noqa: E402
 
 GOLD_UNIFIED = ROOT / "data" / "gold_transactions.csv"
 TRAIN_JSONL = ROOT / "outputs" / "tuning_train.jsonl"
@@ -73,6 +74,10 @@ def row_key(merchant, description, amount, direction):
 def load_train_jsonl(path=TRAIN_JSONL):
     if not path.exists():
         sys.exit(f"Need {path} to drop training rows from pipeline eval")
+    # B04: this read of the supervised export is provenance-bound — the
+    # export must verify against its membership coverage and the pinned
+    # protected release, otherwise the exclusion bookkeeping is untrustworthy.
+    eval_protection.verify_tuning_export(out_dir=path.parent)
     keys = set()
     leaf_n = {}
     with open(path) as f:

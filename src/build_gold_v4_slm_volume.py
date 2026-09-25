@@ -45,6 +45,7 @@ from gating_experiment import (  # noqa: E402
     build_notes_addendum, load_crosswalk,
 )
 from build_final_gold_v2 import TXN_ADDENDUM  # noqa: E402 -- now carries the loan-keyword fix too
+import eval_protection  # noqa: E402
 
 SAMPLE_CSV = OUT_DIR / "gold_v4_sample.csv"
 PREDICTIONS = {k: OUT_DIR / f"gold_v4_predictions_{k}.csv" for k in MODELS}
@@ -77,6 +78,7 @@ LIMIT {N_PLAID}
 
 
 def fetch():
+    eval_protection.gate("build_gold_v4_slm_volume.fetch", reason='the fetch mixes equifax_data.open_banking_full_dump legs (proposal-matched, no customer linkage) with identity-discarding Plaid selects; fetched rows can never pass the protected-release guard. Rebuild every leg against the customer-linked Plaid source before this consumer may run.')
     from google.cloud import bigquery
     client = bigquery.Client(project="raylo-production")
 
@@ -104,10 +106,17 @@ def fetch():
         r["row_id"] = i
     n_established = sum(1 for r in all_rows if r["established_leaf"])
     OUT_DIR.mkdir(exist_ok=True)
+    # B04: fetched rows must pass the protected-release guard; rows without
+    # linkage identity fail closed until the query carries them.
+    all_rows = eval_protection.apply_env(all_rows, purpose="model_selection_validation")
     fieldnames = ["row_id"] + [k for k in all_rows[0].keys() if k != "row_id"]
     with open(SAMPLE_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader(); w.writerows(all_rows)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="build_gold_v4_slm_volume.fetch",
+        purpose="model_selection_validation", guard=all_rows.guard,
+    )
     print(f"Wrote {SAMPLE_CSV}: {len(all_rows)} rows, "
           f"{n_established} ({n_established/len(all_rows):.1%}) already resolvable from established "
           f"Tier A truth, {len(all_rows) - n_established} need fresh labelling", file=sys.stderr)
@@ -207,6 +216,9 @@ def label(model_key):
 
 
 def sheet():
+    # B04: narratives leave the trust boundary here — the sample must verify
+    # against its bound receipt before any row is read or sent out.
+    eval_protection.verify_artifact(SAMPLE_CSV)
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     haiku = {r["row_id"]: r for r in csv.DictReader(open(PREDICTIONS["haiku"]))} \
         if PREDICTIONS["haiku"].exists() else {}
@@ -300,6 +312,9 @@ def apply_review(path):
     already built this session -- just point GOLD_CSV at the new file."""
     import openpyxl
 
+    # B04: the reviewed sample must still match its bound fetch receipt.
+    sample_receipt = eval_protection.verify_artifact(SAMPLE_CSV)
+
     _, _, leaves, gen_of, _ = load_crosswalk()
     ws = openpyxl.load_workbook(path, data_only=True)["Review"]
     hdr = [c.value for c in ws[1]]
@@ -335,6 +350,11 @@ def apply_review(path):
     with open(FINAL_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=["merchant_raw", "description_raw", "amount", "direction", "gold_leaf"])
         w.writeheader(); w.writerows(out_rows)
+    eval_protection.write_artifact_receipt(
+        FINAL_CSV, consumer="build_gold_v4_slm_volume.apply_review",
+        purpose="model_selection_validation",
+        input_receipts=[sample_receipt],
+    )
     print(f"Wrote {FINAL_CSV}: {len(out_rows)} gold transactions "
           f"({blank} left blank/unclassifiable, excluded)", file=sys.stderr)
 

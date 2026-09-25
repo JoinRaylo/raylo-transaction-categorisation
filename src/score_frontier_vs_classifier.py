@@ -29,6 +29,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import eval_protection  # noqa: E402
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
@@ -312,6 +315,13 @@ def pipeline_then(rows, model_pred):
 
 
 def main():
+    eval_protection.gate(
+        "score_frontier_vs_classifier.main",
+        reason="the holdout/risk/pipeline eval CSVs it reads predate B04 "
+               "receipts and can never verify; this retired scorer also "
+               "egresses transaction narratives to Gemini and Anthropic and "
+               "must not run.",
+    )
     parser = argparse.ArgumentParser()
     parser.add_argument("--score-only", action="store_true")
     parser.add_argument("--models", nargs="+", default=["gemini", "sonnet"],

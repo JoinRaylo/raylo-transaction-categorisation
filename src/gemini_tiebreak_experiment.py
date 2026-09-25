@@ -30,6 +30,9 @@ BATCH = 20
 
 
 def get_needs_review():
+    # B04: these rows egress to Gemini — verify the derived artifact's bound
+    # receipt first.
+    eval_protection.verify_artifact(OUT_DIR / "production_labels.csv")
     rows = list(csv.DictReader(open(OUT_DIR / "production_labels.csv")))
     return [r for r in rows if r["tier"] == "needs_review"]
 

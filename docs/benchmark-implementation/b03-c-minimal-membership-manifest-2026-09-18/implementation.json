@@ -1,0 +1,24 @@
+{
+  "schema_version": "benchmark-minimal-membership-manifest-implementation-v1",
+  "milestone": "B03-C-minimal-membership-manifest",
+  "status": "synthetic_implementation_only",
+  "branch": "codex/txncat-b03a-research",
+  "base_commit": "108e08896994a31ed1869323d92068e491a07607",
+  "canonical_files": [
+    "lib/raylo-txncat/src/raylo_txncat/membership_manifest.py",
+    "lib/raylo-txncat/tests/test_membership_manifest.py"
+  ],
+  "contract_reused": [
+    "raylo_txncat.benchmark.observation_key",
+    "raylo_txncat.benchmark.Projection",
+    "txncat-json-v1 canonical hashing"
+  ],
+  "authorizes_consumption": false,
+  "real_rows_exported": 0,
+  "real_rows_reserved": 0,
+  "real_rows_labelled": 0,
+  "cloud_changes": false,
+  "provider_calls": false,
+  "retraining": false,
+  "locked_set_scoring": false
+}

@@ -2,6 +2,18 @@
 # Wait for the Qwen3-4B LoRA run to finish, score it, then train+score 8B.
 # Safe to re-run: scoring is skipped if prediction CSVs already exist.
 set -euo pipefail
+
+# ---------------------------------------------------------------------------
+# B04 RETIRED — terminal gate.
+# Qwen LoRA is retired and not part of the intended production path:
+# Gemini/Sonnet are used for labelling only, and the winning transformer is
+# the sole TxCat-1 categorisation model to train and promote.  This launcher
+# must not run; the flow below is kept only as a record of the retired path.
+# ---------------------------------------------------------------------------
+echo "B04: $(basename "$0") is RETIRED — Qwen LoRA is not part of the intended" >&2
+echo "     production path.  Gemini/Sonnet are used for labelling only; the" >&2
+echo "     winning transformer is the sole TxCat-1 categorisation model." >&2
+exit 1
 ROOT="/Users/carlosnoblejesus/Repos/raylo-transaction-categorisation"
 cd "$ROOT"
 PY="$ROOT/.venv/bin/python"
@@ -63,6 +75,15 @@ score_one "$MODEL4" "$ADP4" \
   "$ROOT/outputs/qwen3_4b_risk_predictions.csv"
 
 echo "=== start Qwen3-8B LoRA $(date) ==="
+# B04: the supervised export must verify against its membership coverage and
+# the pinned protected release before any training may consume it.
+"$PY" - <<PY
+import sys
+sys.path.insert(0, "$ROOT/src")
+import eval_protection
+eval_protection.verify_tuning_export(out_dir="$ROOT/outputs")
+PY
+
 PYTHONUNBUFFERED=1 "$LORA" \
   --model "$MODEL8" \
   --train \

@@ -70,6 +70,7 @@ from gating_experiment import (  # noqa: E402
     build_notes_addendum, load_crosswalk,
 )
 from build_final_gold_v2 import TXN_ADDENDUM  # noqa: E402
+import eval_protection  # noqa: E402
 
 SAMPLE_CSV = OUT_DIR / "gold_risk_sample.csv"
 # Option 1 pair (2026-08-23): Gemini 3.7 Flash + Sonnet 5, matching
@@ -153,9 +154,15 @@ def fetch():
         SELECT LOWER(TRIM(merchant_name)) AS merchant, merchant_name AS merchant_raw,
                COALESCE(original_description, transaction_name) AS description_raw,
                amount, IF(amount < 0, 'credit', 'debit') AS direction,
-               credit_category_detailed AS native_category
+               credit_category_detailed AS native_category,
+               TRIM(account_id) AS account_id,
+               TRIM(transaction_id) AS transaction_id,
+               TRIM(customer_id) AS customer_id
         FROM `raylo-production.dbt_production.credit_plaid_open_banking_transactions`
-        WHERE {where}
+        WHERE NULLIF(TRIM(account_id), '') IS NOT NULL
+          AND NULLIF(TRIM(transaction_id), '') IS NOT NULL
+          AND NULLIF(TRIM(customer_id), '') IS NOT NULL
+          AND ({where})
         ORDER BY RAND()
         LIMIT {N_PER_LEAF}
         """
@@ -173,9 +180,15 @@ def fetch():
     SELECT LOWER(TRIM(merchant_name)) AS merchant, merchant_name AS merchant_raw,
            COALESCE(original_description, transaction_name) AS description_raw,
            amount, IF(amount < 0, 'credit', 'debit') AS direction,
-           credit_category_detailed AS native_category
+           credit_category_detailed AS native_category,
+           TRIM(account_id) AS account_id,
+           TRIM(transaction_id) AS transaction_id,
+           TRIM(customer_id) AS customer_id
     FROM `raylo-production.dbt_production.credit_plaid_open_banking_transactions`
     WHERE credit_category_detailed = 'ENTERTAINMENT_CASINOS_AND_GAMBLING'
+      AND NULLIF(TRIM(account_id), '') IS NOT NULL
+      AND NULLIF(TRIM(transaction_id), '') IS NOT NULL
+      AND NULLIF(TRIM(customer_id), '') IS NOT NULL
     ORDER BY RAND()
     LIMIT {N_GAMBLING_BROAD}
     """
@@ -186,11 +199,19 @@ def fetch():
         row_id += 1
 
     fieldnames = ["row_id", "target_leaf", "merchant", "merchant_raw", "description_raw",
-                  "amount", "direction", "native_category", "provider"]
+                  "amount", "direction", "native_category", "provider",
+                  "account_id", "transaction_id", "customer_id"]
+    # B04: fetched rows must pass the protected-release guard; rows without
+    # linkage identity fail closed until the query carries them.
+    all_rows = eval_protection.apply_env(all_rows, purpose="model_selection_validation")
     with open(SAMPLE_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(all_rows)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="build_gold_risk_categories.fetch",
+        purpose="model_selection_validation", guard=all_rows.guard,
+    )
     n_leaves_covered = len({r["target_leaf"] for r in all_rows if r["target_leaf"] != "gambling_broad_pool"})
     print(f"\nWrote {SAMPLE_CSV}: {len(all_rows)} rows, "
           f"{n_leaves_covered}/{len(ALL_TARGET_LEAVES)} target leaves have >=1 source row", file=sys.stderr)
@@ -202,6 +223,9 @@ def label(model_key):
     system_prompt = (build_system_prompt(leaves, gen_of, notes_of, load_example_merchants())
                       + TXN_ADDENDUM + build_notes_addendum(load_example_notes()))
 
+    # B04: narratives leave the trust boundary here — the sample must verify
+    # against its bound receipt before any row is read or sent out.
+    eval_protection.verify_artifact(SAMPLE_CSV)
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     out_path = PREDICTIONS[model_key]
     predictions = {}
@@ -348,6 +372,9 @@ def label(model_key):
 
 
 def sheet():
+    # B04: narratives leave the trust boundary here — the sample must verify
+    # against its bound receipt before any row is read or sent out.
+    eval_protection.verify_artifact(SAMPLE_CSV)
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     gemini = {r["row_id"]: r for r in csv.DictReader(open(PREDICTIONS["gemini"]))} \
         if PREDICTIONS["gemini"].exists() else {}
@@ -427,6 +454,8 @@ def sheet():
 def apply_review(path):
     import openpyxl
 
+    # B04: the reviewed sample must still match its bound fetch receipt.
+    sample_receipt = eval_protection.verify_artifact(SAMPLE_CSV)
     _, _, leaves, gen_of, _ = load_crosswalk()
     ws = openpyxl.load_workbook(path, data_only=True)["Review"]
     hdr = [c.value for c in ws[1]]
@@ -472,6 +501,11 @@ def apply_review(path):
                                           "gold_leaf", "target_leaf"])
         w.writeheader()
         w.writerows(out_rows)
+    eval_protection.write_artifact_receipt(
+        FINAL_CSV, consumer="build_gold_risk_categories.apply_review",
+        purpose="model_selection_validation",
+        input_receipts=[sample_receipt],
+    )
     print(f"Wrote {FINAL_CSV}: {len(out_rows)} gold transactions "
           f"({blank} left blank/unclassifiable, excluded; {empty_merchant_kept} kept with no merchant field, "
           f"reviewed off the narrative alone)", file=sys.stderr)

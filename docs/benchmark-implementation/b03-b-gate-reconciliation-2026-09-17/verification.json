@@ -1,0 +1,94 @@
+{
+  "schema_version": "benchmark-gate-reconciliation-v1",
+  "milestone": "B03-B-gate-reconciliation",
+  "status": "internal_benchmark_risk_accepted_runtime_and_data_gates_retained",
+  "scope": "documentation_only_decision_reconciliation",
+  "authorizes_consumption": false,
+  "captured_at": "2026-09-17T21:45:20Z",
+  "decision": {
+    "accepted_by": "Carlos",
+    "effective_organization_iam_isolation": "waived_as_hard_requirement_for_internal_versioned_benchmark",
+    "effective_isolation_claim": false,
+    "reopen_on": [
+      "production promotion",
+      "materially different intended use",
+      "benchmark schema change",
+      "sampling policy change",
+      "authority project change"
+    ]
+  },
+  "retained_controls": [
+    "customer_linked_plaid_only",
+    "anonymous_id_recovery_closed",
+    "complete_alias_identity_input_legacy_and_family_evidence_before_reservation",
+    "representative_sampling_frame_and_weights",
+    "whole_connected_block_allocation",
+    "canonical_authority_compare_and_swap",
+    "local_preflight_never_authorizes_consumption",
+    "append_only_train_selection_exclusion_ledger",
+    "permanent_evaluation_exclusion_from_training_and_selection",
+    "named_runtime_least_privilege",
+    "authority_environment_bound_signed_receipts",
+    "claim_kind_prefix_and_cross_plane_protection",
+    "three_independent_model_annotations_with_carlos_disagreement_adjudication"
+  ],
+  "authority_scope": {
+    "project": "raylo-txncat-authority-prod",
+    "project_number": "357892832103",
+    "region": "europe-west2",
+    "bucket": "gs://raylo-txncat-authority-prod-europe-west2",
+    "firestore_database": "projects/raylo-txncat-authority-prod/databases/txncat-benchmark-authority",
+    "keyring": "projects/raylo-txncat-authority-prod/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2",
+    "old_raylo_production_resources": "historical_synthetic_only_superseded_non_authoritative"
+  },
+  "observed_read_only_state": {
+    "authority_bucket_listed": true,
+    "authority_bucket_describe": "PERMISSION_DENIED_storage.buckets.get_for_active_Carlos_identity",
+    "firestore_registry_described": true,
+    "keyring_listed": true,
+    "user_managed_runtime_service_accounts": 0,
+    "objects_or_documents_written": false
+  },
+  "current_candidate_evidence": {
+    "candidate_events_profiled": 5000,
+    "representative_quarantined": 5000,
+    "unseen_input_overlap_rejects": 2224,
+    "unseen_input_quarantined": 2776,
+    "unfamiliar_merchant_overlap_rejects": 3451,
+    "unfamiliar_merchant_quarantined": 1549,
+    "eligible_view_combinations": 0,
+    "authorizes_consumption": false
+  },
+  "annotation_policy": {
+    "pilot_size": 500,
+    "models": ["gemini-3.8-flash", "gemini-3.7-flash", "claude-sonnet-5"],
+    "one_independent_batch_per_model": true,
+    "agreement_creates_gold_label": false,
+    "disagreement_or_incomplete_result": "raise_to_carlos",
+    "human_double_label_requirement": "retained_for_later_human_gold_sets_not_this_annotation_method_pilot"
+  },
+  "review": {
+    "model": "gpt-5.6-sol",
+    "agent": "Mendel",
+    "status": "APPROVE_WITH_RECONCILIATION",
+    "findings": [
+      "effective isolation waiver is correctly scoped",
+      "runtime least privilege and authority remain pre-reservation gates",
+      "current candidate profile has zero eligible view combinations",
+      "older IAM packets need supersession clarification",
+      "permanent exclusion wording must not imply release can lift it",
+      "three-model pilot disagreement policy is explicit"
+    ],
+    "cloud_or_data_mutation": false
+  },
+  "mutations": {
+    "cloud": false,
+    "iam": false,
+    "bigquery": false,
+    "customer_rows_exported": false,
+    "synthetic_fixtures": false,
+    "reservations_or_labels": false,
+    "training_selection_or_locked_evaluation": false
+  },
+  "next_gate": "scoped approval for exact runtime identity/binding changes, synthetic-only Stage 0-3 proof, then completion of admission evidence"
+}

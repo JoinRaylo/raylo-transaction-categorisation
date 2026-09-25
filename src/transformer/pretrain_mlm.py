@@ -36,6 +36,9 @@ import torch.nn.functional as F
 from transformers import AutoModelForMaskedLM, AutoTokenizer, get_linear_schedule_with_warmup
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "src"))
+import eval_protection  # noqa: E402
+
 CORPUS = ROOT / "outputs" / "transformer" / "pretrain_corpus.parquet"
 SAVE_DIR = ROOT / "outputs" / "distill_models" / "txn_encoder_mlm"
 CKPT = SAVE_DIR / "ckpt.pt"
@@ -162,11 +165,54 @@ def probe(tokenizer, model, dev, words=PROBE_WORDS, k=8):
     log("embedding nearest neighbours:\n" + "\n".join(lines))
 
 
+# ------------------------------------------------------------ corpus
+GUARDED_CONSUMER = "transformer.build_pretrain_guarded"
+GUARDED_PURPOSE = "domain_pretraining"
+
+
+def load_guarded_corpus(args) -> pd.DataFrame:
+    """Load the guarded corpus, verifying every shard's B04 receipt first."""
+
+    import hashlib
+    import json
+
+    corpus_dir = pathlib.Path(args.corpus_dir)
+    if not (corpus_dir / "MANIFEST.json").is_file():
+        raise RuntimeError("B04: no guarded corpus manifest; run build_pretrain_guarded.py")
+    manifest = json.loads((corpus_dir / "MANIFEST.json").read_text(encoding="utf-8"))
+    if manifest.get("schema_version") != "pretrain-guarded-manifest-v1":
+        raise RuntimeError("B04: corpus manifest is not a guarded pretraining manifest")
+    if manifest.get("protected_release") != eval_protection.PINNED_BINDING:
+        raise RuntimeError("B04: corpus was guarded against a different protected release")
+    protection, _publication = eval_protection.load_release(args)
+    frames = []
+    for shard in manifest["shards"]:
+        path = corpus_dir / shard["path"]
+        if hashlib.sha256(path.read_bytes()).hexdigest() != shard["sha256"]:
+            raise RuntimeError(f"B04: {path.name} differs from its manifest entry")
+        eval_protection.verify_artifact(
+            path,
+            expected_consumer=GUARDED_CONSUMER,
+            expected_purpose=GUARDED_PURPOSE,
+            protection=protection,
+        )
+        frames.append(pd.read_parquet(path, columns=["text", "provider", "n"]))
+    df = pd.concat(frames, ignore_index=True)
+    if len(df) != manifest["sentences"]:
+        raise RuntimeError("B04: corpus row count differs from its manifest")
+    log(f"guarded corpus verified: {len(manifest['shards'])} shards, {len(df):,} sentences")
+    return df
+
+
 # ------------------------------------------------------------ train
 def train(args):
     dev = device()
     log(f"device {dev}; base {args.base}")
-    df = pd.read_parquet(CORPUS, columns=["text", "provider", "n"])
+    # B04: only the guarded rebuild (build_pretrain_guarded.py) is consumable.
+    # Every shard must carry a signed receipt for this purpose under the
+    # pinned release, and its bytes must match the manifest; the legacy
+    # unguarded corpus parquet is never read.
+    df = load_guarded_corpus(args)
     if args.max_sentences and len(df) > args.max_sentences:
         df = df.sample(args.max_sentences, random_state=42)
     texts = df["text"].tolist()
@@ -263,7 +309,12 @@ def train(args):
 
 
 def main():
-    ap = argparse.ArgumentParser()
+    ap = eval_protection.add_args(argparse.ArgumentParser())
+    ap.add_argument(
+        "--corpus-dir",
+        default=str(ROOT / "outputs" / "transformer" / "pretrain_guarded"),
+        help="Guarded corpus directory written by build_pretrain_guarded.py",
+    )
     ap.add_argument("--base", default="distilbert-base-uncased")
     ap.add_argument("--epochs", type=int, default=1)
     ap.add_argument("--max-sentences", type=int, default=5_000_000)

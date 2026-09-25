@@ -1,0 +1,276 @@
+{
+  "schema_version": "benchmark-g0-synthetic-contracts-implementation-v1",
+  "milestone": "AIE-510-G0",
+  "purpose": "synthetic_two_cohort_contracts",
+  "status": "complete_bounded_synthetic_only",
+  "scope": "synthetic_only",
+  "authorizes_consumption": false,
+  "base": {
+    "app_base_before_milestone": "366d45b1ee80bffa32efa58af8de8742b248ce17",
+    "app_branch": "codex/txncat-aie510-g0",
+    "app_implementation_commit": "48bcfd451df6c3210027ee7a1c3bee6e25d9bc48",
+    "research_base_before_milestone": "c5ca7311c8054ccb9125e5e2197ab6bbb4aa5ef7",
+    "research_branch": "codex/txncat-aie510-g0-research"
+  },
+  "changed_source_sha256": {
+    "app/lib/raylo-txncat/src/raylo_txncat/benchmark_annotation.py": "fabc9b495dd7e2b749729eea7a3c94fc8b489ed5c082ba92ff953b7b0b3f028e",
+    "app/lib/raylo-txncat/src/raylo_txncat/benchmark_cohort.py": "31f650b3b66bc396e38a116102bd55df41582622934df69c44a30846748fc375",
+    "app/lib/raylo-txncat/src/raylo_txncat/benchmark_lifecycle.py": "c7e46894edc76f021b6dfb3bc34ceba5b10cbbcc6692e7dbc274dae3d472ae17",
+    "app/lib/raylo-txncat/tests/test_benchmark_annotation.py": "a086b07ef5e87597bb055ab1e6ba8deee7e7e9be9e1c14914679785ee6c42605",
+    "app/lib/raylo-txncat/tests/test_benchmark_cohort.py": "f394f1f381e705d9c5a9960cc303d9941a8411d2c3887d88370223a83e138770",
+    "app/lib/raylo-txncat/tests/test_benchmark_lifecycle.py": "a8fd6b353519b0cfcf8a7c139774172b7bb9c36a283674c3b4f8329910b425c0"
+  },
+  "contract": {
+    "policy_version": "two-cohort-2000-v1",
+    "cohorts": [
+      "core",
+      "rare_leaf_supplement"
+    ],
+    "allocation_design_defaults": {
+      "core_total": 1500,
+      "supplement_total": 500,
+      "core_targets": {
+        "representative": 1050,
+        "unseen_input": 300,
+        "unfamiliar_merchant": 150
+      },
+      "pilot_counts": {
+        "representative": 250,
+        "unseen_input": 150,
+        "unfamiliar_merchant": 100
+      },
+      "expansion_targets": {
+        "representative": 800,
+        "unseen_input": 150,
+        "unfamiliar_merchant": 50
+      },
+      "min_t6_t7_rows": 750,
+      "unfamiliar_t6_t7_share": [
+        0.6,
+        0.8
+      ],
+      "min_route_rows": {
+        "T1": 25,
+        "T2": 25,
+        "T5": 25,
+        "T7": 25
+      },
+      "t3_policy": "synthetic_only",
+      "per_leaf_quotas": false,
+      "max_rows_per_customer": 4
+    },
+    "headline_rule": "cohort=core AND primary_view=representative",
+    "phase_order": [
+      "synthetic-only",
+      "pilot-gates-accepted",
+      "candidate-read-authorised",
+      "admission-authorised",
+      "protection-committed",
+      "annotation-authorised",
+      "outcomes-accepted",
+      "release-authorised"
+    ],
+    "receipt_order": [
+      "root_configuration",
+      "source_materialization",
+      "candidate_frame",
+      "admission",
+      "annotation",
+      "adjudication",
+      "outcomes",
+      "release"
+    ],
+    "stable_bindings": [
+      "taxonomy_sha256",
+      "source_snapshot_sha256",
+      "prompt_sha256",
+      "guide_sha256",
+      "runtime_sha256",
+      "family_registry_sha256",
+      "pilot_parent_sha256",
+      "membership_sha256",
+      "sampling_specification_sha256",
+      "rare_leaf_specification_sha256"
+    ],
+    "conflict_matrix_sha256": "e50190e3115b4eee79bd3559c16e298999f7d353a138b206377599ecd025978d",
+    "conflict_matrix": [
+      {
+        "key": "event",
+        "treatment": "hard_exclusion",
+        "transitive": false,
+        "applies_to_views": [],
+        "missing_evidence": "quarantine",
+        "disputed_evidence": "quarantine"
+      },
+      {
+        "key": "event_alias",
+        "treatment": "hard_exclusion",
+        "transitive": true,
+        "applies_to_views": [],
+        "missing_evidence": "quarantine",
+        "disputed_evidence": "quarantine"
+      },
+      {
+        "key": "account",
+        "treatment": "grouping_constraint",
+        "transitive": true,
+        "applies_to_views": [],
+        "missing_evidence": "quarantine",
+        "disputed_evidence": "quarantine"
+      },
+      {
+        "key": "customer",
+        "treatment": "grouping_constraint",
+        "transitive": true,
+        "applies_to_views": [],
+        "missing_evidence": "quarantine",
+        "disputed_evidence": "quarantine"
+      },
+      {
+        "key": "assessment_association",
+        "treatment": "informational",
+        "transitive": false,
+        "applies_to_views": [],
+        "missing_evidence": "informational",
+        "disputed_evidence": "quarantine"
+      },
+      {
+        "key": "effective_input",
+        "treatment": "view_specific_eligibility",
+        "transitive": false,
+        "applies_to_views": [
+          "unseen_input",
+          "unfamiliar_merchant"
+        ],
+        "missing_evidence": "quarantine",
+        "disputed_evidence": "quarantine"
+      },
+      {
+        "key": "merchant_family",
+        "treatment": "view_specific_eligibility",
+        "transitive": false,
+        "applies_to_views": [
+          "unfamiliar_merchant"
+        ],
+        "missing_evidence": "quarantine",
+        "disputed_evidence": "quarantine"
+      },
+      {
+        "key": "content_revision",
+        "treatment": "hard_exclusion",
+        "transitive": false,
+        "applies_to_views": [],
+        "missing_evidence": "quarantine",
+        "disputed_evidence": "quarantine"
+      },
+      {
+        "key": "normalization_version",
+        "treatment": "view_specific_eligibility",
+        "transitive": false,
+        "applies_to_views": [
+          "unseen_input",
+          "unfamiliar_merchant"
+        ],
+        "missing_evidence": "quarantine",
+        "disputed_evidence": "quarantine"
+      }
+    ],
+    "membership_v1_schema_unchanged": true,
+    "membership_v1_note": "cohort is delivered as a hash-bound companion mapping (CohortMapping); the membership v1 schema, digests and manifest are unchanged"
+  },
+  "negative_cases": {
+    "duplicate transactions across assessment associations": [
+      "test_membership_rejects_duplicate_observation_across_associations",
+      "test_membership_rejects_changed_content_same_observation"
+    ],
+    "conflicting account/customer ownership": [
+      "test_member_rejects_conflicting_ownership",
+      "test_verify_allocation_blocked_on_cap_or_alias_coverage",
+      "test_select_supplement_excludes_core_overlap_and_discloses_shared_customers"
+    ],
+    "changed content under the same canonical observation": [
+      "test_membership_rejects_changed_content_same_observation",
+      "test_pilot_parent_immutability"
+    ],
+    "event/account/customer aliases and missing alias coverage": [
+      "test_membership_rejects_alias_overlap",
+      "test_verify_allocation_blocked_on_cap_or_alias_coverage",
+      "test_pilot_parent_immutability"
+    ],
+    "normalization-version changes": [
+      "test_membership_rejects_normalization_version_change"
+    ],
+    "overlapping primary-view eligibility": [
+      "test_overlapping_eligibility_counts_once"
+    ],
+    "effective-input collisions across views": [
+      "test_strict_view_input_collision_rejected_and_representative_repeat_counted"
+    ],
+    "merchant-family conflicts and unknown family status": [
+      "test_unfamiliar_requires_reviewed_family_and_unknown_status_rejected",
+      "test_pilot_parent_immutability",
+      "test_resolve_proxy_precedence_gap_and_miss"
+    ],
+    "infeasible whole-group quotas and deterministic shortfalls": [
+      "test_verify_allocation_shortfall_is_reported_not_filled",
+      "test_verify_allocation_blocked_on_cap_or_alias_coverage",
+      "test_select_supplement_deterministic_and_shortfall",
+      "test_summarise_outcomes_retains_misses_and_fails_coverage"
+    ],
+    "concurrent admission/export": [
+      "test_benchmark_authority.py::test_thread_safe_compare_and_commit_has_one_winner",
+      "test_benchmark_authority.py::test_reservation_and_learning_conflict_in_both_orders",
+      "test_benchmark_authority.py::test_stale_preparation_is_explicit_and_missing_history_or_key_quarantines",
+      "test_stale_authority_epoch_mismatch"
+    ],
+    "unavailable or stale authority": [
+      "test_authority_failure_halts",
+      "test_stale_authority_epoch_mismatch",
+      "test_ledger_rejects_unknown_stop_clearance"
+    ],
+    "duplicate, missing, partial and cancelled annotation batches": [
+      "test_duplicate_batch_ids_rejected",
+      "test_batch_requires_exact_committed_item_ids_not_positions",
+      "test_partial_batch_reports_missing_items_without_votes",
+      "test_cancelled_attempt_requires_error_and_never_votes"
+    ],
+    "retry exhaustion": [
+      "test_retry_exhaustion_is_not_a_label"
+    ],
+    "changed source/manifest/taxonomy/prompt/runtime/registry receipts": [
+      "test_receipt_chain_rejects_changed_stable_bindings",
+      "test_old_receipt_cannot_authorize_expanded_membership",
+      "test_batch_metadata_must_match_manifest_bindings"
+    ],
+    "supplement union protection": [
+      "test_protected_keys_union",
+      "test_require_consumable_fails_closed"
+    ],
+    "old 1,500-row receipt cannot authorize expanded membership": [
+      "test_old_receipt_cannot_authorize_expanded_membership",
+      "test_bind_and_verify_cohort_mapping"
+    ],
+    "supplement excluded from headline": [
+      "test_headline_excludes_supplement_with_representative_tag",
+      "test_supplement_members_never_headline"
+    ],
+    "pilot immutability": [
+      "test_pilot_parent_immutability",
+      "test_verify_allocation_rejects_foreign_pilot_verification",
+      "test_verify_allocation_rejects_wrong_pilot_counts"
+    ],
+    "final labels cannot steer supplement selection": [
+      "test_supplement_candidate_forbids_final_labels"
+    ]
+  },
+  "not_implemented_here": [
+    "candidate frame query",
+    "pilot probability reconstruction",
+    "core expansion sampler (G3)",
+    "annotation manifest for expansion items (G4)",
+    "importer (AIE-512)",
+    "B04 consumer wiring (AIE-513)",
+    "real phase ledger advancement",
+    "research CLI adapter"
+  ]
+}

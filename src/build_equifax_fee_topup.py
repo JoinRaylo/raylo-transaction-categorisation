@@ -25,6 +25,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 from ml_baseline import bq_client  # noqa: E402
+import eval_protection  # noqa: E402
 
 FINAL_CSV = ROOT / "data" / "tuning_leaf_topup.csv"
 BT_PAT = re.compile(r"balance\s*transfer", re.I)
@@ -75,6 +76,13 @@ WHERE TransactionTypeId = 2
 
 
 def main():
+    eval_protection.gate(
+        "build_equifax_fee_topup.main",
+        reason="equifax_data.open_banking_full_dump is proposal-matched and "
+               "carries no customer_id/account_id linkage; fetched rows can "
+               "never pass the protected-release guard. Rebuild against the "
+               "customer-linked Plaid source before this consumer may run.",
+    )
     print("Fetching Equifax fee/distress rows...", file=sys.stderr)
     df = bq_client().query(QUERY).result().to_dataframe()
     rows = []
@@ -93,8 +101,14 @@ def main():
             "native_category": r["native_category"],
             "gold_leaf": leaf,
             "target_leaf": leaf,
+            "provider": "equifax",
         })
 
+    # B04: the existing merge output must still match its bound receipt
+    # before new rows are appended onto it; its receipt stays in the chain.
+    prior_receipt = (
+        eval_protection.verify_artifact(FINAL_CSV) if FINAL_CSV.exists() else None
+    )
     existing = list(csv.DictReader(open(FINAL_CSV))) if FINAL_CSV.exists() else []
     seen = {_fp(r) for r in existing}
     added = []
@@ -105,11 +119,19 @@ def main():
         seen.add(fp)
         added.append(r)
 
+    # B04: fetched rows must pass the protected-release guard; rows without
+    # linkage identity fail closed until the query carries them.
+    added = eval_protection.apply_env(added, purpose="supervised_training")
     with open(FINAL_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=FIELDNAMES)
         w.writeheader()
         w.writerows(existing)
-        w.writerows(added)
+        w.writerows({k: r[k] for k in FIELDNAMES} for r in added)
+    eval_protection.write_artifact_receipt(
+        FINAL_CSV, consumer="build_equifax_fee_topup",
+        purpose="supervised_training", guard=added.guard,
+        input_receipts=[prior_receipt] if prior_receipt else (),
+    )
 
     from collections import Counter
     by_leaf = Counter(r["gold_leaf"] for r in added)

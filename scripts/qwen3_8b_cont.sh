@@ -3,6 +3,18 @@
 # Cursor terminal abort does not SIGKILL the train. Scores the latest ckpt
 # when training exits.
 set -euo pipefail
+
+# ---------------------------------------------------------------------------
+# B04 RETIRED — terminal gate.
+# Qwen LoRA is retired and not part of the intended production path:
+# Gemini/Sonnet are used for labelling only, and the winning transformer is
+# the sole TxCat-1 categorisation model to train and promote.  This launcher
+# must not run; the flow below is kept only as a record of the retired path.
+# ---------------------------------------------------------------------------
+echo "B04: $(basename "$0") is RETIRED — Qwen LoRA is not part of the intended" >&2
+echo "     production path.  Gemini/Sonnet are used for labelling only; the" >&2
+echo "     winning transformer is the sole TxCat-1 categorisation model." >&2
+exit 1
 ROOT="/Users/carlosnoblejesus/Repos/raylo-transaction-categorisation"
 cd "$ROOT"
 PY="$ROOT/.venv/bin/python"
@@ -21,6 +33,16 @@ cp "$ROOT/outputs/qwen3_8b_long_adapters/adapter_config.json" "$ADP/adapter_conf
 
 # MLX still pointed at the 24 Aug jsonl; corrections landed in tuning_train.jsonl.
 rm -f "$ROOT/outputs/qwen3_data/train.jsonl"
+
+# B04: the supervised export must verify against its membership coverage and
+# the pinned protected release before any training may consume it.
+"$PY" - <<PY
+import sys
+sys.path.insert(0, "$ROOT/src")
+import eval_protection
+eval_protection.verify_tuning_export(out_dir="$ROOT/outputs")
+PY
+
 ln "$ROOT/outputs/tuning_train.jsonl" "$ROOT/outputs/qwen3_data/train.jsonl"
 
 if pgrep -f 'mlx_lm.lora .*qwen3_8b_long_cont_adapters' >/dev/null 2>&1; then

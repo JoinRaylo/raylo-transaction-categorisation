@@ -1,0 +1,69 @@
+{
+  "schema_version": "benchmark-linked-admission-profile-v1",
+  "milestone": "B03-B-linked-admission-profile",
+  "status": "aggregate_profile_captured_not_admitted",
+  "scope": "customer_linked_plaid_materialized_profile",
+  "authorizes_consumption": false,
+  "captured_at": "2026-09-17T20:05:43.800274+00:00",
+  "query": {
+    "project": "raylo-production",
+    "location": "EU",
+    "statement_type": "SELECT",
+    "dry_run_total_bytes_processed": 10555501251,
+    "total_bytes_processed": 10555501251,
+    "total_bytes_billed": 10556014592,
+    "maximum_bytes_billed": 20000000000,
+    "job_id": "4f1bad6b-6af7-4499-8366-2bdcda5d4e26",
+    "sql_sha256": "97ea75dbe9015bfe5075ce483e39cf9eafa52f0ce0b922609f3e52a0c73e50bf",
+    "runner_sha256": "58a7c7506190acc6d9af390ff303116cd7bf21d727df4e3a0460bd139370f635"
+  },
+  "aggregate": {
+    "source_materialized_observation_rows": 36706094,
+    "source_distinct_transaction_ids": 36706094,
+    "unambiguous_customer_linked_observations": 20653747,
+    "unambiguous_linked_customers": 46273,
+    "unambiguous_linked_checkouts": 50828,
+    "linked_distinct_account_customer_pairs": 71423,
+    "identity_missing_or_conflicting_observations_excluded": 16052347,
+    "linked_min_transaction_date": "2025-05-16",
+    "linked_max_transaction_date": "2026-09-16",
+    "linked_repeated_event_key_count": 0,
+    "linked_changed_content_variant_event_key_count": 0,
+    "linked_blank_merchant_observations": 7272730,
+    "linked_present_merchant_observations": 13381017,
+    "linked_credit_observations": 4718193,
+    "linked_positive_debit_observations": 15935510,
+    "linked_zero_amount_observations": 44
+  },
+  "result_sha256": "6755d16fd44a7d35ebaaa4b5fe69b69ab710fb4cd2f2b604de55eebbf2d51f29",
+  "independent_review": {
+    "model": "gpt-6-astra",
+    "agent": "Hooke",
+    "status": "profile_sufficient_to_plan_not_to_admit",
+    "findings": [
+      "candidate-level pending/posted/reconnect and report-history aliases are not established",
+      "historical training/selection exposure and legacy exclusions are not established",
+      "view-specific effective-input and unfamiliar-family novelty are not established",
+      "connected group/block sizes and sampling weights are not established",
+      "managed reservation and competing-consumer protection are not established"
+    ],
+    "mutations": false
+  },
+  "mutations": {
+    "bigquery_source_mutated": false,
+    "destination_table_written": false,
+    "authority_objects_or_documents_written": false,
+    "customer_rows_exported": false,
+    "candidate_membership_changed": false,
+    "labels_changed": false,
+    "training_or_selection_state_changed": false
+  },
+  "limitations": [
+    "aggregate-only profile; no transaction payloads or identifiers returned",
+    "materialized transaction-ID uniqueness is not raw CDC or alias completeness",
+    "full historical training/selection exposure is not certified by this query",
+    "unseen-input and unfamiliar-merchant eligibility are not established",
+    "no candidate, reservation, label, locked set, score or retrain is authorized"
+  ],
+  "next_gate": "admission-specific lineage extract with complete linked-only group, effective-input and merchant-family exclusion evidence"
+}

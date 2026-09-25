@@ -1,0 +1,227 @@
+{
+  "schema_version": "benchmark-candidate-admission-profile-verification-v1",
+  "milestone": "B03-B-candidate-admission-profile",
+  "status": "candidate_profile_captured_not_admitted",
+  "scope": "customer_linked_plaid_only_private_profile",
+  "authorizes_consumption": false,
+  "base_and_branch": {
+    "app_base_commit": "39cff17e3f8f21a6c8559faab3eaac39840227c2",
+    "app_base_subject": "docs(ob-txn-categoriser): add verified dataset continuation handover",
+    "app_pre_milestone_head": "cc74c1f3153b484b6c5400da93792ad5a73edaf8",
+    "app_branch": "codex/txncat-b03a-app",
+    "research_base_commit": "cc550d5654f1fba00d8190330ed3e9fa9eeea340",
+    "research_base_subject": "docs: mirror dataset continuation handover",
+    "research_pre_milestone_head": "36a5785ef12ada54c8cb6cba7982dfe78f6ef70c",
+    "research_branch": "codex/txncat-b03a-research"
+  },
+  "candidate_draw": {
+    "project": "raylo-production",
+    "location": "EU",
+    "statement_type": "SELECT",
+    "source_table": "raylo-production.dbt_production.intermediate_credit_plaid_transactions",
+    "source_kind": "customer_linked_plaid_materialized",
+    "scope_contract_sha256": "b9ab5de37915fc71f9e9868e08c22a22b46b48dc2e404ff16274037059886a5e",
+    "anonymous_id_recovery": false,
+    "seed": "b05-pilot-source-v1",
+    "candidate_limit": 5000,
+    "dry_run_bytes": 8657706119,
+    "bytes_processed": 8657706119,
+    "bytes_billed": 8658092032,
+    "job_id": "txncat_candidate_fe166fcb-13ce-4ce4-9685-4599fcf33f02",
+    "result_rows": 5000,
+    "receipt_sha256": "432b5ee4ccc1b85f8a342db63077b4f3bdfc5d522cfdb02d80d25970a2f2cd3d",
+    "result_sha256": "f9c549ee7a8a6bbfaec8999d3edaf2dca22f0d4f4fa463a486dcc3fd5a8f32ef",
+    "sql_sha256": "4b457cf50800416d9db25391f179e30559b0303b4bc7e3d4e9a9b5d9d5b853da",
+    "runner_sha256": "e6c52f5e584f3b9fa0b7e85e1986b16ce6efec5c33b7367a36b0418b283d0e0b",
+    "authorizes_consumption": false
+  },
+  "profile": {
+    "schema_version": "benchmark-admission-profile-v1",
+    "private_output": "/private/tmp/txncat-b05-profile-20260917-v5",
+    "profile_sha256": "04efff789eadd9bbae635109bd15be80e34164bf8132e1d78f7bacbce2eb7ec5",
+    "opaque_sidecar_sha256": "cd9b47638064fb1839d08894cb5f16b4a3b64b09eaacf62e5ebf7532bf51859a",
+    "candidate_rows": 5000,
+    "distinct_events": 5000,
+    "scope_contract_sha256": "b9ab5de37915fc71f9e9868e08c22a22b46b48dc2e404ff16274037059886a5e",
+    "policy_version": "benchmark-admission-profile-policy-v1",
+    "policy_sha256": "7cdb97baefcb273188f66bab098e6838590132eaaaf76639aa4f7c2f6e025e6f",
+    "b01_inventory_sha256": "bb0c02de639d14a750ccef6fe89bc819a8261b41f1e3c87a05c731433934c423",
+    "b02_index_receipt_sha256": "2106efa7ad30c4669620c4ac514ac797b8bba8700d5f4e0b5f02c98c72d1e654",
+    "b02_index_database_sha256": "61cc0a42ddafb686e9f3ecb437be1eba3f9a78ecbb893f18fdb60eafb7ded5cd",
+    "legacy_summary_sha256": "2c19dfc689bf975753d061ca2dee5cd4e5834c1136ff95e3df5fc36678a3094f",
+    "output_modes": {
+      "profile.json": "0600",
+      "opaque-candidates.jsonl": "0600"
+    },
+    "authorizes_consumption": false,
+    "rows_reserved_or_labelled": 0
+  },
+  "implementation": {
+    "candidate_extractor_sha256": "e6c52f5e584f3b9fa0b7e85e1986b16ce6efec5c33b7367a36b0418b283d0e0b",
+    "candidate_sql_sha256": "4b457cf50800416d9db25391f179e30559b0303b4bc7e3d4e9a9b5d9d5b853da",
+    "candidate_profiler_sha256": "3d41b4b58579d6eb2718c33c68eff8302442274b191ed96b2beae4197c0d457d",
+    "synthetic_tests_sha256": "041e316c71c4083338aea309819af0d49369fb71838b45dd949cad7cb3167574",
+    "identity_query_sha256": "14b5eb2c173600e9286bd8af83692e3e48743256238b1dba40b08858bdd6a64f"
+  },
+  "aggregate": {
+    "source_strata": {
+      "credit/blank/business": 54,
+      "credit/blank/consumer": 994,
+      "credit/blank/unknown": 5,
+      "credit/present/business": 10,
+      "credit/present/consumer": 103,
+      "debit/blank/business": 51,
+      "debit/blank/consumer": 680,
+      "debit/blank/unknown": 4,
+      "debit/present/business": 156,
+      "debit/present/consumer": 2925,
+      "debit/present/unknown": 18
+    },
+    "input_exposure_rows": {
+      "hinge_sparse": 378,
+      "surface_fold": 2222,
+      "token48": 2195,
+      "strict_view_union": 2224
+    },
+    "merchant": {
+      "present": 3212,
+      "blank": 1788,
+      "known_exact_name": 2624,
+      "unknown_exact_name": 588,
+      "family_reviewed": 0
+    },
+    "blocks": {
+      "account_groups": 4672,
+      "account_max_rows": 4,
+      "customer_groups": 4542,
+      "customer_max_rows": 5,
+      "assignment_groups": 4542,
+      "assignment_max_rows": 5
+    },
+    "views": {
+      "representative": {
+        "eligible_preflight": 0,
+        "quarantine": 5000,
+        "reject": 0
+      },
+      "unseen_input": {
+        "eligible_preflight": 0,
+        "quarantine": 2776,
+        "reject": 2224
+      },
+      "unfamiliar_merchant": {
+        "eligible_preflight": 0,
+        "quarantine": 1549,
+        "reject": 3451
+      }
+    },
+    "history_flags": {
+      "event_aliases_verified": false,
+      "identity_history_complete": false,
+      "input_history_complete": false,
+      "family_history_complete": false,
+      "legacy_index_complete": false
+    }
+  },
+  "checks": [
+    {
+      "command": "PYTHONPATH=<shared raylo-txncat src> research-python -m pytest -q apps/ob-txn-categoriser/scripts/test_benchmark_profile_candidates.py",
+      "result": "6 passed"
+    },
+    {
+      "command": "PYTHONPATH=<shared raylo-txncat src> research-python -m pytest -q tools/benchmark/test_benchmark_profile_candidates.py",
+      "result": "6 passed; one marker-registration warning in the research-only checkout"
+    },
+    {
+      "command": "ruff check and ruff format --check with the handover pyproject config on the mirrored profiler and tests",
+      "result": "passed in both worktrees"
+    },
+    {
+      "command": "local profiler against the private 5,000-row draw, B01 inventory, B02 index and legacy membership digests",
+      "result": "profiled 5,000 rows; aggregate profile published; no admission authorized"
+    }
+  ],
+  "adversarial_cases": [
+    "candidate receipt and result digest are required and candidate events must be unique",
+      "candidate source fields and amount/direction are validated before profiling",
+    "candidate receipt is bound to the exact customer-linked source contract and extractor digests",
+    "assessment, checkout, user and customer link counts must each equal one",
+    "serving and MLM tokenizer semantics must match while runtime truncation metadata may differ",
+    "historical source and merchant scans require pinned file digests and exact row counts",
+    "legacy membership streams require their own object digests and malformed records fail closed",
+    "strict-view input overlap is a reject; unknown input history is a quarantine",
+    "blank merchant names do not claim unfamiliar merchant families",
+    "exact merchant-name presence rejects unfamiliar view but does not certify family absence",
+    "unresolved aliases, history and legacy index quarantine every view",
+    "connected account/customer/assignment blocks are reported without making local preflight authority",
+    "integer histogram keys are canonicalized as strings for the contract JSON encoding",
+    "profile and opaque sidecar are owner-only and no raw identifiers are written to committed evidence"
+  ],
+  "failed_attempts": [
+    {
+      "attempt": "initial direct invocation used the app-relative script path from the research worktree",
+      "impact": "no process ran and no output was created"
+    },
+    {
+      "attempt": "first profiler run compared full tokenizer JSON documents",
+      "impact": "corrected to compare semantics while allowing truncation/padding runtime metadata; no admission claim was made"
+    },
+    {
+      "attempt": "first completed scan serialized integer block-histogram keys",
+      "impact": "corrected to canonical string keys and rerun; no admission claim was made"
+    },
+    {
+      "attempt": "independent Sol review held the pre-hardening profile on scope, linkage, permanent exclusion and authority-lineage gaps",
+      "impact": "scope/linkage validation and profiler/policy lineage pinning were added; authority and permanent-exclusion gaps remain open"
+    }
+  ],
+  "review": {
+    "sol": {
+      "agent": "Euler",
+      "model": "gpt-5.6-sol",
+      "status": "hold_on_pre_hardening_profile",
+      "findings": [
+        "scope and link evidence needed explicit extractor binding and one-to-one count validation",
+        "group protection and permanent train/selection exclusion remain descriptive or absent",
+        "managed authority signature/CAS and verifiable IAM-waiver lineage remain required"
+      ],
+      "mutations": false
+    },
+    "astra": {
+      "agent": "Ampere",
+      "model": "gpt-6-astra",
+      "status": "approve_non_authoritative_planning_only",
+      "findings": [
+        "scope binding, extractor/code hashes and one-to-one link-count validation are present",
+        "aggregate counts and fail-closed view decisions reconcile to 5,000 rows",
+        "managed authority, complete history/family evidence and permanent exclusion remain admission gates"
+      ],
+      "mutations": false
+    },
+    "effective_iam_isolation": {
+      "decision": "accepted_internal_benchmark_risk",
+      "app_record_commit": "d48a97c",
+      "research_record_commit": "8a28e1d",
+      "cloud_effective_access_attestation": false,
+      "logical_separation_and_runtime_authority_still_required": true
+    }
+  },
+  "mutations": {
+    "bigquery_source_mutated": false,
+    "destination_table_written": false,
+    "authority_objects_or_documents_written": false,
+    "customer_rows_exported_to_git": false,
+    "provider_annotations": 0,
+    "human_labels": 0,
+    "training_or_selection_state_changed": false,
+    "locked_sets_opened": false,
+    "models_retrained_or_scored": false,
+    "reservations": 0
+  },
+  "research_mirror": {
+    "implementation_and_sql": "byte-identical",
+    "tests": "byte-identical",
+    "readme_and_verification": "byte-identical"
+  },
+  "next_gate": "complete candidate alias/history/family/legacy and sampling evidence, then prove managed authority runtime/CAS before any reservation or annotation"
+}

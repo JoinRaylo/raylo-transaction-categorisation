@@ -64,6 +64,371 @@ to avoid conflicting with the ongoing app work; preserve this checkout's unrelat
 changes and unpublished history. The tested startup command passes 115 tests.
 No benchmark membership, labels, model, metrics or staging changed in the handover.
 
+## B03-A synthetic protocol (2026-09-16)
+
+The canonical app module is `lib/raylo-txncat/src/raylo_txncat/benchmark_authority.py`,
+with design/evidence mirrored at `docs/benchmark-implementation/b03-a-synthetic/`.
+It has 29 passing synthetic tests for reservation, learning and selection claims,
+object-generation/digest checks, stale epochs, operation retries, permanent
+identity protections, three-view novelty, alias contamination and authority
+outage. Final independent `gpt-5.6-sol` protocol review is approved with no
+residual actionable findings; current evidence is `verification-v2.json` and the
+original pre-correction snapshot remains unchanged. The in-memory store and
+`LocalReceipt` are explicitly non-authorizing; no labels, locked sets, training,
+scoring, cloud changes or consumer integration occurred. The scoped production
+GCS/Firestore boundary is now implemented behind injected ports with synthetic
+fake tests, while physical scope, IAM, authenticated receipts and all B03/B04,
+source-history, sampling and label gates remain open for review.
+
+## B03-B linked-pool audit (2026-09-16)
+
+The new [aggregate-only live profile](docs/benchmark-implementation/b03b-linked-pool-audit-2026-09-16/README.md)
+used one pinned `raylo-production` EU `SELECT` and the existing assessment →
+checkout → user → customer linkage. It found 36,312,899 materialized source
+observations and 20,474,043 unambiguous customer-linked observations across
+46,051 customers, with 15,838,856 identity-excluded rows. This is a source
+readiness snapshot only: zero repeats in the materialized transaction-ID table
+does not prove raw-event uniqueness or pending/posted/reconnect alias completeness.
+No raw rows were exported, and no reservation, label, model, locked set, training,
+score or cloud mutation occurred. The adapter contract/evidence is mirrored at
+`docs/benchmark-implementation/b03-b-production-boundary-2026-09-16/`; next is
+review of the physical production boundary and authenticated receipt model,
+then complete-history candidate admission—not a local preflight allow.
+
+## B03-C annotation-method pilot runner (2026-09-16)
+
+The provider runner is tools/benchmark/annotation_pilot.py; the strict item,
+manifest, attempt, vote and three-way comparison contract is canonical in the
+app monorepo at lib/raylo-txncat/src/raylo_txncat/benchmark_annotation.py.
+It supports one-request-per-item online calls plus explicit asynchronous
+batch-submit, batch-status and batch-collect modes. Anthropic uses its API
+batch route with deterministic short custom IDs; Gemini batch uses the
+API-key inline route because the Vertex batch route requires a GCS/BigQuery
+source. The runner records digest-only job state before submission, fails
+closed on uncertain operations, and never silently fills a label or chooses a
+majority.
+
+One synthetic item was sent through all three online routes and both
+asynchronous provider routes. The online outputs passed strict parsing; a
+valid Sonnet batch output was collected, while invalid batch fields were
+recorded as schema failures rather than labels. This is only annotation-method
+evidence. No real customer rows were downloaded or labelled, no 500-row pilot
+was admitted, and no B04 consumer is wired to these outputs. The runner's
+quarantine path is not a substitute for downstream gates; these artifacts
+cannot authorize evaluation, training, selection, scoring or promotion. Physical authority,
+authenticated receipts, complete linked-pool history/aliases, eligibility and
+B04 consumer gates remain open.
+
+## B03-C private pilot annotation and review queue (2026-09-18)
+
+The reviewed private 500-row pilot now has 500/500 strict-valid independent
+votes from Sonnet 5, Gemini 3.7 Flash and Gemini 3.8 Flash. Gemini attempt 3
+was gated by a separate 10-case synthetic batch acceptance suite per model,
+uses the exact four-field schema and taxonomy leaf enum, and recovered only
+the 14 and 26 previously invalid rows. The merged artifacts retain every
+earlier attempt and reject model drift, non-STOP finishes, invalid confidence,
+unknown leaves and alternate field names.
+
+`tools/benchmark/prepare_annotation_review_queue.py` validates the manifest,
+membership, prompt redaction, model identities, vote/attempt bindings and
+source-ID absence before publishing owner-only comparison evidence. The result
+is 239 complete model disagreements and zero incomplete row. Another 24 rows
+are unanimous abstentions (11 ambiguous, 13 insufficient evidence), so the
+corrected v2 queue contains 263 rows. Its mutually exclusive primary-view
+review counts are representative 120/250, unseen-input 76/150 and
+unfamiliar-merchant 67/100. The private workbook is under the experiment's
+`adjudication-v2/` directory and contains review reason plus editable Carlos
+status, leaf and notes fields with validation; it is not committed. The
+earlier 239-row `adjudication/` bundle is superseded and must not be used.
+
+No consensus, majority or unanimous abstention is a final label. The 237
+unanimously labelled rows do not require Carlos review under the approved
+pilot workflow. `carlos_decisions=0`,
+`gold_labels_created=0` and `authorizes_consumption=false`. The next gate is
+Carlos's 263 decisions, followed by a receipt-bound import that freezes all
+500 internal-benchmark labels. Training augmentation, retraining and any
+locked-set score remain later, separate actions.
+
+## B03-C ID-bearing training membership (2026-09-18)
+
+The agreed simplified membership boundary is implemented in
+`src/training_membership.py` and wired into `src/build_tuning_dataset.py`.
+Future Tier-B fetches use the approved unambiguous assessment -> checkout ->
+user -> customer chain, retain Plaid `account_id`/`transaction_id`, and use stable
+hash ordering. Build leaves the model JSONL `messages` schema unchanged and writes
+a separate private exact-ID role lookup plus an explicit identity-coverage report.
+Legacy curated rows without provider IDs remain unresolved; absence from this
+lookup is not historical-completeness evidence. Exact IDs cannot cross roles,
+sources or changed payloads. Prior exact assignments survive rebuilds; a final
+coverage marker binds the lookup to both model files and detects partial
+publication. Repeated assessments are accepted only when their model payload
+agrees, and merchant roles are stable under pool growth. Research tests are 89 passed; canonical B02/B03
+membership regressions are 101 passed; the query compiled in a no-row BigQuery dry
+run. Independent Astra review is approved with no remaining findings. Evidence:
+`docs/benchmark-implementation/b03-c-id-bearing-training-membership-2026-09-18/`.
+No real rows, labels, provider calls, retraining or locked-set scoring occurred.
+Next: use this lookup to exclude existing learning/selection IDs from the fresh
+private customer-linked candidate export, then allocate evaluation before training.
+
+## B03-E private evaluation pilot construction (2026-09-18)
+
+The approved private v2 pilot is recorded in
+`docs/benchmark-implementation/b03-e-private-eval-pilot-2026-09-18/` and built by
+`tools/benchmark/build_eval_pilot.py`. It assigns 500 exact Plaid events to eval
+before annotation, with a 250 representative / 150 unseen-input / 100
+unfamiliar-merchant primary split across 464 whole customer blocks. Explicit
+source IDs live only in the private `membership.csv`; `pilot.jsonl` contains the
+annotation fields and a derived pilot ID. Strict novelty cohorts have zero known
+historical effective-input matches, while the representative cohort intentionally
+contains 111 familiar inputs. Astra approved v2 after the builder was hardened for
+historical customer contradictions, raw/opaque customer grouping consistency and
+membership-input receipt hashes. Twelve focused tests and 126 regressions pass.
+No provider call, label, retrain, locked-set score or cloud change occurred.
+Historical exact-ID completeness and reviewed merchant families remain unavailable;
+future Tier-B training fetches and builds now require the v2 eval membership as a
+mandatory exact event/account/customer exclusion. The resulting private fetch is
+hash-bound to that lookup, and build re-verifies both inputs. The hardened query
+compiled in an EU no-row dry run; 24 focused tests and 135 regressions pass, and
+Astra approved the protection after three fixes. No real training fetch occurred.
+
+## G0 synthetic two-cohort contracts for the 2,000-row benchmark (2026-09-21)
+
+The canonical code lives in the app monorepo (do not fork):
+`lib/raylo-txncat/src/raylo_txncat/benchmark_cohort.py` and
+`benchmark_lifecycle.py`, plus backward-compatible retry/cancel additions to
+`benchmark_annotation.py`. The mirrored design and evidence packet is
+`docs/benchmark-implementation/g0-synthetic-contracts-2026-09-21/`. Pins: app
+base `366d45b1`, branch `codex/txncat-aie510-g0`, implementation commit
+`48bcfd45`; research base `c5ca731`, branch `codex/txncat-aie510-g0-research`.
+
+The contract fixes the 2,000-row target as an unchanged 1,500-row core (500
+pilot + 1,000 new rows; the 70/20/10 split applies to the core only) plus a
+separately reported 500-row rare-leaf supplement with
+`cohort=rare_leaf_supplement`. Pilot rows are immutable, with eligibility
+defects recorded as exceptions rather than replacements; consumption
+protection is the union of core and supplement keys and fails closed; the
+headline excludes supplement rows; the phase ledger is an explicit
+eight-state no-skip machine halted by failed or unavailable authority
+outcomes; the receipt chain is append-only with stable bindings; a nine-rule
+conflict matrix separates transitive from non-transitive keys; and the
+pre-label proxy selector rejects candidates carrying final labels. 76 focused
+and 1,291 library unit tests pass. Synthetic only: do not perform any
+candidate read, reservation, annotation dispatch, redraw to satisfy rare-leaf
+quotas, or use of final labels for supplement selection. The next gate is G1
+pilot closure (AIE-511 adjudication, AIE-512 importer, AIE-513 enforcement
+evidence).
+
+## B03-F pilot reconstruction and Opus 5 adjudication (2026-09-21)
+
+The lost v2 pilot working artifacts were reconstructed byte-identically under
+`~/.local/share/raylo-txncat/benchmark-eval-pilot/reconstruction-2026-09-21/`
+(dirs `0700`, files `0600`). The recovery runner
+`tools/benchmark/recover_eval_pilot_membership.py` re-executed the pinned draw's
+identity join and returned all 500 rows (474 accounts, 464 customers; pilot-ID
+set sha `9074da7b…`). `benchmark_build_index.py` rebuilt the B02 index under
+the preserved key to a byte-identical `database_sha256` `61cc0a42…` (40/40
+overlap checks pass), and `reconstruct_eval_pilot_views.py` re-ran the
+deterministic allocation to reproduce `pilot.jsonl` `fc5c626c…` and
+`membership.csv` `0afb4155…` exactly; the full view fingerprint passed.
+
+Provider recovery yielded 500/499/499 strict-valid votes: each Gemini model
+has one unretried attempt-1 `MAX_TOKENS` item, accepted as two `incomplete`
+comparison rows (259/239/2 vs the milestone's 261/239/0). The retry cap of
+three was respected; nothing was synthesised and no repair calls were made.
+
+The AIE-511 adjudication runner `tools/benchmark/adjudicate_pilot_opus.py` ran
+a `claude-opus-5` batch-only first pass over the 265 review rows: 265/265
+strict-valid `ProposedAdjudication` proposals (156 labelled / 83 ambiguous /
+26 insufficient evidence), per-item alias blinding, zero retries. Opus
+proposals are adjudication aids, never independent votes or gold labels —
+enforced by the canonical contract in `benchmark_annotation.py`. The lead
+review agreed 204 / disagreed 33 / unsure 28; 61 rows and six policy groups
+escalate to Carlos in the review workbook. `carlos_decisions=0`,
+`final_labels_created=0`, `authorizes_consumption=false`. Evidence:
+`docs/benchmark-implementation/b03-f-pilot-reconstruction-adjudication-2026-09-21/`.
+Next gate: Carlos's 61 decisions and six policy rulings, then the AIE-512
+receipt-bound importer.
+
+## B03-B authenticated receipt boundary (2026-09-17)
+
+The canonical app boundary now includes strict `AuthenticatedReceipt` and
+`ReceiptSignature` types, an injected `AuthorityReceiptSigner`, and a lazy
+`KMSAuthorityReceiptSigner`. `ProductionAuthorityStorage` issues and verifies
+one exact-object receipt only for a committed, held learning or selection claim;
+the receipt carries an authority-resolved audience and consumption rechecks the
+current worker principal and role. It rejects local/forged receipts, wrong
+worker scope, reservations, contaminated/stale operations and changed object
+bytes. The KMS adapter receives an already-configured client and key version,
+checks returned key identity, algorithm, 2048-bit key size and CRC32C fields;
+it creates no resources and makes no calls at import time. Synthetic evidence is mirrored at
+`docs/benchmark-implementation/b03-b-production-boundary-2026-09-16/`.
+
+This does not prove live KMS custody, IAM, retention, cross-process races or
+service-account denied-access behavior. No B04 consumer is connected, and no
+real rows, labels, benchmark membership, model fit, locked-set score or cloud
+state changed. The next gate is physical resource/IAM/KMS review and separately
+approved live permission proofs, followed by B04 consumer integration.
+
+## B03-D synthetic candidate allocation (2026-09-17)
+
+The canonical app module is
+`lib/raylo-txncat/src/raylo_txncat/benchmark_allocation.py`, with the mirrored
+design/evidence packet at
+`docs/benchmark-implementation/b03-d-synthetic-allocation-2026-09-17/`. It is
+a strict local planner for opaque synthetic candidate blocks, not source
+admission or authority. Candidate/request/result types are frozen, extra-field
+forbidden, limited to the named synthetic fixture and `three-views-v1`, and
+carry `scope="synthetic_only"`; results always have
+`authorizes_consumption=false`.
+
+It assigns whole precomputed blocks to a strict role vocabulary, reserves
+pilot/evaluation/selection roles before training, protects event aliases,
+accounts, customers, strict effective inputs and unfamiliar reviewed families,
+and preserves representative recurrence as an explicit dependence count.
+Existing assignments are revalidated and canonically digested. Exact capacity
+failures, non-exact shortfalls, contradictory blocks, strict novelty collisions,
+ineligible candidates and ID reuse fail closed. Sol and Astra conditionally
+approved the local direction after these hardening checks. The bounded
+backtracking helper is synthetic-only; no real rows, cloud calls, labels,
+authority reservations, locked-set access, model fit, scoring or retraining
+occurred. The next real gates are the retained runtime permission proof,
+followed by a fresh bounded linked-only admission profile and managed
+reservation. Strict organization-level effective isolation was waived for the
+internal benchmark by the recorded risk acceptance; permanent separation and
+novelty/group protections were not waived.
+
+## B03-B effective IAM gate disposition (2026-09-17)
+
+The [read-only gate-resolution packet](docs/benchmark-implementation/b03-b-effective-iam-gate-resolution-2026-09-17/README.md)
+confirms Carlos's direct Owner grant on `raylo-txncat-authority-prod`, while the
+project inherits `team-infra-eng` as Owner from the shared
+`internal-services-monorepo` folder. Carlos has accepted that inherited
+control-plane risk for this internal, versioned benchmark, so strict clean-
+folder/effective-IAM attestation is non-blocking. This does not certify
+isolation: organization IAM, nested group membership, deny/PAB and
+impersonation paths remain unobserved. The dedicated authority resources and
+named least-privilege runtime paths remain in scope; permanent
+train/selection/evaluation separation, novelty/group protections,
+customer-linked Plaid-only scope and closed anonymous-ID recovery are not
+waived. Cloud Identity and Policy Troubleshooter checks were unavailable
+because their APIs were disabled and were not enabled. Any benchmark expansion
+or production promotion must revisit the decision.
+
+## B03-B fresh linked-only admission profile (2026-09-17)
+
+The [fresh aggregate profile](docs/benchmark-implementation/b03-b-linked-admission-profile-2026-09-17/README.md)
+reran the pinned EU `SELECT` against `raylo-production` under the 20 GB cap:
+36,706,094 materialized Plaid rows, 20,653,747 existing customer-linked
+observations and 46,273 linked customers, with 16,052,347 rows excluded by the
+existing link rule. The result is aggregate-only and does not establish
+candidate-level aliases/history, exposure against training or selection,
+view-specific novelty, merchant families, block sizes or pilot eligibility.
+Astra independently reviewed it as sufficient to plan but not admit the pilot.
+No identifiers, payloads, labels, reservation or authority object were
+exported or written. The next gate is an admission-specific lineage extract.
+
+## B03-B physical scope review (2026-09-17)
+
+The [physical scope review packet](docs/benchmark-implementation/b03-b-physical-scope-review-2026-09-17/README.md)
+started as a proposal and now records a partially provisioned synthetic scope.
+It converts the existing IAM plan into decisions and evidence
+requirements for an isolated project/location, immutable object store, registry,
+distinct worker and authority identities, retention/deletion, audit logging and
+KMS custody. It also requires an explicit choice for how learning and selection
+workers verify authority receipts; object-read permission must not be treated as
+KMS public-key permission, and verification must fail closed without a local or
+cached fallback.
+
+The physical-scope packet is preserved as a historical record of the earlier
+`raylo-production` synthetic fixture decision; it is not an authority boundary.
+The current resource state is pinned in the [authority resource provisioning
+packet](docs/benchmark-implementation/b03-b-authority-resource-provisioning-2026-09-17/README.md).
+
+## B03-B authority resource provisioning (2026-09-17)
+
+The approved `raylo-txncat-authority-prod` project is linked to the same billing
+account as `raylo-production`. Its dedicated EU bucket has uniform
+bucket-level access, public-access prevention, versioning, 30-day retention,
+7-day soft delete and the authority-owned HSM storage CMEK. Its empty named
+Firestore Native registry uses Google's default encryption and has pessimistic
+concurrency, PITR and delete protection. The receipt and storage HSM keys are
+present with enabled version 1; the storage key has 90-day rotation. Cloud Run
+and Artifact Registry remain disabled.
+
+The post-creation audit found the parent folder's inherited
+`group:team-infra-eng` Owner grant, and an organisation IAM policy that the
+active account cannot read. The empty bucket's six default legacy project
+convenience member-role pairs were subsequently removed under an explicitly
+approved, time-limited recovery grant; the [follow-up IAM packet](docs/benchmark-implementation/b03-b-authority-bucket-iam-cleanup-2026-09-17/README.md)
+records the exact etag-protected change and revocation. Effective isolation is
+therefore not certified. No worker or authority
+user-managed service account, custom IAM binding, synthetic object/document,
+customer row, label, benchmark membership, model fit, locked-set access, score
+or B04 consumer was added. The [current packet](docs/benchmark-implementation/b03-b-authority-resource-provisioning-2026-09-17/README.md)
+records the exact resource IDs and commands. Worker identity/IAM changes,
+synthetic fixtures and live permission proofs remain gated on security review.
+
+## B03-B runtime identities and synthetic live proof (2026-09-18)
+
+The [runtime proof packet](docs/benchmark-implementation/b03-b-runtime-identities-2026-09-18/README.md)
+is the current status after the approved synthetic deployment. Four keyless
+service accounts are present in `raylo-txncat-authority-prod`: authority writer,
+receipt verifier, learning worker and selection worker. Runtime bindings are
+custom and resource/prefix constrained; workers have only invocation access to
+the private verifier, while the verifier has no direct Firestore mutation,
+private-object read or KMS-signing permission. Carlos has one additional
+`storage.objects.get` binding for the exact synthetic proof manifest so local
+probe inputs can be assembled; it does not grant listing or claim-object reads.
+
+The immutable proof image is
+`europe-west2-docker.pkg.dev/raylo-txncat-authority-prod/txncat-proof/authority-proof@sha256:9ee6f539ab3ac1760e87e3021baf2311d6a7dc8f84418dcfab2f18c86cc731b0`.
+Under namespace `synthetic-stage0-20260918-v3`, a barrier immediately before
+the real Firestore compare-and-commit synchronized two non-conflicting
+proposals so both contenders reached the registry boundary; the outcomes were
+exactly one `committed` and one `stale_epoch`. A new-operation retry committed,
+and the exact retry returned `already_committed`. Valid learning and selection
+calls returned 200; pending, orphan, changed-reference, cross-plane and
+contaminated claims returned 403/503 as specified, and a wrong-audience token
+returned 401. All worker direct Storage/Firestore/KMS probes and all verifier
+direct data/signing probes were denied. Disabling the receipt-key version made
+a previously valid call return 503 `unavailable`; re-enabling it restored 200.
+The final key versions are HSM-protected and enabled.
+
+This is a bounded synthetic live matrix, not a blanket Stage 0–3 certification.
+The manifest says `authorizes_consumption=false` and records its object
+generation, SHA-256, proof owner, execution identity and retention/audit
+disposition. Writer list/delete/update/sealed-object restrictions,
+unknown-subject/forged-token probes and key rotation/retirement remain deferred
+to a follow-up hardening pass. The proof wrote no customer rows, labels,
+reservations, provider outputs, training/selection inputs or locked-set scores.
+The next gate is a fresh candidate-level admission evidence pass over the
+customer-linked Plaid pool; local preflight and this synthetic authority proof
+remain non-authorizing.
+
+## B03-B candidate event-lineage evidence (2026-09-18)
+
+The [candidate-lineage packet](docs/benchmark-implementation/b03-b-candidate-lineage-2026-09-18/README.md)
+binds the exact private `b05-pilot-source-v1` draw (5,000 distinct
+account/transaction events) and its non-authorizing exposure profile to a
+bounded BigQuery SELECT. The selected-key lineage returned 5,636 private rows:
+5,000 from the current materialization and 636 from the older materialized
+Plaid history, covering 4,672 accounts and 4,542 candidate customers.
+Candidate block sizes are recorded for later whole-block allocation, but they
+are not an admission allow.
+
+The source does not expose `pending_transaction_id`, and this query is scoped
+to selected candidate account/transaction keys rather than complete raw
+account/report history. Comparable transaction content variants were 0; the
+636 repeated source observations and source-metadata variants are still alias
+signals only. Complete historical identity, training/selection exposure,
+reviewed merchant families and legacy membership remain unproven;
+the summary has six explicit blockers, eligible rows 0 and
+`authorizes_consumption=false`. The source and authority were not mutated, no
+rows were reserved or labelled, and no provider, training, selection,
+locked-set, scoring or retraining operation occurred. The next gate is the
+missing alias/history/family/legacy evidence plus managed reservation and
+consumer authorization.
+
 ## Joint benchmark and retraining data plan (2026-09-16)
 
 Read [the full-pool profile and joint plan](docs/benchmark-implementation/b02-joint-data-plan-2026-09-16/README.md)

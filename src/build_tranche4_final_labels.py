@@ -28,6 +28,7 @@ from label_provenance import (  # noqa: E402
     reviewer_id_for,
     truthful_tier,
 )
+import eval_protection  # noqa: E402
 
 CARLOS = {
     "32 red": "gambling_casino",
@@ -92,6 +93,9 @@ def main():
     overlay.update(CARLOS)
 
     labels = load(LABELS_IN)
+    # B04: production_labels.csv is a fetched artifact; it may only be merged
+    # when a bound receipt still verifies against the pinned release.
+    labels_in_receipt = eval_protection.verify_artifact(LABELS_IN)
     n_agent = n_carlos = n_t2 = n_accepted_flip = 0
     out = []
     for r in labels:
@@ -132,6 +136,23 @@ def main():
         w = csv.DictWriter(f, fieldnames=fields)
         w.writeheader()
         w.writerows(out)
+    # Merchant-level label dictionary: one row per merchant string carries no
+    # event identity, so the artifact is honestly authoring-purpose — the
+    # manifest still binds each row to its verified input row digest.
+    eval_protection.write_artifact_receipt(
+        LABELS_OUT, consumer="build_tranche4_final_labels",
+        purpose="dictionary_candidates", input_receipts=[labels_in_receipt],
+        manifest_identities=[
+            {
+                "identity": None,
+                "provenance": {
+                    "source": "production_labels_in",
+                    "source_row_sha256": eval_protection.row_content_sha256(r),
+                },
+            }
+            for r in labels
+        ],
+    )
 
     good = DICTIONARY_ELIGIBLE_TIERS
     useable = [r for r in out if r["tier"] in good]
@@ -201,6 +222,8 @@ def relabel_existing():
     """Correct false human_reviewed provenance on the closed 100k snapshot."""
     if not LABELS_OUT.exists():
         raise SystemExit(f"missing {LABELS_OUT}")
+    # B04: the snapshot must still match its bound merge receipt.
+    eval_protection.verify_artifact(LABELS_OUT)
     rows = list(csv.DictReader(open(LABELS_OUT)))
     stats = Counter()
     for r in rows:

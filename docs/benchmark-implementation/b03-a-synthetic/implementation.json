@@ -1,0 +1,58 @@
+{
+  "schema_version": "txncat-b03-a-synthetic-implementation-v1",
+  "milestone": "B03-A",
+  "scope": "synthetic_only",
+  "authorizes_consumption": false,
+  "handover_commit": "39cff17e3f8f21a6c8559faab3eaac39840227c2",
+  "app_base": {
+    "repository": "/private/tmp/txncat-d2-worktree",
+    "branch": "feat/ob-txn-categoriser-plan",
+    "commit": "39cff17e3f8f21a6c8559faab3eaac39840227c2"
+  },
+  "app_review_branch": {
+    "worktree": "/private/tmp/txncat-b03a-app-worktree",
+    "branch": "codex/txncat-b03a-app"
+  },
+  "research_base": {
+    "repository": "/Users/carlosnoblejesus/Repos/raylo-transaction-categorisation",
+    "branch": "main",
+    "commit": "cc550d5654f1fba00d8190330ed3e9fa9eea340"
+  },
+  "research_review_branch": {
+    "worktree": "/private/tmp/txncat-b03a-research-worktree",
+    "branch": "codex/txncat-b03a-research"
+  },
+  "canonical_source": "lib/raylo-txncat/src/raylo_txncat/benchmark_authority.py",
+  "research_rule": "The research adapter imports the canonical app package; it contains no second policy implementation.",
+  "parent_b02_contract_sha256": {
+    "lib/raylo-txncat/src/raylo_txncat/benchmark.py": "15aa23a74153f38bfbdd2a39dea6445b08d1450b1a0552cbb2ddba9a25a8a714",
+    "lib/raylo-txncat/src/raylo_txncat/hashing.py": "0a2ec7606f4b6f44db1145c59acabc828f1c50f8663d2c2d71a2759b9f4aade1",
+    "lib/raylo-txncat/src/raylo_txncat/types.py": "8c78aa184a30f96ed4eb305d8d2c9585d98aa5e588eb000b93aced73f52086b3"
+  },
+  "corrected_b02_pin": {
+    "manifest_sha256": "595f37b59384218cce8cb73fa0549ad1d8450d3f76745a472c077c6885667456",
+    "policy": "The historical B02 implementation.json and synthetic-profile.json remain immutable; the current checkout uses the versioned v2 pair."
+  },
+  "files_sha256": {
+    "app_canonical_source": "866fcffff79e483a8c3aa253f3df0ab768654fc98d10cebfbf4ccf85ab84721f",
+    "app_adversarial_tests": "11e7745d7f38893be1e7b714402104c712f199b1d3594b7ade9705fc6395309d",
+    "app_simulation": "1f6ba5ab5f69cce99aa619b2807486c752029f6112cee5d20080733662f16e21",
+    "app_design": "a575582deafd9aed70c27cb0b22713b878f388365c7fff738f8da0c5c66711ef",
+    "app_readme": "8532f0ee4c1382b053807420d5d49e2ce8ae167c5f05945678e71e0dd8cfd2c5",
+    "research_adapter": "1f6ba5ab5f69cce99aa619b2807486c752029f6112cee5d20080733662f16e21",
+    "research_design": "a575582deafd9aed70c27cb0b22713b878f388365c7fff738f8da0c5c66711ef",
+    "research_readme": "8532f0ee4c1382b053807420d5d49e2ce8ae167c5f05945678e71e0dd8cfd2c5"
+  },
+  "implemented": [
+    "strict typed object, intent, proposal, receipt, alias and contamination contracts",
+    "immutable generation, byte-length and digest verification",
+    "fresh B02 preflight and serialized epoch compare-and-commit, including the corrected versioned B02 selection/input pin",
+    "exact retry, changed-operation rejection and explicit stale/unavailable outcomes",
+    "permanent reservation/learning/selection group protections and append-only alias holds"
+  ],
+  "not_implemented": [
+    "production GCS/Firestore/IAM authority or authenticated receipts",
+    "complete historical identity, alias, family and legacy evidence",
+    "B04 consumer gates, real membership, labels, retraining, scoring or locked-set access"
+  ]
+}

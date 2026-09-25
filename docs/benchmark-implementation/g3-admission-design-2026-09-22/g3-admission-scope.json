@@ -1,0 +1,99 @@
+{
+    "schema_version": "g3-admission-design-scope-v1",
+    "authorizes_consumption": false,
+    "gate": "admission-authorised",
+    "approved_by": "carlos",
+    "captured_at": "2026-09-22",
+    "approval_evidence": "AIE-510 continuation thread: 'as long as you're happy you can put together a suitable candidate evaluation dataset, then please proceed. And then we must also make sure that we can identify said transactions so that we can remove them when it comes to doing a final retrain of or TxCat-1 model and our risk model' (2026-09-22).",
+    "scope_contract": {
+        "source_kind": "customer_linked_plaid_materialized",
+        "source_table": "raylo-production.dbt_production.intermediate_credit_plaid_transactions",
+        "history_table": "raylo-production.dbt_production.credit_plaid_open_banking_transactions",
+        "link_rule": "assessment_to_one_checkout_to_one_user_to_one_customer_record",
+        "anonymous_id_recovery": false
+    },
+    "parent_evidence": {
+        "g2_scope_file_sha256": "c6e956239851eb7771f1f33b487228d3e33b4615a7482aa426f1d52d36337029",
+        "candidate_frame_result_sha256": "746ff97680ee623732b0b679b9bec4997eb2ff66c0807833d3157942be4c6319",
+        "lineage_result_sha256": "b16a7b21f51f22f1e99eb959c56633b0ac1676d74c15c4dc3fa88e990a118c04",
+        "admission_profile_sha256": "34779895437fb50fc39c29ce7812afe52be8afac75811fdd64c3cb14b719ce8a",
+        "rare_leaf_specification_model_sha256": "d1d95878b538da77376ee6f4aa05aee374cba7ab96db6680f39154d2a226d8dd",
+        "phase_ledger_file_sha256": "df87f9ef8ec866d4476c054cc576cd7f01f2d4fb8e5eefeeeae3030eaf2300e1",
+        "receipt_chain_file_sha256": "e36156358bed417607cc55ef9ae183489807a37b3d875ffd81cfc59d505b628a",
+        "receipt_chain_head_sha256": "00e6d63769ba08e7ea424f573f7aebd704a8394030c97ee13f711b61353846ed",
+        "pilot_membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068"
+    },
+    "permitted_actions": [
+        "one bounded SELECT per materialized table pulling the full retained observation history and account attributes for the candidate account set",
+        "local evidence resolution over the private frame, lineage, account history, pinned exposure index, legacy memberships and merchant sources",
+        "construction of the declared-corpus completeness manifest, the proposed reviewed merchant-family registry and the migrated legacy membership manifest",
+        "deterministic hash-ranked proposed-membership selection over resolved-eligible candidates only",
+        "bounded proxy-targeted SELECTs producing supplement candidate pools under the frozen rare-leaf specification",
+        "local allocation verification against the frozen AllocationDesign and pilot-parent immutability checks",
+        "private artifact writes under the protected location only"
+    ],
+    "forbidden_actions": [
+        "benchmark reservation or admission commit of any kind",
+        "issuing an admission receipt or advancing the receipt chain past candidate_frame",
+        "advancing the phase ledger past admission-authorised",
+        "annotation, label import or adjudication",
+        "release, training, tuning, model selection, promotion or locked-set scoring",
+        "anonymous-id recovery or any link repair",
+        "cloud mutation of any kind",
+        "printing identifiers or narratives to shared logs",
+        "admitting a row whose alias coverage, ownership, input history or legacy screening is unresolved"
+    ],
+    "bounds": {
+        "max_account_evidence_rows": 2000000,
+        "max_supplement_candidate_rows": 5000,
+        "maximum_bytes_billed_per_query": 40000000000,
+        "seed": "g3-admission-design-2026-09-22-v1",
+        "expansion_targets": {
+            "representative": 800,
+            "unseen_input": 150,
+            "unfamiliar_merchant": 50
+        },
+        "supplement_total": 500
+    },
+    "blocker_resolution_design": {
+        "pending_reconnection_aliases_unverified": {
+            "resolution": "Full retained observation history per candidate account from both materialized tables. Alias coverage is complete only when the account's reconnect group carries zero pending-state observations anywhere in the retained record and the event was never observed pending; pending-to-posted pairs require a materialized pending observation, so a pending-free retained history certifies that no enumerable alias key exists. Reconnection siblings are grouped by customer plus account mask/institution/subtype and screened jointly; unresolved sibling groups quarantine.",
+            "substitution_note": "The certified alternative (a raw external_requests pending_transaction_id sidecar) was costed at TB scale because the table is clustered only on ingestion day; the retained-materialized-history certificate bounds the same admission surface. Both paths are recorded so a future stronger certificate can replace this one.",
+            "quarantine_on": ["any pending observation in the account group history", "candidate event ever observed pending", "unresolved reconnect sibling group"]
+        },
+        "historical_identity_completeness_not_certified": {
+            "resolution": "Identity history is complete only when every retained observation for the candidate's account resolves to exactly one customer across both materialized tables and the current unique-link chain. Accounts with historical identity churn quarantine all their candidates.",
+            "quarantine_on": ["more than one resolved customer in account history", "any ambiguous link count in the account history"]
+        },
+        "effective_input_history_profile_is_non_authorizing": {
+            "resolution": "A declared-corpus completeness manifest binds the pinned exposure index to the closed set of retained corpora it covers; under the declaration, absent hits are certified not-found rather than unknown.",
+            "requires": "human sign-off that the indexed corpus set is complete; recorded in the manifest artifact"
+        },
+        "reviewed_merchant_family_index_missing": {
+            "resolution": "A proposed family registry is built deterministically over candidate merchant families; a reviewed registry version is produced only by explicit human review of the proposal. Unfamiliar-merchant candidates require a reviewed family; without one they quarantine.",
+            "requires": "human review of the proposed registry; the null registry remains bound until a reviewed version exists"
+        },
+        "legacy_protected_membership_migration_missing": {
+            "resolution": "Legacy protected memberships are migrated into a MembershipManifest. Because all 10,663 historical-regression members carry source_event_identity='unrecovered', event-level exclusion is structurally impossible for them; the manifest records input-level screening via the bound exposure index as the certified exclusion surface.",
+            "requires": "manifest binds every declared legacy membership; input-level screening declared, event-level coverage reported as absent"
+        },
+        "managed_reservation_and_consumer_gate_not_authorizing": {
+            "resolution": "Not resolved at G3. The managed reservation transaction and consumer gate are the G4 authority boundary; every G3 artifact remains a non-authorizing proposal."
+        }
+    },
+    "removal_identification_deliverable": {
+        "requirement": "admitted transactions must be identifiable for removal at the final TxCat-1 and risk-model retrains",
+        "mechanism": "the proposed expansion and supplement memberships are emitted in the txncat-private-eval-membership-v1 schema (raw provider account_id/transaction_id/customer_id, role=eval), the same private format load_protected_membership parses into a ProtectionSet; the committed side carries the membership digest plus the opaque protected-keys union (events/accounts/customers) bound into the cohort key map",
+        "enforcement": "benchmark_enforcement.check_member/exclude_protected fail closed on event, account-group or customer-group overlap for every declared consumer purpose; B04 consumer enforcement receipts bind the expanded membership digest"
+    },
+    "protected_artifact_location": "~/.local/share/raylo-txncat/benchmark-expansion-2026-09-22/",
+    "access_policy": "raw identifiers and narratives never leave the private store; only sha256 digests, aggregate counts and opaque keyed artifacts may be committed",
+    "stop_conditions": [
+        "byte_or_row_budget_exceeded",
+        "source_metadata_drift_between_before_and_after",
+        "identifier_or_narrative_leakage_outside_private_store",
+        "scope_contract_violation",
+        "unresolved_or_ambiguous_link_row_present",
+        "proxy_targeted_query_embeds_uncommitted_private_values"
+    ]
+}

@@ -1,0 +1,104 @@
+{
+  "schema_version": "benchmark-effective-iam-gate-verification-v1",
+  "milestone": "B03-B-effective-iam-gate-resolution",
+  "status": "internal_benchmark_risk_accepted",
+  "scope": "read_only_authority_boundary_diagnosis",
+  "authorizes_consumption": false,
+  "captured_at": "2026-09-17T19:28:31Z",
+  "risk_acceptance": {
+    "decision": "strict_effective_isolation_non_blocking",
+    "accepted_by": "Carlos",
+    "scope": "internal_versioned_benchmark_only",
+    "retained_controls": [
+      "permanent train/selection/evaluation separation",
+      "event/account/customer, effective-input, unfamiliar-family and alias protections",
+      "named least-privilege runtime paths and exact authority receipts",
+      "customer-linked Plaid-only scope",
+      "anonymous-ID recovery remains closed"
+    ],
+    "revisit_on": [
+      "benchmark schema or sampling-policy change",
+      "authority-project change",
+      "intended-use or production-promotion change"
+    ]
+  },
+  "project": {
+    "id": "raylo-txncat-authority-prod",
+    "number": "357892832103",
+    "location": "europe-west2",
+    "folder": "45426850789",
+    "organization": "978952261329"
+  },
+  "observed": {
+    "direct_project_policy": [
+      "user:carlos.noblejesus@raylo.com roles/owner",
+      "Firebase Rules managed service agent roles/firebaserules.system",
+      "Firestore managed service agent roles/firestore.serviceAgent"
+    ],
+    "inherited_folder_policy": [
+      "group:team-infra-eng@raylo.com roles/owner",
+      "group:team-infra-eng@raylo.com roles/resourcemanager.folderAdmin",
+      "group:team-infra-eng@raylo.com roles/resourcemanager.projectCreator",
+      "user:joaquim@raylo.com roles/resourcemanager.folderAdmin",
+      "user:joaquim@raylo.com roles/resourcemanager.folderEditor",
+      "group:contrib-infra-eng@raylo.com roles/resourcemanager.folderViewer",
+      "group:contrib-infra-eng@raylo.com roles/resourcemanager.projectCreator"
+    ],
+    "user_managed_service_accounts": 0,
+    "authority_bucket": "empty; policy cleanup and revocation recorded in b03-b-authority-bucket-iam-cleanup-2026-09-17",
+    "firestore_registry": "empty"
+  },
+  "read_only_checks": [
+    {
+      "command": "gcloud projects get-iam-policy raylo-txncat-authority-prod --project=raylo-txncat-authority-prod --format='json(bindings,etag,version)' --quiet",
+      "result": "direct project policy returned Carlos Owner plus Firebase Rules and Firestore service-agent bindings"
+    },
+    {
+      "command": "gcloud resource-manager folders get-iam-policy 45426850789 --project=raylo-txncat-authority-prod --format='json(bindings,etag,version)' --quiet",
+      "result": "folder policy returned team-infra-eng Owner/folderAdmin/projectCreator and the recorded administration/viewer grants"
+    },
+    {
+      "command": "gcloud projects get-ancestors raylo-txncat-authority-prod --project=raylo-txncat-authority-prod --format='json(type,id,displayName)' --quiet",
+      "result": "project  → folder 45426850789 → organization 978952261329"
+    },
+    {
+      "command": "gcloud iam service-accounts list --project=raylo-txncat-authority-prod --limit=100 --format='json(email,uniqueId,disabled)' --quiet",
+      "result": "[]; no user-managed worker or authority identities"
+    },
+    {
+      "command": "gcloud identity groups memberships list --group-email=team-infra-eng@raylo.com --limit=1 --view=full --project=raylo-txncat-authority-prod --format=json --quiet",
+      "result": "not run to completion: Cloud Identity API SERVICE_DISABLED; no API enablement performed"
+    },
+    {
+      "command": "gcloud policy-intelligence troubleshoot-policy iam <resource> --principal-email=<principal> --permission=<permission> --project=raylo-txncat-authority-prod --format=json --quiet",
+      "result": "not run to completion: Policy Troubleshooter API SERVICE_DISABLED; no API enablement performed"
+    },
+    {
+      "command": "gcloud organizations get-iam-policy 978952261329 --format=json --quiet",
+      "result": "active account is denied organization IAM read; effective organization policy remains uncertified"
+    }
+  ],
+  "resolution_options": {
+    "accepted": "retain the dedicated authority project and explicitly accept inherited control-plane administration for this internal benchmark",
+    "optional_hardening": "move the authority project beneath a dedicated clean folder with controlled/JIT administration or apply a security-reviewed IAM Deny covering inherited principals and service-agent exceptions",
+    "rejected": [
+      "adding Carlos as Owner again",
+      "adding project-wide Storage/Firestore administration",
+      "changing the shared internal-services-monorepo folder casually",
+      "enabling diagnostic APIs and treating that as an attestation",
+      "using local preflight or an empty bucket policy as authority"
+    ]
+  },
+  "mutations": {
+    "iam_bindings": false,
+    "iam_deny": false,
+    "folder_or_project_move": false,
+    "apis_enabled": false,
+    "service_accounts_created": false,
+    "synthetic_objects_or_documents": false,
+    "bigquery_queries": false,
+    "customer_rows_exported": false,
+    "labels_or_training_state": false
+  },
+  "next_gate": "retained runtime permission proof, followed by a fresh bounded linked-only admission profile and managed authority commit"
+}

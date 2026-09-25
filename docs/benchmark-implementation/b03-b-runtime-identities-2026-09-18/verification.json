@@ -1,0 +1,293 @@
+{
+  "schema_version": "benchmark-runtime-identities-verification-v2",
+  "milestone": "B03-B-runtime-identities-live-synthetic-proof",
+  "status": "bounded_live_synthetic_stage0_3_proof_passed_extended_cases_deferred_real_admission_pending",
+  "scope": "authority_control_plane_and_synthetic_runtime_only",
+  "captured_at": "2026-09-18T08:54:10Z",
+  "operator_manifest": {
+    "name": "_authority/synthetic-stage0-20260918-v3/proof-manifest.json",
+    "generation": "1789720806638620",
+    "sha256": "655e36e867eaad8a6d2e7ab9c8bb60906df03c2e4212b02f4ecab1ed12a9ae58",
+    "size_bytes": 12148,
+    "authorizes_consumption": false
+  },
+  "approval": {
+    "approved_by": "Carlos",
+    "scope": "four_keyless_service_accounts_exact_runtime_matrix_and_synthetic_stage0_3_proof_in_raylo_txncat_authority_prod",
+    "shared_folder_changes": false,
+    "broad_project_roles": false,
+    "operator_manifest_read": "Carlos approved one exact synthetic v3 proof-manifest object reader binding"
+  },
+  "authority_scope": {
+    "project": "raylo-txncat-authority-prod",
+    "project_number": "357892832103",
+    "region": "europe-west2",
+    "bucket": "gs://raylo-txncat-authority-prod-europe-west2",
+    "firestore_database": "projects/raylo-txncat-authority-prod/databases/txncat-benchmark-authority",
+    "receipt_key": "projects/raylo-txncat-authority-prod/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-receipts",
+    "storage_key": "projects/raylo-txncat-authority-prod/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-storage"
+  },
+  "service_accounts": [
+    {
+      "role": "authority-writer",
+      "email": "txncat-authority-writer@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+      "unique_id": "110799062502316526083",
+      "created_in_this_step": true,
+      "disabled": false
+    },
+    {
+      "role": "receipt-verifier",
+      "email": "txncat-receipt-verifier@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+      "unique_id": "102004524245181644069",
+      "created_in_this_step": false,
+      "disabled": false
+    },
+    {
+      "role": "learning-worker",
+      "email": "txncat-learning-worker@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+      "unique_id": "103294586886679890509",
+      "created_in_this_step": false,
+      "disabled": false
+    },
+    {
+      "role": "selection-worker",
+      "email": "txncat-selection-worker@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+      "unique_id": "111373158714103570704",
+      "created_in_this_step": true,
+      "disabled": false
+    }
+  ],
+  "custom_roles": {
+    "txncatAuthorityObjectCreateRead": ["storage.objects.create", "storage.objects.get"],
+    "txncatWorkerObjectGet": ["storage.objects.get"],
+    "txncatRegistryWriter": ["datastore.databases.get", "datastore.entities.create", "datastore.entities.get", "datastore.entities.list", "datastore.entities.update"],
+    "txncatRegistryLookup": ["datastore.entities.get"],
+    "txncatReceiptSigner": ["cloudkms.cryptoKeyVersions.useToSign", "cloudkms.cryptoKeyVersions.get", "cloudkms.cryptoKeyVersions.viewPublicKey"],
+    "txncatReceiptVerifier": ["cloudkms.cryptoKeyVersions.get", "cloudkms.cryptoKeyVersions.viewPublicKey", "cloudkms.locations.get", "cloudkms.locations.list", "resourcemanager.projects.get"],
+    "txncatSyntheticManifestReader": ["storage.objects.get"]
+  },
+  "bindings": {
+    "project_conditional": [
+      "authority-writer object create/get restricted to the named bucket _authority, private, worker/learning and worker/selection prefixes",
+      "receipt-verifier object get restricted to the named bucket worker/learning and worker/selection prefixes",
+      "authority-writer registry writer restricted to the named Firestore database resource name",
+      "receipt-verifier registry lookup restricted to the named Firestore database resource name"
+    ],
+    "receipt_key": [
+      "authority-writer txncatReceiptSigner",
+      "receipt-verifier txncatReceiptVerifier"
+    ],
+    "storage_key": [
+      "Cloud Storage service agent roles/cloudkms.cryptoKeyEncrypterDecrypter only"
+    ],
+    "worker_direct_data_access": "none",
+    "worker_verifier_invoker": "applied_exact_private_verifier_service",
+    "operator_synthetic_manifest_reader": "exact v3 proof-manifest object only",
+    "service_account_iam_policies": "empty",
+    "user_managed_service_account_keys": "none"
+  },
+  "policy_readback": {
+    "project_policy": {
+      "etag": "BwZbvc7yPPw=",
+      "version": 3,
+      "runtime_bindings": [
+        {
+          "member": "serviceAccount:txncat-authority-writer@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+          "role": "projects/raylo-txncat-authority-prod/roles/txncatAuthorityObjectCreateRead",
+          "condition_title": "txncat-authority-object-prefixes",
+          "condition_expression": "resource.name.startsWith(\"projects/_/buckets/raylo-txncat-authority-prod-europe-west2/objects/_authority/\") || resource.name.startsWith(\"projects/_/buckets/raylo-txncat-authority-prod-europe-west2/objects/private/\") || resource.name.startsWith(\"projects/_/buckets/raylo-txncat-authority-prod-europe-west2/objects/worker/learning/\") || resource.name.startsWith(\"projects/_/buckets/raylo-txncat-authority-prod-europe-west2/objects/worker/selection/\")"
+        },
+        {
+          "member": "serviceAccount:txncat-receipt-verifier@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+          "role": "projects/raylo-txncat-authority-prod/roles/txncatWorkerObjectGet",
+          "condition_title": "txncat-worker-object-prefixes",
+          "condition_expression": "resource.name.startsWith(\"projects/_/buckets/raylo-txncat-authority-prod-europe-west2/objects/worker/learning/\") || resource.name.startsWith(\"projects/_/buckets/raylo-txncat-authority-prod-europe-west2/objects/worker/selection/\")"
+        },
+        {
+          "member": "serviceAccount:txncat-authority-writer@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+          "role": "projects/raylo-txncat-authority-prod/roles/txncatRegistryWriter",
+          "condition_title": "txncat-registry-writer-database",
+          "condition_expression": "resource.name == \"projects/raylo-txncat-authority-prod/databases/txncat-benchmark-authority\""
+        },
+        {
+          "member": "serviceAccount:txncat-receipt-verifier@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+          "role": "projects/raylo-txncat-authority-prod/roles/txncatRegistryLookup",
+          "condition_title": "txncat-registry-lookup-database",
+          "condition_expression": "resource.name == \"projects/raylo-txncat-authority-prod/databases/txncat-benchmark-authority\""
+        },
+        {
+          "member": "user:carlos.noblejesus@raylo.com",
+          "role": "projects/raylo-txncat-authority-prod/roles/txncatSyntheticManifestReader",
+          "condition_title": "txncat-synthetic-manifest-v2",
+          "condition_expression": "resource.name == \"projects/_/buckets/raylo-txncat-authority-prod-europe-west2/objects/_authority/synthetic-stage0-20260918-v2/proof-manifest.json\""
+        },
+        {
+          "member": "user:carlos.noblejesus@raylo.com",
+          "role": "projects/raylo-txncat-authority-prod/roles/txncatSyntheticManifestReader",
+          "condition_title": "txncat-synthetic-manifest-v3",
+          "condition_expression": "resource.name == 'projects/_/buckets/raylo-txncat-authority-prod-europe-west2/objects/_authority/synthetic-stage0-20260918-v3/proof-manifest.json'"
+        }
+      ],
+      "unconditional_runtime_bindings": []
+    },
+    "receipt_key_policy": {
+      "etag": "BwZbu1hHbas=",
+      "version": 1,
+      "bindings": [
+        {
+          "member": "serviceAccount:txncat-authority-writer@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+          "role": "projects/raylo-txncat-authority-prod/roles/txncatReceiptSigner"
+        },
+        {
+          "member": "serviceAccount:txncat-receipt-verifier@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+          "role": "projects/raylo-txncat-authority-prod/roles/txncatReceiptVerifier"
+        }
+      ]
+    },
+    "storage_key_policy": {
+      "etag": "BwZbr4_DfUM=",
+      "version": 1,
+      "bindings": [
+        {
+          "member": "serviceAccount:service-357892832103@gs-project-accounts.iam.gserviceaccount.com",
+          "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+        }
+      ]
+    },
+    "service_account_policies": {
+      "all_four_etag": "ACAB",
+      "all_four_bindings": []
+    }
+  },
+  "command_evidence": [
+    "gcloud iam service-accounts list --project=raylo-txncat-authority-prod --limit=20 --format=json(email,uniqueId,disabled) --quiet",
+    "gcloud iam roles list --project=raylo-txncat-authority-prod --filter=name:txncat --limit=20 --format=json(name,title,stage) --quiet",
+    "gcloud projects get-iam-policy raylo-txncat-authority-prod --project=raylo-txncat-authority-prod --format=json(bindings,etag,version) --quiet",
+    "gcloud kms keys get-iam-policy txncat-benchmark-receipts --keyring=txncat-benchmark-authority-europe-west2 --location=europe-west2 --project=raylo-txncat-authority-prod --format=json(bindings,etag,version) --quiet",
+    "gcloud kms keys get-iam-policy txncat-benchmark-storage --keyring=txncat-benchmark-authority-europe-west2 --location=europe-west2 --project=raylo-txncat-authority-prod --format=json(bindings,etag,version) --quiet",
+    "gcloud iam service-accounts get-iam-policy <each-runtime-account> --project=raylo-txncat-authority-prod --format=json(bindings,etag,version) --quiet",
+    "gcloud iam service-accounts keys list --iam-account=<each-runtime-account> --managed-by=user --limit=20 --format=json(name,keyType,disabled) --quiet"
+  ],
+  "bucket_binding_note": {
+    "bucket_level_attempt": "PERMISSION_DENIED storage.buckets.getIamPolicy for active Carlos identity",
+    "fallback_applied": "project-level custom roles with exact canonical bucket/object-prefix CEL conditions",
+    "broad_storage_role_added": false,
+    "operator_manifest_binding": "custom storage.objects.get role with exact v3 object CEL condition",
+    "proof_required": false
+  },
+  "read_only_verification": {
+    "project_policy": "four conditional runtime bindings plus existing Carlos Owner and managed service agents",
+    "receipt_key_policy": "writer signer and verifier public-key roles only",
+    "service_account_policies": "all four returned etag ACAB with no bindings",
+    "user_managed_key_lists": "all four empty",
+    "shared_folder_changed": false,
+    "apis_enabled": true,
+    "apis_enabled_for_proof": ["run.googleapis.com", "artifactregistry.googleapis.com", "cloudbuild.googleapis.com"],
+    "objects_or_documents_written": true,
+    "objects_or_documents_scope": "synthetic namespace synthetic-stage0-20260918-v3 for this proof run"
+  },
+  "live_proof": {
+    "status": "bounded_passed_extended_cases_deferred",
+    "namespace": "synthetic-stage0-20260918-v3",
+    "manifest": {
+      "scope": "synthetic_only",
+      "authorizes_consumption": false,
+      "reference": {
+        "name": "_authority/synthetic-stage0-20260918-v3/proof-manifest.json",
+        "generation": "1789720806638620",
+        "sha256": "655e36e867eaad8a6d2e7ab9c8bb60906df03c2e4212b02f4ecab1ed12a9ae58",
+        "size_bytes": 12148,
+        "role": "claim_manifest"
+      },
+      "writer_execution": "txncat-proof-bootstrap-v2-8gfz2",
+      "cas_prepared_epoch": 5,
+      "cas_race_statuses": ["stale_epoch", "committed"],
+      "cas_registry_boundary_reached": true,
+      "cas_winner_epoch": 6,
+      "retry_status": "committed",
+      "retry_committed_epoch": 7,
+      "final_epoch": 7,
+      "exact_retry_status": "already_committed",
+      "alias_status": "contaminated",
+      "pending_proposal_status": "already_registered",
+      "pending_probe_status": 503,
+      "orphan_probe_status": 403,
+      "changed_reference_probe_status": 403
+    },
+    "execution_receipt": {
+      "proof_owner": "Carlos",
+      "fixture_writer_identity": "txncat-authority-writer@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+      "verifier_identity": "txncat-receipt-verifier@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+      "image_digest": "sha256:9ee6f539ab3ac1760e87e3021baf2311d6a7dc8f84418dcfab2f18c86cc731b0",
+      "verifier_revision": "txncat-proof-verifier-00006-9nc",
+      "retention_owner": "authority bucket platform controls; no cleanup shortcut used",
+      "audit_log_owner": "Cloud provider-managed logging; execution locators retained by Carlos"
+    },
+    "image": {
+      "tag": "b03b-live-20260918-v6",
+      "digest": "sha256:9ee6f539ab3ac1760e87e3021baf2311d6a7dc8f84418dcfab2f18c86cc731b0",
+      "cloud_build_id": "40d2ae34-b469-43c4-8cd8-af33e7f51c6b"
+    },
+    "verifier_service": {
+      "name": "txncat-proof-verifier",
+      "revision": "txncat-proof-verifier-00006-9nc",
+      "service_account": "txncat-receipt-verifier@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+      "configured_audience": "https://txncat-proof-verifier-357892832103.europe-west2.run.app",
+      "regional_url": "https://txncat-proof-verifier-357892832103.europe-west2.run.app",
+      "canonical_url": "https://txncat-proof-verifier-k6ygpn72ca-nw.a.run.app",
+      "invokers": [
+        "txncat-learning-worker@raylo-txncat-authority-prod.iam.gserviceaccount.com",
+        "txncat-selection-worker@raylo-txncat-authority-prod.iam.gserviceaccount.com"
+      ]
+    },
+    "probes": {
+      "learning_valid": {"execution": "txncat-proof-learning-valid-v2-f8898", "expected": 200, "observed": 200, "direct_access": "all_denied"},
+      "selection_valid": {"execution": "txncat-proof-selection-valid-v2-vgzz2", "expected": 200, "observed": 200, "direct_access": "all_denied"},
+      "learning_cross_plane": {"execution": "txncat-proof-learning-crossplane-v2-64k2c", "expected": 403, "observed": 403, "direct_access": "all_denied"},
+      "selection_cross_plane": {"execution": "txncat-proof-selection-crossplane-v2-mvvdg", "expected": 403, "observed": 403, "direct_access": "all_denied"},
+      "contaminated_learning": {"execution": "txncat-proof-learning-contaminated-v2-zk4bd", "expected": 403, "observed": 403, "direct_access": "all_denied"},
+      "pending_learning": {"execution": "txncat-proof-learning-contaminated-v2-rv2tt", "expected": 503, "observed": 503, "direct_access": "all_denied"},
+      "orphan_reference": {"execution": "txncat-proof-learning-contaminated-v2-z62qn", "expected": 403, "observed": 403, "direct_access": "all_denied"},
+      "changed_reference": {"execution": "txncat-proof-learning-contaminated-v2-gp5qc", "expected": 403, "observed": 403, "direct_access": "all_denied"},
+      "wrong_audience": {"execution": "txncat-proof-learning-wrong-audience-v2-vvsrc", "expected": 401, "observed": 401, "direct_access": "all_denied"},
+      "verifier_direct_access": {"execution": "txncat-proof-verifier-probe-v2-kvf6c", "private_storage": "denied", "firestore_mutation": "denied", "kms_sign": "denied"}
+    },
+    "key_lifecycle": {
+      "version": "projects/raylo-txncat-authority-prod/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-receipts/cryptoKeyVersions/2",
+      "protection_level": "HSM",
+      "disabled_probe": {"execution": "txncat-proof-learning-kms-disabled-v2-7tr78", "observed": 503, "status": "unavailable"},
+      "recovery_probe": {"execution": "txncat-proof-learning-valid-v2-nxznd", "observed": 200, "status": "allowed"},
+      "final_state": "ENABLED"
+    },
+    "deferred_live_cases": [
+      "authority-writer list/delete/update/sealed-object restriction probes",
+      "unknown-subject and forged-token Cloud Run probes",
+      "receipt-key rotation and retirement proof"
+    ],
+    "real_data_or_consumption": {
+      "customer_rows_accessed": 0,
+      "rows_exported": 0,
+      "reservations": 0,
+      "labels": 0,
+      "provider_calls": 0,
+      "retrain_or_score": false,
+      "locked_sets_read": false
+    },
+    "non_passing_attempts": [
+      "v1 synthetic namespace abandoned after a runner tuple-serialization failure before manifest publication",
+      "initial worker runs abandoned after correcting expected Google 403 exception classification",
+      "first v5 image build failed because the temporary Docker context omitted the canonical script; no deployment used that image",
+      "first v3 KMS-disabled probe used an incorrect expected-status env and failed harness validation; corrected probe passed"
+    ]
+  },
+  "effects": {
+    "cloud_control_plane_changed": true,
+    "customer_data_accessed": false,
+    "bigquery_queried": false,
+    "rows_exported": false,
+    "reservations_or_labels": false,
+    "provider_calls": false,
+    "training_selection_or_locked_evaluation": false
+  },
+  "next_gate": "fresh linked-only candidate admission evidence for event/customer/account history, input and family novelty, training/selection exclusion and pilot eligibility before any real reservation"
+}

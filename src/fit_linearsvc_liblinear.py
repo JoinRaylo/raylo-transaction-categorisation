@@ -20,6 +20,7 @@ from distillation_bakeoff import (  # noqa: E402
     _parse_tuning_jsonl,
     build_text,
 )
+import eval_protection  # noqa: E402
 
 LOGREG_PATH = MODELS_DIR / "tfidf_logreg_v2.joblib"
 SVC_PATH = MODELS_DIR / "tfidf_linearsvc_liblinear.joblib"
@@ -27,6 +28,9 @@ SVC_PATH = MODELS_DIR / "tfidf_linearsvc_liblinear.joblib"
 
 def main():
     t0 = time.time()
+    # B04: the tuning export must verify against its membership coverage and
+    # the pinned protected release before .fit may consume it.
+    eval_protection.verify_tuning_export(out_dir=OUT_DIR)
     bundle = joblib.load(LOGREG_PATH)
     df = _parse_tuning_jsonl(OUT_DIR / "tuning_train.jsonl")
     rng = np.random.default_rng(SEED)

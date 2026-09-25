@@ -1,0 +1,367 @@
+"""Dry-run and optionally execute the aggregate-only linked Plaid pool profile."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from datetime import UTC, date, datetime
+from pathlib import Path
+from typing import Any
+
+from google.cloud import bigquery
+
+PROJECT = "raylo-production"
+LOCATION = "EU"
+MAXIMUM_BYTES_BILLED = 20_000_000_000
+SQL_PATH = Path(__file__).with_name("linked_pool_profile.sql")
+DEFAULT_OUTPUT_DIR = Path(__file__).parent
+DEFAULT_B01_PROFILE = Path(
+    "/private/tmp/txncat-d2-worktree/apps/ob-txn-categoriser/research/"
+    "benchmark-audits/b01-2026-09-15/warehouse_profile.json"
+)
+EXPECTED_MANIFEST_SHA256 = "e7dab14dd35911c7c08d70ef3aceb7e59a8c9710a39b355abf98e5dc56f972f3"
+EXPECTED_SOURCE_HASHES = {
+    "materialized_model": "0a65ac5341eda882ebbff35e4e88950779d7f1d302c0eceee1d61c615b50f750",
+    "assessment_model": "a1f187d395eb3dee000a5227b1a321e37cf60ad48e321af7ca3e9e30ca30edee",
+    "checkout_model": "f29b56e5477bf0250193985f1c0a07875fb6b83ca9086c19d7ae200960a80a5a",
+    "user_model": "c573165748be62448c9f136fbdabb7a0d67f376599a4059bbd264fd720873cb9",
+    "customer_model": "ed75ff9009eed74b06f05b9d2a9ce2a9651c859247c83ff43a36d34310105236",
+}
+EXPECTED_MANIFEST_MODELS = {
+    "model.raylo.intermediate_credit_plaid_transactions": (
+        "`raylo-production`.`dbt_production`.`intermediate_credit_plaid_transactions`",
+        "0a65ac5341eda882ebbff35e4e88950779d7f1d302c0eceee1d61c615b50f750",
+    ),
+    "model.raylo.intermediate_raylo_production__checkout_risk_assessment_results_latest": (
+        "`raylo-production`.`dbt_production`.`intermediate_raylo_production__checkout_risk_assessment_results_latest`",
+        "a1f187d395eb3dee000a5227b1a321e37cf60ad48e321af7ca3e9e30ca30edee",
+    ),
+    "model.raylo.stg_raylo_production__checkouts": (
+        "`raylo-production`.`dbt_production`.`stg_raylo_production__checkouts`",
+        "f29b56e5477bf0250193985f1c0a07875fb6b83ca9086c19d7ae200960a80a5a",
+    ),
+    "model.raylo.stg_raylo_production__users": (
+        "`raylo-production`.`dbt_production`.`stg_raylo_production__users`",
+        "c573165748be62448c9f136fbdabb7a0d67f376599a4059bbd264fd720873cb9",
+    ),
+    "model.raylo.stg_raylo_production__customers": (
+        "`raylo-production`.`dbt_production`.`stg_raylo_production__customers`",
+        "a5c3d16d18b2f472fc9ccfd35c15952f204fa039fcd93a53eb359e1c7a705da2",
+    ),
+}
+
+DEFAULT_B01_RECEIPTS = Path(
+    "/private/tmp/txncat-d2-worktree/apps/ob-txn-categoriser/research/"
+    "benchmark-audits/b01-2026-09-15/warehouse_receipts.json"
+)
+TABLES = {
+    "materialized_plaid": "raylo-production.dbt_production.intermediate_credit_plaid_transactions",
+    "assessment_links": (
+        "raylo-production.dbt_production."
+        "intermediate_raylo_production__checkout_risk_assessment_results_latest"
+    ),
+    "checkout_links": "raylo-production.dbt_production.stg_raylo_production__checkouts",
+    "user_links": "raylo-production.dbt_production.stg_raylo_production__users",
+    "customer_links": "raylo-production.dbt_production.stg_raylo_production__customers",
+}
+DBT_FILES = {
+    "manifest": Path("/Users/carlosnoblejesus/Repos/dbt/manifest.json"),
+    "materialized_model": Path(
+        "/Users/carlosnoblejesus/Repos/dbt/models/intermediate/credit/"
+        "intermediate_credit_plaid_transactions.sql"
+    ),
+    "assessment_model": Path(
+        "/Users/carlosnoblejesus/Repos/dbt/models/intermediate/raylo_production/"
+        "intermediate_raylo_production__checkout_risk_assessment_results_latest.sql"
+    ),
+    "checkout_model": Path(
+        "/Users/carlosnoblejesus/Repos/dbt/models/staging/raylo_production/"
+        "stg_raylo_production__checkouts.sql"
+    ),
+    "user_model": Path(
+        "/Users/carlosnoblejesus/Repos/dbt/models/staging/raylo_production/"
+        "stg_raylo_production__users.sql"
+    ),
+    "customer_model": Path(
+        "/Users/carlosnoblejesus/Repos/dbt/models/staging/raylo_production/"
+        "stg_raylo_production__customers.sql"
+    ),
+}
+
+
+def sha256_file(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def jsonable(value: Any) -> Any:
+    if isinstance(value, (datetime, date)):
+        return value.isoformat()
+    if isinstance(value, dict):
+        return {str(k): jsonable(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [jsonable(v) for v in value]
+    return value
+
+
+def table_metadata(client: bigquery.Client) -> dict[str, Any]:
+    metadata: dict[str, Any] = {}
+    for label, reference in TABLES.items():
+        try:
+            table = client.get_table(reference, timeout=30)
+        except Exception as exc:
+            raise RuntimeError(f"metadata lookup failed for {label}") from exc
+        expected_table_id = reference.replace(".", ":", 1)
+        if table.full_table_id != expected_table_id or not table.schema:
+            raise RuntimeError(f"metadata validation failed for {label}")
+        metadata[label] = {
+            "table_id": table.full_table_id,
+            "num_rows": table.num_rows,
+            "num_bytes": table.num_bytes,
+            "created": jsonable(table.created),
+            "modified": jsonable(table.modified),
+            "etag": table.etag,
+            "schema": [
+                {"name": field.name, "field_type": field.field_type, "mode": field.mode}
+                for field in table.schema
+            ],
+        }
+    return metadata
+
+
+def validate_pinned_artifacts() -> dict[str, str]:
+    hashes: dict[str, str] = {}
+    for label, path in DBT_FILES.items():
+        actual = sha256_file(path)
+        expected = (
+            EXPECTED_MANIFEST_SHA256
+            if label == "manifest"
+            else EXPECTED_SOURCE_HASHES.get(label)
+        )
+        if actual is None or expected is None or actual != expected:
+            raise RuntimeError(f"pinned source artifact validation failed for {label}")
+        hashes[label] = actual
+    manifest = json.loads(DBT_FILES["manifest"].read_text())
+    for node_id, (relation, checksum) in EXPECTED_MANIFEST_MODELS.items():
+        node = manifest.get("nodes", {}).get(node_id)
+        if not node or node.get("relation_name") != relation:
+            raise RuntimeError(f"manifest relation validation failed for {node_id}")
+        if node.get("checksum", {}).get("checksum") != checksum:
+            raise RuntimeError(f"manifest checksum validation failed for {node_id}")
+    return hashes
+
+
+def _array_sum(result: dict[str, Any], field: str, value_key: str = "observations") -> int:
+    values = result.get(field)
+    if not isinstance(values, list):
+        raise RuntimeError(f"missing aggregate stratum {field}")
+    total = 0
+    for item in values:
+        value = item.get(value_key)
+        if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+            raise RuntimeError(f"invalid nonnegative count in {field}")
+        total += value
+    return total
+
+
+def validate_aggregate_reconciliations(result: dict[str, Any]) -> None:
+    integer_fields = [
+        "source_materialized_observation_rows", "unambiguous_customer_linked_observations",
+        "identity_missing_or_conflicting_observations_excluded",
+        "linked_rows_with_usable_event_key",
+        "linked_distinct_provider_account_transaction_keys",
+        "linked_repeated_event_observations",
+        "linked_changed_content_variant_event_key_count",
+        "linked_changed_content_variant_observations",
+        "linked_distinct_account_customer_pairs",
+        "linked_customer_account_pair_count_check",
+        "unambiguous_linked_customers",
+        "linked_invalid_or_blank_transaction_date_observations",
+    ]
+    for field in integer_fields:
+        value = result.get(field)
+        if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+            raise RuntimeError(f"invalid nonnegative aggregate {field}")
+    total = result["source_materialized_observation_rows"]
+    linked = result["unambiguous_customer_linked_observations"]
+    excluded = result["identity_missing_or_conflicting_observations_excluded"]
+    if total != linked + excluded:
+        raise RuntimeError("source/linkage reconciliation failed")
+    if result["linked_rows_with_usable_event_key"] != (
+        result["linked_distinct_provider_account_transaction_keys"]
+        + result["linked_repeated_event_observations"]
+    ):
+        raise RuntimeError("event-key reconciliation failed")
+    if _array_sum(result, "linked_direction_strata") != linked:
+        raise RuntimeError("direction reconciliation failed")
+    if _array_sum(result, "linked_magnitude_strata") != linked:
+        raise RuntimeError("magnitude reconciliation failed")
+    if _array_sum(result, "linked_merchant_presence_strata") != linked:
+        raise RuntimeError("merchant reconciliation failed")
+    if _array_sum(result, "linked_direction_merchant_strata") != linked:
+        raise RuntimeError("direction/merchant reconciliation failed")
+    if _array_sum(result, "linked_checkout_scope_strata") != linked:
+        raise RuntimeError("checkout-scope reconciliation failed")
+    category_total = {}
+    for item in result.get("linked_provider_category_availability_PROXY_strata", []):
+        category_total[item["category_source"]] = (
+            category_total.get(item["category_source"], 0) + item["observations"]
+        )
+    expected_categories = {
+        "legacy_category_array_PROXY",
+        "primary_credit_category_PROXY",
+        "detailed_credit_category_PROXY",
+    }
+    if set(category_total) != expected_categories or any(
+        value != linked for value in category_total.values()
+    ):
+        raise RuntimeError("provider-category reconciliation failed")
+    if (
+        _array_sum(result, "linked_transaction_month_strata")
+        + result["linked_invalid_or_blank_transaction_date_observations"]
+        != linked
+    ):
+        raise RuntimeError("date reconciliation failed")
+    if (
+        sum(item["customers"] for item in result.get("linked_customer_account_breadth_strata", []))
+        != result["unambiguous_linked_customers"]
+    ):
+        raise RuntimeError("customer-breadth reconciliation failed")
+
+
+def prior_comparison() -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    if DEFAULT_B01_PROFILE.exists():
+        data = json.loads(DEFAULT_B01_PROFILE.read_text())
+        row = (data.get("current_profile") or [{}])[0]
+        keep = (
+            "row_count",
+            "distinct_transaction_ids",
+            "distinct_account_ids",
+            "distinct_assessment_ids",
+            "credits",
+            "positive_debits",
+            "zero_amounts",
+            "blank_merchant",
+        )
+        result["prior_b01_current_profile"] = {key: row.get(key) for key in keep}
+    if DEFAULT_B01_RECEIPTS.exists():
+        data = json.loads(DEFAULT_B01_RECEIPTS.read_text())
+        receipt = data.get("current_profile", {})
+        result["prior_b01_current_profile_receipt"] = {
+            key: receipt.get(key)
+            for key in ("sql_sha256", "result_sha256", "dry_run_bytes", "statement_type")
+        }
+    return result
+
+
+def run(args: argparse.Namespace) -> None:
+    output_dir: Path = args.output_dir
+    output_dir.mkdir(parents=True, exist_ok=True)
+    sql = SQL_PATH.read_text()
+    sql_sha256 = hashlib.sha256(sql.encode()).hexdigest()
+    source_code_hashes = validate_pinned_artifacts()
+    client = bigquery.Client(project=PROJECT)
+    metadata_before = table_metadata(client)
+    job_config = bigquery.QueryJobConfig(
+        dry_run=True,
+        use_query_cache=False,
+        maximum_bytes_billed=MAXIMUM_BYTES_BILLED,
+    )
+    dry_run_job = client.query(sql, job_config=job_config, location=LOCATION)
+    statement_type = dry_run_job.statement_type
+    if statement_type != "SELECT":
+        raise RuntimeError(f"read-only guard rejected statement type {statement_type!r}")
+    if dry_run_job.total_bytes_processed is None:
+        raise RuntimeError("dry-run total_bytes_processed unavailable")
+    dry_bytes = int(dry_run_job.total_bytes_processed)
+    if dry_bytes > MAXIMUM_BYTES_BILLED:
+        raise RuntimeError(f"dry-run estimate exceeds cap: {dry_bytes}")
+    receipt: dict[str, Any] = {
+        "query_name": "linked_pool_profile",
+        "sql_path": str(SQL_PATH),
+        "sql_sha256": sql_sha256,
+        "runner_path": str(Path(__file__).resolve()),
+        "runner_sha256": sha256_file(Path(__file__).resolve()),
+        "project": PROJECT,
+        "location": LOCATION,
+        "maximum_bytes_billed": MAXIMUM_BYTES_BILLED,
+        "dry_run_job_id": dry_run_job.job_id,
+        "dry_run_statement_type": statement_type,
+        "dry_run_total_bytes_processed": dry_bytes,
+        "executed": False,
+        "metadata_before": metadata_before,
+        "source_code_hashes": source_code_hashes,
+        "prior_comparison": prior_comparison(),
+        "captured_at": datetime.now(UTC).isoformat(),
+    }
+    (output_dir / "dry_run_receipt.json").write_text(
+        json.dumps(receipt, indent=2, sort_keys=True) + "\n"
+    )
+    if not args.execute:
+        print(
+            json.dumps(
+                {
+                    "dry_run_receipt": str(output_dir / "dry_run_receipt.json"),
+                    "dry_run_bytes": dry_bytes,
+                }
+            )
+        )
+        return
+
+    execute_config = bigquery.QueryJobConfig(
+        dry_run=False,
+        use_query_cache=False,
+        maximum_bytes_billed=MAXIMUM_BYTES_BILLED,
+    )
+    job = client.query(sql, job_config=execute_config, location=LOCATION)
+    rows = list(job.result())
+    if job.statement_type != "SELECT":
+        raise RuntimeError(f"execution guard rejected statement type {job.statement_type!r}")
+    if len(rows) != 1:
+        raise RuntimeError(f"expected one aggregate row, got {len(rows)}")
+    result = jsonable(dict(rows[0]))
+    validate_aggregate_reconciliations(result)
+    result_path = output_dir / "linked_pool_profile_result.json"
+    result_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
+    metadata_after = table_metadata(client)
+    if job.total_bytes_processed is None or job.total_bytes_billed is None:
+        raise RuntimeError("execution byte statistics unavailable")
+    receipt.update(
+        {
+            "executed": True,
+            "job_id": job.job_id,
+            "statement_type": job.statement_type,
+            "total_bytes_billed": int(job.total_bytes_billed),
+            "total_bytes_processed": int(job.total_bytes_processed),
+            "started_at": job.started.isoformat() if job.started else None,
+            "ended_at": job.ended.isoformat() if job.ended else None,
+            "result_path": str(result_path),
+            "result_sha256": sha256_file(result_path),
+            "metadata_after": metadata_after,
+        }
+    )
+    receipt_path = output_dir / "executed_receipt.json"
+    receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+    print(
+        json.dumps(
+            {
+                "result": str(result_path),
+                "receipt": str(receipt_path),
+                "result_sha256": receipt["result_sha256"],
+            }
+        )
+    )
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument("--execute", action="store_true")
+    run(parser.parse_args())
+
+
+if __name__ == "__main__":
+    main()

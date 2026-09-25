@@ -1,0 +1,27 @@
+{
+  "schema_version": "g1-pilot-gates-evidence-v1",
+  "authorizes_consumption": false,
+  "gate": "pilot-gates-accepted",
+  "closed_by": "carlos",
+  "captured_at": "2026-09-22",
+  "tickets": {
+    "pilot_adjudication": "AIE-511",
+    "outcome_freeze": "AIE-512",
+    "consumer_enforcement": "AIE-513"
+  },
+  "digests": {
+    "pilot_membership_csv_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068",
+    "pilot_payload_sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248",
+    "pilot_views_receipt_sha256": "d24da4156f50de80a930cae26af8ee529f7c7f6977a170448c49f7e404c17c1e",
+    "final_outcomes_jsonl_sha256": "a7cbc51b8b289f94d7ddb7244a787f04f823521f40933e4513b79693bfb883a5",
+    "carlos_decisions_csv_sha256": "d7ed78665688c0c8eb8a38155ffbb6ec25e908c030d8c0d4f7d7708fcb93a1ba",
+    "publication_file_sha256": "eaf5a8bba13a60e007fa7d92c9df8729c80e7e7b13a8b830c4c0642458c44f22",
+    "publication_binding_sha256": "2b3c2f6443c99f30272f50075b2f7cf4647b04fb5ccdf1926467a24d3d4e8436",
+    "b04_enforcement_receipt_file_sha256": "464bbef59d7e8423aa4dcd4cd37234b2ccbe29b9232056fad0e727988d6862c3",
+    "b04_enforcement_receipt_canonical_sha256": "65325b0dca5f96f79439770d2bd547d91981168cc31c135571945859cf8e67bf",
+    "b04_coverage_matrix_sha256": "5177f983bd038e13598a8677e7c30f82a5e7c3308b94211082c1308a4d23e2a8",
+    "taxonomy_sha256": "67df23954ac24015a2d617e164fff5906d86d89ab7be1e32e879332e31045e99"
+  },
+  "acceptance": "AIE-511 final decisions applied (61 Carlos rulings, 204 confirmed proposals, 235 unanimous votes; 427 labelled / 56 ambiguous / 17 insufficient evidence) and receipt-bound under AIE-512 immutable outcome freeze; AIE-513 R1-R5 B04 protected-membership enforcement remediation approved across 126 consumers; all artifacts carry authorizes_consumption=false.",
+  "private_artifacts": "benchmark-eval-pilot/reconstruction-2026-09-21/ under ~/.local/share/raylo-txncat/ (not committed; digests bound above)"
+}

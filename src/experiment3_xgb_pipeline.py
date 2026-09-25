@@ -43,6 +43,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 import generate_crosswalk_sql as gxw  # noqa: E402
 from credit_metrics import signed_gini  # noqa: E402
+import eval_protection  # noqa: E402
 
 PROJECT = "raylo-production"
 DATASET = "credit_risk_research"
@@ -457,6 +458,14 @@ def _run_ctas(client, sql: str, dest: str, label: str):
 
 
 def fetch():
+    # B04 gated off: the CTAS legs copy linked-pool rows into scratch tables
+    # without applying the protected exclusion — protected members would be
+    # queryable downstream.  Rebuild requires the exclusion applied in-SQL
+    # or identity columns carried through for the batch guard.
+    eval_protection.gate(
+        "experiment3_xgb_pipeline.fetch",
+        "stages unfiltered linked-pool rows into scratch tables",
+    )
     client = _client()
     _run_ctas(client, _eqx_fetch_sql(), EQX_TXN_TABLE, "Equifax T1–T6")
     _run_ctas(client, _plaid_fetch_sql(), PLAID_TXN_TABLE, "Plaid T1–T6")
@@ -913,6 +922,14 @@ def _candidate_cols(df: pd.DataFrame) -> list[str]:
 
 
 def _prepare(df: pd.DataFrame) -> pd.DataFrame:
+    # B04 gated off: every input frame today comes from the unbound feature
+    # store; chokepoint gate so a caller-supplied frame cannot bypass the
+    # entry-point gates.  Rebuild under the protected-release guard
+    # (AIE-503 coordination required before rerun).
+    eval_protection.gate(
+        "experiment3_xgb_pipeline._prepare",
+        "unbound feature store; rebuild under the protected-release guard",
+    )
     df = df.copy()
     df["financial_proposal_id"] = df["financial_proposal_id"].astype(str)
     df["created"] = pd.to_datetime(df["financial_proposal_created_at"], utc=True)
@@ -1236,6 +1253,13 @@ def _md_table(rows, cols):
 def train(df=None):
     import joblib
     if df is None:
+        # B04 gated off: FEAT_PARQUET predates bound provenance; the feature
+        # store cannot prove disjointness from the protected release.
+        eval_protection.gate(
+            "experiment3_xgb_pipeline.train",
+            "unbound feature store; rebuild under the protected-release "
+            "guard (AIE-503 coordination required before rerun)",
+        )
         df = pd.read_parquet(FEAT_PARQUET)
     df = _prepare(df)
     OUT_DIR.mkdir(exist_ok=True)
@@ -1356,6 +1380,11 @@ def train_capped(max_features: int = 50):
     """Follow-up: same splits, hard cap on selected XGB features. Appends report."""
     import joblib
 
+    # B04 gated off: FEAT_PARQUET predates bound provenance.
+    eval_protection.gate(
+        "experiment3_xgb_pipeline.train_capped",
+        "unbound feature store; rebuild under the protected-release guard",
+    )
     df = _prepare(pd.read_parquet(FEAT_PARQUET))
     m3 = _run_one(df, M3_Y, M3_TRAIN_START, M3_TRAIN_END, M3_OOT_END, "month3",
                   max_features=max_features)
@@ -1448,6 +1477,11 @@ def train_month12(max_features: int = 50):
     """month12_3plus_pia_from_subscription, 50-feature XGB. Appends report."""
     import joblib
 
+    # B04 gated off: FEAT_PARQUET predates bound provenance.
+    eval_protection.gate(
+        "experiment3_xgb_pipeline.train_month12",
+        "unbound feature store; rebuild under the protected-release guard",
+    )
     df = _attach_month12(_prepare(pd.read_parquet(FEAT_PARQUET)))
     run = _run_one(df, M12_Y, M12_TRAIN_START, M12_TRAIN_END, M12_OOT_END,
                    "month12", max_features=max_features)
@@ -1527,6 +1561,11 @@ def train_live_analog():
     Plaid-train only, month3 (and month6) OOT. Isolates categorisation, not
     extra features or Equifax volume.
     """
+    # B04 gated off: FEAT_PARQUET predates bound provenance.
+    eval_protection.gate(
+        "experiment3_xgb_pipeline.train_live_analog",
+        "unbound feature store; rebuild under the protected-release guard",
+    )
     df = _prepare(pd.read_parquet(FEAT_PARQUET))
     analog_cols = [LIVE_ANALOG[c] for c in LIVE_FEATURES]
     missing = [c for c in analog_cols if c not in df.columns]

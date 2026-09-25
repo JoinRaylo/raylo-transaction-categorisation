@@ -56,6 +56,7 @@ import generate_crosswalk_sql as gxw  # noqa: E402
 from build_gold_risk_categories import KEYWORD_FALLBACK  # noqa: E402
 from build_tuning_dataset import frozen_holdout_merchants, load_risk_merchants  # noqa: E402
 from eval_sets import _V6_GOLD_FILES  # noqa: E402
+import eval_protection  # noqa: E402
 
 import os
 TRANCHE = os.environ.get("TRANCHE", "credit")   # "credit" (2 Sep) or "risk" (3 Sep T6-bound risk debits)
@@ -131,9 +132,15 @@ WITH r AS (
          IFNULL(credit_category_detailed, 'NULL') AS cat,
          {AMT_BAND} AS amt_band,
          IF(merchant_name IS NULL OR TRIM(merchant_name) = '', 'blank', 'filled') AS merchant_state,
-         transaction_date
+         transaction_date,
+         TRIM(account_id) AS account_id,
+         TRIM(transaction_id) AS transaction_id,
+         TRIM(customer_id) AS customer_id
   FROM {PLAID}
   WHERE amount < 0
+    AND NULLIF(TRIM(account_id), '') IS NOT NULL
+    AND NULLIF(TRIM(transaction_id), '') IS NOT NULL
+    AND NULLIF(TRIM(customer_id), '') IS NOT NULL
 ),
 strata AS (
   SELECT cat, amt_band, merchant_state, COUNT(*) AS n FROM r GROUP BY 1, 2, 3
@@ -152,7 +159,7 @@ picked AS (
   FROM r JOIN quota q USING (cat, amt_band, merchant_state)
 )
 SELECT merchant_raw, description_raw, amount, direction, native_category, cat, amt_band,
-       merchant_state, transaction_date
+       merchant_state, transaction_date, account_id, transaction_id, customer_id
 FROM picked WHERE rn <= GREATEST(q, 40)
 """
 
@@ -170,9 +177,15 @@ WITH plaid_xw AS (SELECT * FROM UNNEST([STRUCT<plaid_cat STRING, leaf STRING>
 plaid_raw AS (
   SELECT credit_category_detailed AS cat, merchant_name AS merchant_raw,
          COALESCE(original_description, transaction_name) AS description_raw,
-         'debit' AS direction, amount AS Amount, transaction_date
+         'debit' AS direction, amount AS Amount, transaction_date,
+         TRIM(account_id) AS account_id,
+         TRIM(transaction_id) AS transaction_id,
+         TRIM(customer_id) AS customer_id
   FROM {PLAID}
   WHERE amount > 0
+    AND NULLIF(TRIM(account_id), '') IS NOT NULL
+    AND NULLIF(TRIM(transaction_id), '') IS NOT NULL
+    AND NULLIF(TRIM(customer_id), '') IS NOT NULL
     AND (credit_category_detailed IN ({cats})
          OR REGEXP_CONTAINS(LOWER(COALESCE(original_description, transaction_name, '')), r'{kw_sql}'))
 ),
@@ -186,7 +199,7 @@ resolved AS (
 SELECT merchant_raw, description_raw, Amount AS amount, direction, cat AS native_category,
        cat, 'debit' AS amt_band,
        IF(merchant_raw IS NULL OR TRIM(merchant_raw) = '', 'blank', 'filled') AS merchant_state,
-       transaction_date, resolution_tier
+       transaction_date, resolution_tier, account_id, transaction_id, customer_id
 FROM resolved
 WHERE NOT REGEXP_CONTAINS(resolution_tier, r'^T[1-5]_')
 ORDER BY RAND()
@@ -252,7 +265,17 @@ def fetch_risk_tranche():
     out["merchant"] = out["merchant_raw"].fillna("").map(_norm)   # the v6 labeller keys on this column
     out.insert(0, "row_id", range(len(out)))
     OUT_DIR.mkdir(exist_ok=True)
+    # B04: linked-pool fetch must pass the protected-release guard; rows
+    # without B02 linkage identity fail closed until the query carries them.
+    guarded = eval_protection.apply_env(
+        out.to_dict("records"), purpose="supervised_training"
+    )
+    out = pd.DataFrame(guarded)
     out.to_csv(SAMPLE_CSV, index=False)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="build_credit_tranche.fetch_risk_tranche",
+        purpose="supervised_training", guard=guarded.guard,
+    )
     print(f"Wrote {SAMPLE_CSV}: {len(out):,} rows; buckets {out.bucket.value_counts().to_dict()}; "
           f"blank merchant {(out.merchant_raw.fillna('') == '').mean():.0%}; distinct texts "
           f"{(out.merchant_raw.fillna('').map(_norm) + '||' + out.description_raw.fillna('').map(_norm)).nunique():,}",
@@ -279,6 +302,14 @@ SELECT * FROM t ORDER BY n DESC LIMIT {int(N_DISTIL * 1.6)}
 
 
 def fetch_distil():
+    eval_protection.gate(
+        "build_credit_tranche.fetch_distil",
+        reason="the distillation sample is a GROUP BY text-frequency export — "
+               "it has no per-row linkage identity and a count=1 row is a "
+               "verbatim narrative, so it can never pass the protected-release "
+               "guard. Rebuild against per-transaction linked rows before "
+               "this consumer may run.",
+    )
     """TRANCHE=distil: the N_DISTIL most frequent distinct (merchant, description, direction)
     texts on live Plaid, with a representative amount and Plaid category per text. Excludes
     eval-set merchants and every exact eval text; does NOT exclude training/dictionary
@@ -304,7 +335,17 @@ def fetch_distil():
     df["provider"] = "plaid"
     df.insert(0, "row_id", range(len(df)))
     OUT_DIR.mkdir(exist_ok=True)
+    # B04: linked-pool fetch must pass the protected-release guard; rows
+    # without B02 linkage identity fail closed until the query carries them.
+    guarded = eval_protection.apply_env(
+        df.to_dict("records"), purpose="distillation"
+    )
+    df = pd.DataFrame(guarded)
     df.to_csv(SAMPLE_CSV, index=False)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="build_credit_tranche.fetch_distil",
+        purpose="distillation", guard=guarded.guard,
+    )
     tot = int(df["n"].sum())
     print(f"Wrote {SAMPLE_CSV}: {len(df):,} texts (from {before:,}); {tot:,} live rows covered; "
           f"credit share {(df.direction == 'credit').mean():.1%}; blank merchant {(df.merchant == '').mean():.1%}",
@@ -361,7 +402,17 @@ def fetch():
     df.insert(1, "merchant", df["merchant_raw"].fillna("").map(_norm))  # v6.label expects it
     df.insert(0, "row_id", range(len(df)))
     OUT_DIR.mkdir(exist_ok=True)
+    # B04: linked-pool fetch must pass the protected-release guard; rows
+    # without B02 linkage identity fail closed until the query carries them.
+    guarded = eval_protection.apply_env(
+        df.to_dict("records"), purpose="supervised_training"
+    )
+    df = pd.DataFrame(guarded)
     df.to_csv(SAMPLE_CSV, index=False)
+    eval_protection.write_artifact_receipt(
+        SAMPLE_CSV, consumer="build_credit_tranche.fetch",
+        purpose="supervised_training", guard=guarded.guard,
+    )
     print(f"\nWrote {SAMPLE_CSV}: {len(df):,} rows "
           f"({int((df.stratum == 'credit').sum()):,} credits, {int((df.stratum != 'credit').sum())} risk debits)",
           file=sys.stderr)
@@ -384,6 +435,9 @@ def _v6_with(sample_csv, preds):
 
 
 def label(model_key):
+    # B04: narratives leave the trust boundary here — the sample must verify
+    # against its bound receipt before any row is read or sent out.
+    sample_receipt = eval_protection.verify_artifact(SAMPLE_CSV)
     sample = SAMPLE_CSV
     if SHARD:
         i, n = (int(x) for x in SHARD.split("/"))
@@ -391,6 +445,10 @@ def label(model_key):
         df = df[(df.index % n) == i]
         sample = OUT_DIR / f"{_P}_sample{_SH}.csv"
         df.to_csv(sample, index=False)
+        eval_protection.write_artifact_receipt(
+            sample, consumer="build_credit_tranche.label_shard",
+            purpose="supervised_training", input_receipts=[sample_receipt],
+        )
         print(f"shard {SHARD}: {len(df):,} rows", file=sys.stderr)
     v6 = _v6_with(sample, PRED)
     v6.label(model_key)
@@ -399,6 +457,8 @@ def label(model_key):
 def gate_distil():
     """Consensus only: keep rows where Gemini == Sonnet (95.3% leaf accuracy vs Carlos on the
     credit tranche; tiebreak-accepted rows were 63.8% and are NOT used). Merges shards."""
+    # B04: the sample must still match its bound fetch receipt before reuse.
+    sample_receipt = eval_protection.verify_artifact(SAMPLE_CSV)
     rows = pd.read_csv(SAMPLE_CSV, dtype=str).fillna("")
     preds = {}
     for k in ("gemini", "sonnet"):
@@ -421,6 +481,10 @@ def gate_distil():
     keep["n"] = pd.to_numeric(keep["n"], errors="coerce")
     DISTIL_OUT.parent.mkdir(exist_ok=True)
     keep.to_parquet(DISTIL_OUT, index=False)
+    eval_protection.write_artifact_receipt(
+        DISTIL_OUT, consumer="build_credit_tranche.gate_distil",
+        purpose="distillation", input_receipts=[sample_receipt],
+    )
     print(f"labelled by both: {int(both.sum()):,} / {len(rows):,}; agree {int(agree.sum()):,} "
           f"({100 * agree.sum() / max(both.sum(), 1):.1f}%); kept {len(keep):,} -> {DISTIL_OUT}", file=sys.stderr)
     print(f"live rows covered by kept texts: {int(keep['n'].sum()):,}; credit share {(keep.direction == 'credit').mean():.1%}; "
@@ -428,6 +492,8 @@ def gate_distil():
 
 
 def tiebreak():
+    # B04: the sample must still match its bound fetch receipt before reuse.
+    eval_protection.verify_artifact(SAMPLE_CSV)
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     g = {r["row_id"]: r["llm_leaf"] for r in csv.DictReader(open(PRED["gemini"]))}
     s = {r["row_id"]: r["llm_leaf"] for r in csv.DictReader(open(PRED["sonnet"]))}
@@ -443,6 +509,8 @@ def tiebreak():
 def gate():
     from confusion_analysis import load_taxonomy
     gen_of, risk_leaves = load_taxonomy()
+    # B04: the sample must still match its bound fetch receipt before reuse.
+    sample_receipt = eval_protection.verify_artifact(SAMPLE_CSV)
     rows = list(csv.DictReader(open(SAMPLE_CSV)))
     g = {r["row_id"]: r for r in csv.DictReader(open(PRED["gemini"]))}
     s = {r["row_id"]: r for r in csv.DictReader(open(PRED["sonnet"]))}
@@ -484,6 +552,10 @@ def gate():
     with open(LABELS_CSV, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(out[0].keys()))
         w.writeheader(); w.writerows(out)
+    eval_protection.write_artifact_receipt(
+        LABELS_CSV, consumer="build_credit_tranche.gate",
+        purpose="supervised_training", input_receipts=[sample_receipt],
+    )
     print(f"Wrote {LABELS_CSV}: {dict(tiers)}", file=sys.stderr)
     fin = Counter(r["final_leaf"] for r in out if r["final_leaf"])
     print("top final leaves:", fin.most_common(12), file=sys.stderr)
@@ -491,6 +563,9 @@ def gate():
 
 # ------------------------------------------------------------------ sheet / apply
 def sheet():
+    # B04: the labels artifact feeds the review workbook — verify its bound
+    # receipt first.
+    eval_protection.verify_artifact(LABELS_CSV)
     rows = list(csv.DictReader(open(LABELS_CSV)))
     import random
     rng = random.Random(SEED)
@@ -541,6 +616,9 @@ RISK_ACCEPTED_REMAPS = [
 
 def apply_review(path=None):
     path = pathlib.Path(path) if path else REVIEW_COMPLETED_XLSX
+    # B04: labels may only be finalised on a sample whose bound fetch receipt
+    # still verifies; LABELS_CSV must carry its own receipt from gate().
+    labels_receipt = eval_protection.verify_artifact(LABELS_CSV)
     rows = {r["row_id"]: r for r in csv.DictReader(open(LABELS_CSV))}
     from confusion_analysis import load_taxonomy
     gen_of, _ = load_taxonomy()
@@ -633,11 +711,19 @@ def apply_review(path=None):
         if c not in df.columns:
             df[c] = ""
     df.to_csv(FINAL_LABELS, index=False)
+    eval_protection.write_artifact_receipt(
+        FINAL_LABELS, consumer="build_credit_tranche.apply_review",
+        purpose="supervised_training", input_receipts=[labels_receipt],
+    )
     print(f"Wrote {FINAL_LABELS}: {len(df):,} labelled rows", file=sys.stderr)
 
     if TRANCHE == "risk":
         tr = df.rename(columns={"final_leaf": "gold_leaf"})
         tr.to_csv(RISK_TOPUP, index=False)
+        eval_protection.write_artifact_receipt(
+            RISK_TOPUP, consumer="build_credit_tranche.apply_review",
+            purpose="supervised_training", input_receipts=[labels_receipt],
+        )
         print(f"risk training top-up {len(tr):,} rows → {RISK_TOPUP} (gold stays the 400-row T6-bound set)", file=sys.stderr)
         return
     # Splits. Credit eval is merchant-disjoint from everything else in this tranche:
@@ -658,6 +744,11 @@ def apply_review(path=None):
     tr.rename(columns={"final_leaf": "gold_leaf"}).to_csv(CREDIT_TOPUP, index=False)
     rk = df[df["stratum"] != "credit"].rename(columns={"final_leaf": "gold_leaf"})
     rk.to_csv(RISK_T6_GOLD, index=False)
+    for _out in (CREDIT_EVAL, CREDIT_TOPUP, RISK_T6_GOLD):
+        eval_protection.write_artifact_receipt(
+            _out, consumer="build_credit_tranche.apply_review",
+            purpose="supervised_training", input_receipts=[labels_receipt],
+        )
     print(f"credit eval {len(ev):,} rows ({len(ev_groups)} merchant/text groups) → {CREDIT_EVAL}\n"
           f"credit training top-up {len(tr):,} rows → {CREDIT_TOPUP}\n"
           f"T6-bound risk gold {len(rk)} rows → {RISK_T6_GOLD}", file=sys.stderr)

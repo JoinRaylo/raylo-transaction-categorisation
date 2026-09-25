@@ -2,6 +2,18 @@
 # Retrain Qwen3-8B with a liberal early-stop and score the *latest* ckpt
 # (last run rolled back to iter 2000 best-val and underfit the holdout).
 set -euo pipefail
+
+# ---------------------------------------------------------------------------
+# B04 RETIRED — terminal gate.
+# Qwen LoRA is retired and not part of the intended production path:
+# Gemini/Sonnet are used for labelling only, and the winning transformer is
+# the sole TxCat-1 categorisation model to train and promote.  This launcher
+# must not run; the flow below is kept only as a record of the retired path.
+# ---------------------------------------------------------------------------
+echo "B04: $(basename "$0") is RETIRED — Qwen LoRA is not part of the intended" >&2
+echo "     production path.  Gemini/Sonnet are used for labelling only; the" >&2
+echo "     winning transformer is the sole TxCat-1 categorisation model." >&2
+exit 1
 ROOT="/Users/carlosnoblejesus/Repos/raylo-transaction-categorisation"
 cd "$ROOT"
 PY="$ROOT/.venv/bin/python"
@@ -25,6 +37,15 @@ score_one() {
 }
 
 echo "=== Qwen3-8B long LoRA (patience=8, keep latest) $(date) ==="
+# B04: the supervised export must verify against its membership coverage and
+# the pinned protected release before any training may consume it.
+"$PY" - <<PY
+import sys
+sys.path.insert(0, "$ROOT/src")
+import eval_protection
+eval_protection.verify_tuning_export(out_dir="$ROOT/outputs")
+PY
+
 # caffeinate so overnight train isn't killed by idle sleep
 caffeinate -is env PYTHONUNBUFFERED=1 "$LORA" \
   --model "$MODEL8" \

@@ -1,0 +1,66 @@
+{
+  "schema_version": "benchmark-synthetic-allocation-implementation-v1",
+  "milestone": "B03-D",
+  "purpose": "synthetic_partition_planning",
+  "status": "complete_bounded_synthetic_only",
+  "scope": "synthetic_only",
+  "authorizes_consumption": false,
+  "base": {
+    "app_base_before_milestone": "e0123a929aa6b7d7d2de925239ecb724659ff9cd",
+    "app_branch": "codex/txncat-b03a-app",
+    "app_implementation_commit": "45ad84f58c21b27bb714cd8eb745e02187e9c610",
+    "research_base_before_milestone": "4f139a973a74b4f26144beee00375a12abdaec52",
+    "research_branch": "codex/txncat-b03a-research"
+  },
+  "changed_source_sha256": {
+    "app/lib/raylo-txncat/src/raylo_txncat/benchmark_allocation.py": "9e91ed34e53356a6295606a1c113a03d09bec19ad9862fcd2b7c23f734a5ada5",
+    "app/lib/raylo-txncat/tests/test_benchmark_allocation.py": "61b8b62e4ce8ddbdbcbe1e44c0dddf99dd82133cd4710b8f7fcd16f501a405ab"
+  },
+  "contract": {
+    "canonical_b02_types": [
+      "Frozen",
+      "Projection",
+      "View",
+      "Sha256",
+      "Identifier"
+    ],
+    "synthetic_fixture_id": "benchmark-allocation-synthetic-v1",
+    "policy_version": "three-views-v1",
+    "partitions_in_order": [
+      "annotation_pilot",
+      "core",
+      "challenge",
+      "confirmation",
+      "model_selection_validation",
+      "training"
+    ],
+    "whole_assignment_blocks": true,
+    "cross_partition_protections": [
+      "event_alias",
+      "account",
+      "customer",
+      "effective_input",
+      "reviewed_merchant_family_when_unfamiliar"
+    ],
+    "representative_recurrence_within_role": "allowed_and_reported",
+    "exact_quota_shortfall": "raises_allocation_capacity_error",
+    "non_exact_quota_shortfall": "returned_explicitly"
+  },
+  "mutations": {
+    "bigquery": false,
+    "firestore": false,
+    "cloud_storage": false,
+    "iam_kms_retention": false,
+    "real_rows_exported": false,
+    "real_rows_labelled": false,
+    "training_selection_or_locked_evaluation": false
+  },
+  "not_claimed": [
+    "verified source provenance or customer linkage",
+    "historical event/alias/family completeness",
+    "representative probability-sampling certificate",
+    "managed reservation or authenticated authority receipt",
+    "cross-process permanence or late-alias contamination handling",
+    "B04 consumer/promotion enforcement"
+  ]
+}

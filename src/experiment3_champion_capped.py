@@ -39,6 +39,7 @@ import pandas as pd
 import experiment3_champion_model as ch
 import experiment3_xgb_pipeline as x3
 from credit_metrics import signed_gini
+import eval_protection
 
 ROOT = ch.ROOT
 REPORT = ROOT / "data" / "experiment3_champion_capped_report.md"
@@ -86,6 +87,11 @@ def rank_features(df: pd.DataFrame, target: str, components: dict) -> pd.Series:
 
 
 def run(caps: list[int]) -> dict:
+    # B04 gated off: the parquet feature stores predate bound provenance.
+    eval_protection.gate(
+        "experiment3_champion_capped.run",
+        "unbound feature store; rebuild under the protected-release guard",
+    )
     search = json.loads(ch.SEARCH_JSON.read_text())
     saved = pd.read_parquet(ch.FINAL_PARQUET)
     saved["financial_proposal_id"] = saved["financial_proposal_id"].astype(str)

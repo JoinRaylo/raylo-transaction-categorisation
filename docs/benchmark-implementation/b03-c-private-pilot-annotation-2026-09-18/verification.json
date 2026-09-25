@@ -1,0 +1,86 @@
+{
+  "schema_version": "txncat-b03c-private-pilot-annotation-verification-v1",
+  "captured_date": "2026-09-18",
+  "app_branch": "codex/txncat-b03a-app",
+  "app_contract_commit": "382d43e",
+  "research_branch": "codex/txncat-b03a-research",
+  "research_base_commit": "ad9c4ee",
+  "source_scope": "customer-linked Plaid only",
+  "anonymous_id_recovery": false,
+  "models": {
+    "claude-sonnet-5": {
+      "votes": 500,
+      "artifact_sha256": "4e7557ec55e91db7d95354322de11b23539c31cfad0b66b310752f97e243c313"
+    },
+    "gemini-3.7-flash": {
+      "votes_before_attempt_3": 486,
+      "attempt_3_requests": 14,
+      "attempt_3_valid": 14,
+      "votes": 500,
+      "artifact_sha256": "e6ce4d1caebb13ad7fe8859e998ba554e9e796c8069ea78e48eaf6d72b5b41e0"
+    },
+    "gemini-3.8-flash": {
+      "votes_before_attempt_3": 474,
+      "attempt_3_requests": 26,
+      "attempt_3_valid": 26,
+      "votes": 500,
+      "artifact_sha256": "cb753941d6c77ead4c6ba97ae0a0fbdf5626d764014ca0efbcbfedd03a079aab"
+    }
+  },
+  "synthetic_acceptance": {
+    "gemini-3.7-flash": "10/10 strict-valid",
+    "gemini-3.8-flash": "10/10 strict-valid"
+  },
+  "comparison": {
+    "rows": 500,
+    "unanimous": 261,
+    "unanimous_labelled": 237,
+    "unanimous_ambiguous": 11,
+    "unanimous_insufficient_evidence": 13,
+    "disagreement": 239,
+    "review_rows": 263,
+    "incomplete": 0,
+    "primary_views": {
+      "representative": {"rows": 250, "unanimous_labelled": 130, "disagreement": 109, "unanimous_non_labelled": 11, "review": 120},
+      "unseen_input": {"rows": 150, "unanimous_labelled": 74, "disagreement": 71, "unanimous_non_labelled": 5, "review": 76},
+      "unfamiliar_merchant": {"rows": 100, "unanimous_labelled": 33, "disagreement": 59, "unanimous_non_labelled": 8, "review": 67}
+    }
+  },
+  "private_review_artifacts": {
+    "version": "adjudication-v2",
+    "supersedes": "adjudication",
+    "directory_mode": "0700",
+    "file_mode": "0600",
+    "summary_sha256": "8e47c0b1fa13705d1800d36ed26fa440ab929e8c041f981f918ab5b9c048d8f6",
+    "review_queue_sha256": "cad0fe005e2b9f5e597b235f1a31a5d69985a515bbf3c61efb8b8968d8804370",
+    "receipt_sha256": "5d30bd5feaddce8722174264a6d29371eedf7d6bda9bb6d5b7624bae47874397",
+    "workbook_sha256": "bd09ea3ea844f9e3b65b7292c1a3c0f7357fdf024ffe681a4a0afce8a3b3824e",
+    "workbook_initial_receipt_sha256": "48ac7099fb5e597203306ea300c5d1f22c5ffbc362a3ce0bbc03f38f18b87294",
+    "explicit_source_identity_fields": 0,
+    "exact_source_identifier_matches": 0
+  },
+  "tests": {
+    "focused_after_correction": "37 passed",
+    "review_queue": "10 passed",
+    "full_research": "197 passed, 2 pre-existing unknown-marker warnings",
+    "ruff_E_F_I_BLE": "passed",
+    "git_diff_check": "passed",
+    "workbook_import_and_formula_state_checks": "passed"
+  },
+  "independent_review": {
+    "reviewer": "Astra",
+    "agent": "Archimedes",
+    "status": "approved_after_correction",
+    "initial_findings": 2,
+    "blocking_findings": 0
+  },
+  "carlos_decisions": 0,
+  "gold_labels_created": 0,
+  "auto_adjudication": false,
+  "authorizes_consumption": false,
+  "training_or_selection_consumption": false,
+  "retraining": false,
+  "locked_set_scoring": false,
+  "cloud_changes": false,
+  "next_step": "Carlos resolves 263 workbook rows; validate and freeze the resulting 500 labels before any separate training augmentation"
+}

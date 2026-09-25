@@ -1,0 +1,32 @@
+{
+  "schema_version": "benchmark-authority-adapter-verification-v1",
+  "milestone": "B03-B",
+  "scope": "synthetic_only",
+  "authorizes_consumption": false,
+  "branch": "codex/txncat-b03a-research",
+  "base_commit": "3c60516c453ce86f294145517d168c0ff531521b",
+  "canonical_app_source_sha256": {
+    "lib/raylo-txncat/src/raylo_txncat/benchmark_authority_cloud.py": "8a8034043435d45510d02c284a74235751941fd63255c8ac8092825f0f3a6e58",
+    "lib/raylo-txncat/tests/test_benchmark_authority_cloud.py": "cc2e47c8c51e86789cbbac45209410ef8f5fed49d1ef8d9a5f1134e57d743f41"
+  },
+  "checks": {
+    "offline_import": "passed; no google.cloud.firestore or google.cloud.storage module imported",
+    "focused_startup_and_authority": "158 passed",
+    "full_unit": "1411 passed, 1 skipped",
+    "ruff": "check and format passed",
+    "git_diff_check": "passed"
+  },
+  "review": {
+    "model": "gpt-5.6-sol",
+    "verdict": "APPROVE",
+    "scope": "read-only security/protocol review after corrective revisions"
+  },
+  "cloud_effects": "No cloud resources, IAM, KMS, registry, bucket, or network state changed.",
+  "data_effects": "No real rows, labels, benchmark membership, locked-set scoring, model fitting, or retraining occurred.",
+  "remaining_gates": [
+    "approve concrete physical resources, IAM, retention and KMS custody",
+    "implement and review an authority-authenticated receipt",
+    "run cross-process race and denied-access proofs with actual service identities",
+    "only then connect B04 consumers or admit linked-pool candidates"
+  ]
+}

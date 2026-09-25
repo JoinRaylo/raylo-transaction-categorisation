@@ -1,0 +1,62 @@
+{
+  "schema_version": "benchmark-authority-project-creation-v1",
+  "milestone": "B03-B-authority-project-creation",
+  "scope": "control_plane_only_empty_project",
+  "status": "project_provisioned_iam_and_resources_pending",
+  "authorizes_consumption": false,
+  "branch": "codex/txncat-b03a-research",
+  "base_commit": "f23a811",
+  "project": {
+    "id": "raylo-txncat-authority-prod",
+    "number": "357892832103",
+    "display_name": "TxnCat Authority Production",
+    "lifecycle_state": "ACTIVE",
+    "parent": "folders/45426850789",
+    "parent_display_name": "internal-services-monorepo",
+    "created_at": "2026-09-17T14:03:17.805Z",
+    "labels": {
+      "purpose": "benchmark-authority",
+      "environment": "prod",
+      "data-classification": "restricted"
+    }
+  },
+  "empty_state": {
+    "enabled_apis": [],
+    "service_accounts": [],
+    "buckets": [],
+    "databases": [],
+    "kms_keys": [],
+    "cloud_run_services": []
+  },
+  "placement_review": {
+    "parent_folder_iam_read_only": "team-infra-eng inherits roles/owner and roles/resourcemanager.folderAdmin at the parent folder; no service-account data roles were present",
+    "sol_model": "gpt-5.6-sol",
+    "sol_agent": "Dewey",
+    "sol_status": "APPROVE_WITH_CONTROL_PLANE_CONDITIONS",
+    "conditions": [
+      "audit the complete organization ancestor chain",
+      "treat team-infra-eng as a privileged administrative trust root, not a runtime identity",
+      "govern and alert on membership, IAM, impersonation, KMS and Cloud Run deployment changes",
+      "keep runtime identities free of inherited broad access"
+    ]
+  },
+  "mutations": {
+    "project_created": true,
+    "apis_enabled": false,
+    "service_accounts_created": false,
+    "iam_bindings_changed": false,
+    "resources_created": false,
+    "customer_data_accessed": false,
+    "objects_or_documents_written": false,
+    "labels_or_benchmark_membership_changed": false,
+    "training_retraining_or_scoring": false
+  },
+  "next_gates": [
+    "complete ancestor IAM audit",
+    "separately approve minimal API enablement",
+    "separately approve exact custom roles and IAM bindings",
+    "close caller-token, namespace, key-state and authority-binding code gaps",
+    "repeat synthetic Stage 0 through Stage 3 proofs",
+    "separate B04 admission review before real authority data"
+  ]
+}

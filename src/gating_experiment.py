@@ -33,6 +33,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import eval_protection  # noqa: E402
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 TAXONOMY_CSV = ROOT / "taxonomy" / "taxonomy.csv"
 OUT_DIR = ROOT / "outputs"
@@ -214,6 +217,13 @@ def eqx_leaf(pri, sub, sub_map, pri_map):
 
 
 def fetch_ground_truth():
+    eval_protection.gate(
+        "gating_experiment.fetch_ground_truth",
+        reason="the ground-truth query egresses merchant-level aggregates "
+               "without per-row linkage identity and can never prove "
+               "disjointness from the protected release; this experiment is "
+               "complete and retired.",
+    )
     sub_map, pri_map, leaves, _, _ = load_crosswalk()
     print("Querying BigQuery for shared merchant strings (debit-only, modal)...", file=sys.stderr)
     result = subprocess.run(
@@ -355,6 +365,12 @@ def build_tool_schema(leaves):
 
 
 def label_all(model_key):
+    eval_protection.gate(
+        "gating_experiment.label_all",
+        reason="fetch_ground_truth is gated off, so no receipted ground "
+               "truth can exist; this narrative-egress path to Anthropic is "
+               "retired and must not run.",
+    )
     import anthropic
 
     cfg = MODELS[model_key]

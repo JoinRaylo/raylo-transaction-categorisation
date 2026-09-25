@@ -1,0 +1,85 @@
+{
+  "schema_version": "benchmark-physical-scope-review-v1",
+  "milestone": "B03-B-physical-scope-review",
+  "scope": "synthetic_only_partial_cloud_scope",
+  "status": "partial_scope_provisioned_registry_iam_pending",
+  "authorizes_consumption": false,
+  "branch": "codex/txncat-b03a-research",
+  "parent_commit": "c5a3216",
+  "canonical_app_sources": {
+    "lib/raylo-txncat/src/raylo_txncat/benchmark_authority.py": "8e005938fe3542c9448848c511f5795c88acc654fe0a9b31d53d234f73d9cf66",
+    "lib/raylo-txncat/src/raylo_txncat/benchmark_authority_cloud.py": "fed4b225961bf89ccf2c5fbef5534838ef96aaaf436ddc5f5c1204a7cf265a25",
+    "lib/raylo-txncat/tests/test_benchmark_authority_cloud.py": "ae80c79ac4f3f0dc7f1cea0f17483d8d69826275e6bb9029a8f4cc1afe9ad872"
+  },
+  "mirror_sha256": {
+    "CLAUDE.md": "26d0711b3bfcfdef9b0e7a8fb11ae8c439bdc323503f7a377b1f56517d7600f8",
+    "README.md": "45884d3d3950ffca653c480a79b3081863b111acac781a6899a6aec5e6de1b68",
+    "docs/project-summary.md": "008bba9dc915228bb56a2d66b6eef65db44e83c63b60748470ec1e9f2b1fb75c",
+    "docs/benchmark-implementation/b03-b-physical-scope-review-2026-09-17/README.md": "a958f6c3161f1d6e2755fd559ee90d6a5b206a4fc26a436660b55113fe3933b8"
+  },
+  "cloud_scope": {
+    "project": "raylo-production",
+    "project_number": "601576302267",
+    "location": "europe-west2",
+    "cloudkms_api": "enabled",
+    "authority_bucket": "gs://raylo-production-txncat-benchmark-authority-europe-west2",
+    "authority_keyring": "projects/raylo-production/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2",
+    "receipt_key_version": "projects/raylo-production/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-receipts/cryptoKeyVersions/1",
+    "storage_key_version": "projects/raylo-production/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-storage/cryptoKeyVersions/1",
+    "bucket_default_cmek": "projects/raylo-production/locations/europe-west2/keyRings/txncat-benchmark-authority-europe-west2/cryptoKeys/txncat-benchmark-storage",
+    "firestore_database": "projects/raylo-production/databases/txncat-benchmark-authority",
+    "firestore_encryption": "google-managed-default",
+    "firestore_concurrency": "PESSIMISTIC",
+    "firestore_pitr": "POINT_IN_TIME_RECOVERY_ENABLED",
+    "firestore_delete_protection": "DELETE_PROTECTION_ENABLED",
+    "service_accounts": "none_created",
+    "iam_bindings": "none_changed"
+  },
+  "checks": {
+    "prior_authenticated_receipt_review": "gpt-5.6-sol APPROVE",
+    "startup_synthetic": "115 passed",
+    "focused_authority_and_receipts": "49 passed",
+    "full_app_library_and_unit": "1385 passed, 1 warning",
+    "relevant_research_tests": "40 passed",
+    "research_full_suite": "85 passed, 1 environment-blocked (missing pandas in existing taxonomy-integrity import)",
+    "physical_scope_provisioning": "bucket, keyring, two HSM keys, bucket default HSM CMEK and dedicated registry verified",
+    "bucket_cmek_attachment": "verified; future bucket objects use the dedicated HSM storage key",
+    "firestore_policy_check": "effective constraints/gcp.restrictNonCmekServices returned listPolicy.allValues=ALLOW",
+    "firestore_registry_design": "dedicated Firestore Native named database using Google's default encryption; created and verified",
+    "security_data_owner_approval": "Carlos Noble Jesus (task owner; explicit approval in current task); Google-managed encryption accepted for registry metadata",
+    "firestore_cmek_database": "prior encrypted create attempted once and blocked by RESOURCE_EXHAUSTED CMEK database quota/allowlist; regular database created after approved design",
+    "firestore_registry_provisioning": "verified named database with pessimistic concurrency, PITR, delete protection and no documents written",
+    "physical_permission_probe": "not run; IAM wiring pending",
+    "cross_process_live_probe": "not run; pending approval",
+    "cloud_calls": "Cloud KMS API enabled; bucket, keyring and two HSM keys created; bucket default CMEK attached; effective project policy checked read-only and returned allValues=ALLOW; encrypted Firestore create attempted once and blocked by RESOURCE_EXHAUSTED; approved regular Firestore registry created; no customer data or objects uploaded"
+  },
+  "prior_proposal_review": {
+    "model": "gpt-6-astra",
+    "status": "APPROVE",
+    "scope": "read-only architecture/security review of the proposal-only packet before partial provisioning"
+  },
+  "review": {
+    "model": "gpt-5.6-sol",
+    "status": "APPROVE",
+    "scope": "read-only post-creation evidence review of the dedicated Google-managed Firestore registry and remaining IAM/live-proof gates"
+  },
+  "effects": {
+    "cloud": true,
+    "real_rows": false,
+    "labels": false,
+    "benchmark_membership": false,
+    "model_fit_or_retraining": false,
+    "locked_set_access_or_scoring": false,
+    "b04_consumer_integration": false
+  },
+  "remaining_gates": [
+    "create distinct service identities and apply the approved least-privilege IAM matrix",
+    "resolve the worker public-key verification deployment design",
+    "run separately approved Stage 0 synthetic fixture/bootstrap",
+    "run Stage 1 no-write identity and direct-read deny/absence proof",
+    "run separately approved Stage 2 synthetic mutation and cross-process proof",
+    "run separately approved Stage 3 synthetic failure, retention and key-lifecycle proof",
+    "connect B04 consumers only after live proofs and a separate admission review",
+    "reserve or label no real candidates until B03/B04 acceptance is complete"
+  ]
+}

@@ -1,0 +1,1069 @@
+{
+  "schema_version": "benchmark-consumer-matrix-v1",
+  "release": {
+    "schema_version": "benchmark-release-binding-v2",
+    "membership_sha256": "675490115bd07c96d9102118cd8ca27924b88b896bc518f17da53f55e76ddf56",
+    "pilot_sha256": "fc5c626cdc0966d46dd1a1a9c04f04f2f9c515cecfedb0587019c16a7f684248",
+    "publication_sha256": "2b3c2f6443c99f30272f50075b2f7cf4647b04fb5ccdf1926467a24d3d4e8436",
+    "publication_file_sha256": "eaf5a8bba13a60e007fa7d92c9df8729c80e7e7b13a8b830c4c0642458c44f22",
+    "publication_membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068"
+  },
+  "entries": [
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "analyse_provider_disagreement",
+      "kind": "evaluation_reader",
+      "enforcement": "bound_read",
+      "boundary": "reads committed eval CSVs only",
+      "evidence": "src/analyse_provider_disagreement.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "append_t6_residual_topup.main",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on raw fetch siblings + existing output; merge receipt on data/tuning_leaf_topup.csv",
+      "evidence": "src/append_t6_residual_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "audit_experiment3_granularity.audit_same20",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "audit_same20 entry gate",
+      "evidence": "unbound experiment3 feature store"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "audit_experiment3_granularity.run",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "run/audit_same20 entry gates",
+      "evidence": "unbound experiment3 feature store; rebuild under the guard (AIE-503 coordination)"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "benchmark_score_legacy",
+      "kind": "evaluation_reader",
+      "enforcement": "bound_read",
+      "boundary": "reads the frozen historical-regression cohort only",
+      "evidence": "tools/benchmark/benchmark_score_legacy.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_credit_tranche.apply_review",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(LABELS_CSV); receipts on FINAL_LABELS/CREDIT_EVAL/CREDIT_TOPUP/RISK_TOPUP/RISK_T6_GOLD",
+      "evidence": "src/build_credit_tranche.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_credit_tranche.fetch",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "apply_env(supervised_training) before SAMPLE_CSV write; artifact receipt emitted",
+      "evidence": "src/build_credit_tranche.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_credit_tranche.fetch_distil",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: GROUP BY text export carries no row identity and can never prove disjointness",
+      "evidence": "src/build_credit_tranche.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_credit_tranche.fetch_risk_tranche",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "apply_env(supervised_training) before SAMPLE_CSV write; artifact receipt emitted",
+      "evidence": "src/build_credit_tranche.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_credit_tranche.gate",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(SAMPLE_CSV) before merge; receipt on LABELS_CSV",
+      "evidence": "src/build_credit_tranche.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_credit_tranche.gate_distil",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before consensus merge",
+      "evidence": "src/build_credit_tranche.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_credit_tranche.label",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_credit_tranche.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_credit_tranche.sheet",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before sheet egress",
+      "evidence": "src/build_credit_tranche.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_credit_tranche.tiebreak",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before tiebreak egress",
+      "evidence": "src/build_credit_tranche.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_equifax_fee_topup.main",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: equifax_data.open_banking_full_dump is proposal-matched, no customer linkage",
+      "evidence": "src/build_equifax_fee_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_final_gold_v2.apply_review",
+      "kind": "selection",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(SAMPLE_CSV); receipt on gold_transactions_v2.csv",
+      "evidence": "src/build_final_gold_v2.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_final_gold_v2.fetch",
+      "kind": "selection",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: mixed Plaid/Equifax legs discard linkage identity; historical one-shot builder",
+      "evidence": "src/build_final_gold_v2.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_final_gold_v2.label",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_final_gold_v2.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_final_gold_v2.sheet",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before sheet egress",
+      "evidence": "src/build_final_gold_v2.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_final_gold_v2_batch2.apply_review",
+      "kind": "selection",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(SAMPLE_CSV); receipt on gold_transactions_v2_batch2.csv",
+      "evidence": "src/build_final_gold_v2_batch2.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_final_gold_v2_batch2.fetch",
+      "kind": "selection",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: mixed Plaid/Equifax legs discard linkage identity; historical one-shot builder",
+      "evidence": "src/build_final_gold_v2_batch2.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_final_gold_v2_batch2.label",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_final_gold_v2_batch2.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_final_gold_v2_batch2.sheet",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before sheet egress",
+      "evidence": "src/build_final_gold_v2_batch2.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_risk_categories.apply_review",
+      "kind": "selection",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(SAMPLE_CSV); receipt on gold_transactions_risk_categories.csv",
+      "evidence": "src/build_gold_risk_categories.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_risk_categories.fetch",
+      "kind": "selection",
+      "enforcement": "enforced",
+      "boundary": "apply_env(model_selection_validation); receipt on gold_risk_sample.csv",
+      "evidence": "src/build_gold_risk_categories.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_risk_categories.label",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_gold_risk_categories.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_risk_categories.sheet",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before sheet egress",
+      "evidence": "src/build_gold_risk_categories.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_transactions_unified.main",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on four merged gold CSVs; receipt on data/gold_transactions.csv",
+      "evidence": "src/build_gold_transactions_unified.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v3_volume.apply_review",
+      "kind": "selection",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(SAMPLE_CSV); receipt on gold_transactions_v3_volume.csv",
+      "evidence": "src/build_gold_v3_volume.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v3_volume.fetch",
+      "kind": "selection",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: mixed Plaid/Equifax legs discard linkage identity; historical one-shot builder",
+      "evidence": "src/build_gold_v3_volume.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v3_volume.score",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before scoring egress",
+      "evidence": "src/build_gold_v3_volume.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v4_slm_volume.apply_review",
+      "kind": "selection",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(SAMPLE_CSV); receipt on gold_transactions_v4_slm_volume.csv",
+      "evidence": "src/build_gold_v4_slm_volume.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v4_slm_volume.fetch",
+      "kind": "selection",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: mixed Plaid/Equifax legs discard linkage identity; historical one-shot builder",
+      "evidence": "src/build_gold_v4_slm_volume.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v4_slm_volume.sheet",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before sheet egress",
+      "evidence": "src/build_gold_v4_slm_volume.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v5_locked.apply_review",
+      "kind": "selection",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(SAMPLE_CSV); receipt on gold_transactions_v5_LOCKED.csv",
+      "evidence": "src/build_gold_v5_locked.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v5_locked.fetch",
+      "kind": "selection",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: v5 retired and immutable; mixed-source fetch also discards linkage identity",
+      "evidence": "src/build_gold_v5_locked.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v5_locked.label",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_gold_v5_locked.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v5_locked.sheet",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before sheet egress",
+      "evidence": "src/build_gold_v5_locked.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v6_locked.apply_review",
+      "kind": "selection",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(SAMPLE_CSV); receipt on gold_transactions_v6_LOCKED.csv",
+      "evidence": "src/build_gold_v6_locked.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v6_locked.fetch",
+      "kind": "selection",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: v6 locked for go/no-go and immutable; mixed-source fetch also discards linkage identity",
+      "evidence": "src/build_gold_v6_locked.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v6_locked.label",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_gold_v6_locked.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_gold_v6_locked.sheet",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before sheet egress",
+      "evidence": "src/build_gold_v6_locked.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_merchant_dictionary",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on production_labels_tranche3/tranche4 before dictionary seeding",
+      "evidence": "src/build_merchant_dictionary.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_risk_leaf_topup.fetch",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "apply_env(supervised_training); artifact receipt on risk_leaf_topup_sample.csv",
+      "evidence": "src/build_risk_leaf_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_risk_leaf_topup.gap_fill",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "apply_env(supervised_training); artifact receipt",
+      "evidence": "src/build_risk_leaf_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_risk_leaf_topup.label",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_risk_leaf_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_risk_leaf_topup.resolve",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before review merge",
+      "evidence": "src/build_risk_leaf_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_stage1_labels.main",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "consensus receipt verified; rule-labelled linked texts (protected flags, eval-merchant/text and benchmark-text screens) + apply(distillation) + signed receipt",
+      "evidence": "src/build_stage1_labels.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tail_eval.fetch",
+      "kind": "authoring",
+      "enforcement": "gated_off",
+      "boundary": "fetch gate before any BigQuery call",
+      "evidence": "APPROX_TOP_COUNT narrative egress carries no B02 identity"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_taxonomy",
+      "kind": "authoring",
+      "enforcement": "enforced",
+      "boundary": "committed taxonomy inputs only; no fetched artifacts",
+      "evidence": "src/build_taxonomy.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tranche4_final_labels.main",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(LABELS_IN); receipt on production_labels_tranche4.csv",
+      "evidence": "src/build_tranche4_final_labels.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tranche4_final_labels.relabel_existing",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(LABELS_OUT) before rewrite",
+      "evidence": "src/build_tranche4_final_labels.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tuning_dataset.build",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "assert_bound(release); verify_artifact on GOLD_TXN_FILE, LABELS_SOURCE and all three top-up CSVs",
+      "evidence": "src/build_tuning_dataset.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tuning_dataset.fetch",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "assert_bound(release) before any query; exclude_eval_membership; Tier-B fetch receipt",
+      "evidence": "src/build_tuning_dataset.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tuning_dataset_retrain.build",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_fetch_receipt + verify_artifact on every input; signed receipts and row manifests on both exports; Tier A dropped",
+      "evidence": "src/build_tuning_dataset_retrain.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tuning_dataset_retrain.credits",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "rule-labelled linked credits; apply(supervised_training) + signed receipt; build screens",
+      "evidence": "src/build_tuning_dataset_retrain.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tuning_dataset_retrain.fetch",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "linked Tier-B fetch; exclude_eval_membership + write_tier_b_fetch (canonical guard, signed fetch receipt); labels from the pinned staging waterfall (T1-T5 only)",
+      "evidence": "src/build_tuning_dataset_retrain.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tuning_leaf_topup.fetch",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: equifax_data.open_banking_full_dump is proposal-matched, no customer linkage",
+      "evidence": "src/build_tuning_leaf_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tuning_leaf_topup.fetch_gap_fill",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: equifax_data.open_banking_full_dump is proposal-matched, no customer linkage",
+      "evidence": "src/build_tuning_leaf_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tuning_leaf_topup.label",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before Gemini/Sonnet egress",
+      "evidence": "src/build_tuning_leaf_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "build_tuning_leaf_topup.resolve",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted sample CSV before review merge",
+      "evidence": "src/build_tuning_leaf_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "check_waterfall_parity",
+      "kind": "evaluation_reader",
+      "enforcement": "bound_read",
+      "boundary": "reads committed eval CSVs; refuse_confirmation_eval blocks locked sets",
+      "evidence": "src/check_waterfall_parity.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "compare_abstention",
+      "kind": "evaluation_reader",
+      "enforcement": "bound_read",
+      "boundary": "reads committed eval CSVs only",
+      "evidence": "src/compare_abstention.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "compare_classifier_versions",
+      "kind": "evaluation_reader",
+      "enforcement": "bound_read",
+      "boundary": "reads committed eval CSVs; refuse_confirmation_eval blocks locked sets",
+      "evidence": "src/compare_classifier_versions.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "confusion_analysis",
+      "kind": "evaluation_reader",
+      "enforcement": "bound_read",
+      "boundary": "reads committed eval CSVs only",
+      "evidence": "src/confusion_analysis.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "credit_metrics",
+      "kind": "evaluation_reader",
+      "enforcement": "bound_read",
+      "boundary": "metric helpers over committed frames only",
+      "evidence": "src/credit_metrics.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "distillation_bakeoff.evaluate",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(EVAL_PARQUET) before scoring read",
+      "evidence": "src/distillation_bakeoff.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "distillation_bakeoff.fetch",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "apply_env(distillation) before distill_train.parquet; artifact receipt",
+      "evidence": "src/distillation_bakeoff.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "distillation_bakeoff.retrain_lightgbm",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(distill_train.parquet) before .fit",
+      "evidence": "src/distillation_bakeoff.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "distillation_bakeoff.train",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(distill_train.parquet) before .fit",
+      "evidence": "src/distillation_bakeoff.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "equifax_zero_leaf_volume",
+      "kind": "authoring",
+      "enforcement": "gated_off",
+      "boundary": "module-level gate before query",
+      "evidence": "GROUP BY counts over a linked source cannot prove disjointness"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "eval_sets",
+      "kind": "evaluation_reader",
+      "enforcement": "bound_read",
+      "boundary": "locked-set guard refuses v5/v6 by name and by content hash",
+      "evidence": "src/eval_sets.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_champion_capped.run",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "run entry gate before file reads",
+      "evidence": "unbound feature store"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_champion_granularity.build_all_rung_features",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "entry gate before parquet reads",
+      "evidence": "unbound feature store"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_champion_model.build_features",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "entry gate before parquet reads",
+      "evidence": "unbound feature store"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_champion_model.run_search",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "entry gate before parquet reads",
+      "evidence": "unbound feature store"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_champion_model.validate_artifacts",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "entry gate before artifact reads",
+      "evidence": "unbound feature store"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_granularity_ladder.aggregate",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "entry gate before spine/feature reads",
+      "evidence": "unbound feature store"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_granularity_ladder.train",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "entry gate before parquet reads",
+      "evidence": "unbound feature store"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_subleaf_pilot.aggregate",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "entry gate before spine reads",
+      "evidence": "unbound feature store"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_taxonomy_iv.fetch",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "fetch gate before BigQuery",
+      "evidence": "stages unfiltered linked-pool rows"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_xgb_pipeline._prepare",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "chokepoint gate before every downstream fit",
+      "evidence": "unbound feature store; catches caller-supplied frames"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_xgb_pipeline.fetch",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "fetch gate before CTAS",
+      "evidence": "stages unfiltered linked-pool rows into scratch tables"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_xgb_pipeline.train",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "train gate when df is None (unbound FEAT_PARQUET read)",
+      "evidence": "unbound feature store"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_xgb_pipeline.train_capped",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "entry gate before parquet read",
+      "evidence": "unbound feature store"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_xgb_pipeline.train_live_analog",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "entry gate before parquet read",
+      "evidence": "unbound feature store"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment3_xgb_pipeline.train_month12",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "entry gate before parquet read",
+      "evidence": "unbound feature store"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment_finetune_deberta",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_tuning_export before encoder .fit",
+      "evidence": "src/experiment_finetune_deberta.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment_finetune_encoder",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_tuning_export before encoder .fit",
+      "evidence": "src/experiment_finetune_encoder.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "experiment_residual_prototype",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_tuning_export before prototype .fit",
+      "evidence": "src/experiment_residual_prototype.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "fetch_t6_residual_topup.main",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "apply_env(supervised_training); artifact receipt on t6_residual_topup_sample.csv",
+      "evidence": "src/fetch_t6_residual_topup.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "fetch_t6_residual_topup2.main",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "apply_env(supervised_training); artifact receipt on t6_residual_topup2_sample.csv",
+      "evidence": "src/fetch_t6_residual_topup2.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "fill_agent_tiebreak.main",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on LABELS/T4 before merge",
+      "evidence": "src/fill_agent_tiebreak.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "final_evaluation",
+      "kind": "evaluation_reader",
+      "enforcement": "bound_read",
+      "boundary": "reads committed eval CSVs; BQ egress is merchant-level GROUP BY aggregates only",
+      "evidence": "src/final_evaluation.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "fit_linearsvc_liblinear.main",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_tuning_export before LinearSVC .fit",
+      "evidence": "src/fit_linearsvc_liblinear.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "gating_experiment.fetch_ground_truth",
+      "kind": "labelling",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: merchant-aggregate egress without per-row identity; retired experiment",
+      "evidence": "src/gating_experiment.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "gating_experiment.label_all",
+      "kind": "labelling",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: Anthropic egress over an unreceiptable ground-truth CSV; retired experiment",
+      "evidence": "src/gating_experiment.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "gating_experiment.run",
+      "kind": "evaluation_reader",
+      "enforcement": "bound_read",
+      "boundary": "reads committed experiment outputs only",
+      "evidence": "src/gating_experiment.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "gemini_tiebreak_experiment.get_needs_review",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted labels CSV before Gemini egress",
+      "evidence": "src/gemini_tiebreak_experiment.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "label_provenance",
+      "kind": "evaluation_reader",
+      "enforcement": "bound_read",
+      "boundary": "provenance helpers only",
+      "evidence": "src/label_provenance.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "load_t4_dictionary_bq",
+      "kind": "authoring",
+      "enforcement": "enforced",
+      "boundary": "upload-only: loads a committed dictionary CSV to BigQuery; no pool read",
+      "evidence": "src/load_t4_dictionary_bq.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "ml_baseline.fetch_eval",
+      "kind": "selection",
+      "enforcement": "enforced",
+      "boundary": "apply_env(model_selection_validation); receipt on ml_eval_txns.parquet",
+      "evidence": "src/ml_baseline.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "ml_baseline.fetch_train",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: equifax_data.open_banking_full_dump is proposal-matched, no customer linkage",
+      "evidence": "src/ml_baseline.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "ml_baseline.train",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(ml_train.parquet) before SGD .fit",
+      "evidence": "src/ml_baseline.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "production_labelling.apply_review",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted labels CSV before merge; merge receipt on output",
+      "evidence": "src/production_labelling.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "production_labelling.fetch",
+      "kind": "authoring",
+      "enforcement": "gated_off",
+      "boundary": "fetch gate before any BigQuery call",
+      "evidence": "APPROX_TOP_COUNT(description,3) verbatim narrative egress"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "production_labelling.label",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted strings CSV before Gemini/Sonnet egress",
+      "evidence": "src/production_labelling.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "production_labelling.tiebreak",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact on the receipted labels CSV before tiebreak egress",
+      "evidence": "src/production_labelling.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "raylo_txncat.publish_bundle.main",
+      "kind": "promotion",
+      "enforcement": "enforced",
+      "boundary": "require_promotion_provenance: every declared learning input must carry a fetch receipt bound to the pinned release before upload",
+      "evidence": "lib/raylo-txncat/src/raylo_txncat/publish_bundle.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "recover_training_identity.main",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "legacy label files re-matched to exactly one clean customer-linked transaction (text-level consensus: a clean witness); apply(supervised_training|distillation) + signed receipt",
+      "evidence": "src/recover_training_identity.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "rent_iv_analysis.compute",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(rent_candidates.parquet) before IV computation",
+      "evidence": "src/rent_iv_analysis.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "rent_iv_analysis.fetch",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: proposal-matched Equifax tables carry no customer linkage",
+      "evidence": "src/rent_iv_analysis.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "retrain_corrected_heads.main",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_tuning_export before logreg/hinge .fit",
+      "evidence": "src/retrain_corrected_heads.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "score_classifier_risk_categories",
+      "kind": "evaluation_reader",
+      "enforcement": "bound_read",
+      "boundary": "reads committed eval CSVs; refuse_confirmation_eval blocks locked sets",
+      "evidence": "src/score_classifier_risk_categories.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "score_frontier_vs_classifier.main",
+      "kind": "labelling",
+      "enforcement": "gated_off",
+      "boundary": "terminal gate: reads unreceiptable pre-B04 eval CSVs and egresses narratives to Gemini/Anthropic; retired scorer",
+      "evidence": "src/score_frontier_vs_classifier.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "score_general_classifier.train",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_tuning_export before .fit",
+      "evidence": "src/score_general_classifier.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "score_plaid_legacy_category.fetch_plaid_paths",
+      "kind": "authoring",
+      "enforcement": "gated_off",
+      "boundary": "fetch gate before row-level fingerprint egress",
+      "evidence": "row-level narrative fingerprints carry no B02 identity"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "score_t5b_residual.train_linearsvc",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_tuning_export before .fit",
+      "evidence": "src/score_t5b_residual.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "score_transformer",
+      "kind": "evaluation_reader",
+      "enforcement": "bound_read",
+      "boundary": "reads committed eval CSVs; refuse_confirmation_eval blocks locked sets",
+      "evidence": "src/score_transformer.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "score_waterfall_pipeline.load_train_jsonl",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_tuning_export before reading the export for exclusion bookkeeping",
+      "evidence": "src/score_waterfall_pipeline.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "scripts.qwen3_8b_cont",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "retired: terminal B04 gate exits before any data access",
+      "evidence": "scripts/qwen3_8b_cont.sh"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "scripts.qwen3_8b_long",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "retired: terminal B04 gate exits before any data access",
+      "evidence": "scripts/qwen3_8b_long.sh"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "scripts.qwen3_after_4b",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "retired: terminal B04 gate exits before any data access",
+      "evidence": "scripts/qwen3_after_4b.sh"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "scripts.qwen3_score_then_8b",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "retired: terminal B04 gate exits before any data access",
+      "evidence": "scripts/qwen3_score_then_8b.sh"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "tools.benchmark.benchmark_screen_exposure",
+      "kind": "evaluation_reader",
+      "enforcement": "bound_read",
+      "boundary": "schema-only parquet/jsonl screening for exposure audits",
+      "evidence": "tools/benchmark/benchmark_screen_exposure.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "transformer.build_corpus.build_pretrain",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "gate before BigQuery query",
+      "evidence": "GROUP BY text-frequency export cannot prove disjointness; count=1 rows are verbatim narratives"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "transformer.build_corpus.build_silver",
+      "kind": "learning",
+      "enforcement": "gated_off",
+      "boundary": "gate before BigQuery query",
+      "evidence": "GROUP BY text-frequency export cannot prove disjointness"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "transformer.build_pretrain_guarded",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "BigQuery exclusion before aggregation (event/account/customer/protected-user checkout; unlinked and multi-customer accounts fail closed) + apply(domain_pretraining) per shard; signed artifact receipt per shard; exact-text screen",
+      "evidence": "src/transformer/build_pretrain_guarded.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "transformer.pretrain_mlm.train",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(domain_pretraining) on every guarded shard + manifest digest before read",
+      "evidence": "src/transformer/pretrain_mlm.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "transformer.train_classifier._empirical_direction_counts",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_tuning_export before reading tuning_train.jsonl",
+      "evidence": "src/transformer/train_classifier.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "transformer.train_classifier.gold_frame",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_tuning_export before reading tuning_train.jsonl",
+      "evidence": "src/transformer/train_classifier.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "transformer.train_classifier.silver_frame",
+      "kind": "learning",
+      "enforcement": "enforced",
+      "boundary": "verify_artifact(recover_training_identity, distillation) before parquet read; legacy silver/consensus parquets carry no receipt and fail",
+      "evidence": "src/transformer/train_classifier.py"
+    }
+  ]
+}
