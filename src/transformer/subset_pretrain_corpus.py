@@ -10,11 +10,17 @@ This script:
 
 ``pretrain_mlm.py`` therefore reads the result exactly as it reads the full
 corpus.  The manifest records which corpus it was derived from.
+
+Variant B2 (2026-09-24, retrain amendment 3): ``--provider all
+--drop-customers FILE --drop-provider equifax`` keeps every provider but drops
+the Equifax customers linked to benchmark customers (listed in FILE, column
+``eqx_customer_id``, from ``equifax-linkage/benchmark_linkage_counts.sql``).
 """
 
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import os
@@ -35,8 +41,16 @@ def main() -> None:
     parser = eval_protection.add_args(argparse.ArgumentParser(description=__doc__))
     parser.add_argument("--source", type=pathlib.Path, required=True)
     parser.add_argument("--output", type=pathlib.Path, required=True)
-    parser.add_argument("--provider", default="plaid")
+    parser.add_argument("--provider", default="plaid", help="provider to keep, or 'all'")
+    parser.add_argument("--drop-customers", type=pathlib.Path, default=None)
+    parser.add_argument("--drop-provider", default="equifax")
     args = parser.parse_args()
+    drop = set()
+    if args.drop_customers is not None:
+        with open(args.drop_customers, newline="") as stream:
+            drop = {r["eqx_customer_id"].strip() for r in csv.DictReader(stream)}
+        if not drop:
+            raise RuntimeError("the drop list is empty")
     protection, _publication = eval_protection.load_release(args)
     manifest = json.loads((args.source / "MANIFEST.json").read_text())
     if manifest.get("protected_release") != eval_protection.PINNED_BINDING:
@@ -50,7 +64,12 @@ def main() -> None:
             path, expected_consumer=CONSUMER, expected_purpose=PURPOSE, protection=protection
         )
         df = pd.read_parquet(path)
-        frames.append(df[df.provider == args.provider])
+        if args.provider != "all":
+            df = df[df.provider == args.provider]
+        if drop:
+            df = df[~((df.provider == args.drop_provider)
+                      & df.customer_id.astype(str).str.strip().isin(drop))]
+        frames.append(df)
     df = pd.concat(frames, ignore_index=True).sample(frac=1.0, random_state=42)
     df = df.reset_index(drop=True)
     out = args.output
@@ -79,10 +98,17 @@ def main() -> None:
             "manifest_sha256": hashlib.sha256(
                 (args.source / "MANIFEST.json").read_bytes()).hexdigest(),
             "provider_kept": args.provider,
-            "amendment": "TxCat-1 retrain amendment 1 (variant A, Plaid-only)",
+            "amendment": ("TxCat-1 retrain amendment 3 (variant B2, benchmark-linked Equifax "
+                          "customers removed)" if drop else
+                          "TxCat-1 retrain amendment 1 (variant A, Plaid-only)"),
+            **({"dropped_customers": {
+                "provider": args.drop_provider, "customers_listed": len(drop),
+                "list_sha256": hashlib.sha256(args.drop_customers.read_bytes()).hexdigest(),
+                "sentences_dropped": int(manifest["sentences"] - len(df)),
+            }} if drop else {}),
         },
         "sentences": len(df),
-        "by_provider": {args.provider: len(df)},
+        "by_provider": {p: int((df.provider == p).sum()) for p in sorted(df.provider.unique())},
         "credit_share": round(float((df.direction == "credit").mean()), 4),
         "shards": shards,
     }
