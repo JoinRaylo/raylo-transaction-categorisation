@@ -133,12 +133,16 @@ The only approved protected release is pinned in `src/eval_protection.py`
 
 ## Coverage
 
-`coverage-matrix.json` — 126 consumer entries (68 enforced, 44 gated_off,
-14 bound_read), sorted and unique, digested by `matrix_sha256`.
+`coverage-matrix.json` — 139 consumer entries (83 enforced, 42 gated_off,
+14 bound_read), sorted and unique, digested by `matrix_sha256`
+(`ec5b6372…0d11`). History: 126 entries at the R5 approval (v1 release,
+matrix `5177f983…`); 132 under the pinned v2 release after the TxCat-1 retrain
+(`a24d9fa2…`); 139 after the 2026-10-05 AIE-486 reconciliation added the seven
+monorepo app-labeller and waterfall-refresh consumers.
 
 `enforcement-receipt.json` — the aggregate `EnforcementReceipt`: release
-binding + matrix digest + 38 validation checks + limitations.
-`authorizes_consumption=false`.
+binding + matrix digest + 50 validation checks + limitations (canonical sha
+`2b86276f…a478`). `authorizes_consumption=false`.
 
 Regenerate with:
 

@@ -8,7 +8,7 @@
     "publication_file_sha256": "eaf5a8bba13a60e007fa7d92c9df8729c80e7e7b13a8b830c4c0642458c44f22",
     "publication_membership_sha256": "0afb4155c750808e332ef2bf1cfb17866d152b3b374771ad77d2399a62d43068"
   },
-  "matrix_sha256": "a24d9fa29848114eb6c43151d80bb5d21457924dac6250cba01fa2e223769167",
+  "matrix_sha256": "ec5b63727af7c106dd9dc489808192810114a509a35d866bc1a3d872c35f0d11",
   "checks": [
     "protected_exact_event_exclusion",
     "connected_account_group_exclusion",
@@ -70,7 +70,8 @@
     "Grouped corpus builders (pretrain/silver) and narrative-egress evidence queries are gated off because their aggregation cannot carry per-event identity.",
     "final_evaluation's BigQuery use is merchant-level GROUP BY aggregates only; it cannot leak a protected event but cannot prove per-event exclusion either.",
     "Receipt verification binds artifact bytes; it does not attest the human review step between a fetched sample and its reviewed derivative.",
-    "Row manifests bind row bytes, order and declared provenance; effective identity resolves recursively (row bytes, manifest claim, verified input chain). Derived artifacts must corroborate every identity through source_row_sha256 — a bare claim stays unresolved. For every non-authoring purpose an unresolved row is a hard failure at issuance, verification, fit and promotion. Merchant-level label artifacts that genuinely cannot carry event identity are classified authoring-only and can never stand in as learning inputs."
+    "Row manifests bind row bytes, order and declared provenance; effective identity resolves recursively (row bytes, manifest claim, verified input chain). Derived artifacts must corroborate every identity through source_row_sha256 — a bare claim stays unresolved. For every non-authoring purpose an unresolved row is a hard failure at issuance, verification, fit and promotion. Merchant-level label artifacts that genuinely cannot carry event identity are classified authoring-only and can never stand in as learning inputs.",
+    "App labeller and waterfall-refresh consumers (monorepo apps/ob-txn-categoriser) are evidenced by the monorepo unit suites, not this repository's tests; their real-data operation has not yet been exercised end to end."
   ],
   "authorizes_consumption": false
 }

@@ -843,6 +843,62 @@
     },
     {
       "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "ob_txn_categoriser.labeller.intake.admit",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "guard_row checks every purpose on the original merchant plus protected exact event/account/customer before admission; excluded, excluded_protected and blocked_* never enter the backlog",
+      "evidence": "apps/ob-txn-categoriser/src/ob_txn_categoriser/labeller/intake.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "ob_txn_categoriser.labeller.review.positive_decision",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "approve/override re-run the guarded evidence path on the claim's exact pinned source; unavailable or excluded sources refuse the positive decision",
+      "evidence": "apps/ob-txn-categoriser/src/ob_txn_categoriser/labeller/review.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "ob_txn_categoriser.labeller.runtime.corpus",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "runtime refuses unless the approved prompt corpus membership and family-map shas equal the loaded ExclusionGuard bindings (PINNED_RELEASE)",
+      "evidence": "apps/ob-txn-categoriser/src/ob_txn_categoriser/labeller/runtime.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "ob_txn_categoriser.labeller.sources.dry_run_sample",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "ArchiveDryRunSource keeps only rows passing guard_row(evidence_retrieval); sample bound to parent bundle and guard bindings",
+      "evidence": "apps/ob-txn-categoriser/src/ob_txn_categoriser/labeller/sources.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "ob_txn_categoriser.labeller.sources.evidence",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "GuardedEvidenceSource rechecks the pinned target for every purpose and supplements for evidence_retrieval under the current guard before any model egress",
+      "evidence": "apps/ob-txn-categoriser/src/ob_txn_categoriser/labeller/sources.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "ob_txn_categoriser.labeller.work",
+      "kind": "labelling",
+      "enforcement": "enforced",
+      "boundary": "/work refetches and rebuilds evidence under the current guard before spend; newly protected target or supplement blocks (evidence:excluded:*)",
+      "evidence": "apps/ob-txn-categoriser/src/ob_txn_categoriser/labeller/work.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
+      "consumer": "ob_txn_categoriser.refresh.waterfall_refresh",
+      "kind": "authoring",
+      "enforcement": "enforced",
+      "boundary": "dictionary_candidates/rule_candidates guard.check on the rehydrated pinned target, fresh guarded dry run, exclusion bindings bound into candidate identity, real mode requires a B04 acceptance attestation; never publishes",
+      "evidence": "apps/ob-txn-categoriser/src/ob_txn_categoriser/refresh/artefacts.py"
+    },
+    {
+      "schema_version": "benchmark-consumer-coverage-v1",
       "consumer": "production_labelling.apply_review",
       "kind": "labelling",
       "enforcement": "enforced",
