@@ -452,6 +452,28 @@ ENTRIES = [
     ("tools.benchmark.benchmark_screen_exposure", "evaluation_reader", "bound_read",
      "schema-only parquet/jsonl screening for exposure audits",
      "tools/benchmark/benchmark_screen_exposure.py"),
+    # ---- app labeller (AIE-484..487) and waterfall refresh (AIE-486), monorepo ----
+    ("ob_txn_categoriser.labeller.intake.admit", "labelling", "enforced",
+     "guard_row checks every purpose on the original merchant plus protected exact event/account/customer before admission; excluded, excluded_protected and blocked_* never enter the backlog",
+     "apps/ob-txn-categoriser/src/ob_txn_categoriser/labeller/intake.py"),
+    ("ob_txn_categoriser.labeller.runtime.corpus", "labelling", "enforced",
+     "runtime refuses unless the approved prompt corpus membership and family-map shas equal the loaded ExclusionGuard bindings (PINNED_RELEASE)",
+     "apps/ob-txn-categoriser/src/ob_txn_categoriser/labeller/runtime.py"),
+    ("ob_txn_categoriser.labeller.sources.dry_run_sample", "labelling", "enforced",
+     "ArchiveDryRunSource keeps only rows passing guard_row(evidence_retrieval); sample bound to parent bundle and guard bindings",
+     "apps/ob-txn-categoriser/src/ob_txn_categoriser/labeller/sources.py"),
+    ("ob_txn_categoriser.labeller.sources.evidence", "labelling", "enforced",
+     "GuardedEvidenceSource rechecks the pinned target for every purpose and supplements for evidence_retrieval under the current guard before any model egress",
+     "apps/ob-txn-categoriser/src/ob_txn_categoriser/labeller/sources.py"),
+    ("ob_txn_categoriser.labeller.work", "labelling", "enforced",
+     "/work refetches and rebuilds evidence under the current guard before spend; newly protected target or supplement blocks (evidence:excluded:*)",
+     "apps/ob-txn-categoriser/src/ob_txn_categoriser/labeller/work.py"),
+    ("ob_txn_categoriser.labeller.review.positive_decision", "labelling", "enforced",
+     "approve/override re-run the guarded evidence path on the claim's exact pinned source; unavailable or excluded sources refuse the positive decision",
+     "apps/ob-txn-categoriser/src/ob_txn_categoriser/labeller/review.py"),
+    ("ob_txn_categoriser.refresh.waterfall_refresh", "authoring", "enforced",
+     "dictionary_candidates/rule_candidates guard.check on the rehydrated pinned target, fresh guarded dry run, exclusion bindings bound into candidate identity, real mode requires a B04 acceptance attestation; never publishes",
+     "apps/ob-txn-categoriser/src/ob_txn_categoriser/refresh/artefacts.py"),
     # ---- promotion ----
     ("raylo_txncat.publish_bundle.main", "promotion", "enforced",
      "require_promotion_provenance: every declared learning input must carry a fetch receipt bound to the pinned release before upload",
@@ -539,6 +561,9 @@ LIMITATIONS = [
     "failure at issuance, verification, fit and promotion. Merchant-level "
     "label artifacts that genuinely cannot carry event identity are "
     "classified authoring-only and can never stand in as learning inputs.",
+    "App labeller and waterfall-refresh consumers (monorepo apps/ob-txn-categoriser) "
+    "are evidenced by the monorepo unit suites, not this repository's tests; their "
+    "real-data operation has not yet been exercised end to end.",
 ]
 
 
